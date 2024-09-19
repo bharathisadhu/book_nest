@@ -13,6 +13,7 @@ const nextConfig = {
       "img1.rapidleaks.com",
       "assets.penguinrandomhouse.com",
       "thewritepractice.com",
+      "demo2.pavothemes.com",
       "i.ibb.co.com",
       "demo2.pavothemes.com",
       "encrypted-tbn0.gstatic.com",
