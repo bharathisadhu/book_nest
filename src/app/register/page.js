@@ -1,24 +1,22 @@
 "use client";
-import Marquee from "react-fast-marquee";
-import { useForm } from "react-hook-form";
-import { FaFacebook } from "react-icons/fa";
+import Footer from "@/components/Footer";
+import Navbar from "@/components/Navbar";
 import Image from "next/image";
 import Link from "next/link";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
+import Marquee from "react-fast-marquee";
+import { useForm } from "react-hook-form";
 
-export default function login() {
+export default function register() {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const onSubmit = () => {};
   return (
     <main>
-      {/* Navbar section */}
+      {/* Navbar added */}
       <Navbar></Navbar>
-      {/* Login section */}
+      {/* Registration section */}
       <div className="flex items-center justify-center p-6">
         <div className="flex flex-col lg:flex-row h-full w-full overflow-hidden rounded-xl shadow-md md:h-[90%] md:w-[80%] lg:h-[70%] border">
           {/* register design side  */}
@@ -43,18 +41,41 @@ export default function login() {
               </Marquee>
             </div>
           </div>
+
           {/* input side  */}
           <div className="flex w-full flex-col justify-center shadow-2xl shadow-orange-50 lg:w-[60%] space-y-6 my-4">
             <p className="-mb-4 text-center text-xl font-bold">
               START FOR FREE
             </p>
             <h2 className=" text-center text-3xl font-bold">
-              Sign in to BookNest
+              Sign Up to BookNest
             </h2>
             <form
-              onSubmit={handleSubmit(onSubmit)}
+              onSubmit={handleSubmit(onsubmit)}
               className="flex  w-full flex-col items-center justify-center gap-4"
             >
+              <input
+                {...register("name", { required: true })}
+                className="w-[80%] rounded-lg border px-6 py-2 focus:outline-none focus:ring-2 focus:ring-[#F65D4E]/50 lg:w-[60%]"
+                type="text"
+                placeholder="Your Name"
+                name="name"
+              />
+              {errors.name && (
+                <span className="text-red-600">Name is required</span>
+              )}
+              <input
+                {...register("photo", { required: true })}
+                className="w-[80%] rounded-lg border  px-6 py-2 focus:outline-none focus:ring-2 focus:ring-[#F65D4E]/50 lg:w-[60%]"
+                type="text"
+                placeholder="Photo URL"
+                name="photo"
+              />
+              {errors.photo && (
+                <span className="text-red-600">
+                  Please provide your photo URL
+                </span>
+              )}
               <input
                 {...register("email", { required: true })}
                 className="w-[80%] rounded-lg border px-6 py-2 focus:outline-none focus:ring-2 focus:ring-[#F65D4E]/50 lg:w-[60%]"
@@ -77,51 +98,24 @@ export default function login() {
               )}
 
               <p className="text-[14px] font-medium">
-                Do not have an account ?{" "}
+                Already have an account ?{" "}
                 <Link
-                  href="/register"
+                  href="/login"
                   className="text-[#F65D4E] text-[16px] font-bold"
                 >
-                  Registration Now
+                  Login Now
                 </Link>
               </p>
               <input
                 className="w-[92%] rounded-lg bg-[#F65D4E] px-6 py-2 font-bold text-white md:w-[88%] lg:w-[65%]"
                 type="submit"
-                value="Sign In"
+                value="Sign Up"
               />
             </form>
-            {/* Divider */}
-            <div className="my-8 flex items-center px-8">
-              <hr className="flex-1" />
-              <div className="mx-4 text-gray-400">OR</div>
-              <hr className="flex-1" />
-            </div>
-            {/* sign with google */}
-            <div className="flex items-center justify-center gap-10">
-              <div className=" flex h-[50px]  gap-2 items-center overflow-hidden rounded-full shadow-md duration-300 hover:scale-95 hover:shadow hover:cursor-pointer">
-                <div className="flex h-full w-[50%] items-center bg-[#F65D4E] px-4 text-sm text-white font-medium">
-                  Sign With
-                </div>
-                <span className="right-0 top-0 h-0 w-0 -rotate-90 border-b-[50px] border-r-[50px] border-b-transparent border-r-[#F65D4E] group-hover:hidden"></span>
-                <span className="pr-4 text-4xl font-bold text-[#F65D4E]">
-                  G+
-                </span>
-              </div>
-              <div className="flex h-[50px]  gap-2 items-center overflow-hidden rounded-full shadow-md duration-300 hover:scale-95 hover:shadow hover:cursor-pointer">
-                <div className="flex h-full w-[50%] items-center bg-sky-700 px-4 text-sm text-white font-medium">
-                  Sign With
-                </div>
-                <span className="right-0 top-0 h-0 w-0 -rotate-90 border-b-[50px] border-r-[50px] border-b-transparent border-r-sky-700 group-hover:hidden"></span>
-                <span className="pr-4 text-4xl font-bold text-sky-700">
-                  <FaFacebook />
-                </span>
-              </div>
-            </div>
           </div>
         </div>
       </div>
-      {/* Footer section */}
+      {/* Footer added */}
       <Footer></Footer>
     </main>
   );
