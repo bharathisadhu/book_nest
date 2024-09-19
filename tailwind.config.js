@@ -11,6 +11,10 @@ ports = {
         background: "var(--background)",
         foreground: "var(--foreground)",
       },
+      backgroundImage: {
+        'Community' : "url('https://demo2.pavothemes.com/bookory/wp-content/uploads/2022/11/h6_bg1.jpg')",
+        
+      },
     },
   },
   plugins: [
