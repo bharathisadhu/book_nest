@@ -14,6 +14,7 @@ const nextConfig = {
       "assets.penguinrandomhouse.com",
       "thewritepractice.com",
       "demo2.pavothemes.com",
+      "i.ibb.co.com",
     ],
   },
 };
