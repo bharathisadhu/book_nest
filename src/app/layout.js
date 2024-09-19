@@ -19,9 +19,9 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" data-theme="light">
       <body>
-        {children}
+        <div className="container mx-auto">{children}</div>
       </body>
     </html>
   );
