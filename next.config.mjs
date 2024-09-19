@@ -13,6 +13,7 @@ const nextConfig = {
       "img1.rapidleaks.com",
       "assets.penguinrandomhouse.com",
       "thewritepractice.com",
+      "i.ibb.co.com",
     ],
   },
 };
