@@ -61,7 +61,7 @@ const Navbar = () => {
       {/* Tablet View */}
       <div className="navbar justify-between hidden md:flex lg:hidden">
         <Link href="/" className=" normal-case text-3xl">
-          <img src={logo} alt="BookNest Logo" className="w-[160px] h-auto" />
+          <Image src={logo} alt="BookNest Logo" className="w-[160px] h-auto" />
         </Link>
         <ul className="navbar-center menu menu-horizontal px-1">
           {navlinks.map((navlink, index) => (
