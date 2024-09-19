@@ -1,16 +1,19 @@
-import { useState, useEffect } from "react";
+"use client";
 
-const BlogPost = () => {
+import Image from "next/image";
+import { useEffect, useState } from "react";
+
+const Blogs = () => {
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
-    fetch("/blog.json")
+    fetch("blogs.json")
       .then((response) => response.json())
       .then((data) => setPosts(data));
   }, []);
 
   return (
-    <div className="  bg-gray-50 w-full p-8 my-4">
+    <div className="bg-gray-50 w-full p-8 my-4 text-black">
       <div className="flex items-center justify-between mb-8">
         <h2 className="text-xl lg:text-4xl font-semibold text-black">
           Latest Blog Post
@@ -24,9 +27,11 @@ const BlogPost = () => {
         <div className="space-y-6">
           {posts.slice(0, 4).map((post) => (
             <div key={post.id} className="flex items-center space-x-4">
-              <img
+              <Image
                 src={post.image}
                 alt={post.title}
+                width={112} // Fixed width
+                height={80} // Fixed height
                 className="w-28 h-20 object-cover rounded-md"
               />
               <div>
@@ -41,9 +46,11 @@ const BlogPost = () => {
         <div className="col-span-1 max-h-max space-y-6">
           {posts.slice(3, 4).map((post) => (
             <div key={post.id} className="relative rounded-lg overflow-hidden">
-              <img
+              <Image
                 src={post.image}
                 alt={post.title}
+                width={960} // Adjust based on your layout
+                height={384} // Adjust based on your layout
                 className="w-full h-96 object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black"></div>
@@ -61,9 +68,11 @@ const BlogPost = () => {
         <div className="space-y-6">
           {posts.slice(5, 9).map((post) => (
             <div key={post.id} className="flex items-center space-x-4">
-              <img
+              <Image
                 src={post.image}
                 alt={post.title}
+                width={112} // Fixed width
+                height={80} // Fixed height
                 className="w-28 h-20 object-cover rounded-md"
               />
               <div>
@@ -80,4 +89,4 @@ const BlogPost = () => {
   );
 };
 
-export default BlogPost;
+export default Blogs;
