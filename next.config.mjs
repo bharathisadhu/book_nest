@@ -14,6 +14,11 @@ const nextConfig = {
       "assets.penguinrandomhouse.com",
       "thewritepractice.com",
       "i.ibb.co.com",
+      "demo2.pavothemes.com",
+      "encrypted-tbn0.gstatic.com",
+      "cdn.freebiesupply.com",
+      "d3bzyjrsc4233l.cloudfront.net",
+      "demo2.pavothemes.com",
     ],
   },
 };
