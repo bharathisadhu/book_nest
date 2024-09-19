@@ -1,28 +1,24 @@
+/* eslint-disable react/no-unescaped-entities */
+"use client";
 
-'use client'
-
-
-import React, { useRef, } from "react";
-// Import Swiper React components
+import React, { useRef } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-
-// Import Swiper styles
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-
-// import required modules
 import { Navigation, Pagination, Mousewheel, Keyboard } from "swiper/modules";
+import Image from "next/image";
 
-
-export default function () {
-    return(
-        <>
-        <div className="relative  md:mb-72 mb-96 my-30 ">
-        <img
+export default function Reviews() {
+  return (
+    <>
+      <div className="relative md:mb-72 mb-96 my-30 ">
+        <Image
           className="md:h-full h-60 w-full"
           src="https://demo2.pavothemes.com/bookory/wp-content/uploads/2022/02/h1-bg2.jpg"
           alt=""
+          width={1920}
+          height={1080}
         />
 
         <div className="lg:w-1/3 w-2/3 rounded-lg absolute lg:-mt-60 -mt-44 ml-20 lg:ml-20 bg-gray-50 border-2 p-2">
@@ -97,8 +93,6 @@ export default function () {
           </Swiper>
         </div>
       </div>
-
-
-        </>
-    )
+    </>
+  );
 }
