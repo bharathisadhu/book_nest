@@ -13,7 +13,7 @@ const Blogs = () => {
   }, []);
 
   return (
-    <div className="bg-gray-50 w-full p-8 my-4 ">
+    <div className="bg-gray-50 w-full p-4 my-4 ">
       <div className="flex items-center justify-between mb-8">
         <h2 className="text-xl lg:text-4xl font-semibold text-black">
           Latest Blog Post

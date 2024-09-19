@@ -13,6 +13,8 @@ const nextConfig = {
       "img1.rapidleaks.com",
       "assets.penguinrandomhouse.com",
       "thewritepractice.com",
+      "demo2.pavothemes.com",
+      "i.ibb.co.com",
     ],
   },
 };
