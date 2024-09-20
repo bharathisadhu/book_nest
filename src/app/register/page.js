@@ -12,14 +12,17 @@ export default function Register() {
     handleSubmit,
     formState: { errors },
   } = useForm();
+
+  const onSubmit = (data) => {
+    console.log(data); // Handle the submitted data here
+  };
+
   return (
     <main>
-      {/* Navbar added */}
-      <Navbar></Navbar>
-      {/* Registration section */}
+      <Navbar />
       <div className="flex items-center justify-center p-6">
         <div className="flex flex-col lg:flex-row h-full w-full overflow-hidden rounded-xl shadow-md md:h-[90%] md:w-[80%] lg:h-[70%] border">
-          {/* register design side  */}
+          {/* Register design side */}
           <div className="relative h-full items-center justify-center bg-[#F65D4E] md:flex md:w-[100%] lg:w-[50%]">
             <div className="space-y-2 text-center">
               <h2 className="md:text-4xl font-medium text-white pt-4">Now</h2>
@@ -29,7 +32,6 @@ export default function Register() {
               <p className="animate-pulse text-xl md:text-3xl lg:text-4xl font-poppins font-semibold text-white pt-6">
                 Easy and fast.
               </p>
-
               <Marquee>
                 <Image
                   width={500}
@@ -42,17 +44,13 @@ export default function Register() {
             </div>
           </div>
 
-          {/* input side  */}
+          {/* Input side */}
           <div className="flex w-full flex-col justify-center shadow-2xl shadow-orange-50 lg:w-[60%] space-y-6 my-4">
-            <p className="-mb-4 text-center text-xl font-bold">
-              START FOR FREE
-            </p>
-            <h2 className=" text-center text-3xl font-bold">
-              Sign Up to BookNest
-            </h2>
+            <p className="-mb-4 text-center text-xl font-bold">START FOR FREE</p>
+            <h2 className="text-center text-3xl font-bold">Sign Up to BookNest</h2>
             <form
-              // onSubmit={handleSubmit(onsubmit)}
-              className="flex  w-full flex-col items-center justify-center gap-4"
+              onSubmit={handleSubmit(onSubmit)} // Corrected here
+              className="flex w-full flex-col items-center justify-center gap-4"
             >
               <input
                 {...register("name", { required: true })}
@@ -66,15 +64,13 @@ export default function Register() {
               )}
               <input
                 {...register("photo", { required: true })}
-                className="w-[80%] rounded-lg border  px-6 py-2 focus:outline-none focus:ring-2 focus:ring-[#F65D4E]/50 lg:w-[60%]"
+                className="w-[80%] rounded-lg border px-6 py-2 focus:outline-none focus:ring-2 focus:ring-[#F65D4E]/50 lg:w-[60%]"
                 type="text"
                 placeholder="Photo URL"
                 name="photo"
               />
               {errors.photo && (
-                <span className="text-red-600">
-                  Please provide your photo URL
-                </span>
+                <span className="text-red-600">Please provide your photo URL</span>
               )}
               <input
                 {...register("email", { required: true })}
@@ -96,13 +92,9 @@ export default function Register() {
               {errors.password && (
                 <span className="text-red-600">Password is required</span>
               )}
-
               <p className="text-[14px] font-medium">
-                Already have an account ?{" "}
-                <Link
-                  href="/login"
-                  className="text-[#F65D4E] text-[16px] font-bold"
-                >
+                Already have an account?{" "}
+                <Link href="/login" className="text-[#F65D4E] text-[16px] font-bold">
                   Login Now
                 </Link>
               </p>
@@ -115,8 +107,7 @@ export default function Register() {
           </div>
         </div>
       </div>
-      {/* Footer added */}
-      <Footer></Footer>
+      <Footer />
     </main>
   );
 }
