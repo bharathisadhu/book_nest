@@ -1,5 +1,9 @@
 
+// next.config.js
+/** @type {import('next').NextConfig} */
+
   /** @type {import('next').NextConfig} */
+
 const nextConfig = {
   images: {
     domains: [
@@ -14,6 +18,9 @@ const nextConfig = {
       "assets.penguinrandomhouse.com",
       "thewritepractice.com",
       "demo2.pavothemes.com",
+      "i.ibb.co.com",
+      "i.ibb.co",
+      "demo2.pavothemes.com",
       "i.ibb.co",
       "encrypted-tbn0.gstatic.com",
       "cdn.freebiesupply.com",
@@ -24,9 +31,6 @@ const nextConfig = {
   },
 };
 
-
-
-  
-  export default nextConfig;
+export default nextConfig;
   
   
