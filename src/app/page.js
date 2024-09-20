@@ -13,9 +13,9 @@ import PopularBooks from "@/components/PopularBooks";
 export default function Home() {
   return (
     <>
+      <Navbar />
       <Category></Category>
       <Discount></Discount>
-      <Navbar />
       <Banner />
       <PopularBooks />
       <Brand />
