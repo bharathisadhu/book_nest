@@ -51,7 +51,7 @@ export default function Register() {
               Sign Up to BookNest
             </h2>
             <form
-              onSubmit={handleSubmit(onsubmit)}
+              // onSubmit={handleSubmit(onsubmit)}
               className="flex  w-full flex-col items-center justify-center gap-4"
             >
               <input
