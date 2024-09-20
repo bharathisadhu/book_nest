@@ -14,9 +14,9 @@ export default function Home() {
   return (
     <>
       <Navbar />
+      <Banner />
       <Category></Category>
       <Discount></Discount>
-      <Banner />
       <PopularBooks />
       <Brand />
       <Review />

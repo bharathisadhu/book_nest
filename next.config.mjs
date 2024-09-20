@@ -1,9 +1,4 @@
 
-  
-
-
-
-
   /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
@@ -24,6 +19,7 @@ const nextConfig = {
       "cdn.freebiesupply.com",
       "d3bzyjrsc4233l.cloudfront.net",
       "demo2.pavothemes.com",
+      "i.ibb.co.com"
     ],
   },
 };
