@@ -7,7 +7,7 @@ import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
-export default function login() {
+export default function Login() {
   const {
     register,
     handleSubmit,

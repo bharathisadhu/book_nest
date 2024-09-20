@@ -6,7 +6,7 @@ import Link from "next/link";
 import Marquee from "react-fast-marquee";
 import { useForm } from "react-hook-form";
 
-export default function register() {
+export default function Register() {
   const {
     register,
     handleSubmit,
