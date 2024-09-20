@@ -1,57 +1,15 @@
-"use client"
-// import { Swiper, SwiperSlide } from 'swiper/react';
-
-// // Import Swiper styles
-// import 'swiper/css';
-// import 'swiper/css/free-mode';
-// import 'swiper/css/pagination';
-
-// // import required modules
-// import { FreeMode, Pagination } from 'swiper/modules';
-
-// import React from 'react'
-
-// function Category () {
-//   return (
-//     <>
-//     <Swiper
-//       slidesPerView={3}
-//       spaceBetween={30}
-//       freeMode={true}
-//       pagination={{
-//         clickable: true,
-//       }}
-//       modules={[FreeMode, Pagination]}
-//       className="mySwiper"
-//     >
-//       <SwiperSlide>Slide 1</SwiperSlide>
-//       <SwiperSlide>Slide 2</SwiperSlide>
-//       <SwiperSlide>Slide 3</SwiperSlide>
-//       <SwiperSlide>Slide 4</SwiperSlide>
-//       <SwiperSlide>Slide 5</SwiperSlide>
-//       <SwiperSlide>Slide 6</SwiperSlide>
-//       <SwiperSlide>Slide 7</SwiperSlide>
-//       <SwiperSlide>Slide 8</SwiperSlide>
-//       <SwiperSlide>Slide 9</SwiperSlide>
-//     </Swiper>
-//   </>
-//   )
-// }
-
-// export default Category
-
-
-import { useEffect, useState } from 'react';
+"use client";
+import { useEffect, useState } from "react";
 // Import Swiper React components
-import { Swiper, SwiperSlide } from 'swiper/react';
+import { Swiper, SwiperSlide } from "swiper/react";
 
 // Import Swiper styles
-import 'swiper/css';
-import 'swiper/css/pagination';
+import "swiper/css";
+import "swiper/css/pagination";
 
 // Import required modules
-import { Pagination } from 'swiper/modules';
-import Image from 'next/image';
+import { Autoplay, Navigation, Pagination } from "swiper/modules";
+import Image from "next/image";
 
 const Category = () => {
   const [category, setCategory] = useState([]);
@@ -63,25 +21,51 @@ const Category = () => {
   }, []);
 
   return (
-    <div className='my-10 p-5 container mx-auto relative'>
+    <div className="container mx-auto my-6 md:my-14 lg:my-28 relative">
       <Swiper
-        slidesPerView={5}
-        spaceBetween={100}
-        modules={[Pagination]}
-        className="mySwiper"
+        slidesPerView={3} // Default for large screens (desktop)
+        spaceBetween={30}
+        autoplay={{
+          delay: 3000,
+          disableOnInteraction: true,
+        }}
+        pagination={{
+          clickable: false,
+        }}
+        breakpoints={{
+          576: {
+            slidesPerView: 3,
+            spaceBetween: 20,
+          },
+          768: {
+            slidesPerView: 4,
+            spaceBetween: 25,
+          },
+          1280: {
+            slidesPerView: 6,
+            spaceBetween: 30,
+          },
+        }}
+        modules={[Autoplay, Navigation]}
+        className="mySwiper flex items-center justify-center"
       >
         {category.map((cat) => (
           <SwiperSlide key={cat.image}>
-            <div className="relative flex flex-col items-center hover:scale-105 transition-transform cursor-pointer group">
-              <div className="h-44 w-44 lg:h-72 lg:w-72 rounded-full bg-slate-200 p-5 absolute z-10 group-hover:bg-red-600"></div>
+            <div className="relative flex flex-col items-center hover:scale-105 transition-transform cursor-pointer group mt-32">
+              {/* Circle Positioned Center */}
+              <div className="h-24 w-24 lg:h-48 lg:w-48 rounded-full bg-slate-200 p-5 absolute z-10 group-hover:bg-red-600 top-1/2 transform -translate-y-1/2"></div>
               <Image
                 src={cat.image}
-                className="lg:w-full lg:h-72 w-52 h-44 bottom-20  relative z-20"
+                className="lg:w-[150px] lg:h-[210px] w-20 h-20 relative z-20 transform -translate-y-1/2"
                 alt={cat.name}
                 width={200}
                 height={200}
+                style={{ objectFit: "cover" }}
               />
             </div>
+            <p className="text-center text-lg font-medium text-gray-700">
+              {cat.category}
+            </p>
           </SwiperSlide>
         ))}
       </Swiper>
@@ -90,3 +74,73 @@ const Category = () => {
 };
 
 export default Category;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// "use client";
+// import { useEffect, useState } from "react";
+// import { Swiper, SwiperSlide } from "swiper/react";
+
+// // Import Swiper styles
+// import "swiper/css";
+// import "swiper/css/pagination";
+
+// // Import required modules
+// import { Pagination } from "swiper/modules";
+// import Image from "next/image";
+
+// const Category = () => {
+//   const [category, setCategory] = useState([]);
+
+//   useEffect(() => {
+//     fetch("/popular-data.json")
+//       .then((response) => response.json())
+//       .then((data) => setCategory(data));
+//   }, []);
+
+//   return (
+//     <div className="my-10 p-5 container mx-auto relative">
+//       <Swiper
+//         slidesPerView="auto"
+//         spaceBetween={20}
+//         modules={[Pagination]}
+//         className="mySwiper"
+//       >
+//         {category.map((cat) => (
+//           <SwiperSlide
+//             key={cat.image}
+//             className="max-w-[80%] sm:max-w-[45%] md:max-w-[30%] lg:max-w-[18%] flex justify-center"
+//           >
+//             <div className="relative flex flex-col items-center hover:scale-105 transition-transform cursor-pointer group">
+//               <div className="h-28 w-28 md:h-44 md:w-44 lg:h-72 lg:w-72 rounded-full bg-slate-200 p-5 absolute z-10 group-hover:bg-red-600 transition-all"></div>
+//               <Image
+//                 src={cat.image}
+//                 className="w-28 h-28 md:w-44 md:h-44 lg:w-72 lg:h-72 bottom-10 md:bottom-16 lg:bottom-20 relative z-20"
+//                 alt={cat.name}
+//                 width={200}
+//                 height={200}
+//               />
+//             </div>
+//           </SwiperSlide>
+//         ))}
+//       </Swiper>
+//     </div>
+//   );
+// };
+
+// export default Category;
+
