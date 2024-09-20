@@ -1,3 +1,5 @@
+import Category from "@/components/Category";
+import Discount from "@/components/Discount";
 import Brand from "@/components/Brand";
 import Community from "@/components/Community";
 import Analytics from "@/components/Analytics";
@@ -11,6 +13,8 @@ import PopularBooks from "@/components/PopularBooks";
 export default function Home() {
   return (
     <>
+      <Category></Category>
+      <Discount></Discount>
       <Navbar />
       <Banner />
       <PopularBooks />
