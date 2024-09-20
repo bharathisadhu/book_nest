@@ -1,8 +1,4 @@
 
-// /** @type {import('next').NextConfig} */
-// const nextConfig = {};
-
-// export default nextConfig;
 
 // next.config.js
 /** @type {import('next').NextConfig} */
@@ -21,6 +17,7 @@ const nextConfig = {
       "thewritepractice.com",
       "demo2.pavothemes.com",
       "i.ibb.co.com",
+      "i.ibb.co",
       "demo2.pavothemes.com",
       "encrypted-tbn0.gstatic.com",
       "cdn.freebiesupply.com",
@@ -32,13 +29,7 @@ const nextConfig = {
 
 
 
-/** @type {import('next').NextConfig} */
-const nextConfig = {
-    images: {
-      domains: ['i.ibb.co'],
-    },
-  };
-  
+
   export default nextConfig;
   
   
