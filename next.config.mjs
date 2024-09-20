@@ -26,18 +26,19 @@ const nextConfig = {
       "cdn.freebiesupply.com",
       "d3bzyjrsc4233l.cloudfront.net",
       "demo2.pavothemes.com",
+      "i.ibb.co"
     ],
   },
 };
 
 
 
-/** @type {import('next').NextConfig} */
-const nextConfig = {
-    images: {
-      domains: ['i.ibb.co'],
-    },
-  };
+// /** @type {import('next').NextConfig} */
+// const nextConfig = {
+//     images: {
+//       domains: ['i.ibb.co'],
+//     },
+//   };
   
   export default nextConfig;
   
