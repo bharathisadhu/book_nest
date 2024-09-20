@@ -12,7 +12,7 @@ import Image from "next/image";
 export default function Reviews() {
   return (
     <>
-      <div className="relative md:mb-72 mb-96 my-30 ">
+      <div className="relative md:mb-72 mb-96 my-5 ">
         <Image
           className="md:h-full h-60 w-full"
           src="https://demo2.pavothemes.com/bookory/wp-content/uploads/2022/02/h1-bg2.jpg"

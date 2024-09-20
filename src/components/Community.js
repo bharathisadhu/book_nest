@@ -1,5 +1,4 @@
 'use client'
-
 export default function Community (){
     return(
         <>
@@ -32,7 +31,6 @@ export default function Community (){
         </div>
       </div>
     </div>
-        
         </>
     )
 }
