@@ -16,7 +16,8 @@ export default function Register() {
   } = useForm();
 
   const onSubmit = async (newUser) => {
-    const res = await fetch("http://localhost:3000/register/api", {
+    // const res = await fetch("http://localhost:3000/register/api", {
+    const res = await fetch("https://booknest-self.vercel.app/register/api", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
