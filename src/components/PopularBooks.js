@@ -6,7 +6,7 @@ export default function PopularBooks() {
   const [popularBooks, setPopularBooks] = useState([]);
 
   useEffect(() => {
-    fetch("/popular-data.json")
+    fetch("popular-data.json")
       .then((response) => response.json())
       .then((data) => {
         setPopularBooks(data);

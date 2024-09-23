@@ -1,67 +1,75 @@
+
 [
-    {
+  {
+      "id": 1,
       "name": "The Silent Patient",
       "image": "https://i.ibb.co.com/NjS2QHT/61-R-Cpm-Hx-L-AC-UF894-1000-QL80.jpg",
       "ratings": 4.5,
       "price": 19.99,
       "author": "Alex Michaelides",
       "category": "Psychological Thriller"
-    },
-    {
+  },
+  {
+      "id": 2,
       "name": "Where the Crawdads Sing",
       "image": "https://i.ibb.co.com/fYKVzJB/36809135.jpg",
       "ratings": 4.8,
       "price": 24.99,
       "author": "Delia Owens",
       "category": "Mystery"
-    },
-    {
+  },
+  {
+      "id": 3,
       "name": "Educated",
       "image": "https://i.ibb.co.com/hBZVxfN/9780099511021.jpg",
       "ratings": 4.7,
       "price": 17.99,
       "author": "Tara Westover",
       "category": "Memoir"
-    },
-    {
+  },
+  {
+      "id": 4,
       "name": "Becoming",
       "image": "https://i.ibb.co.com/gFfKgc4/prison-journalism-obama-becoming-review-111822.jpg",
       "ratings": 4.9,
       "price": 22.99,
       "author": "Michelle Obama",
       "category": "Biography"
-    },
-    {
+  },
+  {
+      "id": 5,
       "name": "Atomic Habits",
       "image": "https://i.ibb.co.com/Tv9qPqn/61-M6-Kz-Ubf7-L-AC-UF1000-1000-QL80.jpg",
       "ratings": 4.6,
       "price": 18.99,
       "author": "James Clear",
       "category": "Self-Help"
-    },
-    {
+  },
+  {
+      "id": 6,
       "name": "The Subtle Art",
       "image": "https://i.ibb.co.com/8jKkLGf/the-subtle-art-of-not-giving-a-fck-by-mark-manson-4.jpg",
       "ratings": 4.1,
       "price": 14.99,
       "author": "Mark Manson",
       "category": "Self-Help"
-    },
-    {
+  },
+  {
+      "id": 7,
       "name": "Dune",
       "image": "https://i.ibb.co.com/pZdjnfB/44767458.jpg",
       "ratings": 4.7,
       "price": 25.99,
       "author": "Frank Herbert",
       "category": "Science Fiction"
-    },
-    {
+  },
+  {
+      "id": 8,
       "name": "Sapiens: A Brief History",
       "image": "https://i.ibb.co.com/QHYWqFw/0-RAr-KNBFL91-Cw-Ge-WU.jpg",
       "ratings": 4.8,
       "price": 21.99,
       "author": "Yuval Noah Harari",
       "category": "History"
-    }
-  ]
-  
+  }
+]

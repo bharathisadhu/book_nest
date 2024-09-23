@@ -1,6 +1,5 @@
 'use client'
-
-export default function (){
+export default function Community (){
     return(
         <>
         <div className="  py-4">
@@ -32,7 +31,6 @@ export default function (){
         </div>
       </div>
     </div>
-        
         </>
     )
 }
