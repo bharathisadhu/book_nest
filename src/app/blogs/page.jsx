@@ -3,7 +3,8 @@ import Navbar from '@/components/Navbar';
 import Image from 'next/image';
 import React from 'react';
 import { FaArrowRightLong } from 'react-icons/fa6';
-
+import { FaSearch } from 'react-icons/fa';
+import { IoArrowForwardCircleOutline } from "react-icons/io5";
 const BlogsPage = () => {
   return (
     <>
@@ -95,7 +96,144 @@ const BlogsPage = () => {
         </div>
 
         {/* Categories Section (1 Column on Large Screens) */}
-        
+        <div className="p-6 hidden lg:block">
+        <div className="container mx-auto rounded-lg border-2">
+          <h2 className="py-5 pl-10 text-xl font-bold">Search</h2>
+          <hr className="border-t-1 border-gray-300" />
+            <div className="relative w-full max-w-md mx-auto py-5 px-10">
+            <input
+              type="text"
+              className="w-full border border-gray-300 rounded-lg pl-10 pr-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="Search..."
+            />
+            <FaSearch className="absolute right-12 top-8 text-gray-400" />
+            </div>
+        </div>
+
+
+        <div className="container mx-auto rounded-lg border-2 mt-10">
+          <h2 className="py-5 pl-10 text-xl font-bold">Categories</h2>
+          <hr className="border-t-1 border-gray-300" />
+            <div className="relative w-full max-w-md mx-auto py-5 px-10">
+              <ul>
+                <li className="flex gap-1"><sapn className="mt-1"><IoArrowForwardCircleOutline className="bg-slate-300 rounded-full hover:bg-red-800" /></sapn><sapn>Arts & Literature</sapn></li>
+
+                <li className="flex gap-1 my-3"><sapn className="mt-1"><IoArrowForwardCircleOutline className="bg-slate-300 rounded-full hover:bg-red-800" /></sapn><sapn>Cultural</sapn></li>
+
+
+                <li className="flex gap-1 my-3"><sapn className="mt-1"><IoArrowForwardCircleOutline className="bg-slate-300 rounded-full hover:bg-red-800" /></sapn><sapn>European</sapn></li>
+
+
+
+                <li className="flex gap-1"><sapn className="mt-1"><IoArrowForwardCircleOutline className="bg-slate-300 rounded-full hover:bg-red-800" /></sapn><sapn>Uncategorized</sapn></li>
+              </ul>
+
+            </div>
+        </div>
+
+
+
+        <div className="container mx-auto rounded-lg border-2 mt-10">
+          <h2 className="py-5 pl-10 text-xl font-bold">Recent Posts</h2>
+          <hr className="border-t-1 border-gray-300" />
+            <div className="relative w-full max-w-md mx-auto py-5 px-10">
+              <ul>
+                <li className="flex gap-3 my-5">
+                <sapn className="w-[100px]">
+                <Image
+                height={80}
+                width={80}
+                  src="https://demo2.pavothemes.com/bookory/wp-content/uploads/2022/11/blog_7-150x150.jpg"
+                  alt="Card Image 1"
+                  className="w-full h-auto object-cover border rounded-lg"
+                />
+
+                </sapn>
+                
+                
+                <sapn>
+                  <h3 className="font-thin">November 14, 2022</h3>
+                  <h2 className="font-semibold leading-5">5 Attractive Bookstore WordPress Themes</h2>
+                  
+                </sapn>
+               </li>
+               <li className="flex gap-3 my-5">
+               <sapn className="w-[100px]">
+                <Image
+                height={80}
+                width={80}
+                  src="https://demo2.pavothemes.com/bookory/wp-content/uploads/2022/02/blog_6-150x150.jpg"
+                  alt="Card Image 1"
+                  className="w-full h-auto object-cover border rounded-lg"
+                />
+
+                </sapn>
+                
+                
+                <sapn>
+                  <h3 className="font-thin">November 14, 2022</h3>
+                  <h2 className="font-semibold leading-5">Behind the Scenes with Author Victoria Aveyard</h2>
+                  
+                </sapn>
+               </li>
+               <li className="flex gap-3 my-5">
+               <sapn className="w-[100px]">
+                <Image
+                height={80}
+                width={80}
+                  src="https://demo2.pavothemes.com/bookory/wp-content/uploads/2022/02/blog_4-150x150.jpg"
+                  alt="Card Image 1"
+                  className="w-full h-auto object-cover border rounded-lg"
+                />
+
+                </sapn>
+                
+                
+                <sapn>
+                  <h3 className="font-thin">November 14, 2022</h3>
+                  <h2 className="font-semibold leading-5">7 Books to Combat Racism</h2>
+                  
+                </sapn>
+               </li>
+               <li className="flex gap-3 my-5">
+               <sapn className="w-[100px]">
+                <Image
+                height={80}
+                width={80}
+                  src="https://demo2.pavothemes.com/bookory/wp-content/uploads/2022/02/blog_3-150x150.jpg"
+                  alt="Card Image 1"
+                  className="w-full h-auto object-cover border rounded-lg"
+                />
+
+                </sapn>
+                
+                
+                <sapn>
+                  <h3 className="font-thin">November 14, 2022</h3>
+                  <h2 className="font-semibold leading-5">Top 10 Books to Make It a Great Year</h2>
+                  
+                </sapn>
+               </li>
+              </ul>
+
+            </div>
+        </div>
+
+
+        <div className="container mx-auto rounded-lg border-2 mt-10">
+          <h2 className="py-5 pl-10 text-xl font-bold">Tags</h2>
+          <hr className="border-t-1 border-gray-300" />
+            <div className="relative w-full max-w-md mx-auto py-5 pl-10">
+              <sapn className="mr-5">Book</sapn>
+              <sapn className="mr-5">Hardback</sapn>
+              <sapn className="mr-5">Mixed media</sapn>
+              <sapn className="mr-5">Paperback</sapn>
+              
+
+            </div>
+        </div>
+         
+        </div>
       </div>
     </div>
 
