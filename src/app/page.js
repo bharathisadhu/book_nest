@@ -20,8 +20,8 @@ export default function Home() {
       <PopularBooks />
       <Brand />
       <Review />
-      <Blogs />
       <Community />
+      <Blogs />
       <Analytics />
       <Footer />
     </>

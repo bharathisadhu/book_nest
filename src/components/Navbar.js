@@ -30,7 +30,7 @@ const Navbar = () => {
       {/* Desktop View */}
       <div className="navbar hidden lg:flex items-center">
         <Link href="/" className=" normal-case text-3xl">
-          <Image src={logo} alt="BookNest Logo" className="w-[160px] h-auto" />
+          <Image height={200} width={200} src={logo} alt="BookNest Logo" className="w-[160px] h-auto" />
         </Link>
         <ul className="navbar justify-end menu menu-horizontal px-1 text-xl">
           {navlinks.map((navlink, index) => (
@@ -61,7 +61,7 @@ const Navbar = () => {
       {/* Tablet View */}
       <div className="navbar justify-between hidden md:flex lg:hidden">
         <Link href="/" className=" normal-case text-3xl">
-          <Image src={logo} alt="BookNest Logo" className="w-[160px] h-auto" />
+          <Image height={200} width={200} src={logo} alt="BookNest Logo" className="w-[160px] h-auto" />
         </Link>
         <ul className="navbar-center menu menu-horizontal px-1">
           {navlinks.map((navlink, index) => (
@@ -91,7 +91,7 @@ const Navbar = () => {
           <RxHamburgerMenu className="text-2xl" />
         </button>
         <Link href="/" className=" normal-case text-3xl">
-          <img src={logo} alt="BookNest Logo" className="w-[120px] h-auto" />
+          <Image height={200} width={200} src={logo} alt="BookNest Logo" className="w-[120px] h-auto" />
         </Link>
         <button className="btn btn-ghost text-2xl">
           <FaShoppingCart />
