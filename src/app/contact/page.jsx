@@ -4,6 +4,7 @@ import React from 'react';
 import { IoIosArrowForward } from "react-icons/io";
 import { FaArrowRightLong } from "react-icons/fa6";
 import Footer from '@/components/Footer';
+import Image from 'next/image';
 
 const ContactPage = () => {
   return (
@@ -78,7 +79,73 @@ const ContactPage = () => {
       </form>
     </div>
   </div>
+  <hr className="my-6 border-t-1 border-gray-300" />
+  <h2 className="container mx-auto px-4 py-8 text-center uppercase text-xl font-bold">our book store</h2>
+  <div className="container mx-auto px-4 py-8">
   
+  <div className="grid gap-0 md:grid-cols-1 lg:grid-cols-3">
+   
+    <div className=" rounded-lg  p-4">
+    
+
+    <Image
+                height={200}
+                width={200}
+                  src="https://demo2.pavothemes.com/bookory/wp-content/uploads/2022/02/contact_pic_1.png"
+                  alt="Card Image 1"
+                  className="w-full h-48 object-cover border rounded-lg"
+                />
+      <h2 className="text-xl font-semibold mt-10">New York</h2>
+      <p className="text-gray-600 my-10">3164 N Delaware Rd Milan, Indiana(IN), 47031<br/>Hotline: +(84) 2500 888 33<br/>support@example.com</p>
+
+      <h2 className="text-xl font-semibold mt-4">Working Hours</h2>
+      <p className="text-gray-600 my-10">Open: 8:00AM – Close: 18:00PM<br/>Saturday – Sunday: Close</p>
+
+    </div>
+
+   
+    <div className=" rounded-lg  p-4">
+
+
+    <Image
+                height={200}
+                width={200}
+                  src="https://demo2.pavothemes.com/bookory/wp-content/uploads/2022/02/contact_pic_2.png"
+                  alt="Card Image 2"
+                  className="w-full h-48 object-cover border rounded-lg"
+                />
+
+ 
+
+      <h2 className="text-xl font-semibold mt-10">Las Vegas</h2>
+      <p className="text-gray-600 my-10">3164 N Delaware Rd Milan, Indiana(IN), 47031<br/>Hotline: +(84) 2500 888 33<br/>support@example.com</p>
+
+      <h2 className="text-xl font-semibold mt-4">Working Hours</h2>
+      <p className="text-gray-600 my-10">Open: 8:00AM – Close: 18:00PM<br/>Saturday – Sunday: Close</p>
+
+      
+      
+    </div>
+
+   
+    <div className=" rounded-lg  p-4">
+ 
+
+    <Image
+                height={200}
+                width={200}
+                  src="https://demo2.pavothemes.com/bookory/wp-content/uploads/2022/02/contact_pic_3.png"
+                  alt="Card Image 3"
+                  className="w-full h-48 object-cover rounded-t-lg"
+                />
+      <h2 className="text-xl font-semibold mt-10">Los Angeles</h2>
+      <p className="text-gray-600 my-10">3164 N Delaware Rd Milan, Indiana(IN), 47031<br/>Hotline: +(84) 2500 888 33<br/>support@example.com</p>
+
+      <h2 className="text-xl font-semibold mt-4">Working Hours</h2>
+      <p className="text-gray-600 my-10">Open: 8:00AM – Close: 18:00PM<br/>Saturday – Sunday: Close</p>
+    </div>
+  </div>
+</div>
   <Footer/>
   </>
   );
