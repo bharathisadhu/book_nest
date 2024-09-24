@@ -43,6 +43,7 @@ const Navbar = () => {
               </Link>
             </li>
           ))}
+          
         </ul>
       </div>
 
@@ -130,11 +131,24 @@ const Navbar = () => {
         </button>
         <ul className="menu p-4">
           {navlinks.map((navlink, index) => (
-            <li key={index} className="py-2 text-xl">
+            <li key={index} className="py-0 text-xl">
               <Link href={navlink.link}>{navlink.label}</Link>
             </li>
           ))}
+
+          <div className="ml-6">
+            <button className="btn btn-ghost">
+            <CiSearch className="text-2xl"/>
+          </button>
+          <button className="btn btn-ghost">
+            <Link href="/login">
+              <MdAccountCircle className="text-2xl" />
+            </Link>
+          </button>
+          </div>
+          
         </ul>
+        
       </div>
 
       {/* Backdrop (optional) */}
