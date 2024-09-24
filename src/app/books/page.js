@@ -7,11 +7,13 @@ import axios from "axios";
 
 export default async function Books() {
   let listOfBooks = [];
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL
 
   try {
-    const response = await axios.get(`${baseUrl}/popular-data.json`);
+    const response = await axios.get(`https://booknest-server-one.vercel.app/api/books`);
     listOfBooks = response.data;
+    console.log(listOfBooks);
+    
   } catch (error) {
     console.error("Error fetching books:", error);
   }
