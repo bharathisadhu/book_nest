@@ -10,7 +10,10 @@ import logo from "../../public/BookNest.png"; // Your logo path
 import Link from "next/link";
 import Image from "next/image";
 
+
 const Navbar = () => {
+ 
+
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleSidebar = () => {
@@ -35,7 +38,9 @@ const Navbar = () => {
         <ul className="navbar justify-end menu menu-horizontal px-1 text-xl">
           {navlinks.map((navlink, index) => (
             <li key={index}>
-              <Link href={navlink.link}>{navlink.label}</Link>
+              <Link href={navlink.link}>
+                                    {navlink.label}
+              </Link>
             </li>
           ))}
         </ul>

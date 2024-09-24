@@ -138,82 +138,86 @@ const BlogsPage = () => {
           <hr className="border-t-1 border-gray-300" />
             <div className="relative w-full max-w-md mx-auto py-5 px-10">
               <ul>
-                <li className="flex gap-3 my-5">
-                <sapn className="w-[100px]">
+              
+               <li className="flex gap-3 my-5">
+               <div className="w-1/4">
                 <Image
                 height={80}
                 width={80}
-                  src="https://demo2.pavothemes.com/bookory/wp-content/uploads/2022/11/blog_7-150x150.jpg"
+                  src="https://demo2.pavothemes.com/bookory/wp-content/uploads/2022/02/blog_5-150x150.jpg"
                   alt="Card Image 1"
-                  className="w-full h-auto object-cover border rounded-lg"
+                  className="w-[80px] h-auto object-cover border rounded-lg"
                 />
 
-                </sapn>
+                </div>
                 
                 
-                <sapn>
-                  <h3 className="font-thin">November 14, 2022</h3>
-                  <h2 className="font-semibold leading-5">5 Attractive Bookstore WordPress Themes</h2>
+                <div className="w-3/4">
+                  <h3 className="font-thin uppercase text-[15px]">November 14, 2022</h3>
+                  <h2 className="font-semibold leading-5">7 Books to Combat Racism</h2>
                   
-                </sapn>
+                </div>
                </li>
                <li className="flex gap-3 my-5">
-               <sapn className="w-[100px]">
+               <div className="w-1/4">
                 <Image
                 height={80}
                 width={80}
                   src="https://demo2.pavothemes.com/bookory/wp-content/uploads/2022/02/blog_6-150x150.jpg"
                   alt="Card Image 1"
-                  className="w-full h-auto object-cover border rounded-lg"
+                  className="w-[80px] h-auto object-cover border rounded-lg"
                 />
 
-                </sapn>
+                </div>
                 
                 
-                <sapn>
-                  <h3 className="font-thin">November 14, 2022</h3>
+                <div className="w-3/4">
+                  <h3 className="font-thin uppercase text-[15px]">November 14, 2022</h3>
                   <h2 className="font-semibold leading-5">Behind the Scenes with Author Victoria Aveyard</h2>
                   
-                </sapn>
+                </div>
                </li>
+              
                <li className="flex gap-3 my-5">
-               <sapn className="w-[100px]">
+               <div className="w-1/4">
                 <Image
                 height={80}
                 width={80}
                   src="https://demo2.pavothemes.com/bookory/wp-content/uploads/2022/02/blog_4-150x150.jpg"
                   alt="Card Image 1"
-                  className="w-full h-auto object-cover border rounded-lg"
+                  className="w-[80px] h-auto object-cover border rounded-lg"
                 />
 
-                </sapn>
+                </div>
                 
                 
-                <sapn>
-                  <h3 className="font-thin">November 14, 2022</h3>
+                <div className="w-3/4">
+                  <h3 className="font-thin uppercase text-[15px]">November 14, 2022</h3>
                   <h2 className="font-semibold leading-5">7 Books to Combat Racism</h2>
                   
-                </sapn>
+                </div>
                </li>
                <li className="flex gap-3 my-5">
-               <sapn className="w-[100px]">
+               <div className="w-1/4">
                 <Image
                 height={80}
                 width={80}
                   src="https://demo2.pavothemes.com/bookory/wp-content/uploads/2022/02/blog_3-150x150.jpg"
                   alt="Card Image 1"
-                  className="w-full h-auto object-cover border rounded-lg"
+                  className="w-[80px] h-auto object-cover border rounded-lg"
                 />
 
-                </sapn>
+                </div>
                 
                 
-                <sapn>
-                  <h3 className="font-thin">November 14, 2022</h3>
+                <div className="w-3/4">
+                  <h3 className="font-thin uppercase text-[15px]">November 14, 2022</h3>
                   <h2 className="font-semibold leading-5">Top 10 Books to Make It a Great Year</h2>
                   
-                </sapn>
+                </div>
                </li>
+
+
               </ul>
 
             </div>
