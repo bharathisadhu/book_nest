@@ -29,7 +29,7 @@ const Navbar = () => {
   ];
 
   return (
-    <div className="navbar justify-between container mx-auto">
+    <div className="sticky navbar justify-between container mx-auto">
       {/* Desktop View */}
       <div className="navbar hidden lg:flex items-center">
         <Link href="/" className=" normal-case text-3xl">

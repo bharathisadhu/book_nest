@@ -2,3 +2,38 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Make the navbar sticky */
+.navbar {
+  position: sticky;
+  top: 0; 
+  background-color: white;
+  z-index: 1000; 
+  bottom: 2px solid black;
+ 
+}
+.navbar ul {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+ 
+}
+.navbar ul li{
+  list-style: none;
+  display: flex;
+  gap: 20px;
+  /* border: 2px solid red; */
+}
+
+.navbar ul li a{
+  text-decoration: none;
+  color: #333;
+}
+
+
+.navbar ul li a.active {
+  color: #0070f3; 
+  font-weight: bold;
+}
+
+
+
