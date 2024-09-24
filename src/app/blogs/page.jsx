@@ -2,9 +2,10 @@ import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
 import Image from 'next/image';
 import React from 'react';
-import { FaArrowRightLong } from 'react-icons/fa6';
+import { GoArrowRight } from "react-icons/go";
 import { FaSearch } from 'react-icons/fa';
 import { IoArrowForwardCircleOutline } from "react-icons/io5";
+import Link from 'next/link';
 const BlogsPage = () => {
   return (
     <>
@@ -12,7 +13,16 @@ const BlogsPage = () => {
     
     <div className="flex flex-col lg:flex-row items-center justify-center lg:justify-between p-2 bg-[#F0F0F0] py-10">
       <h2 className=" lg:py-10 lg:ml-10 font-extrabold text-5xl">Blogs</h2>
-      <h3 className="lg:font-normal lg:text-xl lg:py-10 lg:mr-10 mt-3 flex">HOME<span></span><FaArrowRightLong className="my-1 mx-1 text-[blue]" /><sapn className="text-orange-600">Blogs</sapn></h3>
+      
+      <h3 className=" lg:py-10 lg:mr-10 mt-3 flex justify-center items-center gap-2">
+
+      <Link href="/">
+      HOME
+        </Link>
+        
+        <GoArrowRight className="" /><sapn className="text-orange-600">Blogs</sapn>
+      
+      </h3>
     </div>
 
 

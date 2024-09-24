@@ -3,17 +3,33 @@ import { Span } from 'next/dist/trace';
 import React from 'react';
 import { IoIosArrowForward } from "react-icons/io";
 import { FaArrowRightLong } from "react-icons/fa6";
+import { GoArrowRight } from "react-icons/go";
 import Footer from '@/components/Footer';
 import Image from 'next/image';
+import Link from 'next/link';
 
 const ContactPage = () => {
   return (
     <>
     <Navbar/>
+    
+
     <div className="flex flex-col lg:flex-row items-center justify-center lg:justify-between p-2 bg-[#F0F0F0] py-10">
-      <h2 className=" lg:py-10 lg:ml-10 font-extrabold text-5xl">Contact</h2>
-      <h3 className="lg:font-normal lg:text-xl lg:py-10 lg:mr-10 mt-3 flex">HOME<span></span><FaArrowRightLong className="my-1 mx-1 text-[blue]" /><sapn className="text-orange-600">CONTACT</sapn></h3>
+      <h2 className=" lg:py-10 lg:ml-10 font-extrabold text-5xl">CONTACT</h2>
+      
+      <h3 className=" lg:py-10 lg:mr-10 mt-3 flex justify-center items-center gap-2">
+
+      <Link href="/">
+      HOME
+        </Link>
+        
+        <GoArrowRight className="" /><sapn className="text-orange-600">CONTACT</sapn>
+      
+      </h3>
     </div>
+
+
+
     <div className="flex flex-col lg:flex-row items-center justify-center min-h-screen p-2 lg:p-10 lg:gap-3 mt-10">
     {/* Left - Map Section */}
     <div className="w-full lg:w-1/2 h-[460px] lg:h-[460px] mb-6 lg:mb-0 pr-0">
