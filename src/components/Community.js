@@ -3,6 +3,7 @@ export default function Community (){
     return(
         <>
         <div className="  py-4">
+          
       <div className=" bg-Community bg-cover bg-no-repeat py-10 sm:py-14 lg:py-20 px-5 sm:px-10 rounded-lg">
         <div className="flex flex-col justify-center items-center">
           <div className="text-center">
