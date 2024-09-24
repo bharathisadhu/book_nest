@@ -6,6 +6,7 @@ import Link from "next/link";
 import Marquee from "react-fast-marquee";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
+import { signIn } from "next-auth/react";
 
 export default function Register() {
   const {
@@ -16,6 +17,7 @@ export default function Register() {
   } = useForm();
 
   const onSubmit = async (newUser) => {
+    const { name, photo, email, password } = newUser;
     // const res = await fetch("http://localhost:3000/register/api", {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/register/api`, {
       method: "POST",
@@ -24,7 +26,18 @@ export default function Register() {
       },
       body: JSON.stringify(newUser),
     });
-    if (res.status === 200) {
+
+    const resp = await signIn("credentials", {
+      name,
+      photo,
+      email,
+      password,
+      redirect: false,
+    });
+
+    console.log(resp);
+
+    if (res.status === 200 && resp.status === 200) {
       reset();
       Swal.fire({
         position: "top-end",

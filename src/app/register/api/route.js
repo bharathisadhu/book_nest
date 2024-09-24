@@ -7,7 +7,7 @@ export const POST = async (request) => {
     const userCollection = db.collection("users");
     const exist = await userCollection.findOne({ email: newUser.email });
     if (exist) {
-      return Response.json({ message: "user Exists" }, { status: 304 });
+      return Response.json({ message: "user Exists" }, { status: 500 });
     }
     const hashedPassword = bcrypt.hashSync(newUser.password, 14);
     const res = await userCollection.insertOne({

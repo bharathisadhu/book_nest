@@ -6,14 +6,35 @@ import Image from "next/image";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { signIn } from "next-auth/react";
+import Swal from "sweetalert2";
 
 export default function Login() {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm();
-  const onSubmit = () => {};
+  const onSubmit = async (newUser) => {
+    const { email, password } = newUser;
+    const res = await signIn("credentials", {
+      email,
+      password,
+      redirect: false,
+    });
+    // sweet alert
+    if (res.status === 200) {
+      reset();
+      Swal.fire({
+        position: "top-end",
+        icon: "success",
+        title: "You are login successfully",
+        showConfirmButton: false,
+        timer: 1000,
+      });
+    }
+  };
   return (
     <main>
       {/* Navbar section */}
@@ -44,8 +65,12 @@ export default function Login() {
           </div>
           {/* input side  */}
           <div className="flex w-full flex-col justify-center shadow-2xl shadow-orange-50 space-y-6 my-4">
-            <p className="-mb-4 text-center text-xl font-bold">START FOR FREE</p>
-            <h2 className="text-center text-2xl md:text-3xl font-bold">Sign Up to BookNest</h2>
+            <p className="-mb-4 text-center text-xl font-bold">
+              START FOR FREE
+            </p>
+            <h2 className="text-center text-2xl md:text-3xl font-bold">
+              Sign Up to BookNest
+            </h2>
             <form
               onSubmit={handleSubmit(onSubmit)} // Corrected here
               className="w-[90%] mx-auto space-y-2"
