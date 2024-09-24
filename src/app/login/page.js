@@ -24,14 +24,14 @@ export default function Login() {
       redirect: false,
     });
     // sweet alert
-    if (res.status === 200) {
+    if (res?.status === 200) {
       reset();
       Swal.fire({
         position: "top-end",
         icon: "success",
         title: "You are login successfully",
         showConfirmButton: false,
-        timer: 1000,
+        timer: 1500,
       });
     }
   };
