@@ -37,7 +37,7 @@ export default function Register() {
 
     console.log(resp);
 
-    if (res.status === 200 && resp.status === 200) {
+    if (res?.status === 200 && resp?.status === 200) {
       reset();
       Swal.fire({
         position: "top-end",

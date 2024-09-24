@@ -38,22 +38,22 @@ export const handler = NextAuth({
   ],
   callbacks: {
     async jwt({ token, account, user }) {
-        // Persist the OAuth access_token and or the user id to the token right after signin
-        if (account) {
+      // Persist the OAuth access_token and or the user id to the token right after signin
+      if (account) {
         //   token.accessToken = account.access_token
-          token.photo = user.photo
-        }
-        return token
-      },
-    async session({ session, user, token }) {
-        session.user.photo = token.photo
-        return session
-      },
+        token.photo = user.photo;
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      session.user.photo = token.photo;
+      return session;
+    },
   },
 
   pages: {
     signIn: "/login",
-    signUp: "/register"
+    signUp: "/register",
   },
 });
 
