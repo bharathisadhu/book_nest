@@ -41,13 +41,16 @@ export default function Login() {
 
   const saveUserToDB = async (newUser) => {
     try {
-      const res = await fetch("/api/socialLogin", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(newUser),
-      });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/register/api`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(newUser),
+        }
+      );
 
       if (res?.status === 200) {
         console.log("User data saved to MongoDB successfully");

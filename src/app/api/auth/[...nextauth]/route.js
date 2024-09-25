@@ -7,7 +7,6 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
 const authOptions = {
-  secret: process.env.NEXT_PUBLIC_AUTH_SECRET,
   session: {
     strategy: "jwt",
     maxAge: 30 * 24 * 60 * 60, // 30 days
@@ -85,10 +84,6 @@ const authOptions = {
   pages: {
     signIn: "/login",
     signUp: "/register",
-  },
-  jwt: {
-    signingKey: process.env.JWT_SIGNING_PRIVATE_KEY,
-    maxAge: 24 * 60 * 60, // 24 hours
   },
 };
 
