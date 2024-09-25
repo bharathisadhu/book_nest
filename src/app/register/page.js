@@ -29,7 +29,7 @@ export default function Register() {
 
     const resp = await signIn("credentials", {
       name,
-      photo,
+      image,
       email,
       password,
       redirect: false,
@@ -99,11 +99,11 @@ export default function Register() {
                 <span className="text-red-600">Name is required</span>
               )}
               <input
-                {...register("photo", { required: true })}
+                {...register("image", { required: true })}
                 className="w-[100%] rounded-lg border px-6 py-2 focus:outline-none focus:ring-2 focus:ring-[#F65D4E]/50"
                 type="text"
                 placeholder="Photo URL"
-                name="photo"
+                name="image"
               />
               {errors.photo && (
                 <span className="text-red-600">
