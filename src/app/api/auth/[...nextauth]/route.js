@@ -64,29 +64,28 @@ const authOptions = {
     }),
   ],
   callbacks: {
-    async jwt({ token, user, account }) {
-      if (account && user) {
-        token.accessToken = account.access_token;
-        token.id = user.id;
+    async signIn({ user, account }) {
+      if (account.provider === "google" || account.provider === "github") {
+        const { name, email, image } = user;
+        try {
+          const db = await connectDB();
+          const userCollection = db.collection("users");
+          const userExist = await userCollection.findOne({ email });
+          if (!userExist) {
+            const res = await userCollection.insertOne(user);
+            return user;
+          } else {
+            return user;
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      } else {
+        return user;
       }
-      if (user) {
-        token.photo = user.photo; // for credentials provider
-      }
-      return token;
     },
-    async session({ session, token }) {
-      session.accessToken = token.accessToken;
-      session.user.id = token.id;
-      session.user.photo = token.photo; // for credentials provider
-      return session;
-    },
-  },
-  pages: {
-    signIn: "/login",
-    signUp: "/register",
   },
 };
-
 const handler = NextAuth(authOptions);
 
 export { handler as GET, handler as POST };
