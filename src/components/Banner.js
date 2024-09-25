@@ -2,6 +2,7 @@
 
 
 import Image from "next/image";
+import Link from "next/link";
 import { IoIosArrowForward } from "react-icons/io";
 
 const Banner = () => {
@@ -10,33 +11,38 @@ const Banner = () => {
 
 
   return (
-    <div className="hero min-h-screen mb-20">
-      <div className="hero-overlay bg-[#00453E]"></div>
+    <div className="hero">
+      <div className="hero-overlay bg-[#00453E] rounded-2xl border-2"></div>
 
       <div className="carousel w-full">
-        <div id="slide1" className="carousel-item relative w-full">
+        <div id="slide1" className="carousel-item relative w-full border-5">
           <div className="container flex flex-col justify-center p-1 mx-auto sm:py-12 lg:py-4 lg:flex-row lg:justify-between">
             <div className="w-full  mx-auto flex  flex-col md:flex-row  overflow-hidden">
-              {/* Left Side: Image */}
+             
 
-              <div className="w-full p-8 flex flex-col justify-center  text-white font-[sans-serif]">
+              <div className="w-full p-8 flex flex-col justify-center  text-white font-[sans-serif] ">
                 <h2 className="mx-auto uppercase font-light">special offer</h2>
-                <p className=" text-white mx-auto font-bold text-[50px] text-center ">
+                <p className=" text-white mx-auto text-[25px] lg:text-[50px] mb:text-[40px] font-bold text-center ">
+
+                
                   Reading is for
                   <br /> all Ages
                 </p>
-                <h4 className="font-semibold text-xl mx-auto mb-[40px]">
+                <h4 className="font-semibold text-[20px] mx-auto mb-[40px] mb:mb-[20px] lg:text-[30px] mb:text-[20px]">
                   By your books In a store
                 </h4>
                 <button className="bg-[white] text-[black] px-4 py-2 rounded-full  w-[150px] mx-auto font-semibold ">
                   <span className="flex w-[100px] mx-auto">
-                    Shop Now{" "}
+                    
+                    <Link href="/books">
+                    Shop Now
+        </Link>
                     <IoIosArrowForward className="ml-1 mt-1 text-[brown]" />
                   </span>
                 </button>
               </div>
 
-              {/* Right Side: Content */}
+              
               <div className="w-full  flex p-20">
                 <Image
                 height={200}
@@ -64,7 +70,7 @@ const Banner = () => {
               </div>
             </div>
           </div>
-          <div className="absolute left-5 right-5 top-1/2 flex -translate-y-1/2 transform justify-between">
+          <div className="absolute   right-5  bottom-5    flex gap-2">
             <a href="#slide4" className="btn btn-circle">
               ❮
             </a>
@@ -133,6 +139,13 @@ const Banner = () => {
             </a>
           </div>
         </div>
+
+
+
+
+
+
+
       </div>
     </div>
   );
