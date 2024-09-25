@@ -11,7 +11,10 @@ import Link from "next/link";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
 
+
 const Navbar = () => {
+ 
+
   const [isOpen, setIsOpen] = useState(false);
   const session = useSession();
   // console.log(session);
@@ -29,7 +32,7 @@ const Navbar = () => {
   ];
 
   return (
-    <div className="navbar justify-between container mx-auto">
+    <div className="sticky navbar justify-between container mx-auto">
       {/* Desktop View */}
       <div className="navbar hidden lg:flex items-center">
         <Link href="/" className=" normal-case text-3xl">
@@ -38,9 +41,12 @@ const Navbar = () => {
         <ul className="navbar justify-end menu menu-horizontal px-1 text-xl">
           {navlinks.map((navlink, index) => (
             <li key={index}>
-              <Link href={navlink.link}>{navlink.label}</Link>
+              <Link href={navlink.link}>
+                                    {navlink.label}
+              </Link>
             </li>
           ))}
+          
         </ul>
       </div>
 
@@ -128,11 +134,24 @@ const Navbar = () => {
         </button>
         <ul className="menu p-4">
           {navlinks.map((navlink, index) => (
-            <li key={index} className="py-2 text-xl">
+            <li key={index} className="py-0 text-xl">
               <Link href={navlink.link}>{navlink.label}</Link>
             </li>
           ))}
+
+          <div className="ml-6">
+            <button className="btn btn-ghost">
+            <CiSearch className="text-2xl"/>
+          </button>
+          <button className="btn btn-ghost">
+            <Link href="/login">
+              <MdAccountCircle className="text-2xl" />
+            </Link>
+          </button>
+          </div>
+          
         </ul>
+        
       </div>
 
       {/* Backdrop (optional) */}

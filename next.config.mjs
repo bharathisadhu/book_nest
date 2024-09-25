@@ -26,7 +26,8 @@ const nextConfig = {
       "cdn.freebiesupply.com",
       "d3bzyjrsc4233l.cloudfront.net",
       "demo2.pavothemes.com",
-      "i.ibb.co.com"
+      "i.ibb.co.com",
+      "upload.wikimedia.org"
     ],
   },
 };
