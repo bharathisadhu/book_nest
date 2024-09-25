@@ -10,7 +10,6 @@ export default function PopularBooks() {
       .then((response) => response.json())
       .then((data) => {
         setPopularBooks(data);
-        console.log(data);
       });
   }, []);
 
