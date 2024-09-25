@@ -9,12 +9,15 @@ import { RxHamburgerMenu } from "react-icons/rx";
 import logo from "../../public/BookNest.png"; // Your logo path
 import Link from "next/link";
 import Image from "next/image";
+import { useSession } from "next-auth/react";
 
 
 const Navbar = () => {
  
 
   const [isOpen, setIsOpen] = useState(false);
+  const session = useSession();
+  // console.log(session);
 
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
