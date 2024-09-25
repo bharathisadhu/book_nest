@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-key */
 "use client";
 import React, { useEffect, useState } from "react";
 import BooksCard from "@/components/BooksCard";
@@ -12,7 +13,8 @@ const BooksPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       const response = await fetch(
-        "https://booknest-server-one.vercel.app/api/books"
+        // "https://booknest-server-one.vercel.app/api/books"
+        'popular-data.json'
       ); // Replace with your API URL
       const data = await response.json();
       console.log(data); // Check the structure of the data
@@ -99,7 +101,7 @@ const BooksPage = () => {
       {/* Main Content for Books */}
       <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 mt-2 mb-2 gap-6 w-3/4">
         {Array.isArray(filteredBooks) &&
-          filteredBooks.map((book) => <BooksCard key={book.id} book={book} />)}
+          filteredBooks.map((book) => <BooksCard  book={book} />)}
       </div>
     </div>
   );
