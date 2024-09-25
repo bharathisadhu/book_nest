@@ -5,7 +5,7 @@ import { MdAccountCircle } from "react-icons/md";
 import { CiSearch } from "react-icons/ci";
 import { FaHeart } from "react-icons/fa";
 import { RxHamburgerMenu } from "react-icons/rx";
-import logo from "../../public/BookNest.png"; // Static logo path
+import logo from "../../public/BookNest.png";
 import Link from "next/link";
 import Image from "next/image";
 import { useSession, signOut } from "next-auth/react";
