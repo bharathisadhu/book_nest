@@ -1,10 +1,19 @@
-
 // next.config.js
 /** @type {import('next').NextConfig} */
 
-  /** @type {import('next').NextConfig} */
+/** @type {import('next').NextConfig} */
 
 const nextConfig = {
+  webpack: (config, { isServer }) => {
+    if (!isServer) {
+      config.resolve.fallback = {
+        fs: false,
+        net: false,
+        tls: false,
+      };
+    }
+    return config;
+  },
   images: {
     domains: [
       "static1.srcdn.com",
@@ -26,11 +35,11 @@ const nextConfig = {
       "cdn.freebiesupply.com",
       "d3bzyjrsc4233l.cloudfront.net",
       "demo2.pavothemes.com",
-      "i.ibb.co.com"
+      "i.ibb.co.com",
+      "upload.wikimedia.org",
+      "lh3.googleusercontent.com",
     ],
   },
 };
 
 export default nextConfig;
-  
-  

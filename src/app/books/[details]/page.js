@@ -8,7 +8,7 @@ export default async function BookDetails({ params }) {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
   try {
-    const response = await axios.get(`${baseUrl}/popular-data.json`);
+    const response = await axios.get(`https://booknest-server-one.vercel.app/api/books`);
     console.log("API Response:", response.data);
     listOfBooks = response.data;
   } catch (error) {

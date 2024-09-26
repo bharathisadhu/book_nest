@@ -1,23 +1,39 @@
-const { MongoClient, ServerApiVersion } = require("mongodb");
-
+let clientPromise;
 let db;
+
+// Ensure the MongoDB client is only initialized on the server side
+if (typeof window === "undefined") {
+  const { MongoClient, ServerApiVersion } = require("mongodb"); // Use require for server-side imports
+
+  const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.j8y0i.mongodb.net/`;
+  const options = {
+    serverApi: {
+      version: ServerApiVersion.v1,
+      strict: true,
+      deprecationErrors: true,
+    },
+  };
+
+  const client = new MongoClient(uri, options);
+
+  // Initialize clientPromise to connect MongoClient
+  clientPromise = client.connect();
+}
+
 const connectDB = async () => {
   if (db) return db;
+
+  if (!clientPromise) {
+    throw new Error("MongoClient is not initialized.");
+  }
+
   try {
-    // const uri = process.env.NEXT_PUBLIC_MONGODB_URI;
-    const uri =
-      `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.j8y0i.mongodb.net/`;
-    const client = new MongoClient(uri, {
-      serverApi: {
-        version: ServerApiVersion.v1,
-        strict: true,
-        deprecationErrors: true,
-      },
-    });
+    // Wait for MongoClient to connect and select the database
+    const client = await clientPromise;
     db = client.db("grow-together");
     return db;
   } catch (error) {
-    console.log(error);
+    console.error("Failed to connect to MongoDB:", error);
   }
 };
 
