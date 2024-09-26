@@ -20,7 +20,7 @@ const Banner = () => {
             <div className="w-full  mx-auto flex  flex-col md:flex-row  overflow-hidden">
              
 
-              <div className="w-full p-8 flex flex-col justify-center  text-white font-[sans-serif] ">
+              <div className="w-full p-8 sm:p-1 flex flex-col justify-center  text-white font-[sans-serif] ">
                 <h2 className="mx-auto uppercase font-light">special offer</h2>
                 <p className=" text-white mx-auto text-[25px] lg:text-[50px] mb:text-[40px] font-bold text-center ">
 
@@ -43,21 +43,22 @@ const Banner = () => {
               </div>
 
               
-              <div className="w-full  flex p-20">
+              <div className="w-full  flex p-10 lg:p-20 mb:p-15 border-5 ml-0 lg:ml-32">
+              
                 <Image
                 height={200}
                 width={200}
                   src="https://i.ibb.co.com/fYKVzJB/36809135.jpg"
                   alt="Banner Image"
-                  className="max-w-sm rounded-lg shadow-2xl w-1/3 skew-y-12 my-0 rotate-0  mt-15"
+                  className="max-w-sm rounded-lg shadow-2xl w-1/3 lg:w-1/4 mb:w-1/3 skew-y-12 my-0 rotate-15  mt-15"
                 />
-
+                
                 <Image
                 height={200}
                 width={200}
                   src="https://i.ibb.co.com/gFfKgc4/prison-journalism-obama-becoming-review-111822.jpg"
                   alt="Banner Image"
-                  className="max-w-sm rounded-lg shadow-2xl w-1/3 skew-x-12 my-0 rotate-100  mt-15"
+                  className="max-w-sm rounded-lg shadow-2xl w-1/3 lg:w-1/4 mb:w-1/3 skew-y-20 my-5 rotate-30 mx-2  mt-15"
                 />
 
                 <Image
@@ -65,7 +66,7 @@ const Banner = () => {
                 width={200}
                   src="https://i.ibb.co.com/8jKkLGf/the-subtle-art-of-not-giving-a-fck-by-mark-manson-4.jpg"
                   alt="Banner Image"
-                  className="max-w-sm rounded-lg shadow-2xl w-1/3 skew-y-12 my-0 rotate-0  mt-15"
+                  className="max-w-sm rounded-lg shadow-2xl w-1/4 lg:w-1/4 mb:w-1/3  skew-y-12 my-0  rotate-100  mt-15"
                 />
               </div>
             </div>

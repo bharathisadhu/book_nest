@@ -6,24 +6,23 @@ import { GoArrowRight } from "react-icons/go";
 import { FaSearch } from 'react-icons/fa';
 import { IoArrowForwardCircleOutline } from "react-icons/io5";
 import Link from 'next/link';
+import Banner from '@/components/share/banner';
 const BlogsPage = () => {
+  const bannerData = {
+    title: 'Blogs',
+    linkName: 'Home',
+    
+  };
   return (
     <>
     <Navbar/>
     
-    <div className="flex flex-col lg:flex-row items-center justify-center lg:justify-between p-2 bg-[#F0F0F0] py-10">
-      <h2 className=" lg:py-10 lg:ml-10 font-extrabold text-5xl">Blogs</h2>
-      
-      <h3 className=" lg:py-10 lg:mr-10 mt-3 flex justify-center items-center gap-2">
+    <Banner
+        title={bannerData.title}
+        linkName={bannerData.linkName}
+    />
 
-      <Link href="/">
-      HOME
-        </Link>
-        
-        <GoArrowRight className="" /><sapn className="text-orange-600">Blogs</sapn>
-      
-      </h3>
-    </div>
+  
 
 
       <div className="container mx-auto px-4 py-8">

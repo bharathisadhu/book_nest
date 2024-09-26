@@ -48,7 +48,7 @@
 .error-title {
   font-size: 6rem;
   font-weight: 700;
-  color: #ff6b6b;
+  color: #289305;
 }
 .error-message {
   font-size: 1.5rem;
@@ -58,7 +58,7 @@
 .home-link {
   margin-top: 20px;
   padding: 10px 20px;
-  background-color: #3498db;
+  background-color: #db3434;
   color: white;
   border-radius: 5px;
   text-decoration: none;

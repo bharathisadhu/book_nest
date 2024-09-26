@@ -8,27 +8,25 @@ import Footer from '@/components/Footer';
 import Image from 'next/image';
 import Link from 'next/link';
 import ContactForm from '@/components/ContactForm';
+import Banner from '@/components/share/banner';
 
 const ContactPage = () => {
+  const bannerData = {
+    title: 'Contact',
+    linkName: 'Home',
+    
+  };
   
   return (
     <>
     <Navbar/>
     
+    <Banner
+        title={bannerData.title}
+        linkName={bannerData.linkName}
+    />
 
-    <div className="flex flex-col lg:flex-row items-center justify-center lg:justify-between p-2 bg-[#F0F0F0] py-10">
-      <h2 className=" lg:py-10 lg:ml-10 font-extrabold text-5xl">CONTACT</h2>
-      
-      <h3 className=" lg:py-10 lg:mr-10 mt-3 flex justify-center items-center gap-2">
-
-      <Link href="/">
-      HOME
-        </Link>
-        
-        <GoArrowRight className="" /><sapn className="text-orange-600">CONTACT</sapn>
-      
-      </h3>
-    </div>
+    
 
 
 
