@@ -6,49 +6,53 @@ export default function BooksCard({ book }) {
   const { id, name, image, price, category, ratings } = book;
 
   return (
-    <>
-      {/* bg-white shadow-[0_4px_12px_-5px_rgba(0,0,0,0.4)] */}
-      <div
-        
-        className="p-4 border-t w-full h-fit font-[sans-serif] overflow-hidden mt-4"
-      >
-        <div className="">
-          <Image
-            height={500}
-            width={500}
-            src={image}
-            alt={name}
-            className="w-full h-48 rounded-2xl"
-          />
+    <Link
+      href={`/books/${id}`}
+      className="bg-white shadow-md hover:shadow-lg transition-shadow duration-300 w-full max-w-[350px] rounded-2xl font-sans overflow-hidden mx-auto mt-4"
+    >
+      {/* Full Height Image */}
+      <div className="w-full h-64 relative">
+        <Image
+          src={image}
+          alt={name}
+          layout="fill" // Ensure the image fills the container
+          objectFit="cover" // Ensures the image covers the entire container while maintaining its aspect ratio
+          className="rounded-t-2xl"
+        />
+      </div>
+
+      {/* Book Details */}
+      <div className="p-4 md:p-6">
+        <p className="text-sm text-gray-600 mb-1">Category: {category}</p>
+
+        <h3 className="text-lg md:text-2xl text-gray-800 font-extrabold line-clamp-2">
+          {name}
+        </h3>
+
+        <div className="flex items-center mt-3">
+          <p className="text-gray-800 font-semibold flex items-center">
+            Ratings: {ratings}{" "}
+            <CiStar className="text-yellow-500 ml-1 text-lg md:text-xl" />
+          </p>
         </div>
 
-        <div className="p-2 space-y-2">
-          <p className="text-sm font-medium">{category}</p>
-          <h3 className="text-xl text-gray-800 font-semibold w-full">
-            {name.slice(0, 8)}...
-          </h3>
-          <h3 className="text-gray-800 font-semibold mt-4 flex items-center">
-            Ratings: {ratings} <CiStar className="text-orange-700" />
+        <div className="mt-4 md:mt-6 flex items-center justify-between">
+          <h3 className="text-xl md:text-2xl text-gray-800 font-bold">
+            ${price.toFixed(2)}
           </h3>
 
-          <div className="flex items-center">
-            <h3 className="text-xl text-gray-800 font-bold flex-1">${price}</h3>
-           <div className="bg-red-300 w-12 h-12 flex items-center justify-center rounded-full cursor-pointer">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="20px"
-                className="fill-pink-600"
-                viewBox="0 0 64 64"
-              >
-                <path
-                  d="M45.5 4A18.53 18.53 0 0 0 32 9.86 18.5 18.5 0 0 0 0 22.5C0 40.92 29.71 59 31 59.71a2 2 0 0 0 2.06 0C34.29 59 64 40.92 64 22.5A18.52 18.52 0 0 0 45.5 4ZM32 55.64C26.83 52.34 4 36.92 4 22.5a14.5 14.5 0 0 1 26.36-8.33 2 2 0 0 0 3.27 0A14.5 14.5 0 0 1 60 22.5c0 14.41-22.83 29.83-28 33.14Z"
-                  data-original="#000000"
-                ></path>
-              </svg>
-            </div>
+          <div className="bg-pink-100 w-10 h-10 md:w-12 md:h-12 flex items-center justify-center rounded-full cursor-pointer hover:bg-pink-200 transition duration-200">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20px"
+              className="fill-pink-600"
+              viewBox="0 0 64 64"
+            >
+              <path d="M45.5 4A18.53 18.53 0 0 0 32 9.86 18.5 18.5 0 0 0 0 22.5C0 40.92 29.71 59 31 59.71a2 2 0 0 0 2.06 0C34.29 59 64 40.92 64 22.5A18.52 18.52 0 0 0 45.5 4ZM32 55.64C26.83 52.34 4 36.92 4 22.5a14.5 14.5 0 0 1 26.36-8.33 2 2 0 0 0 3.27 0A14.5 14.5 0 0 1 60 22.5c0 14.41-22.83 29.83-28 33.14Z"></path>
+            </svg>
           </div>
         </div>
       </div>
-    </>
+    </Link>
   );
 }
