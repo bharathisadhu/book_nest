@@ -1,12 +1,13 @@
 "use client";
+
 import Marquee from "react-fast-marquee";
 import { useForm } from "react-hook-form";
-import { FaFacebook } from "react-icons/fa";
+import { FaGithub } from "react-icons/fa"; // Import GitHub Icon
+import { signIn, getSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { signIn } from "next-auth/react";
 import Swal from "sweetalert2";
 
 export default function Login() {
@@ -16,15 +17,21 @@ export default function Login() {
     reset,
     formState: { errors },
   } = useForm();
-  const onSubmit = async (newUser) => {
-    const { email, password } = newUser;
-    const res = await signIn("credentials", {
+  const session = getSession();
+
+  const onSubmit = async (e) => {
+    const email = e.email;
+    const password = e.password;
+ 
+    const resp = await signIn("credentials", {
       email,
       password,
-      redirect: false,
+      redirect: true,
+      callbackUrl: "/",
     });
-    // sweet alert
-    if (res?.status === 200) {
+
+    // Sweet alert
+    if (session?.status === 200) {
       reset();
       Swal.fire({
         position: "top-end",
@@ -35,6 +42,25 @@ export default function Login() {
       });
     }
   };
+
+  const handleSocialLogin = (provider) => {
+    const resp = signIn(provider, {
+      redirect: true,
+      callbackUrl: "/",
+    });
+
+    if (session?.status === "authenticated") {
+      reset();
+      Swal.fire({
+        position: "top-end",
+        icon: "success",
+        title: "You are login successfully",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    }
+  };
+
   return (
     <main>
       {/* Navbar section */}
@@ -72,7 +98,7 @@ export default function Login() {
               Sign Up to BookNest
             </h2>
             <form
-              onSubmit={handleSubmit(onSubmit)} // Corrected here
+              onSubmit={handleSubmit(onSubmit)}
               className="w-[90%] mx-auto space-y-2"
             >
               <input
@@ -119,22 +145,30 @@ export default function Login() {
             </div>
             {/* sign with google */}
             <div className="flex items-center justify-center gap-10">
-              <div className=" flex h-[50px]  gap-2 items-center overflow-hidden rounded-full shadow-md duration-300 hover:scale-95 hover:shadow hover:cursor-pointer">
+              <div
+                onClick={() => handleSocialLogin("google")}
+                className="flex h-[50px] gap-2 items-center overflow-hidden rounded-full shadow-md duration-300 hover:scale-95 hover:shadow hover:cursor-pointer"
+              >
                 <div className="flex h-full w-[50%] items-center bg-[#F65D4E] px-4 text-sm text-white font-medium">
                   Sign With
                 </div>
-                <span className="right-0 top-0 h-0 w-0 -rotate-90 border-b-[50px] border-r-[50px] border-b-transparent border-r-[#F65D4E] group-hover:hidden"></span>
+                <span className="right-0 top-0 h-0 w-0 -rotate-90 border-b-[50px] border-r-[50px] border-b-transparent border-r-[#F65D4E]"></span>
                 <span className="pr-4 text-4xl font-bold text-[#F65D4E]">
                   G+
                 </span>
               </div>
-              <div className="flex h-[50px]  gap-2 items-center overflow-hidden rounded-full shadow-md duration-300 hover:scale-95 hover:shadow hover:cursor-pointer">
-                <div className="flex h-full w-[50%] items-center bg-sky-700 px-4 text-sm text-white font-medium">
+
+              {/* Sign with GitHub */}
+              <div
+                onClick={() => handleSocialLogin("github")}
+                className="flex h-[50px] gap-2 items-center overflow-hidden rounded-full shadow-md duration-300 hover:scale-95 hover:shadow hover:cursor-pointer"
+              >
+                <div className="flex h-full w-[50%] items-center bg-gray-900 px-4 text-sm text-white font-medium">
                   Sign With
                 </div>
-                <span className="right-0 top-0 h-0 w-0 -rotate-90 border-b-[50px] border-r-[50px] border-b-transparent border-r-sky-700 group-hover:hidden"></span>
-                <span className="pr-4 text-4xl font-bold text-sky-700">
-                  <FaFacebook />
+                <span className="right-0 top-0 h-0 w-0 -rotate-90 border-b-[50px] border-r-[50px] border-b-transparent border-r-gray-900"></span>
+                <span className="pr-4 text-4xl font-bold text-gray-900">
+                  <FaGithub />
                 </span>
               </div>
             </div>
