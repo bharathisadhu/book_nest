@@ -3,16 +3,9 @@ import React, { useEffect, useState } from "react";
 import BooksCard from "@/components/BooksCard";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import axios from "axios";
-import { GoChevronDown } from "react-icons/go";
+import { GoArrowRight, GoChevronDown } from "react-icons/go";
 import { HiX } from "react-icons/hi"; // for mobile drawer close button
-
-export default function BooksPage() {
-import { GoChevronDown } from "react-icons/go";
-import Footer from "@/components/Footer";
 import Link from "next/link";
-import { GoArrowRight } from "react-icons/go";
-
 const BooksPage = () => {
   const [books, setBooks] = useState([]);
   const [filteredBooks, setFilteredBooks] = useState([]);
