@@ -10,6 +10,7 @@ import Link from 'next/link';
 import ContactForm from '@/components/ContactForm';
 
 const ContactPage = () => {
+  
   return (
     <>
     <Navbar/>
