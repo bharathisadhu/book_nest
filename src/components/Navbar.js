@@ -71,9 +71,9 @@ const Navbar = () => {
         ) : (
           <div className="relative">
             <button className=" text-xl" onClick={toggleDropdown}>
-              {session.user.image ? (
+              {session.user.image || session.user.photo ? (
                 <Image
-                  src={session.user.image}
+                  src={session.user.image || session.user.photo}
                   alt="User Image"
                   width={40}
                   height={40}

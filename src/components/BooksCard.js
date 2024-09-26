@@ -1,4 +1,3 @@
-
 import Image from "next/image";
 import Link from "next/link";
 import { CiStar } from "react-icons/ci";
@@ -8,28 +7,33 @@ export default function BooksCard({ book }) {
 
   return (
     <>
-      <Link href={`/books/${id}`} className="bg-white shadow-[0_4px_12px_-5px_rgba(0,0,0,0.4)] w-full max-w-sm rounded-2xl font-[sans-serif] overflow-hidden mx-auto mt-4">
-        <div className="min-h-[256px]">
+      {/* bg-white shadow-[0_4px_12px_-5px_rgba(0,0,0,0.4)] */}
+      <Link
+        href={`/books/${id}`}
+        className="p-4 border-t w-full h-fit font-[sans-serif] overflow-hidden mt-4"
+      >
+        <div className="">
           <Image
-            height={200}
-            width={200}
+            height={500}
+            width={500}
             src={image}
             alt={name}
-            className="w-full rounded-2xl"
+            className="w-full h-48 rounded-2xl"
           />
         </div>
 
-        <div className="p-6">
-          <p>Category: {category}</p>
-
-          <h3 className="text-2xl text-gray-800 font-extrabold">{name}</h3>
+        <div className="p-2 space-y-2">
+          <p className="text-sm font-medium">{category}</p>
+          <h3 className="text-xl text-gray-800 font-semibold w-full">
+            {name.slice(0, 8)}...
+          </h3>
           <h3 className="text-gray-800 font-semibold mt-4 flex items-center">
             Ratings: {ratings} <CiStar className="text-orange-700" />
           </h3>
 
-          <div className="mt-6 flex items-center">
+          <div className="flex items-center">
             <h3 className="text-xl text-gray-800 font-bold flex-1">${price}</h3>
-            <div className="bg-pink-100 w-12 h-12 flex items-center justify-center rounded-full cursor-pointer">
+            <div className="bg-red-300 w-12 h-12 flex items-center justify-center rounded-full cursor-pointer">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="20px"

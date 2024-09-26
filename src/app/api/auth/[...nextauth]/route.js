@@ -4,7 +4,6 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import GithubProvider from "next-auth/providers/github";
 import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
 
 const authOptions = {
   session: {
@@ -66,7 +65,7 @@ const authOptions = {
   callbacks: {
     async signIn({ user, account }) {
       if (account.provider === "google" || account.provider === "github") {
-        const { name, email, image } = user;
+        const { name, email, photo } = user;
         try {
           const db = await connectDB();
           const userCollection = db.collection("users");
@@ -85,6 +84,10 @@ const authOptions = {
       }
     },
   },
+  pages: {
+    signIn: '/login',
+    signUp: "/register"
+  }
 };
 const handler = NextAuth(authOptions);
 
