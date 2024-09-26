@@ -17,17 +17,21 @@ export default function Login() {
     reset,
     formState: { errors },
   } = useForm();
+  const session = getSession();
 
-  const onSubmit = async (newUser) => {
-    const { email, password } = newUser;
-    const res = await signIn("credentials", {
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    const email = e.target.email.value;
+    const password = e.target.password.value;
+    const resp = await signIn("credentials", {
       email,
       password,
-      redirect: false,
+      redirect: true,
+      callbackUrl: "/",
     });
 
     // Sweet alert
-    if (res?.status === 200) {
+    if (session?.status === 200) {
       reset();
       Swal.fire({
         position: "top-end",
@@ -39,78 +43,21 @@ export default function Login() {
     }
   };
 
-  const saveUserToDB = async (newUser) => {
-    try {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/register/api`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(newUser),
-        }
-      );
+  const handleSocialLogin = (provider) => {
+    const resp = signIn(provider, {
+      redirect: true,
+      callbackUrl: "/",
+    });
 
-      if (res?.status === 200) {
-        console.log("User data saved to MongoDB successfully");
-      } else {
-        console.error("Error saving user to MongoDB:", await res.json());
-      }
-    } catch (error) {
-      console.error("Failed to save user:", error);
-    }
-  };
-
-  const handleGoogleLogin = async () => {
-    const res = await signIn("google", { callbackUrl: "/" });
-    if (res) {
-      const session = await getSession();
-      const newUser = {
-        name: session.user.name,
-        email: session.user.email,
-        photo: session.user.image,
-      };
-
-      // Save user data to MongoDB
-      await saveUserToDB(newUser);
-
-      // Sweet alert
+    if (session?.status === "authenticated") {
+      reset();
       Swal.fire({
         position: "top-end",
         icon: "success",
-        title: "Logged in successfully with Google",
+        title: "You are login successfully",
         showConfirmButton: false,
         timer: 1500,
       });
-
-      console.log("Google Auth State:", session);
-    }
-  };
-
-  const handleGithubLogin = async () => {
-    const res = await signIn("github", { callbackUrl: "/" });
-    if (res) {
-      const session = await getSession();
-      const newUser = {
-        name: session.user.name,
-        email: session.user.email,
-        photo: session.user.image,
-      };
-
-      // Save user data to MongoDB
-      await saveUserToDB(newUser);
-
-      // Sweet alert
-      Swal.fire({
-        position: "top-end",
-        icon: "success",
-        title: "Logged in successfully with GitHub",
-        showConfirmButton: false,
-        timer: 1500,
-      });
-
-      console.log("GitHub Auth State:", session);
     }
   };
 
@@ -199,7 +146,7 @@ export default function Login() {
             {/* sign with google */}
             <div className="flex items-center justify-center gap-10">
               <div
-                onClick={handleGoogleLogin}
+                onClick={() => handleSocialLogin("google")}
                 className="flex h-[50px] gap-2 items-center overflow-hidden rounded-full shadow-md duration-300 hover:scale-95 hover:shadow hover:cursor-pointer"
               >
                 <div className="flex h-full w-[50%] items-center bg-[#F65D4E] px-4 text-sm text-white font-medium">
@@ -213,7 +160,7 @@ export default function Login() {
 
               {/* Sign with GitHub */}
               <div
-                onClick={handleGithubLogin}
+                onClick={() => handleSocialLogin("github")}
                 className="flex h-[50px] gap-2 items-center overflow-hidden rounded-full shadow-md duration-300 hover:scale-95 hover:shadow hover:cursor-pointer"
               >
                 <div className="flex h-full w-[50%] items-center bg-gray-900 px-4 text-sm text-white font-medium">
