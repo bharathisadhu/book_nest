@@ -369,3 +369,5 @@ const BooksPage = () => {
     </div>
   );
 }
+
+export default BooksPage;
