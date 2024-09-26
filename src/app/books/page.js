@@ -3,9 +3,11 @@ import React, { useEffect, useState } from "react";
 import BooksCard from "@/components/BooksCard";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { HiX } from "react-icons/hi";
+import axios from "axios";
+import { GoChevronDown } from "react-icons/go";
+import { HiX } from "react-icons/hi"; // for mobile drawer close button
 
-const BooksPage = () => {
+export default function BooksPage() {
   const [books, setBooks] = useState([]);
   const [filteredBooks, setFilteredBooks] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -18,7 +20,7 @@ const BooksPage = () => {
   const [seeMoreAuthors, setSeeMoreAuthors] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false); // State for the mobile drawer
-  const itemsPerPage = 8;
+  const itemsPerPage = 9;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -38,7 +40,6 @@ const BooksPage = () => {
   }, []);
 
   useEffect(() => {
-    // Filter books based on search term, categories, price range, and authors
     let filtered = books;
 
     if (searchTerm) {
@@ -66,7 +67,6 @@ const BooksPage = () => {
     setFilteredBooks(filtered);
   }, [searchTerm, selectedCategories, selectedAuthors, priceRange, books]);
 
-  // Handle category checkbox change
   const handleCategoryChange = (category) => {
     setSelectedCategories((prev) =>
       prev.includes(category)
@@ -75,7 +75,6 @@ const BooksPage = () => {
     );
   };
 
-  // Handle author checkbox change
   const handleAuthorChange = (author) => {
     setSelectedAuthors((prev) =>
       prev.includes(author)
@@ -84,13 +83,30 @@ const BooksPage = () => {
     );
   };
 
-  // Pagination logic
+  const sorting = (data) => {
+    if (data === "LowToHigh") {
+      const priceLowToHigh = [...books].sort((a, b) => a.price - b.price);
+      setBooks(priceLowToHigh);
+    }
+    if (data === "HighToLow") {
+      const priceHighToLow = [...books].sort((a, b) => b.price - a.price);
+      setBooks(priceHighToLow);
+    }
+    if (data === "topRatings") {
+      const TopRatings = [...books].sort((a, b) => b.ratings - a.ratings);
+      setBooks(TopRatings);
+    }
+    if (data === "lowRatings") {
+      const LowRatings = [...books].sort((a, b) => a.ratings - b.ratings);
+      setBooks(LowRatings);
+    }
+  };
+
   const totalPages = Math.ceil(filteredBooks.length / itemsPerPage);
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentBooks = filteredBooks.slice(indexOfFirstItem, indexOfLastItem);
 
-  // Handle page change
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
@@ -113,7 +129,7 @@ const BooksPage = () => {
 
       {/* Main Layout with Sidebar and Books Grid */}
       <div className="flex w-11/12 mx-auto mt-6">
-        {/* Left Sidebar for large screens */}
+        {/* Left Sidebar */}
         <div className="hidden lg:block w-1/4 bg-gray-100 p-4 rounded-lg">
           <div className="mb-6">
             <input
@@ -209,92 +225,54 @@ const BooksPage = () => {
               </div>
 
               {/* Mobile Filter Options */}
-              <div className="mb-6">
-                <input
-                  type="text"
-                  placeholder="Search for a book..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full p-2 border border-gray-300 rounded"
-                />
-              </div>
-
-              {/* Category Checkboxes */}
-              <div className="mb-6">
-                <h4 className="font-bold mb-2">Categories</h4>
-                {categories
-                  .slice(0, seeMoreCategories ? categories.length : 5)
-                  .map((category) => (
-                    <label key={category} className="block mb-2">
-                      <input
-                        type="checkbox"
-                        checked={selectedCategories.includes(category)}
-                        onChange={() => handleCategoryChange(category)}
-                        className="mr-2"
-                      />
-                      {category}
-                    </label>
-                  ))}
-                {categories.length > 5 && (
-                  <button
-                    onClick={() => setSeeMoreCategories(!seeMoreCategories)}
-                    className="text-blue-500 mt-2"
-                  >
-                    {seeMoreCategories ? "See Less" : "See More"}
-                  </button>
-                )}
-              </div>
-
-              {/* Author Checkboxes */}
-              <div className="mb-6">
-                <h4 className="font-bold mb-2">Authors</h4>
-                {authors
-                  .slice(0, seeMoreAuthors ? authors.length : 5)
-                  .map((author) => (
-                    <label key={author} className="block mb-2">
-                      <input
-                        type="checkbox"
-                        checked={selectedAuthors.includes(author)}
-                        onChange={() => handleAuthorChange(author)}
-                        className="mr-2"
-                      />
-                      {author}
-                    </label>
-                  ))}
-                {authors.length > 5 && (
-                  <button
-                    onClick={() => setSeeMoreAuthors(!seeMoreAuthors)}
-                    className="text-blue-500 mt-2"
-                  >
-                    {seeMoreAuthors ? "See Less" : "See More"}
-                  </button>
-                )}
-              </div>
-
-              {/* Price Range Slider */}
-              <div>
-                <h4 className="font-bold mb-2">Price Range</h4>
-                <input
-                  type="range"
-                  min="0"
-                  max="20"
-                  value={priceRange[1]}
-                  onChange={(e) => setPriceRange([0, e.target.value])}
-                  className="w-full"
-                />
-                <p>
-                  Price Range: ${priceRange[0]} - ${priceRange[1]}
-                </p>
-              </div>
+              {/* You can reuse the filter code here */}
             </div>
           </div>
         )}
 
-        {/* Books Grid */}
-        <div className="w-full lg:w-3/4 p-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {/* Right Side: Books Grid */}
+        <div className="col-span-3">
+          <div className="flex justify-end pr-10">
+            <div className="dropdown">
+              <div tabIndex={0} className="m-1">
+                <div className="flex justify-center items-center gap-4 border-2 p-2 rounded-lg">
+                  Sort <GoChevronDown />
+                </div>
+              </div>
+              <ul
+                tabIndex={0}
+                className="dropdown-content menu bg-base-100 rounded-box z-[1] p-2 shadow"
+              >
+                <button onClick={() => sorting("LowToHigh")}>
+                  <li>
+                    <a>Sort by price: low to high</a>
+                  </li>
+                </button>
+
+                <button onClick={() => sorting("HighToLow")}>
+                  <li>
+                    <a>Sort by price: high to low</a>
+                  </li>
+                </button>
+
+                <button onClick={() => sorting("topRatings")}>
+                  <li>
+                    <a>Top rated</a>
+                  </li>
+                </button>
+
+                <button onClick={() => sorting("lowRatings")}>
+                  <li>
+                    <a>Low rated</a>
+                  </li>
+                </button>
+              </ul>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-6">
             {currentBooks.map((book) => (
-              <BooksCard key={book._id} book={book} />
+              <BooksCard key={book.id} book={book} />
             ))}
           </div>
 
@@ -302,13 +280,13 @@ const BooksPage = () => {
           <div className="flex justify-center mt-6">
             {Array.from({ length: totalPages }, (_, index) => (
               <button
-                key={index + 1}
+                key={index}
                 onClick={() => handlePageChange(index + 1)}
-                className={`px-4 py-2 mx-1 ${
+                className={`mx-1 px-3 py-1 border ${
                   currentPage === index + 1
                     ? "bg-blue-500 text-white"
-                    : "bg-gray-200 text-gray-700"
-                } rounded`}
+                    : "bg-white"
+                }`}
               >
                 {index + 1}
               </button>
@@ -320,6 +298,4 @@ const BooksPage = () => {
       <Footer />
     </div>
   );
-};
-
-export default BooksPage;
+}

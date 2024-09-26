@@ -4,6 +4,7 @@ import Navbar from "@/components/Navbar";
 import Image from "next/image";
 import { GoArrowRight } from "react-icons/go";
 import Link from 'next/link';
+import Footer from "@/components/Footer";
 
 export default function AboutUs (){
 
@@ -172,15 +173,14 @@ If you are going to use a passage of Lorem Ipsum, you need to be sure there isnâ
 
         </div>
 
-        
-
-
-        
         </div>
 
-       
-
        </div>
+       <div className="mt-32">
+       <Footer></Footer>
+       </div>
+
+       
 
       
         
