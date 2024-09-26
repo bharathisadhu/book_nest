@@ -73,11 +73,3 @@ const Category = () => {
 };
 
 export default Category;
-
-<<<<<<<<< Temporary merge branch 1
-
-
-
-
-=========
->>>>>>>>> Temporary merge branch 2
