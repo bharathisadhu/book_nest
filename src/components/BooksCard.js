@@ -1,5 +1,4 @@
 import Image from "next/image";
-import Link from "next/link";
 import { CiStar } from "react-icons/ci";
 
 export default function BooksCard({ book }) {
