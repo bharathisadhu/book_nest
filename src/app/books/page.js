@@ -8,6 +8,12 @@ import { GoChevronDown } from "react-icons/go";
 import { HiX } from "react-icons/hi"; // for mobile drawer close button
 
 export default function BooksPage() {
+import { GoChevronDown } from "react-icons/go";
+import Footer from "@/components/Footer";
+import Link from "next/link";
+import { GoArrowRight } from "react-icons/go";
+
+const BooksPage = () => {
   const [books, setBooks] = useState([]);
   const [filteredBooks, setFilteredBooks] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -75,6 +81,7 @@ export default function BooksPage() {
     );
   };
 
+  // Handle author checkbox change
   const handleAuthorChange = (author) => {
     setSelectedAuthors((prev) =>
       prev.includes(author)
@@ -96,20 +103,25 @@ export default function BooksPage() {
       const TopRatings = [...books].sort((a, b) => b.ratings - a.ratings);
       setBooks(TopRatings);
     }
+
     if (data === "lowRatings") {
       const LowRatings = [...books].sort((a, b) => a.ratings - b.ratings);
       setBooks(LowRatings);
     }
   };
 
+
+  // Pagination logic
   const totalPages = Math.ceil(filteredBooks.length / itemsPerPage);
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentBooks = filteredBooks.slice(indexOfFirstItem, indexOfLastItem);
 
+  // Handle page change
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
+
 
   // Toggle Drawer
   const toggleDrawer = () => {
@@ -119,6 +131,16 @@ export default function BooksPage() {
   return (
     <div>
       <Navbar />
+      {/* Books banner section */}
+      <div className="flex flex-col lg:flex-row items-center justify-center lg:justify-between p-2 bg-[#F0F0F0] py-10">
+        <h2 className=" lg:py-10 lg:ml-10 font-extrabold text-5xl">Books</h2>
+
+        <h3 className=" lg:py-10 lg:mr-10 mt-3 flex justify-center items-center gap-2">
+          <Link href="/">Home</Link>
+          <GoArrowRight className="" />
+          <span className="text-orange-600">Books</span>
+        </h3>
+      </div>
 
       {/* Filter button for mobile view */}
       <div className="lg:hidden flex w-11/12 mx-auto mt-6">
@@ -126,6 +148,61 @@ export default function BooksPage() {
           Filter
         </button>
       </div>
+      <div className="flex justify-end pr-10">
+        <div className="dropdown">
+          <div tabIndex={0} className="m-1">
+            <div className="flex justify-center items-center gap-4 border-2  p-2 rounded-lg">
+              Sort <GoChevronDown />
+            </div>
+          </div>
+          <ul
+            tabIndex={0}
+            className="dropdown-content menu bg-base-100 rounded-box z-[1] p-2 shadow"
+          >
+            <button
+              onClick={() => {
+                sorting("LowToHigh");
+              }}
+            >
+              <li>
+                <a>Sort by price: low to high</a>
+              </li>
+            </button>
+
+            <button
+              onClick={() => {
+                sorting("HighToLow");
+              }}
+            >
+              <li>
+                <a>Sort by price: high to low</a>
+              </li>
+            </button>
+
+            <button
+              onClick={() => {
+                sorting("topRatings");
+              }}
+            >
+              <li>
+                <a>Sort by popularity: high to low</a>
+              </li>
+            </button>
+
+            <button
+              onClick={() => {
+                sorting("lowRatings");
+              }}
+            >
+              <li>
+                <a>Sort by popularity: low to high</a>
+              </li>
+            </button>
+          </ul>
+        </div>
+      </div>
+
+      <hr></hr>
 
       {/* Main Layout with Sidebar and Books Grid */}
       <div className="flex w-11/12 mx-auto mt-6">
