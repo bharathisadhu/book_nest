@@ -20,9 +20,9 @@ export default function Login() {
   const session = getSession();
 
   const onSubmit = async (e) => {
-    e.preventDefault();
-    const email = e.target.email.value;
-    const password = e.target.password.value;
+    const email = e.email;
+    const password = e.password;
+ 
     const resp = await signIn("credentials", {
       email,
       password,
