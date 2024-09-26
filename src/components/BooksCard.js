@@ -8,8 +8,8 @@ export default function BooksCard({ book }) {
   return (
     <>
       {/* bg-white shadow-[0_4px_12px_-5px_rgba(0,0,0,0.4)] */}
-      <Link
-        href={`/books/${id}`}
+      <div
+        
         className="p-4 border-t w-full h-fit font-[sans-serif] overflow-hidden mt-4"
       >
         <div className="">
@@ -33,7 +33,7 @@ export default function BooksCard({ book }) {
 
           <div className="flex items-center">
             <h3 className="text-xl text-gray-800 font-bold flex-1">${price}</h3>
-            <div className="bg-red-300 w-12 h-12 flex items-center justify-center rounded-full cursor-pointer">
+           <div className="bg-red-300 w-12 h-12 flex items-center justify-center rounded-full cursor-pointer">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="20px"
@@ -48,7 +48,7 @@ export default function BooksCard({ book }) {
             </div>
           </div>
         </div>
-      </Link>
+      </div>
     </>
   );
 }
