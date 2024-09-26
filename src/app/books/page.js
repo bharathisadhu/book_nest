@@ -2,8 +2,16 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import BooksCard from "@/components/BooksCard";
+import Banner from "@/components/share/banner";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 
 const BooksPage = () => {
+  const data = {
+    title: 'Books',
+    linkName: 'Home',
+    
+  };
   const [books, setBooks] = useState([]); // Holds all books
   const [filteredBooks, setFilteredBooks] = useState([]); // Holds filtered books
   const [searchTerm, setSearchTerm] = useState(""); // For search input
@@ -11,6 +19,14 @@ const BooksPage = () => {
   const [priceRange, setPriceRange] = useState([0, 20]); // Example price range
 
   useEffect(() => {
+
+
+    const data = {
+      title: 'Books',
+      linkName: 'Home',
+      
+    };
+
     const fetchData = async () => {
       const response = await fetch(
         // "https://booknest-server-one.vercel.app/api/books"
@@ -61,8 +77,15 @@ const BooksPage = () => {
   };
 
   return (
+    <>
     <div>
+    
       {/* Search Input */}
+      <Navbar/>
+      <Banner
+        title={data.title}
+        linkName={data.linkName}
+    />
       <input
         type="text"
         placeholder="Search for a book..."
@@ -103,7 +126,13 @@ const BooksPage = () => {
         {Array.isArray(filteredBooks) &&
           filteredBooks.map((book) => <BooksCard  book={book} />)}
       </div>
+
+      
+
+      
     </div>
+    <Footer/>
+    </>
   );
 };
 

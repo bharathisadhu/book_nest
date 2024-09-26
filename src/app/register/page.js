@@ -7,8 +7,14 @@ import Marquee from "react-fast-marquee";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
 import { signIn } from "next-auth/react";
+import Banner from "@/components/share/banner";
 
 export default function Register() {
+  const data = {
+    title: 'Register',
+    linkName: 'Home',
+    
+  };
   const {
     register,
     handleSubmit,
@@ -52,6 +58,11 @@ export default function Register() {
   return (
     <main>
       <Navbar />
+      <Banner
+        title={data.title}
+        linkName={data.linkName}
+    />
+    <div className="mb-10 lg:mb-25 md:mb-20"></div>
       <div className="flex items-center justify-center p-6">
         <div className="flex flex-col lg:flex-row h-full w-full overflow-hidden rounded-xl shadow-md  border">
           {/* Register design side */}
@@ -148,6 +159,8 @@ export default function Register() {
           </div>
         </div>
       </div>
+
+      <div className="mb-10 lg:mb-25 md:mb-20"></div>
       <Footer />
     </main>
   );
