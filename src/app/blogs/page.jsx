@@ -9,8 +9,6 @@ import Link from "next/link";
 const BlogsPage = () => {
   return (
     <>
-      <Navbar />
-
       <div className="flex flex-col lg:flex-row items-center justify-center lg:justify-between p-2 bg-[#F0F0F0] py-10">
         <h2 className=" lg:py-10 lg:ml-10 font-extrabold text-5xl">Blogs</h2>
 
@@ -274,8 +272,6 @@ const BlogsPage = () => {
           </div>
         </div>
       </div>
-
-      <Footer />
     </>
   );
 };

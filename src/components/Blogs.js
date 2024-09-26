@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 const Blogs = () => {
@@ -19,9 +20,11 @@ const Blogs = () => {
           Latest Blog Post
         </h2>
         <div className="border-t-2 border-gray-300 w-[25%] md:w-[60%] lg:w-[65%] mt-4"></div>
-        <button className="btn rounded-3xl bg-[#F65D4E] text-white px-8">
-          View All
-        </button>
+        <Link href={"/blogs"}>
+          <button className="btn rounded-3xl bg-[#F65D4E] text-white px-8">
+            View All
+          </button>
+        </Link>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="space-y-6">

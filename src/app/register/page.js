@@ -51,7 +51,6 @@ export default function Register() {
 
   return (
     <main>
-      <Navbar />
       <div className="flex items-center justify-center p-6">
         <div className="flex flex-col lg:flex-row h-full w-full overflow-hidden rounded-xl shadow-md  border">
           {/* Register design side */}
@@ -148,7 +147,6 @@ export default function Register() {
           </div>
         </div>
       </div>
-      <Footer />
     </main>
   );
 }

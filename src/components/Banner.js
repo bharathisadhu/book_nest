@@ -1,14 +1,8 @@
 "use client";
-
-
 import Image from "next/image";
 import { IoIosArrowForward } from "react-icons/io";
 
 const Banner = () => {
-  
-
-
-
   return (
     <div className="hero min-h-screen mb-20">
       <div className="hero-overlay bg-[#00453E]"></div>
@@ -39,24 +33,24 @@ const Banner = () => {
               {/* Right Side: Content */}
               <div className="w-full  flex p-20">
                 <Image
-                height={200}
-                width={200}
+                  height={200}
+                  width={200}
                   src="https://i.ibb.co.com/fYKVzJB/36809135.jpg"
                   alt="Banner Image"
                   className="max-w-sm rounded-lg shadow-2xl w-1/3 skew-y-12 my-0 rotate-0  mt-15"
                 />
 
                 <Image
-                height={200}
-                width={200}
+                  height={200}
+                  width={200}
                   src="https://i.ibb.co.com/gFfKgc4/prison-journalism-obama-becoming-review-111822.jpg"
                   alt="Banner Image"
                   className="max-w-sm rounded-lg shadow-2xl w-1/3 skew-x-12 my-0 rotate-100  mt-15"
                 />
 
                 <Image
-                height={200}
-                width={200}
+                  height={200}
+                  width={200}
                   src="https://i.ibb.co.com/8jKkLGf/the-subtle-art-of-not-giving-a-fck-by-mark-manson-4.jpg"
                   alt="Banner Image"
                   className="max-w-sm rounded-lg shadow-2xl w-1/3 skew-y-12 my-0 rotate-0  mt-15"
@@ -99,24 +93,24 @@ const Banner = () => {
               {/* Right Side: Content */}
               <div className="w-full  flex p-20">
                 <Image
-                height={200}
-                width={200}
+                  height={200}
+                  width={200}
                   src="https://i.ibb.co.com/NjS2QHT/61-R-Cpm-Hx-L-AC-UF894-1000-QL80.jpg"
                   alt="Banner Image"
                   className="max-w-sm rounded-lg shadow-2xl w-1/3 skew-y-12 my-0 rotate-0  mt-15"
                 />
 
                 <Image
-                height={200}
-                width={200}
+                  height={200}
+                  width={200}
                   src="https://i.ibb.co.com/pZdjnfB/44767458.jpg"
                   alt="Banner Image"
                   className="max-w-sm rounded-lg shadow-2xl w-1/3 skew-x-12 my-0 rotate-100  mt-15"
                 />
 
                 <Image
-                height={200}
-                width={200}
+                  height={200}
+                  width={200}
                   src="https://i.ibb.co.com/QHYWqFw/0-RAr-KNBFL91-Cw-Ge-WU.jpg"
                   alt="Banner Image"
                   className="max-w-sm rounded-lg shadow-2xl w-1/3 skew-y-12 my-0 rotate-0  mt-15"
