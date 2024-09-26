@@ -63,8 +63,6 @@ export default function Login() {
 
   return (
     <main>
-      {/* Navbar section */}
-      <Navbar></Navbar>
       {/* Login section */}
       <div className="flex items-center justify-center p-6">
         <div className="flex flex-col lg:flex-row h-full w-full overflow-hidden rounded-xl shadow-md border">
@@ -175,8 +173,6 @@ export default function Login() {
           </div>
         </div>
       </div>
-      {/* Footer section */}
-      <Footer></Footer>
     </main>
   );
 }

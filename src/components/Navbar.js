@@ -52,7 +52,7 @@ const Navbar = () => {
                 href={navlink.link}
                 className={`${
                   pathname === navlink.link
-                    ? "bg-[#F65D4E] rounded text-white"
+                    ? "border-b-2 bg-white border-b-[#F65D4E] rounded-b-lg rounded text-white"
                     : ""
                 } px-3 py-2 rounded`}
               >
@@ -142,7 +142,7 @@ const Navbar = () => {
                   <Link
                     href={navlink.link}
                     className={`${
-                      routerPath === navlink.link
+                      pathname === navlink.link
                         ? "bg-blue-500 text-white"
                         : ""
                     } block px-3 py-2 rounded hover:bg-blue-300`} // Hover effect

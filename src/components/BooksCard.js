@@ -6,18 +6,15 @@ export default function BooksCard({ book }) {
   const { id, name, image, price, category, ratings } = book;
 
   return (
-    <Link
-      href={`/books/${id}`}
-      className="bg-white shadow-md hover:shadow-lg transition-shadow duration-300 w-full max-w-[350px] rounded-2xl font-sans overflow-hidden mx-auto mt-4"
-    >
+    <div className=" transition-shadow h-fit duration-300 w-full font-sans overflow-hidden mx-auto mt-4 pl-4 pt-4">
       {/* Full Height Image */}
-      <div className="w-full h-64 relative">
+      <div className="w-full h-40 md:h-60 lg:h-64 relative ">
         <Image
           src={image}
           alt={name}
           layout="fill" // Ensure the image fills the container
           objectFit="cover" // Ensures the image covers the entire container while maintaining its aspect ratio
-          className="rounded-t-2xl"
+          className="rounded-2xl w-[90%] h-40 md:h-48 lg:h-64 "
         />
       </div>
 
@@ -25,18 +22,21 @@ export default function BooksCard({ book }) {
       <div className="p-4 md:p-6">
         <p className="text-sm text-gray-600 mb-1">Category: {category}</p>
 
-        <h3 className="text-lg md:text-2xl text-gray-800 font-extrabold line-clamp-2">
-          {name}
+        <h3
+          title={name}
+          className="text-lg md:text-xl text-gray-800 font-bold line-clamp-2"
+        >
+          {name.slice(0, 10)}...
         </h3>
 
-        <div className="flex items-center mt-3">
+        <div className="flex items-center mt-2">
           <p className="text-gray-800 font-semibold flex items-center">
             Ratings: {ratings}{" "}
             <CiStar className="text-yellow-500 ml-1 text-lg md:text-xl" />
           </p>
         </div>
 
-        <div className="mt-4 md:mt-6 flex items-center justify-between">
+        <div className="flex items-center justify-between">
           <h3 className="text-xl md:text-2xl text-gray-800 font-bold">
             ${price.toFixed(2)}
           </h3>
@@ -53,6 +53,6 @@ export default function BooksCard({ book }) {
           </div>
         </div>
       </div>
-    </Link>
+    </div>
   );
 }

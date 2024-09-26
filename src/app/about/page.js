@@ -10,7 +10,6 @@ export default function AboutUs (){
 
     return (
         <>
-       <Navbar></Navbar>
        <div className=" my-10 py-20 px-20 bg-gray-200 flex justify-between items-center">
         <h1 className=" lg:text-6xl md:text-4xl text-xl font-bold">About Us</h1>
         <div className="flex justify-center items-center gap-2">
@@ -177,7 +176,6 @@ If you are going to use a passage of Lorem Ipsum, you need to be sure there isnâ
 
        </div>
        <div className="mt-32">
-       <Footer></Footer>
        </div>
 
        
