@@ -135,7 +135,10 @@ const BooksPage = () => {
 
       {/* Filter button for mobile view */}
       <div className="lg:hidden flex ml-6 mt-6 -mb-10">
-        <button className="btn btn-outline text-sm p-1 px-8" onClick={toggleDrawer}>
+        <button
+          className="btn btn-outline text-sm p-1 px-8"
+          onClick={toggleDrawer}
+        >
           Filter
         </button>
       </div>
@@ -193,8 +196,6 @@ const BooksPage = () => {
           </ul>
         </div>
       </div>
-
-
 
       {/* Main Layout with Sidebar and Books Grid */}
       <div className="grid grid-cols-4 mx-auto mt-6 gap-8">
