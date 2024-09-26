@@ -1,20 +1,20 @@
-"use client";
+"use client"; // Make sure this is a client component
 import { useState } from "react";
-import { FaShoppingCart } from "react-icons/fa";
+import { FaShoppingCart, FaHeart } from "react-icons/fa";
 import { MdAccountCircle } from "react-icons/md";
 import { CiSearch } from "react-icons/ci";
-import { FaHeart } from "react-icons/fa";
 import { RxHamburgerMenu } from "react-icons/rx";
-import logo from "../../public/BookNest.png";
-import Link from "next/link";
 import Image from "next/image";
+import Link from "next/link";
 import { useSession, signOut } from "next-auth/react";
+import logo from "../../public/BookNest.png";
+import { usePathname } from "next/navigation"; // Import usePathname
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false); // State for the mobile sidebar
   const [isDropdownOpen, setIsDropdownOpen] = useState(false); // State for the account dropdown
   const { data: session } = useSession(); // Get session data
-  console.log(session);
+  const pathname = usePathname(); // Get the current pathname
 
   const toggleSidebar = () => {
     setIsOpen(!isOpen); // Toggles the mobile sidebar
@@ -48,7 +48,16 @@ const Navbar = () => {
         <ul className="navbar justify-end menu menu-horizontal px-1 text-xl">
           {navlinks.map((navlink, index) => (
             <li key={index}>
-              <Link href={navlink.link}>{navlink.label}</Link>
+              <Link
+                href={navlink.link}
+                className={`${
+                  pathname === navlink.link
+                    ? "bg-[#F65D4E] rounded text-white"
+                    : ""
+                } px-3 py-2 rounded`}
+              >
+                {navlink.label}
+              </Link>
             </li>
           ))}
         </ul>
@@ -70,7 +79,7 @@ const Navbar = () => {
           </Link>
         ) : (
           <div className="relative">
-            <button className=" text-xl" onClick={toggleDropdown}>
+            <button className="text-xl" onClick={toggleDropdown}>
               {session.user.image || session.user.photo ? (
                 <Image
                   src={session.user.image || session.user.photo}
@@ -130,7 +139,15 @@ const Navbar = () => {
             <ul className="menu flex flex-col gap-4 text-lg">
               {navlinks.map((navlink, index) => (
                 <li key={index}>
-                  <Link href={navlink.link} onClick={toggleSidebar}>
+                  <Link
+                    href={navlink.link}
+                    className={`${
+                      routerPath === navlink.link
+                        ? "bg-blue-500 text-white"
+                        : ""
+                    } block px-3 py-2 rounded hover:bg-blue-300`} // Hover effect
+                    onClick={toggleSidebar}
+                  >
                     {navlink.label}
                   </Link>
                 </li>
@@ -155,9 +172,9 @@ const Navbar = () => {
               ) : (
                 <div className="relative">
                   <button className=" text-xl" onClick={toggleDropdown}>
-                    {session.user.image ? (
+                    {session.user.image || session.user.photo ? (
                       <Image
-                        src={session.user.image}
+                        src={session.user.image || session.user.photo}
                         alt="User Image"
                         width={40}
                         height={40}
