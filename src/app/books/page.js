@@ -67,6 +67,8 @@ export default function Books() {
      }
   }
 import Footer from "@/components/Footer";
+import Link from "next/link";
+import { GoArrowRight } from "react-icons/go";
 
 const BooksPage = () => {
   const [books, setBooks] = useState([]);
@@ -136,7 +138,6 @@ const BooksPage = () => {
         : [...prev, category]
     );
   };
-
   // Handle author checkbox change
   const handleAuthorChange = (author) => {
     setSelectedAuthors((prev) =>
@@ -145,13 +146,11 @@ const BooksPage = () => {
         : [...prev, author]
     );
   };
-
   // Pagination logic
   const totalPages = Math.ceil(filteredBooks.length / itemsPerPage);
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentBooks = filteredBooks.slice(indexOfFirstItem, indexOfLastItem);
-
   // Handle page change
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -161,6 +160,16 @@ const BooksPage = () => {
   return (
     <div>
       <Navbar />
+      {/* Books banner section */}
+      <div className="flex flex-col lg:flex-row items-center justify-center lg:justify-between p-2 bg-[#F0F0F0] py-10">
+        <h2 className=" lg:py-10 lg:ml-10 font-extrabold text-5xl">Books</h2>
+
+        <h3 className=" lg:py-10 lg:mr-10 mt-3 flex justify-center items-center gap-2">
+          <Link href="/">Home</Link>
+          <GoArrowRight className="" />
+          <span className="text-orange-600">Books</span>
+        </h3>
+      </div>
 
       <div className="flex justify-end pr-10"><div className="dropdown">
   <div tabIndex={0}  className="m-1"><div className="flex justify-center items-center gap-4 border-2  p-2 rounded-lg">Sort  <GoChevronDown /></div></div>
