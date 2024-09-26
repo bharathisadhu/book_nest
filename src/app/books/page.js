@@ -200,7 +200,9 @@ const BooksPage = () => {
               key={pageNumber}
               onClick={() => handlePageChange(pageNumber)}
               className={`px-4 py-2 mx-1  text-white rounded ${
-                currentPage === pageNumber ? "bg-blue-500 text-white" : "bg-red-400"
+                currentPage === pageNumber
+                  ? "bg-blue-500 text-white"
+                  : "bg-red-400"
               }`}
             >
               {pageNumber}
