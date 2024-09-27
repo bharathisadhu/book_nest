@@ -1,8 +1,3 @@
-
-
-
-
-
 "use client";
 import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
@@ -16,13 +11,11 @@ const Page = () => {
     const [cartNum, setCartNum] = useState(0);
 
     useEffect(() => {
-        // Check for localStorage only in the browser
-        if (typeof window !== 'undefined') {
-            const storedWish = JSON.parse(localStorage.getItem('bookmark'));
-            const initialWish = storedWish || [];
-            setWishStorage(initialWish);
-            setCartNum(initialWish.length);
-        }
+        // Fetch bookmarks from localStorage
+        const storedWish = JSON.parse(localStorage.getItem('bookmark'));
+        const initialWish = storedWish || [];
+        setWishStorage(initialWish);
+        setCartNum(initialWish.length);
     }, []);
 
     const handleRemove = (id) => {
@@ -52,7 +45,6 @@ const Page = () => {
 
     return (
         <>
-            <Navbar cartNum={cartNum} />
             <div className="mb-3">
                 <div className="font-sans bg-white max-w-6xl mx-auto p-4">
                     <h2 className="text-3xl font-bold text-gray-800">Your Wishlist ({cartNum})</h2>
@@ -109,12 +101,18 @@ const Page = () => {
                                         </td>
                                     </tr>
                                 ))}
+
+                                {wishStorage.length === 0 && (
+                                    <tr>
+                                        <td colSpan="5" className="text-center text-gray-500 p-4">No items in your wishlist.</td>
+                                    </tr>
+                                )}
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
-            <Footer />
+           
         </>
     );
 };
