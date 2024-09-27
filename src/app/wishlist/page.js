@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 "use client"
+=======
+"use client";
+>>>>>>> 5be8f05d2fe77e48450475c20c9bcaa32cd46236
 import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
 import Image from 'next/image';
@@ -7,11 +11,24 @@ import { CiStar } from 'react-icons/ci';
 import Swal from 'sweetalert2';
 
 const Page = () => {
+<<<<<<< HEAD
     const [wishStorage, setWishStorage] = useState(() => {
         const storedWish = JSON.parse(localStorage.getItem('bookmark'));
         return storedWish || [];
     });
     const [cartNum, setCartNum] = useState(wishStorage.length);
+=======
+    const [wishStorage, setWishStorage] = useState([]);
+    const [cartNum, setCartNum] = useState(0);
+
+    useEffect(() => {
+        // Fetch bookmarks from localStorage
+        const storedWish = JSON.parse(localStorage.getItem('bookmark'));
+        const initialWish = storedWish || [];
+        setWishStorage(initialWish);
+        setCartNum(initialWish.length);
+    }, []);
+>>>>>>> 5be8f05d2fe77e48450475c20c9bcaa32cd46236
 
     const handleRemove = (id) => {
         Swal.fire({
@@ -40,7 +57,6 @@ const Page = () => {
 
     return (
         <>
-            <Navbar cartNum={cartNum} />
             <div className="mb-3">
                 <div className="font-sans bg-white max-w-6xl mx-auto p-4">
                     <h2 className="text-3xl font-bold text-gray-800">Your Wishlist ({cartNum})</h2>
@@ -97,18 +113,28 @@ const Page = () => {
                                         </td>
                                     </tr>
                                 ))}
+
+                                {wishStorage.length === 0 && (
+                                    <tr>
+                                        <td colSpan="5" className="text-center text-gray-500 p-4">No items in your wishlist.</td>
+                                    </tr>
+                                )}
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
-            <Footer />
+           
         </>
     );
 };
 
+<<<<<<< HEAD
 export default Page;
 
 
 
 
+=======
+export default Page;
+>>>>>>> 5be8f05d2fe77e48450475c20c9bcaa32cd46236
