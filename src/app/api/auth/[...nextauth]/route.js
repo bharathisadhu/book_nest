@@ -38,7 +38,6 @@ const authOptions = {
         return currentUser;
       },
     }),
-
     // Google provider
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID,
@@ -51,7 +50,6 @@ const authOptions = {
         },
       },
     }),
-
     // GitHub provider
     GithubProvider({
       clientId: process.env.GITHUB_CLIENT_ID,
