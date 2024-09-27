@@ -1,5 +1,5 @@
 "use client"; // Make sure this is a client component
-import { useState } from "react";
+import { useState, useEffect } from "react"; // Import useEffect
 import { FaShoppingCart, FaHeart } from "react-icons/fa";
 import { MdAccountCircle } from "react-icons/md";
 import { CiSearch } from "react-icons/ci";
@@ -8,20 +8,32 @@ import Image from "next/image";
 import Link from "next/link";
 import { useSession, signOut } from "next-auth/react";
 import logo from "../../public/BookNest.png";
-import { usePathname } from "next/navigation"; // Import usePathname
+import { usePathname } from "next/navigation";
 
 const Navbar = () => {
-  const [isOpen, setIsOpen] = useState(false); // State for the mobile sidebar
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false); // State for the account dropdown
-  const { data: session } = useSession(); // Get session data
-  const pathname = usePathname(); // Get the current pathname
+  const [isOpen, setIsOpen] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const { data: session } = useSession();
+  const pathname = usePathname();
+
+  const [wishlistCount, setWishlistCount] = useState(0); 
+
+ 
+  const updateWishlistCount = () => {
+    const storedWish = JSON.parse(localStorage.getItem('bookmark'));
+    setWishlistCount(storedWish ? storedWish.length : 0);
+  };
+
+  useEffect(() => {
+    updateWishlistCount();
+  }, []);
 
   const toggleSidebar = () => {
-    setIsOpen(!isOpen); // Toggles the mobile sidebar
+    setIsOpen(!isOpen);
   };
 
   const toggleDropdown = () => {
-    setIsDropdownOpen(!isDropdownOpen); // Toggles the account dropdown
+    setIsDropdownOpen(!isDropdownOpen);
   };
 
   const navlinks = [
@@ -51,8 +63,8 @@ const Navbar = () => {
               <Link
                 href={navlink.link}
                 className={`${pathname === navlink.link
-                    ? "border-b-2 bg-white border-b-[#F65D4E] rounded-b-lg rounded text-white"
-                    : ""
+                  ? "border-b-2 bg-white border-b-[#F65D4E] rounded-b-lg rounded text-white"
+                  : ""
                   } px-3 py-2 rounded`}
               >
                 {navlink.label}
@@ -65,6 +77,11 @@ const Navbar = () => {
       <div className="navbar-end hidden lg:flex relative">
         <Link href="/wishlist" className="btn btn-ghost text-xl">
           <FaHeart className="text-2xl" />
+          {wishlistCount > 0 && (
+            <span className="absolute top-0 right-[180px] bg-red-500 text-white rounded-full px-1 text-xs">
+              {wishlistCount}
+            </span>
+          )}
         </Link>
         <button className="btn btn-ghost text-xl">
           <CiSearch className="text-2xl" />
@@ -141,9 +158,9 @@ const Navbar = () => {
                   <Link
                     href={navlink.link}
                     className={`${pathname === navlink.link
-                        ? "bg-blue-500 text-white"
-                        : ""
-                      } block px-3 py-2 rounded hover:bg-blue-300`} // Hover effect
+                      ? "bg-blue-500 text-white"
+                      : ""
+                      } block px-3 py-2 rounded hover:bg-blue-300`}
                     onClick={toggleSidebar}
                   >
                     {navlink.label}
@@ -155,6 +172,11 @@ const Navbar = () => {
             <div className="mt-8">
               <button className="btn btn-ghost text-xl mb-3">
                 <FaHeart className="text-2xl" />
+                {wishlistCount > 0 && (
+                  <span className="absolute top-0 right-0 bg-red-500 text-white rounded-full px-1 text-xs">
+                    {wishlistCount}
+                  </span>
+                )}
               </button>
               <button className="btn btn-ghost text-xl mb-3">
                 <CiSearch className="text-2xl" />
@@ -217,3 +239,6 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
+
+
