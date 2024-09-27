@@ -1,4 +1,3 @@
-
 "use client";
 import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
@@ -8,11 +7,17 @@ import { CiStar } from 'react-icons/ci';
 import Swal from 'sweetalert2';
 
 const Page = () => {
-    const [wishStorage, setWishStorage] = useState(() => {
+    const [wishStorage, setWishStorage] = useState([]);
+    const [cartNum, setCartNum] = useState(0);
+
+    useEffect(() => {
+        // Retrieve wishlist from localStorage on component mount
         const storedWish = JSON.parse(localStorage.getItem('bookmark'));
-        return storedWish || [];
-    });
-    const [cartNum, setCartNum] = useState(wishStorage.length);
+        if (storedWish) {
+            setWishStorage(storedWish);
+            setCartNum(storedWish.length);
+        }
+    }, []);
 
     const handleRemove = (id) => {
         Swal.fire({
@@ -97,7 +102,7 @@ const Page = () => {
                                             </button>
                                         </td>
                                     </tr>
-                                ))}
+                                ))} 
                             </tbody>
                         </table>
                     </div>
@@ -109,15 +114,6 @@ const Page = () => {
 };
 
 export default Page;
-
-
-
-
-
-
-
-
-
 
 
 
