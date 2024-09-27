@@ -50,11 +50,10 @@ const Navbar = () => {
             <li key={index}>
               <Link
                 href={navlink.link}
-                className={`${
-                  pathname === navlink.link
+                className={`${pathname === navlink.link
                     ? "border-b-2 bg-white border-b-[#F65D4E] rounded-b-lg rounded text-white"
                     : ""
-                } px-3 py-2 rounded`}
+                  } px-3 py-2 rounded`}
               >
                 {navlink.label}
               </Link>
@@ -64,9 +63,9 @@ const Navbar = () => {
       </div>
 
       <div className="navbar-end hidden lg:flex relative">
-        <button className="btn btn-ghost text-xl">
+        <Link href="/wishlist" className="btn btn-ghost text-xl">
           <FaHeart className="text-2xl" />
-        </button>
+        </Link>
         <button className="btn btn-ghost text-xl">
           <CiSearch className="text-2xl" />
         </button>
@@ -141,11 +140,10 @@ const Navbar = () => {
                 <li key={index}>
                   <Link
                     href={navlink.link}
-                    className={`${
-                      pathname === navlink.link
+                    className={`${pathname === navlink.link
                         ? "bg-blue-500 text-white"
                         : ""
-                    } block px-3 py-2 rounded hover:bg-blue-300`} // Hover effect
+                      } block px-3 py-2 rounded hover:bg-blue-300`} // Hover effect
                     onClick={toggleSidebar}
                   >
                     {navlink.label}
