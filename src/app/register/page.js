@@ -17,7 +17,7 @@ export default function Register() {
   } = useForm();
 
   const onSubmit = async (newUser) => {
-    const { name, photo, email, password } = newUser;
+    const { name, image, email, password } = newUser;
     // const res = await fetch("http://localhost:3000/register/api", {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/register/api`, {
       method: "POST",
@@ -29,7 +29,7 @@ export default function Register() {
 
     const resp = await signIn("credentials", {
       name,
-      photo,
+      image,
       email,
       password,
       redirect: false,
@@ -98,15 +98,15 @@ export default function Register() {
                 <span className="text-red-600">Name is required</span>
               )}
               <input
-                {...register("photo", { required: false })}
+                {...register("image", { required: false })}
                 className="w-[100%] rounded-lg border px-6 py-2 focus:outline-none focus:ring-2 focus:ring-[#F65D4E]/50"
                 type="text"
-                placeholder="Photo URL"
-                name="photo"
+                placeholder="Image URL"
+                name="image"
               />
-              {errors.photo && (
+              {errors.image && (
                 <span className="text-red-600">
-                  Please provide your photo URL
+                  Please provide your image URL
                 </span>
               )}
               <input
