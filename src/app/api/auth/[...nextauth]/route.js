@@ -6,6 +6,7 @@ import GithubProvider from "next-auth/providers/github";
 import bcrypt from "bcrypt";
 
 const authOptions = {
+  secret: process.env.NEXT_PUBLIC_AUTH_SECRET,
   session: {
     strategy: "jwt",
     maxAge: 30 * 24 * 60 * 60, // 30 days
@@ -37,7 +38,6 @@ const authOptions = {
         return currentUser;
       },
     }),
-
     // Google provider
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID,
@@ -50,7 +50,6 @@ const authOptions = {
         },
       },
     }),
-
     // GitHub provider
     GithubProvider({
       clientId: process.env.GITHUB_CLIENT_ID,
@@ -63,6 +62,22 @@ const authOptions = {
     }),
   ],
   callbacks: {
+    callbacks: {
+      async jwt({ token, user }) {
+        // When user signs in, add user info to the token
+        if (user) {
+          token.id = user.id;
+        }
+        return token;
+      },
+      async session({ session, token }) {
+        // Add the user id from the token to the session
+        if (token?.id) {
+          session.user.id = token.id;
+        }
+        return session;
+      },
+    },
     async signIn({ user, account }) {
       if (account.provider === "google" || account.provider === "github") {
         const { name, email, photo } = user;
@@ -85,9 +100,9 @@ const authOptions = {
     },
   },
   pages: {
-    signIn: '/login',
-    signUp: "/register"
-  }
+    signIn: "/login",
+    signUp: "/register",
+  },
 };
 const handler = NextAuth(authOptions);
 
