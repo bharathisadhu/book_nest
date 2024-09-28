@@ -26,10 +26,10 @@ const useWishlist = () => {
       updateWishlistCount();
     };
 
-    window.addEventListener('storage', handleStorageChange);
+    window.addEventListener('wishlistUpdated', handleWishlistUpdate);
 
     return () => {
-      window.removeEventListener('storage', handleStorageChange);
+      window.removeEventListener('wishlistUpdated', handleWishlistUpdate);
     };
   }, []);
 
