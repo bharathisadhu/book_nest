@@ -8,31 +8,34 @@ export default function BooksCard({ book }) {
   const [cartData, setCartData] = useState(null);
 
   const addToBookmark = (book) => {
-  const existingBookmarks = JSON.parse(localStorage.getItem('bookmark')) || [];
+    const existingBookmarks = JSON.parse(localStorage.getItem('bookmark')) || [];
 
-  const isBookInBookmarks = existingBookmarks.some(b => b.id === book.id);
+    const isBookInBookmarks = existingBookmarks.some(b => b.id === book.id);
 
-  if (!isBookInBookmarks) {
-    existingBookmarks.push(book);
-    localStorage.setItem('bookmark', JSON.stringify(existingBookmarks));
+    if (!isBookInBookmarks) {
+      existingBookmarks.push(book);
+      localStorage.setItem('bookmark', JSON.stringify(existingBookmarks));
 
-    Swal.fire({
-      position: "top-end",
-      icon: "success",
-      title: `"${book.name}" added to bookmarks!`,  // Book name included in the title
-      showConfirmButton: false,
-      timer: 1500,
-    });
-  } else {
-    Swal.fire({
-      icon: "info",
-      title: "Already Bookmarked",
-      text: `"${book.name}" is already in your bookmarks.`,  // Book name included in the info message
-    });
-  }
-};
+      // Dispatch a custom event to inform other components about the update
+      window.dispatchEvent(new Event('wishlistUpdated'));
 
-return (
+      Swal.fire({
+        position: "top-end",
+        icon: "success",
+        title: `"${book.name}" added to bookmarks!`, // Book name included in the title
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    } else {
+      Swal.fire({
+        icon: "info",
+        title: "Already Bookmarked",
+        text: `"${book.name}" is already in your bookmarks.`, // Book name included in the info message
+      });
+    }
+  };
+
+  return (
     <div className="transition-shadow h-fit duration-300 w-full font-sans overflow-hidden mx-auto mt-4 pl-4 pt-4">
       {/* Full Height Image */}
       <div className="w-full h-40 md:h-60 lg:h-64 relative">
