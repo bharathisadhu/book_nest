@@ -153,6 +153,9 @@ const Page = () => {
                 setWishStorage(updatedWishStorage);
                 setCartNum(updatedWishStorage.length);
 
+                // Dispatch event to notify other components
+                window.dispatchEvent(new Event('wishlistUpdated'));
+
                 Swal.fire({
                     title: "Deleted!",
                     text: "Your item has been removed from the wishlist.",
