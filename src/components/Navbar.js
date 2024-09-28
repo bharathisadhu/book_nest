@@ -25,7 +25,19 @@ const Navbar = () => {
 
   useEffect(() => {
     updateWishlistCount();
-    // Optionally, add an event listener here if you want to update in real-time when the local storage changes
+
+    // Listen for storage changes
+    const handleStorageChange = (event) => {
+      if (event.key === 'bookmark') {
+        updateWishlistCount();
+      }
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+    };
   }, []);
 
   const toggleSidebar = () => {
