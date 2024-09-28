@@ -16,17 +16,17 @@ const Navbar = () => {
   const { data: session } = useSession();
   const pathname = usePathname();
 
-  const [bookmarkCount, setBookmarkCount] = useState(0);
+  const [wishlistCount, setwishlistCount] = useState(0);
 
   useEffect(() => {
     // Fetch the initial bookmark count from localStorage
     const existingBookmarks = JSON.parse(localStorage.getItem('bookmark')) || [];
-    setBookmarkCount(existingBookmarks.length);
+    setwishlistCount(existingBookmarks.length);
 
     // Event listener for wishlist updates
     const handleWishlistUpdate = () => {
       const updatedBookmarks = JSON.parse(localStorage.getItem('bookmark')) || [];
-      setBookmarkCount(updatedBookmarks.length);
+      setwishlistCount(updatedBookmarks.length);
     };
 
     window.addEventListener('wishlistUpdated', handleWishlistUpdate);
