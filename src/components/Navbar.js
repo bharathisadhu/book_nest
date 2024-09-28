@@ -16,9 +16,8 @@ const Navbar = () => {
   const { data: session } = useSession();
   const pathname = usePathname();
 
-  const [wishlistCount, setWishlistCount] = useState(0); 
+  const [wishlistCount, setWishlistCount] = useState(0);
 
- 
   const updateWishlistCount = () => {
     const storedWish = JSON.parse(localStorage.getItem('bookmark'));
     setWishlistCount(storedWish ? storedWish.length : 0);
@@ -26,6 +25,7 @@ const Navbar = () => {
 
   useEffect(() => {
     updateWishlistCount();
+    // Optionally, add an event listener here if you want to update in real-time when the local storage changes
   }, []);
 
   const toggleSidebar = () => {
@@ -77,11 +77,11 @@ const Navbar = () => {
       <div className="navbar-end hidden lg:flex relative">
         <Link href="/wishlist" className="btn btn-ghost text-xl relative">
           <FaHeart className="text-2xl" />
-            {wishlistCount > 0 && (
-              <span className="absolute top-0 right-0 bg-red-500 text-white rounded-full px-1 text-xs transform translate-x-1 -translate-y-1">
-            {wishlistCount}
-              </span>
-            )}
+          {wishlistCount > 0 && (
+            <span className="absolute top-0 right-0 bg-red-500 text-white rounded-full px-1 text-xs transform translate-x-1 -translate-y-1">
+              {wishlistCount}
+            </span>
+          )}
         </Link>
         <button className="btn btn-ghost text-xl">
           <CiSearch className="text-2xl" />
@@ -168,15 +168,16 @@ const Navbar = () => {
               ))}
             </ul>
 
-            <div className="mt-8">
-              <button className="btn btn-ghost text-xl mb-3 relative">
+            {/* Buttons in a single row */}
+            <div className="mt-8 flex justify-around">
+              <Link href="/wishlist" className="btn btn-ghost text-xl relative">
                 <FaHeart className="text-2xl" />
-                  {wishlistCount > 0 && (
-                    <span className="absolute top-0 right-0 bg-red-500 text-white rounded-full px-1 text-xs transform translate-x-1 -translate-y-1">
+                {wishlistCount > 0 && (
+                  <span className="absolute top-0 right-0 bg-red-500 text-white rounded-full px-1 text-xs transform translate-x-1 -translate-y-1">
                     {wishlistCount}
-                    </span>
-                  )}
-              </button>
+                  </span>
+                )}
+              </Link>
               <button className="btn btn-ghost text-xl mb-3">
                 <CiSearch className="text-2xl" />
               </button>
@@ -238,6 +239,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
-
-
-
