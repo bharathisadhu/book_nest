@@ -75,18 +75,17 @@ const Navbar = () => {
       </div>
 
       <div className="navbar-end hidden lg:flex relative">
-        <Link href="/wishlist" className="btn btn-ghost text-xl">
+        <Link href="/wishlist" className="btn btn-ghost text-xl relative">
           <FaHeart className="text-2xl" />
-          {wishlistCount > 0 && (
-            <span className="absolute top-0 right-[180px] bg-red-500 text-white rounded-full px-1 text-xs">
-              {wishlistCount}
-            </span>
-          )}
+            {wishlistCount > 0 && (
+              <span className="absolute top-0 right-0 bg-red-500 text-white rounded-full px-1 text-xs transform translate-x-1 -translate-y-1">
+            {wishlistCount}
+              </span>
+            )}
         </Link>
         <button className="btn btn-ghost text-xl">
           <CiSearch className="text-2xl" />
         </button>
-
         {!session?.user ? (
           <Link href="/login">
             <button className="btn btn-ghost text-xl">
@@ -170,13 +169,13 @@ const Navbar = () => {
             </ul>
 
             <div className="mt-8">
-              <button className="btn btn-ghost text-xl mb-3">
+              <button className="btn btn-ghost text-xl mb-3 relative">
                 <FaHeart className="text-2xl" />
-                {wishlistCount > 0 && (
-                  <span className="absolute top-0 right-0 bg-red-500 text-white rounded-full px-1 text-xs">
+                  {wishlistCount > 0 && (
+                    <span className="absolute top-0 right-0 bg-red-500 text-white rounded-full px-1 text-xs transform translate-x-1 -translate-y-1">
                     {wishlistCount}
-                  </span>
-                )}
+                    </span>
+                  )}
               </button>
               <button className="btn btn-ghost text-xl mb-3">
                 <CiSearch className="text-2xl" />
