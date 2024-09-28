@@ -10,39 +10,32 @@ import { useSession, signOut } from "next-auth/react";
 import logo from "../../public/BookNest.png";
 import { usePathname } from "next/navigation";
 
-const useWishlist = () => {
-  const [wishlistCount, setWishlistCount] = useState(0);
-
-  const updateWishlistCount = () => {
-    const storedWish = JSON.parse(localStorage.getItem('bookmark'));
-    setWishlistCount(storedWish ? storedWish.length : 0);
-  };
-
-  useEffect(() => {
-    updateWishlistCount(); // Initialize count
-
-    // Listen for changes in local storage
-    const handleStorageChange = () => {
-      updateWishlistCount();
-    };
-
-    window.addEventListener('wishlistUpdated', handleWishlistUpdate);
-
-    return () => {
-      window.removeEventListener('wishlistUpdated', handleWishlistUpdate);
-    };
-  }, []);
-
-  return [wishlistCount, updateWishlistCount];
-};
-
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const { data: session } = useSession();
   const pathname = usePathname();
 
-  const [wishlistCount, updateWishlistCount] = useWishlist(); // Use custom hook
+  const [bookmarkCount, setBookmarkCount] = useState(0);
+
+  useEffect(() => {
+    // Fetch the initial bookmark count from localStorage
+    const existingBookmarks = JSON.parse(localStorage.getItem('bookmark')) || [];
+    setBookmarkCount(existingBookmarks.length);
+
+    // Event listener for wishlist updates
+    const handleWishlistUpdate = () => {
+      const updatedBookmarks = JSON.parse(localStorage.getItem('bookmark')) || [];
+      setBookmarkCount(updatedBookmarks.length);
+    };
+
+    window.addEventListener('wishlistUpdated', handleWishlistUpdate);
+
+    // Clean up the event listener on component unmount
+    return () => {
+      window.removeEventListener('wishlistUpdated', handleWishlistUpdate);
+    };
+  }, []);
 
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
