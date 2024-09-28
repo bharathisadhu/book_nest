@@ -153,8 +153,7 @@ const Page = () => {
                 setWishStorage(updatedWishStorage);
                 setCartNum(updatedWishStorage.length);
 
-                // Dispatch event to notify other components
-                window.dispatchEvent(new Event('wishlistUpdated'));
+                window.dispatchEvent(new Event('wishlistUpdated'));       
 
                 Swal.fire({
                     title: "Deleted!",
@@ -182,7 +181,7 @@ const Page = () => {
                         </thead>
                         <tbody className="whitespace-nowrap divide-y">
                             {wishStorage.map((c) => (
-                                <tr key={c.id}>
+                                <tr key={c.id} className="hover:bg-gray-100 transition">
                                     <td className="px-2 py-4">
                                         <div className="flex items-center gap-4 w-max">
                                             <div className="h-32 shrink-0">
