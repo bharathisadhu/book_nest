@@ -10,12 +10,7 @@ import { useSession, signOut } from "next-auth/react";
 import logo from "../../public/BookNest.png";
 import { usePathname } from "next/navigation";
 
-const Navbar = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const { data: session } = useSession();
-  const pathname = usePathname();
-
+const useWishlist = () => {
   const [wishlistCount, setWishlistCount] = useState(0);
 
   const updateWishlistCount = () => {
@@ -24,13 +19,11 @@ const Navbar = () => {
   };
 
   useEffect(() => {
-    updateWishlistCount();
+    updateWishlistCount(); // Initialize count
 
-    // Listen for storage changes
-    const handleStorageChange = (event) => {
-      if (event.key === 'bookmark') {
-        updateWishlistCount();
-      }
+    // Listen for changes in local storage
+    const handleStorageChange = () => {
+      updateWishlistCount();
     };
 
     window.addEventListener('storage', handleStorageChange);
@@ -39,6 +32,17 @@ const Navbar = () => {
       window.removeEventListener('storage', handleStorageChange);
     };
   }, []);
+
+  return [wishlistCount, updateWishlistCount];
+};
+
+const Navbar = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const { data: session } = useSession();
+  const pathname = usePathname();
+
+  const [wishlistCount, updateWishlistCount] = useWishlist(); // Use custom hook
 
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
