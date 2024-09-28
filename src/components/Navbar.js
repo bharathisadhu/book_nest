@@ -18,6 +18,7 @@ const Navbar = () => {
 
   const [wishlistCount, setWishlistCount] = useState(0); 
 
+ 
   const updateWishlistCount = () => {
     const storedWish = JSON.parse(localStorage.getItem('bookmark'));
     setWishlistCount(storedWish ? storedWish.length : 0);
@@ -76,11 +77,11 @@ const Navbar = () => {
       <div className="navbar-end hidden lg:flex relative">
         <Link href="/wishlist" className="btn btn-ghost text-xl relative">
           <FaHeart className="text-2xl" />
-          {wishlistCount > 0 && (
-            <span className="absolute top-0 right-0 bg-red-500 text-white rounded-full px-1 text-xs transform translate-x-1 -translate-y-1">
-              {wishlistCount}
-            </span>
-          )}
+            {wishlistCount > 0 && (
+              <span className="absolute top-0 right-0 bg-red-500 text-white rounded-full px-1 text-xs transform translate-x-1 -translate-y-1">
+            {wishlistCount}
+              </span>
+            )}
         </Link>
         <button className="btn btn-ghost text-xl">
           <CiSearch className="text-2xl" />
@@ -135,49 +136,6 @@ const Navbar = () => {
             className="w-[120px] h-auto"
           />
         </Link>
-
-        {/* Mobile icons */}
-        <div className="flex items-center gap-x-4">
-          <Link href="/wishlist" className="btn btn-ghost text-xl relative">
-            <FaHeart className="text-2xl" />
-            {wishlistCount > 0 && (
-              <span className="absolute top-0 right-0 bg-red-500 text-white rounded-full px-1 text-xs transform translate-x-1 -translate-y-1">
-                {wishlistCount}
-              </span>
-            )}
-          </Link>
-
-          <button className="btn btn-ghost text-xl">
-            <CiSearch className="text-2xl" />
-          </button>
-
-          {!session?.user ? (
-            <Link href="/login">
-              <button className="btn btn-ghost text-xl">
-                <MdAccountCircle className="text-2xl" />
-              </button>
-            </Link>
-          ) : (
-            <button className="text-xl">
-              {session.user.image || session.user.photo ? (
-                <Image
-                  src={session.user.image || session.user.photo}
-                  alt="User Image"
-                  width={40}
-                  height={40}
-                  className="rounded-full"
-                />
-              ) : (
-                <MdAccountCircle className="text-2xl" />
-              )}
-            </button>
-          )}
-
-          <button className="btn btn-ghost text-xl">
-            <FaShoppingCart className="text-2xl" />
-          </button>
-        </div>
-
         <button className="btn btn-ghost text-xl" onClick={toggleSidebar}>
           <RxHamburgerMenu className="text-2xl" />
         </button>
@@ -213,11 +171,11 @@ const Navbar = () => {
             <div className="mt-8">
               <button className="btn btn-ghost text-xl mb-3 relative">
                 <FaHeart className="text-2xl" />
-                {wishlistCount > 0 && (
-                  <span className="absolute top-0 right-0 bg-red-500 text-white rounded-full px-1 text-xs transform translate-x-1 -translate-y-1">
+                  {wishlistCount > 0 && (
+                    <span className="absolute top-0 right-0 bg-red-500 text-white rounded-full px-1 text-xs transform translate-x-1 -translate-y-1">
                     {wishlistCount}
-                  </span>
-                )}
+                    </span>
+                  )}
               </button>
               <button className="btn btn-ghost text-xl mb-3">
                 <CiSearch className="text-2xl" />
@@ -246,9 +204,19 @@ const Navbar = () => {
                     )}
                   </button>
                   {isDropdownOpen && (
-                    <div className="absolute right-0 mt-2 py-2 w-48 bg-white border rounded-md shadow-xl z-20">
+                    <div className="absolute left-0 mt-2 py-2 w-full bg-white border rounded-md shadow-xl z-20">
+                      <Link
+                        href="/profile"
+                        className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
+                        onClick={toggleSidebar}
+                      >
+                        Profile
+                      </Link>
                       <button
-                        onClick={() => signOut()}
+                        onClick={() => {
+                          signOut();
+                          toggleSidebar();
+                        }}
                         className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-100"
                       >
                         Logout
@@ -258,7 +226,7 @@ const Navbar = () => {
                 </div>
               )}
 
-              <button className="btn btn-ghost text-xl mb-3">
+              <button className="btn btn-ghost text-xl">
                 <FaShoppingCart className="text-2xl" />
               </button>
             </div>
@@ -270,3 +238,6 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
+
+
