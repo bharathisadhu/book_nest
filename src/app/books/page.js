@@ -24,7 +24,7 @@ const BooksPage = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch("/popular-data.json");
+      // const response = await fetch("/popular-data.json");
       const response = await fetch("https://booknest-server-one.vercel.app/api/books");
       const data = await response.json();
       setBooks(data);
