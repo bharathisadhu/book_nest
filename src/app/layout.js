@@ -18,7 +18,7 @@ const geistMono = localFont({
 export const metadata = {
   title: "BookNest",
   description: "Read for Peace",
-  favicon: "/BookNest.png",
+  favicon: "BookNest.png",
 };
 
 export default function RootLayout({ children }) {
