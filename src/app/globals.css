@@ -36,4 +36,37 @@
 }
 
 
+.error-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f8f9fa;
+  text-align: center;
+}
+.error-title {
+  font-size: 6rem;
+  font-weight: 700;
+  color: #289305;
+}
+.error-message {
+  font-size: 1.5rem;
+  margin-top: -20px;
+  color: #333;
+}
+.home-link {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #db3434;
+  color: white;
+  border-radius: 5px;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+.home-link:hover {
+  background-color: #2980b9;
+}
+
+
 

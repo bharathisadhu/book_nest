@@ -9,8 +9,14 @@ import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Swal from "sweetalert2";
+import Banner from "@/components/share/banner";
 
 export default function Login() {
+  const data = {
+    title: 'Login',
+    linkName: 'Home',
+    
+  };
   const {
     register,
     handleSubmit,
@@ -42,7 +48,7 @@ export default function Login() {
       });
     }
   };
-
+  
   const handleSocialLogin = (provider) => {
     const resp = signIn(provider, {
       redirect: true,
@@ -60,12 +66,14 @@ export default function Login() {
       });
     }
   };
-
+  
   return (
     <main>
       {/* Login section */}
+
+
       <div className="flex items-center justify-center p-6">
-        <div className="flex flex-col lg:flex-row h-full w-full overflow-hidden rounded-xl shadow-md border">
+        <div className="flex flex-col lg:flex-row h-full w-full overflow-hidden rounded-xl">
           {/* register design side  */}
           <div className="relative w-full h-[96] items-center justify-center bg-[#F65D4E] md:flex ">
             <div className="space-y-2 text-center">

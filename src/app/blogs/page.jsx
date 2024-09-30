@@ -7,6 +7,11 @@ import { FaSearch } from "react-icons/fa";
 import { IoArrowForwardCircleOutline } from "react-icons/io5";
 import Link from "next/link";
 const BlogsPage = () => {
+  const bannerData = {
+    title: 'Blogs',
+    linkName: 'Home',
+    
+  };
   return (
     <>
       <div className="flex flex-col lg:flex-row items-center justify-center lg:justify-between p-2 bg-[#F0F0F0] py-10">

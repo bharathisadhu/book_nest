@@ -23,6 +23,14 @@ const BooksPage = () => {
   const itemsPerPage = 10;
 
   useEffect(() => {
+
+
+    const data = {
+      title: 'Books',
+      linkName: 'Home',
+      
+    };
+
     const fetchData = async () => {
       const response = await fetch("/popular-data.json");
       // const response = await fetch("https://booknest-server-one.vercel.app/api/books");
@@ -122,6 +130,7 @@ const BooksPage = () => {
   };
 
   return (
+    <>
     <div>
       {/* Books banner section */}
       <div className="flex flex-col lg:flex-row items-center justify-center lg:justify-between p-2 bg-[#F0F0F0] py-10">
@@ -408,6 +417,8 @@ const BooksPage = () => {
         </div>
       )}
     </div>
+    <Footer/>
+    </>
   );
 };
 

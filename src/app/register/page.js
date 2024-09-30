@@ -7,8 +7,14 @@ import Marquee from "react-fast-marquee";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
 import { signIn } from "next-auth/react";
+import Banner from "@/components/share/banner";
 
 export default function Register() {
+  const data = {
+    title: 'Register',
+    linkName: 'Home',
+    
+  };
   const {
     register,
     handleSubmit,
