@@ -13,7 +13,7 @@ import PopularBooks from "@/components/PopularBooks";
 export default function Home() {
   return (
     <>
-      <Navbar />
+      {/* <Navbar /> */}
       <Banner />
       <Category></Category>
       <Discount></Discount>
@@ -23,7 +23,7 @@ export default function Home() {
       <Community />
       <Blogs />
       <Analytics />
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 }

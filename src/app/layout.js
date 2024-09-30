@@ -1,6 +1,8 @@
 import localFont from "next/font/local";
 import "./globals.css";
 import AuthProvider from "@/services/AuthProvider";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -16,7 +18,7 @@ const geistMono = localFont({
 export const metadata = {
   title: "BookNest",
   description: "Read for Peace",
-  href: "BookNest.png",
+  favicon: "BookNest.png",
 };
 
 export default function RootLayout({ children }) {
@@ -24,7 +26,9 @@ export default function RootLayout({ children }) {
     <html lang="en" data-theme="light">
       <body>
         <AuthProvider>
+          <Navbar></Navbar>
           <div className="container mx-auto">{children}</div>
+          <Footer></Footer>
         </AuthProvider>
       </body>
     </html>

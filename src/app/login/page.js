@@ -26,9 +26,9 @@ export default function Login() {
   const session = getSession();
 
   const onSubmit = async (e) => {
-    e.preventDefault();
-    const email = e.target.email.value;
-    const password = e.target.password.value;
+    const email = e.email;
+    const password = e.password;
+ 
     const resp = await signIn("credentials", {
       email,
       password,
@@ -69,14 +69,6 @@ export default function Login() {
   
   return (
     <main>
-      {/* Navbar section */}
-      <Navbar></Navbar>
-
-      <Banner
-        title={data.title}
-        linkName={data.linkName}
-    />
-    <div className="mb-10 lg:mb-25 md:mb-20"></div>
       {/* Login section */}
 
 
@@ -189,9 +181,6 @@ export default function Login() {
           </div>
         </div>
       </div>
-      {/* Footer section */}
-      <div className="mb-10 lg:mb-25 md:mb-20"></div>
-      <Footer></Footer>
     </main>
   );
 }

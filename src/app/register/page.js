@@ -23,7 +23,7 @@ export default function Register() {
   } = useForm();
 
   const onSubmit = async (newUser) => {
-    const { name, photo, email, password } = newUser;
+    const { name, image, email, password } = newUser;
     // const res = await fetch("http://localhost:3000/register/api", {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/register/api`, {
       method: "POST",
@@ -57,12 +57,6 @@ export default function Register() {
 
   return (
     <main>
-      <Navbar />
-      <Banner
-        title={data.title}
-        linkName={data.linkName}
-    />
-    <div className="mb-10 lg:mb-25 md:mb-20"></div>
       <div className="flex items-center justify-center p-6">
         <div className="flex flex-col lg:flex-row h-full w-full overflow-hidden rounded-xl shadow-md  border">
           {/* Register design side */}
@@ -110,15 +104,15 @@ export default function Register() {
                 <span className="text-red-600">Name is required</span>
               )}
               <input
-                {...register("image", { required: true })}
+                {...register("image", { required: false })}
                 className="w-[100%] rounded-lg border px-6 py-2 focus:outline-none focus:ring-2 focus:ring-[#F65D4E]/50"
                 type="text"
-                placeholder="Photo URL"
+                placeholder="Image URL"
                 name="image"
               />
-              {errors.photo && (
+              {errors.image && (
                 <span className="text-red-600">
-                  Please provide your photo URL
+                  Please provide your image URL
                 </span>
               )}
               <input
@@ -159,9 +153,6 @@ export default function Register() {
           </div>
         </div>
       </div>
-
-      <div className="mb-10 lg:mb-25 md:mb-20"></div>
-      <Footer />
     </main>
   );
 }

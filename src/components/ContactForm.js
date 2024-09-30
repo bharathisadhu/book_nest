@@ -1,8 +1,9 @@
 "use client";
 
-import { useForm,ValidationError } from '@formspree/react';
+import {useForm, ValidationError } from '@formspree/react';
 import Link from 'next/link';
 import React from 'react';
+// import { useForm } from 'react-hook-form';
 import { IoIosArrowForward } from 'react-icons/io';
 
 const ContactForm = () => {

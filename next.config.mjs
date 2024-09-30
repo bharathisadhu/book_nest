@@ -38,6 +38,9 @@ const nextConfig = {
       "i.ibb.co.com",
       "upload.wikimedia.org",
       "lh3.googleusercontent.com",
+      "avatars.githubusercontent.com",
+      "via.placeholder.com",
+      "*",
     ],
   },
 };
