@@ -24,10 +24,10 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" data-theme="light">
-      <body>
+      <body className="popins">
         <AuthProvider>
           <Navbar></Navbar>
-          <div className="container mx-auto">{children}</div>
+          <div className="container mx-auto ">{children}</div>
           <Footer></Footer>
         </AuthProvider>
       </body>

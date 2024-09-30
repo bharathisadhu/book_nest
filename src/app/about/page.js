@@ -1,10 +1,8 @@
 "use client";
 
-import Navbar from "@/components/Navbar";
 import Image from "next/image";
 import { GoArrowRight } from "react-icons/go";
 import Link from "next/link";
-import Footer from "@/components/Footer";
 
 export default function AboutUs() {
   return (

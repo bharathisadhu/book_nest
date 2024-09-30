@@ -21,6 +21,7 @@ const BooksPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false); // State for the mobile drawer
   const itemsPerPage = 10;
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
   useEffect(() => {
 
@@ -32,19 +33,33 @@ const BooksPage = () => {
     };
 
     const fetchData = async () => {
-      const response = await fetch("/popular-data.json");
-      // const response = await fetch("https://booknest-server-one.vercel.app/api/books");
-      const data = await response.json();
-      setBooks(data);
-      setFilteredBooks(data);
+      try {
+        const response = await fetch(`${baseUrl}/api/books`);
+        const data = await response.json();
 
-      // Extract unique categories and authors
-      const uniqueCategories = [...new Set(data.map((book) => book.category))];
-      const uniqueAuthors = [...new Set(data.map((book) => book.author))];
+        if (Array.isArray(data)) {
+          setBooks(data);
+          setFilteredBooks(data);
 
-      setCategories(uniqueCategories);
-      setAuthors(uniqueAuthors);
+          // Extract unique categories and authors
+          const uniqueCategories = [
+            ...new Set(data.map((book) => book.category)),
+          ];
+          const uniqueAuthors = [...new Set(data.map((book) => book.author))];
+
+          setCategories(uniqueCategories);
+          setAuthors(uniqueAuthors);
+        } else {
+          // If the response is not an array, log a warning and set books to an empty array
+          console.warn("Expected an array of books, but got:", data);
+          setBooks([]);
+          setFilteredBooks([]);
+        }
+      } catch (error) {
+        console.error("Failed to fetch books:", error);
+      }
     };
+
     fetchData();
   }, []);
 
@@ -95,21 +110,29 @@ const BooksPage = () => {
 
   const sorting = (data) => {
     if (data === "LowToHigh") {
-      const priceLowToHigh = [...books].sort((a, b) => a.price - b.price);
-      setBooks(priceLowToHigh);
+      const priceLowToHigh = [...filteredBooks].sort(
+        (a, b) => a.price - b.price
+      );
+      setFilteredBooks(priceLowToHigh);
     }
     if (data === "HighToLow") {
-      const priceHighToLow = [...books].sort((a, b) => b.price - a.price);
-      setBooks(priceHighToLow);
+      const priceHighToLow = [...filteredBooks].sort(
+        (a, b) => b.price - a.price
+      );
+      setFilteredBooks(priceHighToLow);
     }
     if (data === "topRatings") {
-      const TopRatings = [...books].sort((a, b) => b.ratings - a.ratings);
-      setBooks(TopRatings);
+      const TopRatings = [...filteredBooks].sort(
+        (a, b) => b.ratings - a.ratings
+      );
+      setFilteredBooks(TopRatings);
     }
 
     if (data === "lowRatings") {
-      const LowRatings = [...books].sort((a, b) => a.ratings - b.ratings);
-      setBooks(LowRatings);
+      const LowRatings = [...filteredBooks].sort(
+        (a, b) => a.ratings - b.ratings
+      );
+      setFilteredBooks(LowRatings);
     }
   };
 
