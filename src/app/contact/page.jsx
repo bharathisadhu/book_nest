@@ -10,6 +10,12 @@ import Link from "next/link";
 import ContactForm from "@/components/ContactForm";
 
 const ContactPage = () => {
+  const bannerData = {
+    title: 'Contact',
+    linkName: 'Home',
+    
+  };
+  
   return (
     <>
       <div className="flex flex-col lg:flex-row items-center justify-center lg:justify-between p-2 bg-[#F0F0F0] py-10">
