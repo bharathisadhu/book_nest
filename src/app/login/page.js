@@ -1,15 +1,11 @@
 "use client";
-
 import Marquee from "react-fast-marquee";
 import { useForm } from "react-hook-form";
 import { FaGithub } from "react-icons/fa"; // Import GitHub Icon
 import { signIn, getSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import Swal from "sweetalert2";
-import Banner from "@/components/share/banner";
 
 export default function Login() {
   const data = {
@@ -70,8 +66,6 @@ export default function Login() {
   return (
     <main>
       {/* Login section */}
-
-
       <div className="flex items-center justify-center p-6">
         <div className="flex flex-col lg:flex-row h-full w-full overflow-hidden rounded-xl">
           {/* register design side  */}
