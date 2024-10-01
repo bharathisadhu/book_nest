@@ -440,7 +440,7 @@ const BooksPage = () => {
         </div>
       )}
     </div>
-    // <Footer/>
+
     </>
   );
 };
