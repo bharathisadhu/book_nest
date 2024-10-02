@@ -1,4 +1,4 @@
-"use client"
+
 import axios from 'axios';
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
@@ -26,6 +26,7 @@ const Page = () => {
 
         fetchWishlist();
     }, []);
+
 
     const handleRemove = async (id) => {
         const result = await Swal.fire({
@@ -137,3 +138,5 @@ const Page = () => {
 };
 
 export default Page;
+
+
