@@ -1,4 +1,6 @@
+
 "use client";
+
 
 import axios from 'axios';
 import Image from 'next/image';
@@ -7,7 +9,9 @@ import { CiStar } from 'react-icons/ci';
 import Swal from 'sweetalert2';
 
 const Page = () => {
+
     const [wishListBook, setWishListBook] = useState({ wishList: [] });
+
 
     // Fetch wishlist from API
     useEffect(() => {
@@ -27,6 +31,7 @@ const Page = () => {
 
         fetchWishlist();
     }, []);
+
 
     const handleRemove = async (id) => {
         const result = await Swal.fire({
@@ -138,3 +143,4 @@ const Page = () => {
 
 
 export default Page;
+
