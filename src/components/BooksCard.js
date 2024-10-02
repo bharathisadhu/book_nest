@@ -2,28 +2,52 @@ import { useState } from "react";
 import axios from "axios";
 import Image from "next/image";
 import { CiStar } from "react-icons/ci";
-import Swal from 'sweetalert2';
+import Swal from "sweetalert2";
+import { useSession } from "next-auth/react";
 
 export default function BooksCard({ book }) {
   const { name, image, price, category, ratings, _id } = book;
   const [isBookmarked, setIsBookmarked] = useState(false);
 
+  // Use the session from next-auth to check if the user is logged in
+  const { data: session } = useSession();
+
   const addToBookmark = async () => {
+    // Check if the user is authenticated
+    if (!session) {
+      Swal.fire({
+        icon: "info",
+        title: "Please log in",
+        text: "You need to log in to add items to your bookmarks.",
+        showCancelButton: true,
+        confirmButtonText: "Login",
+        cancelButtonText: "Cancel",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // Redirect to login page if the user clicks "Login"
+          window.location.href = "/login"; // Adjust this to your login route
+        }
+      });
+      return;
+    }
+
+    // Check if already bookmarked
     if (isBookmarked) {
       Swal.fire({
-        icon: 'info',
-        title: 'Already Bookmarked',
+        icon: "info",
+        title: "Already Bookmarked",
         text: `${name} is already in your bookmarks!`,
       });
       return;
     }
 
+    // Try to add the book to the wishlist/bookmarks
     try {
       const response = await axios.post(`/api/wishlist/${_id}`, {
         name,
-        description: book.description || '',
+        description: book.description || "",
         image,
-        author: book.author || '',
+        author: book.author || "",
         price,
         rating: ratings,
         category,
@@ -32,27 +56,28 @@ export default function BooksCard({ book }) {
       if (response.status === 201) {
         setIsBookmarked(true);
         Swal.fire({
-          position: 'top-end',
-          icon: 'success',
+          position: "top-end",
+          icon: "success",
           title: `${name} added to bookmarks!`,
           showConfirmButton: false,
           timer: 1500,
         });
       }
     } catch (error) {
-      console.error('Error adding to bookmark:', error);
-      const message = error.response?.data?.message || 'Failed to add to bookmarks!';
+      console.error("Error adding to bookmark:", error);
+      const message =
+        error.response?.data?.message || "Failed to add to bookmarks!";
 
       if (error.response?.status === 409) {
         Swal.fire({
-          icon: 'info',
-          title: 'Already Bookmarked',
+          icon: "info",
+          title: "Already Bookmarked",
           text: message,
         });
       } else {
         Swal.fire({
-          icon: 'error',
-          title: 'Error',
+          icon: "error",
+          title: "Error",
           text: message,
         });
       }
