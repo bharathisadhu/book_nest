@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import axios from "axios";
 import Image from "next/image";
 import { CiStar } from "react-icons/ci";
@@ -8,41 +8,25 @@ export default function BooksCard({ book }) {
   const { name, image, price, category, ratings, _id } = book;
   const [isBookmarked, setIsBookmarked] = useState(false);
 
-  useEffect(() => {
-    const checkIfBookmarked = async () => {
-      try {
-        const response = await axios.get('/api/wishlist'); 
-
-        // Check if the current book is in the wishlist
-        const isInWishlist = wishlist.some(item => item._id === _id);
-        setIsBookmarked(isInWishlist);
-      } catch (error) {
-        console.error('Error fetching wishlist:', error);
-      }
-    };
-
-    checkIfBookmarked();
-  }, [_id]);
-
-  const addToBookmark = async (book) => {
+  const addToBookmark = async () => {
     if (isBookmarked) {
       Swal.fire({
         icon: 'info',
         title: 'Already Bookmarked',
-        text: `${book.name} is already in your bookmarks!`,
+        text: `${name} is already in your bookmarks!`,
       });
       return;
     }
 
     try {
       const response = await axios.post(`/api/wishlist/${_id}`, {
-        name: book.name,
+        name,
         description: book.description || '',
-        image: book.image,
+        image,
         author: book.author || '',
-        price: book.price,
-        rating: book.ratings,
-        category: book.category,
+        price,
+        rating: ratings,
+        category,
       });
 
       if (response.status === 201) {
@@ -50,7 +34,7 @@ export default function BooksCard({ book }) {
         Swal.fire({
           position: 'top-end',
           icon: 'success',
-          title: `${book.name} added to bookmarks!`,
+          title: `${name} added to bookmarks!`,
           showConfirmButton: false,
           timer: 1500,
         });
@@ -58,7 +42,7 @@ export default function BooksCard({ book }) {
     } catch (error) {
       console.error('Error adding to bookmark:', error);
       const message = error.response?.data?.message || 'Failed to add to bookmarks!';
-      
+
       if (error.response?.status === 409) {
         Swal.fire({
           icon: 'info',
@@ -112,7 +96,7 @@ export default function BooksCard({ book }) {
           </h3>
 
           <div className="bg-pink-100 w-10 h-10 md:w-12 md:h-12 flex items-center justify-center rounded-full cursor-pointer hover:bg-pink-200 transition duration-200">
-            <button onClick={() => addToBookmark(book)}>
+            <button onClick={addToBookmark}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="20px"
@@ -128,4 +112,3 @@ export default function BooksCard({ book }) {
     </div>
   );
 }
-

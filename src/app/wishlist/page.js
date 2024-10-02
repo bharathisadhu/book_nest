@@ -1,5 +1,4 @@
-"use client";
-
+"use client"
 import axios from 'axios';
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
@@ -7,9 +6,9 @@ import { CiStar } from 'react-icons/ci';
 import Swal from 'sweetalert2';
 
 const Page = () => {
+
     const [wishListBook, setWishListBook] = useState({ wishList: [] });
 
-    // Fetch wishlist from API
     useEffect(() => {
         const fetchWishlist = async () => {
             try {
@@ -134,7 +133,7 @@ const Page = () => {
             </div>
         </div>
     );
-};
 
+};
 
 export default Page;
