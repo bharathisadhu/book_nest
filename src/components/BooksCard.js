@@ -3,35 +3,12 @@ import axios from "axios";
 import Image from "next/image";
 import { CiStar } from "react-icons/ci";
 import Swal from "sweetalert2";
-import { useSession } from "next-auth/react";
 
 export default function BooksCard({ book }) {
   const { name, image, price, category, ratings, _id } = book;
   const [isBookmarked, setIsBookmarked] = useState(false);
 
-  // Use the session from next-auth to check if the user is logged in
-  // const { data: session } = useSession();
-
-  // const addToBookmark = async () => {
-  //   // Check if the user is authenticated
-  //   if (!session) {
-  //     Swal.fire({
-  //       icon: "info",
-  //       title: "Please log in",
-  //       text: "You need to log in to add items to your bookmarks.",
-  //       showCancelButton: true,
-  //       confirmButtonText: "Login",
-  //       cancelButtonText: "Cancel",
-  //     }).then((result) => {
-  //       if (result.isConfirmed) {
-  //         // Redirect to login page if the user clicks "Login"
-  //         window.location.href = "/login"; // Adjust this to your login route
-  //       }
-  //     });
-  //     return;
-  //   }
-
-    // Check if already bookmarked
+  const addToBookmark = async () => {
     if (isBookmarked) {
       Swal.fire({
         icon: "info",
@@ -41,7 +18,6 @@ export default function BooksCard({ book }) {
       return;
     }
 
-    // Try to add the book to the wishlist/bookmarks
     try {
       const response = await axios.post(`/api/wishlist/${_id}`, {
         name,
@@ -85,7 +61,7 @@ export default function BooksCard({ book }) {
   };
 
   return (
-   <div className="transition-shadow h-fit duration-300 w-full font-sans overflow-hidden mx-auto mt-4 pl-4 pt-4 rounded-lg shadow-lg border border-gray-200">
+    <div className="transition-shadow h-fit duration-300 w-full font-sans overflow-hidden mx-auto mt-4 pl-4 pt-4 rounded-lg shadow-lg border border-gray-200">
       {/* Full Height Image */}
       <div className="w-full h-48 relative">
         <Image
