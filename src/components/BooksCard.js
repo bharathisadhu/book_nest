@@ -10,26 +10,26 @@ export default function BooksCard({ book }) {
   const [isBookmarked, setIsBookmarked] = useState(false);
 
   // Use the session from next-auth to check if the user is logged in
-  const { data: session } = useSession();
+  // const { data: session } = useSession();
 
-  const addToBookmark = async () => {
-    // Check if the user is authenticated
-    if (!session) {
-      Swal.fire({
-        icon: "info",
-        title: "Please log in",
-        text: "You need to log in to add items to your bookmarks.",
-        showCancelButton: true,
-        confirmButtonText: "Login",
-        cancelButtonText: "Cancel",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          // Redirect to login page if the user clicks "Login"
-          window.location.href = "/login"; // Adjust this to your login route
-        }
-      });
-      return;
-    }
+  // const addToBookmark = async () => {
+  //   // Check if the user is authenticated
+  //   if (!session) {
+  //     Swal.fire({
+  //       icon: "info",
+  //       title: "Please log in",
+  //       text: "You need to log in to add items to your bookmarks.",
+  //       showCancelButton: true,
+  //       confirmButtonText: "Login",
+  //       cancelButtonText: "Cancel",
+  //     }).then((result) => {
+  //       if (result.isConfirmed) {
+  //         // Redirect to login page if the user clicks "Login"
+  //         window.location.href = "/login"; // Adjust this to your login route
+  //       }
+  //     });
+  //     return;
+  //   }
 
     // Check if already bookmarked
     if (isBookmarked) {
