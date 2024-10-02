@@ -1,5 +1,5 @@
 "use client"; // Make sure this is a client component
-import { useState, useEffect } from "react"; // Import useEffect
+import { useState, useEffect } from "react"; 
 import { FaShoppingCart, FaHeart } from "react-icons/fa";
 import { MdAccountCircle } from "react-icons/md";
 import { CiSearch } from "react-icons/ci";
@@ -18,24 +18,23 @@ const Navbar = () => {
   const pathname = usePathname();
 
   const [wishlistCount, setWishlistCount] = useState(0);
-  const [wishListBook, setWishListBook] = useState({ wishList: [] });
-
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  
   useEffect(() => {
-    const fetchWishlist = async () => {
+    const fetchWishlistCount = async () => {
       try {
         const response = await axios.get('/api/wishlist');
-        setWishListBook(response.data);
         setWishlistCount(response.data.wishList.length);
       } catch (error) {
         console.error("Error fetching wishlist:", error);
+        setError("Failed to load wishlist count.");
+      } finally {
+        setLoading(false);
       }
     };
 
-    // Fetch wishlist initially
-    fetchWishlist();
-    const intervalId = setInterval(fetchWishlist);
-
-    return () => clearInterval(intervalId);
+    fetchWishlistCount();
   }, []);
 
   const toggleSidebar = () => {
@@ -72,10 +71,7 @@ const Navbar = () => {
             <li key={index}>
               <Link
                 href={navlink.link}
-                className={`${pathname === navlink.link
-                  ? "border-b-2 bg-white border-b-[#F65D4E] rounded-b-lg rounded text-white"
-                  : ""
-                  } px-3 py-2 rounded`}
+                className={`${pathname === navlink.link ? "border-b-2 bg-white border-b-[#F65D4E] rounded-b-lg rounded text-white" : ""} px-3 py-2 rounded`}
               >
                 {navlink.label}
               </Link>
@@ -87,10 +83,16 @@ const Navbar = () => {
       <div className="navbar-end hidden lg:flex relative">
         <Link href="/wishlist" className="btn btn-ghost text-xl relative">
           <FaHeart className="text-2xl" />
-          {wishlistCount > 0 && (
-            <span className="absolute top-0 right-0 bg-red-500 text-white rounded-full px-1 text-xs transform translate-x-1 -translate-y-1">
-              {wishlistCount}
-            </span>
+          {loading ? (
+            <span className="loading-spinner" /> // You can replace this with a spinner or loader component
+          ) : error ? (
+            <span className="text-red-500">!</span> // Or any error indication
+          ) : (
+            wishlistCount > 0 && (
+              <span className="absolute top-0 right-0 bg-red-500 text-white rounded-full px-1 text-xs transform translate-x-1 -translate-y-1">
+                {wishlistCount}
+              </span>
+            )
           )}
         </Link>
         <button className="btn btn-ghost text-xl">
@@ -129,7 +131,6 @@ const Navbar = () => {
             )}
           </div>
         )}
-
         <button className="btn btn-ghost text-xl">
           <FaShoppingCart className="text-2xl" />
         </button>
@@ -155,10 +156,7 @@ const Navbar = () => {
       {isOpen && (
         <div className="fixed inset-0 bg-gray-800 bg-opacity-50 z-40">
           <div className="fixed left-0 top-0 w-3/4 h-full bg-white shadow-lg z-50 p-5">
-            <button
-              className="btn btn-ghost text-xl mb-5"
-              onClick={toggleSidebar}
-            >
+            <button className="btn btn-ghost text-xl mb-5" onClick={toggleSidebar}>
               <RxHamburgerMenu className="text-2xl" />
             </button>
             <ul className="menu flex flex-col gap-4 text-lg">
@@ -166,10 +164,7 @@ const Navbar = () => {
                 <li key={index}>
                   <Link
                     href={navlink.link}
-                    className={`${pathname === navlink.link
-                      ? "bg-blue-500 text-white"
-                      : ""
-                      } block px-3 py-2 rounded hover:bg-blue-300`}
+                    className={`${pathname === navlink.link ? "bg-blue-500 text-white" : ""} block px-3 py-2 rounded hover:bg-blue-300`}
                     onClick={toggleSidebar}
                   >
                     {navlink.label}
@@ -182,10 +177,16 @@ const Navbar = () => {
             <div className="mt-8 flex justify-around">
               <Link href="/wishlist" className="btn btn-ghost text-xl relative">
                 <FaHeart className="text-2xl" />
-                {wishlistCount > 0 && (
-                  <span className="absolute top-0 right-0 bg-red-500 text-white rounded-full px-1 text-xs transform translate-x-1 -translate-y-1">
-                    {wishlistCount}
-                  </span>
+                {loading ? (
+                  <span className="loading-spinner" />
+                ) : error ? (
+                  <span className="text-red-500">!</span>
+                ) : (
+                  wishlistCount > 0 && (
+                    <span className="absolute top-0 right-0 bg-red-500 text-white rounded-full px-1 text-xs transform translate-x-1 -translate-y-1">
+                      {wishlistCount}
+                    </span>
+                  )
                 )}
               </Link>
               <button className="btn btn-ghost text-xl mb-3">
@@ -201,7 +202,7 @@ const Navbar = () => {
                 </Link>
               ) : (
                 <div className="relative">
-                  <button className=" text-xl" onClick={toggleDropdown}>
+                  <button className="text-xl" onClick={toggleDropdown}>
                     {session.user.image || session.user.photo ? (
                       <Image
                         src={session.user.image || session.user.photo}
