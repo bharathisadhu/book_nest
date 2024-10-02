@@ -28,7 +28,42 @@ const Page = () => {
         fetchWishlist();
     }, []);
 
-    console.log(wishListBook.wishList);
+    const handleRemove = async (id) => {
+        const result = await Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+        });
+
+        if (result.isConfirmed) {
+            try {
+                // Make the DELETE request to your API
+                await axios.delete(`/api/wishlist?id=${id}`);
+
+                // Remove the item from the local state
+                const updatedWishList = wishListBook.wishList.filter(item => item._id !== id);
+                setWishListBook({ wishList: updatedWishList });
+
+                // Show success message
+                Swal.fire({
+                    title: "Deleted!",
+                    text: "Your item has been removed from the wishlist.",
+                    icon: "success"
+                });
+            } catch (error) {
+                console.error("Error removing item from wishlist:", error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Failed to remove item from wishlist!',
+                });
+            }
+        }
+    };
 
     return (
         <div className="mb-3">
@@ -75,7 +110,16 @@ const Page = () => {
                                             <h4 className="text-base font-bold text-gray-800">${c.price}</h4>
                                         </td>
                                         <td className="px-2 py-4">
-                                            {/* Uncomment to add a remove button functionality */}
+                                            <button
+                                                type="button"
+                                                className="bg-transparent border flex items-center justify-center w-11 h-10 rounded-lg"
+                                                onClick={() => handleRemove(c._id)}
+                                            >
+                                                <svg xmlns="http://www.w3.org/2000/svg" className="w-4 fill-red-500 inline" viewBox="0 0 24 24">
+                                                    <path d="M19 7a1 1 0 0 0-1 1v11.191A1.92 1.92 0 0 1 15.99 21H8.01A1.92 1.92 0 0 1 6 19.191V8a1 1 0 0 0-2 0v11.191A3.918 3.918 0 0 0 8.01 23h7.98A3.918 3.918 0 0 0 20 19.191V8a1 1 0 0 0-1-1Zm1-3h-4V2a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v2H4a1 1 0 0 0 0 2h16a1 1 0 0 0 0-2ZM10 4V3h4v1Z" />
+                                                    <path d="M11 17v-7a1 1 0 0 0-2 0v7a1 1 0 0 0 2 0Zm4 0v-7a1 1 0 0 0-2 0v7a1 1 0 0 0 2 0Z" />
+                                                </svg>
+                                            </button>
                                         </td>
                                     </tr>
                                 ))
@@ -92,7 +136,9 @@ const Page = () => {
     );
 };
 
+
 export default Page;
+
 
 
 
@@ -118,32 +164,32 @@ export default Page;
 //         setCartNum(initialWish.length);
 //     }, []);
 
-//     const handleRemove = (id) => {
-//         Swal.fire({
-//             title: "Are you sure?",
-//             text: "You won't be able to revert this!",
-//             icon: "warning",
-//             showCancelButton: true,
-//             confirmButtonColor: "#3085d6",
-//             cancelButtonColor: "#d33",
-//             confirmButtonText: "Yes, delete it!"
-//         }).then((result) => {
-//             if (result.isConfirmed) {
-//                 const updatedWishStorage = wishStorage.filter(item => item.id !== id);
-//                 localStorage.setItem('bookmark', JSON.stringify(updatedWishStorage));
-//                 setWishStorage(updatedWishStorage);
-//                 setCartNum(updatedWishStorage.length);
+// const handleRemove = (id) => {
+//     Swal.fire({
+//         title: "Are you sure?",
+//         text: "You won't be able to revert this!",
+//         icon: "warning",
+//         showCancelButton: true,
+//         confirmButtonColor: "#3085d6",
+//         cancelButtonColor: "#d33",
+//         confirmButtonText: "Yes, delete it!"
+//     }).then((result) => {
+//         if (result.isConfirmed) {
+//             const updatedWishStorage = wishStorage.filter(item => item.id !== id);
+//             localStorage.setItem('bookmark', JSON.stringify(updatedWishStorage));
+//             setWishStorage(updatedWishStorage);
+//             setCartNum(updatedWishStorage.length);
 
-//                 window.dispatchEvent(new Event('wishlistUpdated'));
+//             window.dispatchEvent(new Event('wishlistUpdated'));
 
-//                 Swal.fire({
-//                     title: "Deleted!",
-//                     text: "Your item has been removed from the wishlist.",
-//                     icon: "success"
-//                 });
-//             }
-//         });
-//     };
+//             Swal.fire({
+//                 title: "Deleted!",
+//                 text: "Your item has been removed from the wishlist.",
+//                 icon: "success"
+//             });
+//         }
+//     });
+// };
 
 //     return (
 //         <div className="mb-3">

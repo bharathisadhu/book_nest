@@ -10,9 +10,9 @@ export async function GET() {
     return NextResponse.json({ wishList })
 }
 
-// export async function DELETE(request) {
-//     const id = request.nextUrl.searchParams.get("id")
-//     await connectToDatabase()
-//     await WishList.findByIdAndDelete(id)
-//     return NextResponse.json({message: "Book deletd"}, {status: 200})
-// }
+export async function DELETE(request) {
+    const id = request.nextUrl.searchParams.get("id")
+    await connectToDatabase()
+    await WishList.findByIdAndDelete(id)
+    return NextResponse.json({ message: "Book deleted" }, { status: 200 })
+}
