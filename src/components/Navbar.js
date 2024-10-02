@@ -9,6 +9,7 @@ import Link from "next/link";
 import { useSession, signOut } from "next-auth/react";
 import logo from "../../public/BookNest.png";
 import { usePathname } from "next/navigation";
+import axios from "axios";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -16,25 +17,25 @@ const Navbar = () => {
   const { data: session } = useSession();
   const pathname = usePathname();
 
-  const [wishlistCount, setwishlistCount] = useState(0);
+  const [wishlistCount, setWishlistCount] = useState(0);
+  const [wishListBook, setWishListBook] = useState({ wishList: [] });
 
   useEffect(() => {
-    // Fetch the initial bookmark count from localStorage
-    const existingBookmarks = JSON.parse(localStorage.getItem('bookmark')) || [];
-    setwishlistCount(existingBookmarks.length);
-
-    // Event listener for wishlist updates
-    const handleWishlistUpdate = () => {
-      const updatedBookmarks = JSON.parse(localStorage.getItem('bookmark')) || [];
-      setwishlistCount(updatedBookmarks.length);
+    const fetchWishlist = async () => {
+      try {
+        const response = await axios.get('/api/wishlist');
+        setWishListBook(response.data);
+        setWishlistCount(response.data.wishList.length);
+      } catch (error) {
+        console.error("Error fetching wishlist:", error);
+      }
     };
 
-    window.addEventListener('wishlistUpdated', handleWishlistUpdate);
+    // Fetch wishlist initially
+    fetchWishlist();
+    const intervalId = setInterval(fetchWishlist);
 
-    // Clean up the event listener on component unmount
-    return () => {
-      window.removeEventListener('wishlistUpdated', handleWishlistUpdate);
-    };
+    return () => clearInterval(intervalId);
   }, []);
 
   const toggleSidebar = () => {

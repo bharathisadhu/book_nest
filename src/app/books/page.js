@@ -1,8 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import BooksCard from "@/components/BooksCard";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import { GoArrowRight, GoChevronDown } from "react-icons/go";
 import { HiX } from "react-icons/hi"; // for mobile drawer close button
 import Link from "next/link";
@@ -61,7 +59,7 @@ const BooksPage = () => {
     };
 
     fetchData();
-  }, []);
+  }, [baseUrl]);
 
   useEffect(() => {
     let filtered = books;
@@ -446,3 +444,4 @@ const BooksPage = () => {
 };
 
 export default BooksPage;
+
