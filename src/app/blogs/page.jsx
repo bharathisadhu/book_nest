@@ -1,17 +1,99 @@
+"use client"
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import Image from "next/image";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { GoArrowRight } from "react-icons/go";
 import { FaSearch } from "react-icons/fa";
 import { IoArrowForwardCircleOutline } from "react-icons/io5";
 import Link from "next/link";
+import BlogsCard from "@/components/BlogsCard";
 const BlogsPage = () => {
+  const [blogs, setBlogs] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [filteredBlogs, setFilteredBlogs] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+
+
+
+  const itemsPerPage = 4;
+
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+
   const bannerData = {
     title: 'Blogs',
     linkName: 'Home',
     
   };
+  useEffect(() => {
+
+
+    const data = {
+      title: 'Blogs',
+      linkName: 'Home',
+      
+    };
+    
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`${baseUrl}/api/blogs`);
+        const data = await response.json();
+
+        if (Array.isArray(data)) {
+          setBlogs(data);
+          setFilteredBlogs(data);
+      
+
+
+        } else {
+          // If the response is not an array, log a warning and set blogs to an empty array
+          console.warn("Expected an array of Blogs, but got:", data);
+          setBlogs([]);
+          setFilteredBlogs([]);
+          
+        }
+      } catch (error) {
+        console.error("Failed to fetch Blogs:", error);
+      }
+
+
+    };
+
+    fetchData();
+  }, []);
+
+
+
+
+  useEffect(() => {
+    let filtered = blogs;
+
+    if (searchTerm) {
+      filtered = filtered.filter((blog) =>
+        blog.author?.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
+
+    
+
+    setFilteredBlogs(filtered);
+  }, [searchTerm, blogs]);
+
+
+  console.log(blogs);
+   // Pagination logic
+   const totalPages = Math.ceil(filteredBlogs.length / itemsPerPage);
+   const indexOfLastItem = currentPage * itemsPerPage;
+   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+   const currentBooks = filteredBlogs.slice(indexOfFirstItem, indexOfLastItem);
+ 
+   // Handle page change
+   const handlePageChange = (pageNumber) => {
+     setCurrentPage(pageNumber);
+   };
+
+
+
   return (
     <>
       <div className="flex flex-col lg:flex-row items-center justify-center lg:justify-between p-2 bg-[#F0F0F0] py-10">
@@ -30,98 +112,21 @@ const BlogsPage = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Blog Content Section (Spans 2 Columns on Large Screens) */}
           <div className="lg:col-span-2">
-            <div className="rounded-lg  p-6 mb-6">
-              <Image
-                height={540}
-                width={1125}
-                src="https://demo2.pavothemes.com/bookory/wp-content/uploads/2022/11/blog_7-1125x540.jpg"
-                alt="Card Image 1"
-                className="w-full h-auto object-cover border rounded-lg"
-              />
+            
+            {currentBooks.map((blog) => (
+            <BlogsCard key={blog.id} blog={blog} />
+          ))}
 
-              <h3 className="uppercase font-thin my-3">
-                November 14, 2022 By huongdo
-              </h3>
-              <h2 className="text-2xl font-bold mb-4">
-                5 Attractive Bookstore WordPress Themes
-              </h2>
-              <p className="text-gray-600">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-                in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-                nulla pariatur. Excepteur sint occaecat
-              </p>
-              <hr className="mt-5 mb-1 border-t-1 border-gray-300" />
-              <sapn className="flex justify-between">
-                <sapn className="uppercase">
-                  In <span className="text-rose-600">Category Name</span>
-                </sapn>
-                <sapn className="font-semibold">Read More</sapn>
-              </sapn>
-            </div>
 
-            <div className="rounded-lg  p-6 mb-6">
-              <Image
-                height={540}
-                width={1125}
-                src="https://demo2.pavothemes.com/bookory/wp-content/uploads/2022/02/blog_6-1046x540.jpg"
-                alt="Card Image 1"
-                className="w-full h-auto object-cover border rounded-lg"
-              />
-
-              <h3 className="uppercase font-thin my-3">
-                November 14, 2022 By huongdo
-              </h3>
-              <h2 className="text-2xl font-bold mb-4">
-                Behind the Scenes with Author Victoria Aveyard
-              </h2>
-              <p className="text-gray-600">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna lirabe ites
-                ipsum dolor sit amet…
-              </p>
-              <hr className="mt-5 mb-1 border-t-1 border-gray-300" />
-              <sapn className="flex justify-between">
-                <sapn className="uppercase">
-                  In <span className="text-rose-600">Cultural</span>
-                </sapn>
-                <sapn className="font-semibold">Read More</sapn>
-              </sapn>
-            </div>
-
-            <div className="rounded-lg  p-6 mb-6">
-              <Image
-                height={540}
-                width={1125}
-                src="https://demo2.pavothemes.com/bookory/wp-content/uploads/2022/02/blog_5-1125x540.jpg"
-                alt="Card Image 1"
-                className="w-full h-auto object-cover border rounded-lg"
-              />
-
-              <h3 className="uppercase font-thin my-3">
-                November 14, 2022 By admin
-              </h3>
-              <h2 className="text-2xl font-bold mb-4">
-                Oprah’s Latest Book Club Pick is Being Adapted for TV!
-              </h2>
-              <p className="text-gray-600">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna lirabe ites
-                ipsum dolor sit amet…
-              </p>
-              <hr className="mt-5 mb-1 border-t-1 border-gray-300" />
-              <sapn className="flex justify-between">
-                <sapn className="uppercase">
-                  In <span className="text-rose-600">Arts & Literature</span>
-                </sapn>
-                <sapn className="font-semibold">Read More</sapn>
-              </sapn>
-            </div>
+          
 
             {/* Add more blog posts here */}
           </div>
+
+
+          {/* Pagination */}
+      
+
 
           {/* Categories Section (1 Column on Large Screens) */}
           <div className="p-6 hidden lg:block">
@@ -129,11 +134,15 @@ const BlogsPage = () => {
               <h2 className="py-5 pl-10 text-xl font-bold">Search</h2>
               <hr className="border-t-1 border-gray-300" />
               <div className="relative w-full max-w-md mx-auto py-5 px-10">
-                <input
-                  type="text"
-                  className="w-full border border-gray-300 rounded-lg pl-10 pr-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="Search..."
-                />
+               
+
+<input
+              type="text"
+              placeholder="Search for a Author..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full p-2 border border-gray-300 rounded"
+            />
                 <FaSearch className="absolute right-12 top-8 text-gray-400" />
               </div>
             </div>
@@ -276,6 +285,26 @@ const BlogsPage = () => {
             </div>
           </div>
         </div>
+        <div className="flex justify-center my-10">
+        <nav>
+          <ul className="flex">
+            {Array.from({ length: totalPages }, (_, index) => (
+              <li key={index} className="mx-2">
+                <button
+                  className={`px-4 py-2 rounded ${
+                    index + 1 === currentPage
+                      ? "bg-blue-500 text-white"
+                      : "bg-gray-200"
+                  }`}
+                  onClick={() => handlePageChange(index + 1)}
+                >
+                  {index + 1}
+                </button>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      </div>
       </div>
     </>
   );

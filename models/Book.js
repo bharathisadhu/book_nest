@@ -11,9 +11,11 @@ const BookSchema = new mongoose.Schema({
 
 const BlogSchema = new mongoose.Schema({
   title: { type: String, required: true },
+  author:{ type: String, required: true },
   date: { type: String, required: true },
   category: { type: String, required: true },
-  longDescription: { type: String, required: true },
+  shortDescription: { type: String, required: true },
+  content: { type: String, required: true },
 });
 
 const Book = mongoose.models.books || mongoose.model("books", BookSchema);

@@ -40,6 +40,7 @@ const nextConfig = {
       "lh3.googleusercontent.com",
       "avatars.githubusercontent.com",
       "via.placeholder.com",
+      "i.ibb.co.com",
       "*",
     ],
   },

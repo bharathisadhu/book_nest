@@ -31,7 +31,7 @@ const BooksPage = () => {
       linkName: 'Home',
       
     };
-
+    
     const fetchData = async () => {
       try {
         const response = await fetch(`${baseUrl}/api/books`);
