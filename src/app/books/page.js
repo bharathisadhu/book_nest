@@ -22,14 +22,6 @@ const BooksPage = () => {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
   useEffect(() => {
-
-
-    const data = {
-      title: 'Books',
-      linkName: 'Home',
-      
-    };
-
     const fetchData = async () => {
       try {
         const response = await fetch(`${baseUrl}/api/books`);
