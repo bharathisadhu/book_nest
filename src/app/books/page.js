@@ -1,8 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import BooksCard from "@/components/BooksCard";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import { GoArrowRight, GoChevronDown } from "react-icons/go";
 import { HiX } from "react-icons/hi"; // for mobile drawer close button
 import Link from "next/link";
@@ -21,23 +19,47 @@ const BooksPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false); // State for the mobile drawer
   const itemsPerPage = 10;
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
   useEffect(() => {
-    const fetchData = async () => {
-      const response = await fetch("/popular-data.json");
-      const data = await response.json();
-      setBooks(data);
-      setFilteredBooks(data);
 
-      // Extract unique categories and authors
-      const uniqueCategories = [...new Set(data.map((book) => book.category))];
-      const uniqueAuthors = [...new Set(data.map((book) => book.author))];
 
-      setCategories(uniqueCategories);
-      setAuthors(uniqueAuthors);
+    const data = {
+      title: 'Books',
+      linkName: 'Home',
+      
     };
+
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`${baseUrl}/api/books`);
+        const data = await response.json();
+
+        if (Array.isArray(data)) {
+          setBooks(data);
+          setFilteredBooks(data);
+
+          // Extract unique categories and authors
+          const uniqueCategories = [
+            ...new Set(data.map((book) => book.category)),
+          ];
+          const uniqueAuthors = [...new Set(data.map((book) => book.author))];
+
+          setCategories(uniqueCategories);
+          setAuthors(uniqueAuthors);
+        } else {
+          // If the response is not an array, log a warning and set books to an empty array
+          console.warn("Expected an array of books, but got:", data);
+          setBooks([]);
+          setFilteredBooks([]);
+        }
+      } catch (error) {
+        console.error("Failed to fetch books:", error);
+      }
+    };
+
     fetchData();
-  }, []);
+  }, [baseUrl]);
 
   useEffect(() => {
     let filtered = books;
@@ -86,21 +108,29 @@ const BooksPage = () => {
 
   const sorting = (data) => {
     if (data === "LowToHigh") {
-      const priceLowToHigh = [...books].sort((a, b) => a.price - b.price);
-      setBooks(priceLowToHigh);
+      const priceLowToHigh = [...filteredBooks].sort(
+        (a, b) => a.price - b.price
+      );
+      setFilteredBooks(priceLowToHigh);
     }
     if (data === "HighToLow") {
-      const priceHighToLow = [...books].sort((a, b) => b.price - a.price);
-      setBooks(priceHighToLow);
+      const priceHighToLow = [...filteredBooks].sort(
+        (a, b) => b.price - a.price
+      );
+      setFilteredBooks(priceHighToLow);
     }
     if (data === "topRatings") {
-      const TopRatings = [...books].sort((a, b) => b.ratings - a.ratings);
-      setBooks(TopRatings);
+      const TopRatings = [...filteredBooks].sort(
+        (a, b) => b.ratings - a.ratings
+      );
+      setFilteredBooks(TopRatings);
     }
 
     if (data === "lowRatings") {
-      const LowRatings = [...books].sort((a, b) => a.ratings - b.ratings);
-      setBooks(LowRatings);
+      const LowRatings = [...filteredBooks].sort(
+        (a, b) => a.ratings - b.ratings
+      );
+      setFilteredBooks(LowRatings);
     }
   };
 
@@ -121,6 +151,7 @@ const BooksPage = () => {
   };
 
   return (
+    <>
     <div>
       {/* Books banner section */}
       <div className="flex flex-col lg:flex-row items-center justify-center lg:justify-between p-2 bg-[#F0F0F0] py-10">
@@ -135,7 +166,10 @@ const BooksPage = () => {
 
       {/* Filter button for mobile view */}
       <div className="lg:hidden flex ml-6 mt-6 -mb-10">
-        <button className="btn btn-outline text-sm p-1 px-8" onClick={toggleDrawer}>
+        <button
+          className="btn btn-outline text-sm p-1 px-8"
+          onClick={toggleDrawer}
+        >
           Filter
         </button>
       </div>
@@ -193,8 +227,6 @@ const BooksPage = () => {
           </ul>
         </div>
       </div>
-
-
 
       {/* Main Layout with Sidebar and Books Grid */}
       <div className="grid grid-cols-4 mx-auto mt-6 gap-8">
@@ -406,7 +438,10 @@ const BooksPage = () => {
         </div>
       )}
     </div>
+
+    </>
   );
 };
 
 export default BooksPage;
+

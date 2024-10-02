@@ -9,6 +9,7 @@ import Link from "next/link";
 import { useSession, signOut } from "next-auth/react";
 import logo from "../../public/BookNest.png";
 import { usePathname } from "next/navigation";
+import axios from "axios";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -16,16 +17,25 @@ const Navbar = () => {
   const { data: session } = useSession();
   const pathname = usePathname();
 
-  const [wishlistCount, setWishlistCount] = useState(0); 
-
- 
-  const updateWishlistCount = () => {
-    const storedWish = JSON.parse(localStorage.getItem('bookmark'));
-    setWishlistCount(storedWish ? storedWish.length : 0);
-  };
+  const [wishlistCount, setWishlistCount] = useState(0);
+  const [wishListBook, setWishListBook] = useState({ wishList: [] });
 
   useEffect(() => {
-    updateWishlistCount();
+    const fetchWishlist = async () => {
+      try {
+        const response = await axios.get('/api/wishlist');
+        setWishListBook(response.data);
+        setWishlistCount(response.data.wishList.length);
+      } catch (error) {
+        console.error("Error fetching wishlist:", error);
+      }
+    };
+
+    // Fetch wishlist initially
+    fetchWishlist();
+    const intervalId = setInterval(fetchWishlist);
+
+    return () => clearInterval(intervalId);
   }, []);
 
   const toggleSidebar = () => {
@@ -75,10 +85,10 @@ const Navbar = () => {
       </div>
 
       <div className="navbar-end hidden lg:flex relative">
-        <Link href="/wishlist" className="btn btn-ghost text-xl">
+        <Link href="/wishlist" className="btn btn-ghost text-xl relative">
           <FaHeart className="text-2xl" />
           {wishlistCount > 0 && (
-            <span className="absolute top-0 right-[180px] bg-red-500 text-white rounded-full px-1 text-xs">
+            <span className="absolute top-0 right-0 bg-red-500 text-white rounded-full px-1 text-xs transform translate-x-1 -translate-y-1">
               {wishlistCount}
             </span>
           )}
@@ -86,7 +96,6 @@ const Navbar = () => {
         <button className="btn btn-ghost text-xl">
           <CiSearch className="text-2xl" />
         </button>
-
         {!session?.user ? (
           <Link href="/login">
             <button className="btn btn-ghost text-xl">
@@ -169,15 +178,16 @@ const Navbar = () => {
               ))}
             </ul>
 
-            <div className="mt-8">
-              <button className="btn btn-ghost text-xl mb-3">
+            {/* Buttons in a single row */}
+            <div className="mt-8 flex justify-around">
+              <Link href="/wishlist" className="btn btn-ghost text-xl relative">
                 <FaHeart className="text-2xl" />
                 {wishlistCount > 0 && (
-                  <span className="absolute top-0 right-0 bg-red-500 text-white rounded-full px-1 text-xs">
+                  <span className="absolute top-0 right-0 bg-red-500 text-white rounded-full px-1 text-xs transform translate-x-1 -translate-y-1">
                     {wishlistCount}
                   </span>
                 )}
-              </button>
+              </Link>
               <button className="btn btn-ghost text-xl mb-3">
                 <CiSearch className="text-2xl" />
               </button>
@@ -239,6 +249,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
-
-
-

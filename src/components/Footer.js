@@ -11,10 +11,11 @@ import logo from "../../public/BookNest.png"; // Ensure the image is in the publ
 const Footer = () => {
   return (
     <div className="">
-      <footer className="footer bg-[#282828] text-base-content py-10 lg:px-40">
-        <aside className="text-white">
+      <footer className="footer bg-[#282828] text-base-content py-10 lg:px-24">
+
+        <aside className="text-white flex flex-col justify-center md:justify-start items-center md:items-start mx-auto">
           <p>
-            <span className="text-3xl font-semibold text-orange-600 flex items-center">
+            <span className="text-3xl font-semibold text-orange-600 flex items-center md:items-start">
               <Image
                 src={logo}
                 alt="BookNest Logo"
@@ -35,17 +36,19 @@ const Footer = () => {
           </div>
         </aside>
 
-        <nav>
+{/* need help and services div */}
+        <div className="flex justify-between md:justify-normal md:gap-6 lg:gap-40 px-2 w-full">
+        <nav className="flex flex-col space-y-3">
           <h6 className="footer-title text-white">Need Help</h6>
-          <h2 className="text-2xl text-orange-600 font-semibold">
+          <h2 className="md:text-2xl text-orange-600 font-semibold">
             8802136548566
           </h2>
           <a className="text-white">Monday – Friday: 9:00-20:00</a>
           <a className="text-white">Saturday: 11:00 – 15:00</a>
-          <h2 className="text-xl text-white">contact@example.com</h2>
+          <h2 className="md:text-xl text-white">contact@example.com</h2>
         </nav>
-
-        <nav>
+{/* services nav */}
+        <nav className="flex flex-col space-y-2 items-end md:items-start">
           <h6 className="footer-title text-white">Services</h6>
           <Link
             href="#"
@@ -72,8 +75,12 @@ const Footer = () => {
             Advertisement
           </Link>
         </nav>
+        </div>
+{/* company and legal div */}
+<div className="flex justify-between md:justify-normal md:gap-6 lg:gap-40 px-2 w-full">
 
-        <nav>
+{/* company section */}
+<nav className="flex flex-col space-y-3">
           <h6 className="footer-title text-white">Company</h6>
           <Link
             href="#"
@@ -100,8 +107,8 @@ const Footer = () => {
             Press kit
           </Link>
         </nav>
-
-        <nav>
+{/* legal section */}
+        <nav  className="flex flex-col space-y-3">
           <h6 className="footer-title text-white">Legal</h6>
           <Link
             href="#"
@@ -121,7 +128,12 @@ const Footer = () => {
           >
             Cookie policy
           </Link>
-        </nav>
+        </nav> 
+
+
+</div>
+
+
       </footer>
 
       <hr />

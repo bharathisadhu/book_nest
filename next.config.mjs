@@ -39,6 +39,7 @@ const nextConfig = {
       "upload.wikimedia.org",
       "lh3.googleusercontent.com",
       "avatars.githubusercontent.com",
+      "via.placeholder.com",
       "*",
     ],
   },

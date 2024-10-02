@@ -1,34 +1,77 @@
+import { useEffect, useState } from "react";
+import axios from "axios";
 import Image from "next/image";
-import { useState } from "react";
 import { CiStar } from "react-icons/ci";
-import Swal from "sweetalert2";
+import Swal from 'sweetalert2';
 
 export default function BooksCard({ book }) {
-  const { id, name, image, price, category, ratings } = book;
-  const [cartData, setCartData] = useState(null);
+  const { name, image, price, category, ratings, _id } = book;
+  const [isBookmarked, setIsBookmarked] = useState(false);
 
-  const addToBookmark = (book) => {
-    const existingBookmarks = JSON.parse(localStorage.getItem('bookmark')) || [];
+  useEffect(() => {
+    const checkIfBookmarked = async () => {
+      try {
+        const response = await axios.get('/api/wishlist'); 
 
-    const isBookInBookmarks = existingBookmarks.some(b => b.id === book.id);
+        // Check if the current book is in the wishlist
+        const isInWishlist = wishlist.some(item => item._id === _id);
+        setIsBookmarked(isInWishlist);
+      } catch (error) {
+        console.error('Error fetching wishlist:', error);
+      }
+    };
 
-    if (!isBookInBookmarks) {
-      existingBookmarks.push(book);
-      localStorage.setItem('bookmark', JSON.stringify(existingBookmarks));
+    checkIfBookmarked();
+  }, [_id]);
 
+  const addToBookmark = async (book) => {
+    if (isBookmarked) {
       Swal.fire({
-        position: "top-end",
-        icon: "success",
-        title: "Book added to bookmarks!",
-        showConfirmButton: false,
-        timer: 1500,
+        icon: 'info',
+        title: 'Already Bookmarked',
+        text: `${book.name} is already in your bookmarks!`,
       });
-    } else {
-      Swal.fire({
-        icon: "info",
-        title: "Already Bookmarked",
-        text: "This book is already in your bookmarks.",
+      return;
+    }
+
+    try {
+      const response = await axios.post(`/api/wishlist/${_id}`, {
+        name: book.name,
+        description: book.description || '',
+        image: book.image,
+        author: book.author || '',
+        price: book.price,
+        rating: book.ratings,
+        category: book.category,
       });
+
+      if (response.status === 201) {
+        setIsBookmarked(true);
+        Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: `${book.name} added to bookmarks!`,
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }
+    } catch (error) {
+      console.error('Error adding to bookmark:', error);
+      const message = error.response?.data?.message || 'Failed to add to bookmarks!';
+      
+      if (error.response?.status === 409) {
+        Swal.fire({
+          icon: 'info',
+          title: 'Already Bookmarked',
+          text: message,
+        });
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: message,
+        });
+      }
     }
   };
 
@@ -39,8 +82,8 @@ export default function BooksCard({ book }) {
         <Image
           src={image}
           alt={name}
-          layout="fill" // Ensure the image fills the container
-          objectFit="cover" // Ensures the image covers the entire container while maintaining its aspect ratio
+          layout="fill"
+          objectFit="cover"
           className="rounded-2xl w-[90%] h-40 md:h-48 lg:h-64"
         />
       </div>
@@ -85,3 +128,4 @@ export default function BooksCard({ book }) {
     </div>
   );
 }
+
