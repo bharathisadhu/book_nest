@@ -69,7 +69,7 @@ const Page = () => {
   };
 
   return (
-    <PrivateRoute>
+    // <PrivateRoute>
       <div className="mb-3">
         <div className="font-sans bg-white max-w-6xl mx-auto p-4">
           <h2 className="text-3xl font-bold text-gray-800">
@@ -159,7 +159,7 @@ const Page = () => {
           </div>
         </div>
       </div>
-    </PrivateRoute>
+    // </PrivateRoute>
   );
 };
 
