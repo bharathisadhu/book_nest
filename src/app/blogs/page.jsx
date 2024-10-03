@@ -5,7 +5,7 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { GoArrowRight } from "react-icons/go";
 import { FaSearch } from "react-icons/fa";
-import { IoArrowForwardCircleOutline } from "react-icons/io5";
+
 import Link from "next/link";
 import BlogsCard from "@/components/BlogsCard";
 const BlogsPage = () => {
@@ -19,7 +19,7 @@ const BlogsPage = () => {
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [seeMoreCategories, setSeeMoreCategories] = useState(false);
 
-  console.log("cate-------------",categories);
+
 
 
   const itemsPerPage = 4;
@@ -199,40 +199,19 @@ const BlogsPage = () => {
               >
                 {seeMoreCategories ? "See Less" : "See More"}
               </button>
-            )}
+            )};
 
 
 
 
 
 
-                  <li className="flex gap-1">
-                    <sapn className="mt-1">
-                      <IoArrowForwardCircleOutline className="bg-slate-300 rounded-full hover:bg-red-800" />
-                    </sapn>
-                    <sapn>Arts & Literature</sapn>
-                  </li>
+                  
+                 
 
-                  <li className="flex gap-1 my-3">
-                    <sapn className="mt-1">
-                      <IoArrowForwardCircleOutline className="bg-slate-300 rounded-full hover:bg-red-800" />
-                    </sapn>
-                    <sapn>Cultural</sapn>
-                  </li>
+                 
 
-                  <li className="flex gap-1 my-3">
-                    <sapn className="mt-1">
-                      <IoArrowForwardCircleOutline className="bg-slate-300 rounded-full hover:bg-red-800" />
-                    </sapn>
-                    <sapn>European</sapn>
-                  </li>
-
-                  <li className="flex gap-1">
-                    <sapn className="mt-1">
-                      <IoArrowForwardCircleOutline className="bg-slate-300 rounded-full hover:bg-red-800" />
-                    </sapn>
-                    <sapn>Uncategorized</sapn>
-                  </li>
+                  
                 </ul>
               </div>
             </div>
