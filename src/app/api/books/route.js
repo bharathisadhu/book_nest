@@ -2,22 +2,33 @@
 
 import connectToDatabase from "@/lib/mongodb";
 import { Book,} from "../../../../models/Book";
+import { NextResponse } from "next/server";
 
 
-export async function GET(req) {
+export async function GET(request) {
   await connectToDatabase();
 
   try {
-    const books = await Book.find({});
-    return new Response(JSON.stringify(books), {
-      status: 200,
-    });
-  } catch (error) {
-    return new Response(
-      JSON.stringify({ success: false, message: "Unable to fetch books" }),
-      {
-        status: 500,
+    const { searchParams } = new URL(request.url);
+    const id = searchParams.get('id');
+
+    if (id) {
+      // Fetch a single book by ID
+      const book = await Book.findById(id);
+      if (!book) {
+        return NextResponse.json({ success: false, message: "Book not found" }, { status: 404 });
       }
+      return NextResponse.json(book);
+    } else {
+      // Fetch all books
+      const books = await Book.find({});
+      return NextResponse.json(books);
+    }
+  } catch (error) {
+    console.error('Error fetching books:', error);
+    return NextResponse.json(
+      { success: false, message: "Unable to fetch books" },
+      { status: 500 }
     );
   }
 }

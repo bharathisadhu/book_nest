@@ -8,7 +8,8 @@
     "price": 10.99,
     "ratings": 4.5,
     "author": "F. Scott Fitzgerald",
-    "category": "Classic"
+    "category": "Classic",
+    "quantity": 5
   },
   {
     "_id": "66f2b86492d389553d55b00d",
@@ -19,7 +20,8 @@
     "price": 7.99,
     "ratings": 4.8,
     "author": "Harper Lee",
-    "category": "Classic"
+    "category": "Classic",
+    "quantity": 5
   },
   {
     "_id": "66f2b86492d389553d55b00e",
@@ -30,7 +32,8 @@
     "price": 9.99,
     "ratings": 4.7,
     "author": "George Orwell",
-    "category": "Dystopian"
+    "category": "Dystopian",
+    "quantity": 5
   },
   {
     "_id": "66f2b86492d389553d55b00f",
@@ -41,7 +44,8 @@
     "price": 6.99,
     "ratings": 4.6,
     "author": "Jane Austen",
-    "category": "Classic"
+    "category": "Classic",
+    "quantity": 5
   },
   {
     "_id": "66f2b86492d389553d55b010",
@@ -52,7 +56,8 @@
     "price": 8.99,
     "ratings": 4,
     "author": "J.D. Salinger",
-    "category": "Classic"
+    "category": "Classic",
+    "quantity": 5
   },
   {
     "_id": "66f2b86492d389553d55b011",
@@ -63,7 +68,8 @@
     "price": 12.99,
     "ratings": 4.8,
     "author": "J.R.R. Tolkien",
-    "category": "Fantasy"
+    "category": "Fantasy",
+    "quantity": 5
   },
   {
     "_id": "66f2b86492d389553d55b012",
@@ -74,7 +80,8 @@
     "price": 10.99,
     "ratings": 4.3,
     "author": "Ray Bradbury",
-    "category": "Dystopian"
+    "category": "Dystopian",
+    "quantity": 5
   },
   {
     "_id": "66f2b86492d389553d55b013",
@@ -85,7 +92,8 @@
     "price": 11.99,
     "ratings": 4.7,
     "author": "Paulo Coelho",
-    "category": "Adventure"
+    "category": "Adventure",
+    "quantity": 5
   },
   {
     "_id": "66f2b86492d389553d55b014",
@@ -96,7 +104,8 @@
     "price": 8.99,
     "ratings": 4.1,
     "author": "Oscar Wilde",
-    "category": "Classic"
+    "category": "Classic",
+    "quantity": 5
   },
   {
     "_id": "66f2b86492d389553d55b015",
@@ -107,7 +116,8 @@
     "price": 9.99,
     "ratings": 4.4,
     "author": "Aldous Huxley",
-    "category": "Dystopian"
+    "category": "Dystopian",
+    "quantity": 5
   },
   {
     "_id": "66f2b86492d389553d55b016",
@@ -118,7 +128,8 @@
     "price": 14.99,
     "ratings": 4.9,
     "author": "J.K. Rowling",
-    "category": "Fantasy"
+    "category": "Fantasy",
+    "quantity": 5
   },
   {
     "_id": "66f2b86492d389553d55b017",
@@ -129,7 +140,8 @@
     "price": 9.99,
     "ratings": 4.5,
     "author": "John Green",
-    "category": "Young Adult"
+    "category": "Young Adult",
+    "quantity": 5
   },
   {
     "_id": "66f2b86492d389553d55b018",
@@ -140,7 +152,8 @@
     "price": 11.99,
     "ratings": 4.6,
     "author": "C.S. Lewis",
-    "category": "Fantasy"
+    "category": "Fantasy",
+    "quantity": 5
   },
   {
     "_id": "66f2b86492d389553d55b019",
@@ -151,7 +164,8 @@
     "price": 10.99,
     "ratings": 4.7,
     "author": "Khaled Hosseini",
-    "category": "Contemporary"
+    "category": "Contemporary",
+    "quantity": 5
   },
   {
     "_id": "66f2b86492d389553d55b01a",
@@ -162,7 +176,8 @@
     "price": 12.99,
     "ratings": 4.3,
     "author": "Dan Brown",
-    "category": "Mystery"
+    "category": "Mystery",
+    "quantity": 5
   },
   {
     "_id": "66f2b86492d389553d55b01b",
@@ -173,7 +188,8 @@
     "price": 10.99,
     "ratings": 4.5,
     "author": "Suzanne Collins",
-    "category": "Dystopian"
+    "category": "Dystopian",
+    "quantity": 5
   },
   {
     "_id": "66f2b86492d389553d55b01c",
@@ -184,7 +200,8 @@
     "price": 9.99,
     "ratings": 4.6,
     "author": "Kathryn Stockett",
-    "category": "Historical"
+    "category": "Historical",
+    "quantity": 5
   },
   {
     "_id": "66f2b86492d389553d55b01d",
@@ -195,7 +212,8 @@
     "price": 11.99,
     "ratings": 4.1,
     "author": "Cormac McCarthy",
-    "category": "Dystopian"
+    "category": "Dystopian",
+    "quantity": 5
   },
   {
     "_id": "66f2b86492d389553d55b01e",
@@ -206,7 +224,8 @@
     "price": 8.99,
     "ratings": 4.4,
     "author": "Louisa May Alcott",
-    "category": "Classic"
+    "category": "Classic",
+    "quantity": 5
   },
   {
     "_id": "66f2b86492d389553d55b01f",
@@ -217,7 +236,8 @@
     "price": 10.99,
     "ratings": 4.5,
     "author": "Audrey Niffenegger",
-    "category": "Romance"
+    "category": "Romance",
+    "quantity": 5
   },
   {
     "_id": "66f2b86492d389553d55b020",
@@ -228,7 +248,8 @@
     "price": 12.99,
     "ratings": 4.8,
     "author": "Delia Owens",
-    "category": "Mystery"
+    "category": "Mystery",
+    "quantity": 5
   },
   {
     "_id": "66f2b86492d389553d55b021",
@@ -239,7 +260,8 @@
     "price": 7.99,
     "ratings": 4.3,
     "author": "Frances Hodgson Burnett",
-    "category": "Classic"
+    "category": "Classic",
+    "quantity": 5
   },
   {
     "_id": "66f2b86492d389553d55b022",
@@ -250,7 +272,8 @@
     "price": 9.99,
     "ratings": 4.5,
     "author": "Yann Martel",
-    "category": "Adventure"
+    "category": "Adventure",
+    "quantity": 5
   },
   {
     "_id": "66f2b86492d389553d55b023",
@@ -261,7 +284,8 @@
     "price": 11.99,
     "ratings": 4.6,
     "author": "Erin Morgenstern",
-    "category": "Fantasy"
+    "category": "Fantasy",
+    "quantity": 5
   },
   {
     "_id": "66f2b86492d389553d55b024",
@@ -272,7 +296,8 @@
     "price": 14.99,
     "ratings": 4.7,
     "author": "George R.R. Martin",
-    "category": "Fantasy"
+    "category": "Fantasy",
+    "quantity": 5
   },
   {
     "_id": "66f2b86492d389553d55b025",
@@ -283,7 +308,8 @@
     "price": 12.99,
     "ratings": 4.5,
     "author": "Alex Michaelides",
-    "category": "Thriller"
+    "category": "Thriller",
+    "quantity": 5
   },
   {
     "_id": "66f2b86492d389553d55b026",
@@ -294,7 +320,8 @@
     "price": 10.99,
     "ratings": 4.7,
     "author": "Tara Westover",
-    "category": "Memoir"
+    "category": "Memoir",
+    "quantity": 5
   },
   {
     "_id": "66f2b86492d389553d55b027",
@@ -305,7 +332,8 @@
     "price": 11.99,
     "ratings": 4.4,
     "author": "Chloe Benjamin",
-    "category": "Fiction"
+    "category": "Fiction",
+    "quantity": 5
   },
   {
     "_id": "66f2b86492d389553d55b028",
@@ -316,7 +344,8 @@
     "price": 12.99,
     "ratings": 4.6,
     "author": "Michelle Obama",
-    "category": "Memoir"
+    "category": "Memoir",
+    "quantity": 5
   },
   {
     "_id": "66f2b86492d389553d55b029",
@@ -327,7 +356,8 @@
     "price": 8.99,
     "ratings": 4.5,
     "author": "Lois Lowry",
-    "category": "Dystopian"
+    "category": "Dystopian",
+    "quantity": 5
   },
   {
     "_id": "66f2b86492d389553d55b02a",
@@ -338,7 +368,8 @@
     "price": 7.99,
     "ratings": 4.6,
     "author": "S.E. Hinton",
-    "category": "Young Adult"
+    "category": "Young Adult",
+    "quantity": 5
   },
   {
     "_id": "66f2b86492d389553d55b02b",
@@ -349,7 +380,8 @@
     "price": 9.99,
     "ratings": 4.3,
     "author": "Sun Tzu",
-    "category": "Non-Fiction"
+    "category": "Non-Fiction",
+    "quantity": 5
   },
   {
     "_id": "66f2b86492d389553d55b02c",
@@ -360,7 +392,8 @@
     "price": 10.99,
     "ratings": 4.5,
     "author": "Sylvia Plath",
-    "category": "Classic"
+    "category": "Classic",
+    "quantity": 5
   },
   {
     "_id": "66f2b86492d389553d55b02d",
@@ -371,7 +404,8 @@
     "price": 11.99,
     "ratings": 4.4,
     "author": "Paula Hawkins",
-    "category": "Thriller"
+    "category": "Thriller",
+    "quantity": 5
   },
   {
     "_id": "66f2b86492d389553d55b02e",
@@ -382,7 +416,8 @@
     "price": 12.99,
     "ratings": 4.8,
     "author": "Andy Weir",
-    "category": "Science Fiction"
+    "category": "Science Fiction",
+    "quantity": 5
   },
   {
     "_id": "66f2b86492d389553d55b02f",
@@ -393,7 +428,8 @@
     "price": 11.99,
     "ratings": 4.6,
     "author": "Madeline Miller",
-    "category": "Fantasy"
+    "category": "Fantasy",
+    "quantity": 5
   },
   {
     "_id": "66f2b86492d389553d55b030",
@@ -404,7 +440,8 @@
     "price": 10.99,
     "ratings": 4.5,
     "author": "Jeannette Walls",
-    "category": "Memoir"
+    "category": "Memoir",
+    "quantity": 5
   },
   {
     "_id": "66f2b86492d389553d55b031",
@@ -415,7 +452,8 @@
     "price": 12.99,
     "ratings": 4.4,
     "author": "Liane Moriarty",
-    "category": "Contemporary"
+    "category": "Contemporary",
+    "quantity": 5
   },
   {
     "_id": "66f2b86492d389553d55b034",
@@ -426,7 +464,8 @@
     "price": 11.99,
     "ratings": 4.3,
     "author": "A.J. Finn",
-    "category": "Thriller"
+    "category": "Thriller",
+    "quantity": 5
   },
   {
     "_id": "66f2b86492d389553d55b035",
@@ -437,7 +476,7 @@
     "price": 10.99,
     "ratings": 4.5,
     "author": "Sabaa Tahir",
-    "category": "Fantasy"
+    "category": "Fantasy",
+    "quantity": 5
   }
-  
 ]

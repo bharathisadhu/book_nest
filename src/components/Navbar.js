@@ -1,5 +1,5 @@
 "use client"; // Make sure this is a client component
-import { useState, useEffect } from "react"; 
+import { useState, useEffect } from "react";
 import { FaShoppingCart, FaHeart } from "react-icons/fa";
 import { MdAccountCircle } from "react-icons/md";
 import { CiSearch } from "react-icons/ci";
@@ -16,25 +16,32 @@ const Navbar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const { data: session } = useSession();
   const pathname = usePathname();
-
   const [wishlistCount, setWishlistCount] = useState(0);
+  const [cartCount, setCartCount] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  
+
   useEffect(() => {
-    const fetchWishlistCount = async () => {
+    const fetchCounts = async () => {
       try {
-        const response = await axios.get('/api/wishlist');
-        setWishlistCount(response.data.wishList.length);
+        const [wishlistResponse, cartResponse] = await Promise.all([
+          axios.get("/api/wishlist"),
+          axios.get("/api/cart"),
+        ]);
+        setWishlistCount(wishlistResponse.data.wishList.length);
+        setCartCount(cartResponse.data.cart.length);
       } catch (error) {
-        console.error("Error fetching wishlist:", error);
-        setError("Failed to load wishlist count.");
+        console.error("Error fetching counts:", error);
+        setError("Failed to load counts.");
       } finally {
         setLoading(false);
       }
     };
 
-    fetchWishlistCount();
+    fetchCounts();
+    // Optional: Polling to update the count every X seconds
+    const intervalId = setInterval(fetchCounts, 1000); // Fetch every 1 seconds (adjust as needed)
+    return () => clearInterval(intervalId); // Cleanup on unmount
   }, []);
 
   const toggleSidebar = () => {
@@ -71,7 +78,11 @@ const Navbar = () => {
             <li key={index}>
               <Link
                 href={navlink.link}
-                className={`${pathname === navlink.link ? "border-b-2 bg-white border-b-[#F65D4E] rounded-b-lg rounded text-white" : ""} px-3 py-2 rounded`}
+                className={`${
+                  pathname === navlink.link
+                    ? "border-b-2 bg-white border-b-[#F65D4E] rounded-b-lg rounded text-white"
+                    : ""
+                } px-3 py-2 rounded`}
               >
                 {navlink.label}
               </Link>
@@ -131,9 +142,20 @@ const Navbar = () => {
             )}
           </div>
         )}
-        <button className="btn btn-ghost text-xl">
+        <Link href="/cart" className="btn btn-ghost text-xl relative">
           <FaShoppingCart className="text-2xl" />
-        </button>
+          {loading ? (
+            <span className="loading-spinner" /> // You can replace this with a spinner or loader component
+          ) : error ? (
+            <span className="text-red-500">!</span> // Or any error indication
+          ) : (
+            cartCount > 0 && (
+              <span className="absolute top-0 right-0 bg-red-500 text-white rounded-full px-1 text-xs transform translate-x-1 -translate-y-1">
+                {cartCount}
+              </span>
+            )
+          )}
+        </Link>
       </div>
 
       {/* Tablet and Mobile View */}
@@ -156,7 +178,10 @@ const Navbar = () => {
       {isOpen && (
         <div className="fixed inset-0 bg-gray-800 bg-opacity-50 z-40">
           <div className="fixed left-0 top-0 w-3/4 h-full bg-white shadow-lg z-50 p-5">
-            <button className="btn btn-ghost text-xl mb-5" onClick={toggleSidebar}>
+            <button
+              className="btn btn-ghost text-xl mb-5"
+              onClick={toggleSidebar}
+            >
               <RxHamburgerMenu className="text-2xl" />
             </button>
             <ul className="menu flex flex-col gap-4 text-lg">
@@ -164,7 +189,9 @@ const Navbar = () => {
                 <li key={index}>
                   <Link
                     href={navlink.link}
-                    className={`${pathname === navlink.link ? "bg-blue-500 text-white" : ""} block px-3 py-2 rounded hover:bg-blue-300`}
+                    className={`${
+                      pathname === navlink.link ? "bg-blue-500 text-white" : ""
+                    } block px-3 py-2 rounded hover:bg-blue-300`}
                     onClick={toggleSidebar}
                   >
                     {navlink.label}
@@ -237,10 +264,20 @@ const Navbar = () => {
                   )}
                 </div>
               )}
-
-              <button className="btn btn-ghost text-xl">
+              <Link href="/cart" className="btn btn-ghost text-xl relative">
                 <FaShoppingCart className="text-2xl" />
-              </button>
+                {loading ? (
+                  <span className="loading-spinner" /> // You can replace this with a spinner or loader component
+                ) : error ? (
+                  <span className="text-red-500">!</span> // Or any error indication
+                ) : (
+                  cartCount > 0 && (
+                    <span className="absolute top-0 right-0 bg-red-500 text-white rounded-full px-1 text-xs transform translate-x-1 -translate-y-1">
+                      {cartCount}
+                    </span>
+                  )
+                )}
+              </Link>
             </div>
           </div>
         </div>
