@@ -15,6 +15,11 @@ const BlogsPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [recentPosts, setRecentPosts] = useState([]);
 
+  const [categories, setCategories] = useState([]);
+  const [selectedCategories, setSelectedCategories] = useState([]);
+  const [seeMoreCategories, setSeeMoreCategories] = useState(false);
+
+  console.log("cate-------------",categories);
 
 
   const itemsPerPage = 4;
@@ -41,6 +46,12 @@ const BlogsPage = () => {
         const data = await response.json();
 
         if (Array.isArray(data)) {
+          // Extract unique categories and authors
+          const uniqueCategories = [
+            ...new Set(data.map((blog) => blog.category)),
+          ];
+          setCategories(uniqueCategories);
+
           setBlogs(data);
           setFilteredBlogs(data);
           const rpost=data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
@@ -76,10 +87,18 @@ const BlogsPage = () => {
       );
     }
 
+    if (selectedCategories.length > 0) {
+      filtered = filtered.filter((blog) =>
+        selectedCategories.includes(blog.category)
+      );
+    }
+
     
 
+
+
     setFilteredBlogs(filtered);
-  }, [searchTerm, blogs]);
+  }, [searchTerm, blogs,selectedCategories]);
 
 
   console.log(blogs);
@@ -94,7 +113,13 @@ const BlogsPage = () => {
      setCurrentPage(pageNumber);
    };
 
- 
+   const handleCategoryChange = (category) => {
+    setSelectedCategories((prev) =>
+      prev.includes(category)
+        ? prev.filter((c) => c !== category)
+        : [...prev, category]
+    );
+  };
 
   return (
     <>
@@ -154,6 +179,33 @@ const BlogsPage = () => {
               <hr className="border-t-1 border-gray-300" />
               <div className="relative w-full max-w-md mx-auto py-5 px-10">
                 <ul>
+                {categories
+              .slice(0, seeMoreCategories ? categories.length : 5)
+              .map((category) => (
+                <label key={category} className="block mb-2">
+                  <input
+                    type="checkbox"
+                    checked={selectedCategories.includes(category)}
+                    onChange={() => handleCategoryChange(category)}
+                    className="mr-2"
+                  />
+                  {category}
+                </label>
+              ))}
+            {categories.length > 5 && (
+              <button
+                onClick={() => setSeeMoreCategories(!seeMoreCategories)}
+                className="text-blue-500 mt-2"
+              >
+                {seeMoreCategories ? "See Less" : "See More"}
+              </button>
+            )}
+
+
+
+
+
+
                   <li className="flex gap-1">
                     <sapn className="mt-1">
                       <IoArrowForwardCircleOutline className="bg-slate-300 rounded-full hover:bg-red-800" />
