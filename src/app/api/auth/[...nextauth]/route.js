@@ -23,21 +23,27 @@ const authOptions = {
         if (!email || !password) {
           return null;
         }
+
         const db = await connectDB();
         const currentUser = await db.collection("users").findOne({ email });
+
         if (!currentUser) {
           return null;
         }
-        const passwordMatched = bcrypt.compareSync(
+
+        // Compare passwords (async version)
+        const passwordMatched = await bcrypt.compare(
           password,
           currentUser.password
         );
         if (!passwordMatched) {
           return null;
         }
+
         return currentUser;
       },
     }),
+
     // Google provider
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID,
@@ -50,6 +56,7 @@ const authOptions = {
         },
       },
     }),
+
     // GitHub provider
     GithubProvider({
       clientId: process.env.GITHUB_CLIENT_ID,
@@ -61,49 +68,57 @@ const authOptions = {
       },
     }),
   ],
+
   callbacks: {
-    callbacks: {
-      async jwt({ token, user }) {
-        // When user signs in, add user info to the token
-        if (user) {
-          token.id = user.id;
-        }
-        return token;
-      },
-      async session({ session, token }) {
-        // Add the user id from the token to the session
-        if (token?.id) {
-          session.user.id = token.id;
-        }
-        return session;
-      },
+    async jwt({ token, user }) {
+      if (user) {
+        token.id = user.id;
+      }
+      return token;
     },
+
+    async session({ session, token }) {
+      if (token?.id) {
+        session.user.id = token.id;
+      }
+      return session;
+    },
+
     async signIn({ user, account }) {
+      const { email } = user;
+
       if (account.provider === "google" || account.provider === "github") {
-        const { name, email, photo } = user;
         try {
           const db = await connectDB();
           const userCollection = db.collection("users");
+
           const userExist = await userCollection.findOne({ email });
+
           if (!userExist) {
-            const res = await userCollection.insertOne(user);
-            return user;
-          } else {
-            return user;
+            // Insert user with specific fields
+            const newUser = {
+              name: user.name,
+              email: user.email,
+              image: user.image,
+            };
+            await userCollection.insertOne(newUser);
           }
+          return true;
         } catch (error) {
-          console.log(error);
+          console.error("Error during sign-in:", error);
+          return false;
         }
-      } else {
-        return user;
       }
+
+      return true;
     },
   },
+
   pages: {
     signIn: "/login",
     signUp: "/register",
   },
 };
-const handler = NextAuth(authOptions);
 
+const handler = NextAuth(authOptions);
 export { handler as GET, handler as POST };
