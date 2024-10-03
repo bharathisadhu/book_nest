@@ -167,12 +167,12 @@ export default function BooksCard({ book }) {
         <div className="flex items-center justify-between">
           <div className="flex items-center justify-center rounded-full cursor-pointer hover:scale-125 transition duration-200">
             <button onClick={addToBookmark}>
-              <FaHeart className="text-3xl" />
+              <FaHeart className="text-2xl" />
             </button>
           </div>
           <div className=" flex items-center justify-center rounded-full cursor-pointer hover:scale-125 transition duration-200 mt-2">
             <button onClick={addToCart}>
-              <FaShoppingCart className="text-3xl" />
+              <FaShoppingCart className="text-2xl" />
             </button>
           </div>
         </div>
