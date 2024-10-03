@@ -5,7 +5,7 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { GoArrowRight } from "react-icons/go";
 import { FaSearch } from "react-icons/fa";
-import { IoArrowForwardCircleOutline } from "react-icons/io5";
+
 import Link from "next/link";
 import BlogsCard from "@/components/BlogsCard";
 const BlogsPage = () => {
@@ -13,6 +13,12 @@ const BlogsPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [filteredBlogs, setFilteredBlogs] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [recentPosts, setRecentPosts] = useState([]);
+
+  const [categories, setCategories] = useState([]);
+  const [selectedCategories, setSelectedCategories] = useState([]);
+  const [seeMoreCategories, setSeeMoreCategories] = useState(false);
+
 
 
 
@@ -40,9 +46,16 @@ const BlogsPage = () => {
         const data = await response.json();
 
         if (Array.isArray(data)) {
+          // Extract unique categories and authors
+          const uniqueCategories = [
+            ...new Set(data.map((blog) => blog.category)),
+          ];
+          setCategories(uniqueCategories);
+
           setBlogs(data);
           setFilteredBlogs(data);
-      
+          const rpost=data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+          setRecentPosts(rpost.slice(0, 5));
 
 
         } else {
@@ -74,10 +87,18 @@ const BlogsPage = () => {
       );
     }
 
+    if (selectedCategories.length > 0) {
+      filtered = filtered.filter((blog) =>
+        selectedCategories.includes(blog.category)
+      );
+    }
+
     
 
+
+
     setFilteredBlogs(filtered);
-  }, [searchTerm, blogs]);
+  }, [searchTerm, blogs,selectedCategories]);
 
 
   console.log(blogs);
@@ -92,7 +113,13 @@ const BlogsPage = () => {
      setCurrentPage(pageNumber);
    };
 
-
+   const handleCategoryChange = (category) => {
+    setSelectedCategories((prev) =>
+      prev.includes(category)
+        ? prev.filter((c) => c !== category)
+        : [...prev, category]
+    );
+  };
 
   return (
     <>
@@ -152,33 +179,39 @@ const BlogsPage = () => {
               <hr className="border-t-1 border-gray-300" />
               <div className="relative w-full max-w-md mx-auto py-5 px-10">
                 <ul>
-                  <li className="flex gap-1">
-                    <sapn className="mt-1">
-                      <IoArrowForwardCircleOutline className="bg-slate-300 rounded-full hover:bg-red-800" />
-                    </sapn>
-                    <sapn>Arts & Literature</sapn>
-                  </li>
+                {categories
+              .slice(0, seeMoreCategories ? categories.length : 5)
+              .map((category) => (
+                <label key={category} className="block mb-2">
+                  <input
+                    type="checkbox"
+                    checked={selectedCategories.includes(category)}
+                    onChange={() => handleCategoryChange(category)}
+                    className="mr-2"
+                  />
+                  {category}
+                </label>
+              ))}
+            {categories.length > 5 && (
+              <button
+                onClick={() => setSeeMoreCategories(!seeMoreCategories)}
+                className="text-blue-500 mt-2"
+              >
+                {seeMoreCategories ? "See Less" : "See More"}
+              </button>
+            )};
 
-                  <li className="flex gap-1 my-3">
-                    <sapn className="mt-1">
-                      <IoArrowForwardCircleOutline className="bg-slate-300 rounded-full hover:bg-red-800" />
-                    </sapn>
-                    <sapn>Cultural</sapn>
-                  </li>
 
-                  <li className="flex gap-1 my-3">
-                    <sapn className="mt-1">
-                      <IoArrowForwardCircleOutline className="bg-slate-300 rounded-full hover:bg-red-800" />
-                    </sapn>
-                    <sapn>European</sapn>
-                  </li>
 
-                  <li className="flex gap-1">
-                    <sapn className="mt-1">
-                      <IoArrowForwardCircleOutline className="bg-slate-300 rounded-full hover:bg-red-800" />
-                    </sapn>
-                    <sapn>Uncategorized</sapn>
-                  </li>
+
+
+
+                  
+                 
+
+                 
+
+                  
                 </ul>
               </div>
             </div>
@@ -188,12 +221,15 @@ const BlogsPage = () => {
               <hr className="border-t-1 border-gray-300" />
               <div className="relative w-full max-w-md mx-auto py-5 px-10">
                 <ul>
-                  <li className="flex gap-3 my-5">
-                    <div className="w-1/4">
+
+                {recentPosts.map(post => (
+          <li key={post.id} className="flex gap-3 my-5">
+            
+            <div className="w-1/4">
                       <Image
                         height={80}
                         width={80}
-                        src="https://demo2.pavothemes.com/bookory/wp-content/uploads/2022/02/blog_5-150x150.jpg"
+                        src={post.image}
                         alt="Card Image 1"
                         className="w-[80px] h-auto object-cover border rounded-lg"
                       />
@@ -201,74 +237,18 @@ const BlogsPage = () => {
 
                     <div className="w-3/4">
                       <h3 className="font-thin uppercase text-[15px]">
-                        November 14, 2022
+                        {post.date} 
                       </h3>
                       <h2 className="font-semibold leading-5">
-                        7 Books to Combat Racism
+                        {post.title} BY {post.author}
                       </h2>
                     </div>
-                  </li>
-                  <li className="flex gap-3 my-5">
-                    <div className="w-1/4">
-                      <Image
-                        height={80}
-                        width={80}
-                        src="https://demo2.pavothemes.com/bookory/wp-content/uploads/2022/02/blog_6-150x150.jpg"
-                        alt="Card Image 1"
-                        className="w-[80px] h-auto object-cover border rounded-lg"
-                      />
-                    </div>
+          </li>
+        ))}
 
-                    <div className="w-3/4">
-                      <h3 className="font-thin uppercase text-[15px]">
-                        November 14, 2022
-                      </h3>
-                      <h2 className="font-semibold leading-5">
-                        Behind the Scenes with Author Victoria Aveyard
-                      </h2>
-                    </div>
-                  </li>
+                
 
-                  <li className="flex gap-3 my-5">
-                    <div className="w-1/4">
-                      <Image
-                        height={80}
-                        width={80}
-                        src="https://demo2.pavothemes.com/bookory/wp-content/uploads/2022/02/blog_4-150x150.jpg"
-                        alt="Card Image 1"
-                        className="w-[80px] h-auto object-cover border rounded-lg"
-                      />
-                    </div>
-
-                    <div className="w-3/4">
-                      <h3 className="font-thin uppercase text-[15px]">
-                        November 14, 2022
-                      </h3>
-                      <h2 className="font-semibold leading-5">
-                        7 Books to Combat Racism
-                      </h2>
-                    </div>
-                  </li>
-                  <li className="flex gap-3 my-5">
-                    <div className="w-1/4">
-                      <Image
-                        height={80}
-                        width={80}
-                        src="https://demo2.pavothemes.com/bookory/wp-content/uploads/2022/02/blog_3-150x150.jpg"
-                        alt="Card Image 1"
-                        className="w-[80px] h-auto object-cover border rounded-lg"
-                      />
-                    </div>
-
-                    <div className="w-3/4">
-                      <h3 className="font-thin uppercase text-[15px]">
-                        November 14, 2022
-                      </h3>
-                      <h2 className="font-semibold leading-5">
-                        Top 10 Books to Make It a Great Year
-                      </h2>
-                    </div>
-                  </li>
+              
                 </ul>
               </div>
             </div>
