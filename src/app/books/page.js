@@ -313,7 +313,7 @@ const BooksPage = () => {
               </div>
 
               {/* Books Grid */}
-              <div className="col-span-4 lg:col-span-3 grid grid-cols-2 lg:grid-cols-5 md:grid-cols-3 justify-center divide-x divide-y p-2 gap-4">
+              <div className="col-span-4 lg:col-span-3 grid grid-cols-2 lg:grid-cols-5 md:grid-cols-3 justify-center divide-y divide-x p-2 gap-4">
                 {currentBooks.map((book) => (
                   <BooksCard key={book.id} book={book} />
                 ))}
