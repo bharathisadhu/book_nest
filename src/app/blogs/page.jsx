@@ -13,6 +13,7 @@ const BlogsPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [filteredBlogs, setFilteredBlogs] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [recentPosts, setRecentPosts] = useState([]);
 
 
 
@@ -42,7 +43,8 @@ const BlogsPage = () => {
         if (Array.isArray(data)) {
           setBlogs(data);
           setFilteredBlogs(data);
-      
+          const rpost=data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+          setRecentPosts(rpost.slice(0, 5));
 
 
         } else {
@@ -92,7 +94,7 @@ const BlogsPage = () => {
      setCurrentPage(pageNumber);
    };
 
-
+ 
 
   return (
     <>
@@ -188,12 +190,15 @@ const BlogsPage = () => {
               <hr className="border-t-1 border-gray-300" />
               <div className="relative w-full max-w-md mx-auto py-5 px-10">
                 <ul>
-                  <li className="flex gap-3 my-5">
-                    <div className="w-1/4">
+
+                {recentPosts.map(post => (
+          <li key={post.id} className="flex gap-3 my-5">
+            
+            <div className="w-1/4">
                       <Image
                         height={80}
                         width={80}
-                        src="https://demo2.pavothemes.com/bookory/wp-content/uploads/2022/02/blog_5-150x150.jpg"
+                        src={post.image}
                         alt="Card Image 1"
                         className="w-[80px] h-auto object-cover border rounded-lg"
                       />
@@ -201,74 +206,18 @@ const BlogsPage = () => {
 
                     <div className="w-3/4">
                       <h3 className="font-thin uppercase text-[15px]">
-                        November 14, 2022
+                        {post.date} 
                       </h3>
                       <h2 className="font-semibold leading-5">
-                        7 Books to Combat Racism
+                        {post.title} BY {post.author}
                       </h2>
                     </div>
-                  </li>
-                  <li className="flex gap-3 my-5">
-                    <div className="w-1/4">
-                      <Image
-                        height={80}
-                        width={80}
-                        src="https://demo2.pavothemes.com/bookory/wp-content/uploads/2022/02/blog_6-150x150.jpg"
-                        alt="Card Image 1"
-                        className="w-[80px] h-auto object-cover border rounded-lg"
-                      />
-                    </div>
+          </li>
+        ))}
 
-                    <div className="w-3/4">
-                      <h3 className="font-thin uppercase text-[15px]">
-                        November 14, 2022
-                      </h3>
-                      <h2 className="font-semibold leading-5">
-                        Behind the Scenes with Author Victoria Aveyard
-                      </h2>
-                    </div>
-                  </li>
+                
 
-                  <li className="flex gap-3 my-5">
-                    <div className="w-1/4">
-                      <Image
-                        height={80}
-                        width={80}
-                        src="https://demo2.pavothemes.com/bookory/wp-content/uploads/2022/02/blog_4-150x150.jpg"
-                        alt="Card Image 1"
-                        className="w-[80px] h-auto object-cover border rounded-lg"
-                      />
-                    </div>
-
-                    <div className="w-3/4">
-                      <h3 className="font-thin uppercase text-[15px]">
-                        November 14, 2022
-                      </h3>
-                      <h2 className="font-semibold leading-5">
-                        7 Books to Combat Racism
-                      </h2>
-                    </div>
-                  </li>
-                  <li className="flex gap-3 my-5">
-                    <div className="w-1/4">
-                      <Image
-                        height={80}
-                        width={80}
-                        src="https://demo2.pavothemes.com/bookory/wp-content/uploads/2022/02/blog_3-150x150.jpg"
-                        alt="Card Image 1"
-                        className="w-[80px] h-auto object-cover border rounded-lg"
-                      />
-                    </div>
-
-                    <div className="w-3/4">
-                      <h3 className="font-thin uppercase text-[15px]">
-                        November 14, 2022
-                      </h3>
-                      <h2 className="font-semibold leading-5">
-                        Top 10 Books to Make It a Great Year
-                      </h2>
-                    </div>
-                  </li>
+              
                 </ul>
               </div>
             </div>
