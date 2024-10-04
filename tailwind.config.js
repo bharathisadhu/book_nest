@@ -12,12 +12,10 @@ module.exports = {
         foreground: "var(--foreground)",
       },
       backgroundImage: {
-        'Community' : "url('https://demo2.pavothemes.com/bookory/wp-content/uploads/2022/11/h6_bg1.jpg')",
-        
+        Community:
+          "url('https://demo2.pavothemes.com/bookory/wp-content/uploads/2022/11/h6_bg1.jpg')",
       },
     },
   },
-  plugins: [
-    require('daisyui'),
-  ],
+  plugins: [require("daisyui", "tailwindcss-react-aria-components")],
 };
