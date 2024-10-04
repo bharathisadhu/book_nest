@@ -12,6 +12,7 @@ const CheckoutForm = ({ cartItems }) => {
   const [clientSecret, setClientSecret] = useState("");
   const [transactionId, setTransactionId] = useState("");
   const [loading, setLoading] = useState(false); // Loader state
+  const [isVisible, setIsVisible] = useState(true); // Manage visibility
   const stripe = useStripe();
   const elements = useElements();
   const { data: session } = useSession();
@@ -152,98 +153,109 @@ const CheckoutForm = ({ cartItems }) => {
         </div>
       )}
 
-      <div className="md:max-w-5xl max-w-xl mx-auto">
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-2 max-md:order-1">
-            <h2 className="text-3xl font-extrabold text-gray-800">
-              Make a payment
-            </h2>
-            <p className="text-gray-800 text-sm mt-4">
-              Complete your transaction swiftly and securely with our
-              easy-to-use payment process.
-            </p>
+      {isVisible && (
+        <div className="md:max-w-5xl max-w-xl mx-auto overflow-y-auto max-h-screen touch-auto relative">
+          {/* Mobile close button */}
+          <button
+            className="absolute top-4 left-4 text-red-500 text-lg md:hidden" // Hide on larger screens
+            onClick={() => setIsVisible(false)} // Close button functionality
+          >
+            &times;
+          </button>
 
-            <form onSubmit={handleSubmit} className="mt-8 max-w-lg">
-              <div className="grid gap-4">
-                <div>
-                  <input
-                    type="text"
-                    placeholder="Cardholder's Name"
-                    className="px-4 py-3.5 bg-gray-100 text-gray-800 w-full text-sm border rounded-md focus:border-purple-500 focus:bg-transparent outline-none"
-                    required
-                  />
-                </div>
-                <div className="flex bg-gray-100 border rounded-md focus-within:border-purple-500 focus-within:bg-transparent overflow-hidden">
-                  <CardElement
-                    className="px-4 py-3.5 text-gray-800 w-full text-sm outline-none bg-transparent"
-                    options={{
-                      style: {
-                        base: {
-                          fontSize: "16px",
-                          color: "#424770",
-                          "::placeholder": {
-                            color: "#aab7c4",
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="lg:col-span-2 max-md:order-1">
+              <h2 className="text-3xl font-extrabold text-gray-800">
+                Make a payment
+              </h2>
+              <p className="text-gray-800 text-sm mt-4">
+                Complete your transaction swiftly and securely with our
+                easy-to-use payment process.
+              </p>
+
+              <form onSubmit={handleSubmit} className="mt-8 max-w-lg">
+                <div className="grid gap-4">
+                  <div>
+                    <input
+                      type="text"
+                      placeholder="Cardholder's Name"
+                      className="px-4 py-3.5 bg-gray-100 text-gray-800 w-full text-sm border rounded-md focus:border-purple-500 focus:bg-transparent outline-none"
+                      required
+                    />
+                  </div>
+                  <div className="flex bg-gray-100 border rounded-md focus-within:border-purple-500 focus-within:bg-transparent overflow-hidden">
+                    <CardElement
+                      className="px-4 py-3.5 text-gray-800 w-full text-sm outline-none bg-transparent"
+                      options={{
+                        style: {
+                          base: {
+                            fontSize: "16px",
+                            color: "#424770",
+                            "::placeholder": {
+                              color: "#aab7c4",
+                            },
+                          },
+                          invalid: {
+                            color: "#9e2146",
                           },
                         },
-                        invalid: {
-                          color: "#9e2146",
-                        },
-                      },
-                    }}
-                  />
+                      }}
+                    />
+                  </div>
                 </div>
-              </div>
 
-              <button
-                className="mt-8 w-40 py-3.5 text-sm bg-purple-500 text-white rounded-md hover:bg-purple-600 tracking-wide"
-                type="submit"
-                disabled={!stripe || !clientSecret || loading}
-              >
-                Pay ${totalPrice.toFixed(2)}
-              </button>
-            </form>
-
-            {error && <p className="text-red-600">{error}</p>}
-            {transactionId && (
-              <p className="text-green-600">
-                Your transaction ID: {transactionId}
-              </p>
-            )}
-          </div>
-
-          <div className="bg-red-300 p-6 rounded-md">
-            <h2 className="text-3xl font-extrabold text-gray-800">
-              ${totalPrice.toFixed(2)}
-            </h2>
-
-            <ul className="text-gray-800 mt-8 space-y-4">
-              {cartItems.map((item, index) => (
-                <li
-                  key={index}
-                  title={item.name}
-                  className="flex flex-wrap gap-4 text-sm"
+                <button
+                  className="my-8 w-40 py-3.5 text-sm bg-purple-500 text-white rounded-md hover:bg-purple-600 tracking-wide"
+                  type="submit"
+                  disabled={!stripe || !clientSecret || loading}
                 >
-                  {item.name.length > 20
-                    ? item.name.slice(0, 16) + "..."
-                    : item.name}
-                  <span className="ml-auto font-bold">
-                    ${item.price * item.quantity}
-                  </span>
-                </li>
-              ))}
+                  Pay ${totalPrice.toFixed(2)}
+                </button>
+              </form>
+
+              {error && <p className="text-red-600">{error}</p>}
+              {transactionId && (
+                <p className="text-green-600">
+                  Your transaction ID: {transactionId}
+                </p>
+              )}
+            </div>
+
+            <div className="bg-red-300 p-6 rounded-md">
+              <h2 className="text-3xl font-extrabold text-gray-800">
+                ${totalPrice.toFixed(2)}
+              </h2>
+
+              <ul className="text-gray-800 mt-8 space-y-4 max-h-48 overflow-y-auto touch-auto">
+                {cartItems.map((item, index) => (
+                  <li
+                    key={index}
+                    title={item.name}
+                    className="flex flex-wrap gap-4 text-sm"
+                  >
+                    {item.name.length > 20
+                      ? item.name.slice(0, 16) + "..."
+                      : item.name}
+                    <span className="ml-auto font-bold">
+                      ${item.price * item.quantity}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+
               <li className="flex flex-wrap gap-4 text-sm font-bold border-t-2 pt-4">
                 Subtotal <span className="ml-auto">${subtotal.toFixed(2)}</span>
               </li>
               <li className="flex flex-wrap gap-4 text-sm font-bold">
-                Tax (10%) <span className="ml-auto">${tax.toFixed(2)}</span>
+                Tax <span className="ml-auto">${tax.toFixed(2)}</span>
               </li>
-              <li className="flex flex-wrap gap-4 text-sm font-bold border-t-2 pt-4">
+              <li className="flex flex-wrap gap-4 text-lg font-extrabold">
                 Total <span className="ml-auto">${totalPrice.toFixed(2)}</span>
               </li>
-            </ul>
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };
