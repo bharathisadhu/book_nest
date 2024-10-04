@@ -40,7 +40,7 @@ const nextConfig = {
       "lh3.googleusercontent.com",
       "avatars.githubusercontent.com",
       "via.placeholder.com",
-      "https://flowbite.s3.amazonaws.com",
+      "i.ibb.co.com",
       "*",
     ],
   },
