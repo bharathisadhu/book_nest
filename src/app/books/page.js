@@ -25,11 +25,10 @@ const BooksPage = () => {
 
   useEffect(() => {
     const data = {
-      title: 'Books',
-      linkName: 'Home',
-      
+      title: "Books",
+      linkName: "Home",
     };
-   
+
     const fetchData = async () => {
       try {
         setIsLoading(true); // Set loading to true when fetching starts
