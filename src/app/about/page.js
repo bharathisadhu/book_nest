@@ -3,6 +3,12 @@
 import Image from "next/image";
 import { GoArrowRight } from "react-icons/go";
 import Link from "next/link";
+import Azad from "../../../public/Azad.jpg";
+import Badhon from "../../../public/Badhon.jpg";
+import Devesh from "../../../public/devesh.jpeg";
+import Didar from "../../../public/didar.png";
+import Fahim from "../../../public/fahim.jpeg";
+import Monsur from "../../../public/Monsur.jpeg";
 
 export default function AboutUs() {
   return (
@@ -133,15 +139,15 @@ export default function AboutUs() {
           <div className="flex flex-col items-center text-center">
             <Image
               className="rounded-full"
-              src="https://via.placeholder.com/200"
+              src={Azad}
               alt="Team Member 1"
               width={200}
               height={200}
             />
-            <h2 className="mt-5 text-xl font-semibold">John Doe</h2>
+            <h2 className="mt-5 text-xl font-semibold">Mohammad Azad</h2>
             <p className="text-gray-500">CEO</p>
             <p className="mt-3">
-              John is an expert in business development and brings over 15 years
+              Azad is an expert in business development and brings over 15 years
               of experience to the team. His vision has been the driving force
               behind our success.
             </p>
@@ -151,15 +157,15 @@ export default function AboutUs() {
           <div className="flex flex-col items-center text-center">
             <Image
               className="rounded-full"
-              src="https://via.placeholder.com/200"
+              src={Badhon}
               alt="Team Member 2"
               width={200}
               height={200}
             />
-            <h2 className="mt-5 text-xl font-semibold">Jane Smith</h2>
+            <h2 className="mt-5 text-xl font-semibold">Badhon Sarker</h2>
             <p className="text-gray-500">Marketing Manager</p>
             <p className="mt-3">
-              Jane leads our marketing efforts, crafting innovative campaigns
+              Badhon leads our marketing efforts, crafting innovative campaigns
               that expand our reach and engage our loyal customer base.
             </p>
           </div>
@@ -168,16 +174,16 @@ export default function AboutUs() {
           <div className="flex flex-col items-center text-center">
             <Image
               className="rounded-full"
-              src="https://via.placeholder.com/200"
+              src={Devesh}
               alt="Team Member 3"
               width={200}
               height={200}
             />
-            <h2 className="mt-5 text-xl font-semibold">Michael Brown</h2>
+            <h2 className="mt-5 text-xl font-semibold">Devesh Biswas</h2>
             <p className="text-gray-500">Product Manager</p>
             <p className="mt-3">
-              Michael manages the product development, ensuring that each
-              product is of the highest quality and meets customer needs.
+              Devesh manages the product development, ensuring that each product
+              is of the highest quality and meets customer needs.
             </p>
           </div>
 
@@ -185,15 +191,15 @@ export default function AboutUs() {
           <div className="flex flex-col items-center text-center">
             <Image
               className="rounded-full"
-              src="https://via.placeholder.com/200"
+              src={Didar}
               alt="Team Member 4"
               width={200}
               height={200}
             />
-            <h2 className="mt-5 text-xl font-semibold">Lisa White</h2>
+            <h2 className="mt-5 text-xl font-semibold">MD Didarul Islam</h2>
             <p className="text-gray-500">Chief Financial Officer</p>
             <p className="mt-3">
-              Lisa oversees the financial health of our company, managing our
+              Didar oversees the financial health of our company, managing our
               resources and ensuring long-term sustainability.
             </p>
           </div>
@@ -202,15 +208,15 @@ export default function AboutUs() {
           <div className="flex flex-col items-center text-center">
             <Image
               className="rounded-full"
-              src="https://via.placeholder.com/200"
+              src={Fahim}
               alt="Team Member 5"
               width={200}
               height={200}
             />
-            <h2 className="mt-5 text-xl font-semibold">Tom Harris</h2>
+            <h2 className="mt-5 text-xl font-semibold">MD Fahim Hossain</h2>
             <p className="text-gray-500">Lead Developer</p>
             <p className="mt-3">
-              Tom heads our development team, delivering seamless and scalable
+              Fahim heads our development team, delivering seamless and scalable
               technology solutions that power our digital services.
             </p>
           </div>
@@ -219,15 +225,17 @@ export default function AboutUs() {
           <div className="flex flex-col items-center text-center">
             <Image
               className="rounded-full"
-              src="https://via.placeholder.com/200"
+              src={Monsur}
               alt="Team Member 6"
               width={200}
               height={200}
             />
-            <h2 className="mt-5 text-xl font-semibold">Sarah Green</h2>
+            <h2 className="mt-5 text-xl font-semibold">
+              Abul Monsur Mohammad Kachru
+            </h2>
             <p className="text-gray-500">UX/UI Designer</p>
             <p className="mt-3">
-              Sarah creates intuitive and beautiful designs that provide a
+              Monsur creates intuitive and beautiful designs that provide a
               user-friendly experience for all our customers across digital
               platforms.
             </p>
