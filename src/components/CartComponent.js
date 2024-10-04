@@ -41,15 +41,15 @@ export default function CartComponent({ cartBook, setCartBook }) {
 
         Swal.fire({
           title: "Deleted!",
-          text: "Your item has been removed from the wishlist.",
+          text: "Your item has been removed from the cart.",
           icon: "success",
         });
       } catch (error) {
-        console.error("Error removing item from wishlist:", error);
+        console.error("Error removing item from cart:", error);
         Swal.fire({
           icon: "error",
           title: "Error",
-          text: "Failed to remove item from wishlist!",
+          text: "Failed to remove item from cart!",
         });
       }
     }
@@ -63,65 +63,69 @@ export default function CartComponent({ cartBook, setCartBook }) {
   const total = subtotal + tax;
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-6">
       <div className="md:col-span-2 space-y-4">
-        {cartBook?.cart?.length > 0 ? (
-          cartBook.cart.map((item) => (
-            <div
-              key={item._id}
-              className="flex items-center space-x-4 border-b pb-4"
-            >
-              <Image
-                src={item.image}
-                alt={item.name}
-                width={80}
-                height={120}
-                className="object-cover"
-              />
-              <div className="flex-grow">
-                <h3 className="font-semibold">{item.category}</h3>
-                <p className="text-sm text-gray-600">{item.author}</p>
-                <p className="font-bold mt-2">${item.price?.toFixed(2)}</p>
-              </div>
-              <div className="flex items-center space-x-2">
-                <button
-                  onClick={() => updateQuantity(item._id, item.quantity - 1)}
-                  className="p-1 border rounded"
-                >
-                  <Minus className="h-4 w-4" />
-                </button>
-                <input
-                  type="number"
-                  value={item.quantity}
-                  min="0"
-                  onChange={(e) => {
-                    const newQuantity = parseInt(e.target.value);
-                    if (!isNaN(newQuantity)) {
-                      updateQuantity(item._id, newQuantity);
-                    }
-                  }}
-                  className="w-16 text-center border rounded p-1"
-                />
-                <button
-                  onClick={() => updateQuantity(item._id, item.quantity + 1)}
-                  className="p-1 border rounded"
-                >
-                  <Plus className="h-4 w-4" />
-                </button>
-              </div>
-              <button
-                onClick={() => handleRemove(item._id)}
-                className="p-1 text-gray-500 hover:text-gray-700"
+        <div className="max-h-96 overflow-y-auto pr-2">
+          {/* Scrollable cart section */}
+          {cartBook?.cart?.length > 0 ? (
+            cartBook.cart.map((item) => (
+              <div
+                key={item._id}
+                className="flex items-center space-x-4 border-b pb-4"
               >
-                <X className="h-4 w-4" />
-              </button>
+                <Image
+                  src={item.image}
+                  alt={item.name}
+                  width={80}
+                  height={120}
+                  className="object-cover"
+                />
+                <div className="flex-grow">
+                  <h2 className="font-semibold">{item.name}</h2>
+                  <h3 className="font-semibold">{item.category}</h3>
+                  <p className="text-sm text-gray-600">{item.author}</p>
+                  <p className="font-bold mt-2">${item.price?.toFixed(2)}</p>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <button
+                    onClick={() => updateQuantity(item._id, item.quantity - 1)}
+                    className="p-1 border rounded"
+                  >
+                    <Minus className="h-4 w-4" />
+                  </button>
+                  <input
+                    type="number"
+                    value={item.quantity}
+                    min="0"
+                    onChange={(e) => {
+                      const newQuantity = parseInt(e.target.value);
+                      if (!isNaN(newQuantity)) {
+                        updateQuantity(item._id, newQuantity);
+                      }
+                    }}
+                    className="w-16 text-center border rounded p-1"
+                  />
+                  <button
+                    onClick={() => updateQuantity(item._id, item.quantity + 1)}
+                    className="p-1 border rounded"
+                  >
+                    <Plus className="h-4 w-4" />
+                  </button>
+                </div>
+                <button
+                  onClick={() => handleRemove(item._id)}
+                  className="p-1 text-gray-500 hover:text-gray-700"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              </div>
+            ))
+          ) : (
+            <div className="text-2xl text-gray-500 p-4">
+              No items in your cart....
             </div>
-          ))
-        ) : (
-          <div className="text-2xl text-gray-500 p-4">
-            No items in your cart....
-          </div>
-        )}
+          )}
+        </div>
       </div>
       <div className="bg-gray-100 p-6 rounded-lg h-fit">
         <h2 className="text-xl font-semibold mb-4">Order Summary</h2>
@@ -156,19 +160,12 @@ export default function CartComponent({ cartBook, setCartBook }) {
             className="fixed inset-0 bg-black opacity-50"
             onClick={() => setIsModalOpen(false)}
           ></div>
-          <div className="bg-white rounded-lg shadow-lg p-6 z-10 w-full max-w-4xl">
-            {" "}
+          <div className="bg-white rounded-lg shadow-lg p-6 z-10 w-full max-w-4xl mt-20">
             {/* Increased modal width */}
             <h2 className="text-xl font-semibold mb-4">Checkout</h2>
             <Elements stripe={stripePromise}>
               <CheckoutForm cartItems={cartBook.cart} />
             </Elements>
-            <button
-              className="mt-4 w-full bg-red-600 text-white py-2 px-4 rounded hover:bg-red-700 transition duration-200"
-              onClick={() => setIsModalOpen(false)}
-            >
-              Close
-            </button>
           </div>
         </div>
       )}

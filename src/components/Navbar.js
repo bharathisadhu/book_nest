@@ -38,10 +38,7 @@ const Navbar = () => {
       }
     };
 
-    fetchCounts();
-    // Optional: Polling to update the count every X seconds
-    const intervalId = setInterval(fetchCounts, 1000); // Fetch every 1 seconds (adjust as needed)
-    return () => clearInterval(intervalId); // Cleanup on unmount
+    fetchCounts(); // Fetch counts once when component mounts
   }, []);
 
   const toggleSidebar = () => {
@@ -61,7 +58,7 @@ const Navbar = () => {
   ];
 
   return (
-    <div className="sticky navbar justify-between container mx-auto">
+    <div className="sticky navbar justify-between container mx-auto mb-4">
       {/* Desktop View */}
       <div className="navbar hidden lg:flex items-center">
         <Link href="/" className="normal-case text-3xl">
@@ -159,7 +156,7 @@ const Navbar = () => {
       </div>
 
       {/* Tablet and Mobile View */}
-      <div className="lg:hidden flex justify-between w-full">
+      <div className="lg:hidden flex justify-between w-full mb-4">
         <Link href="/" className="normal-case text-3xl">
           <Image
             height={200}
@@ -243,19 +240,9 @@ const Navbar = () => {
                     )}
                   </button>
                   {isDropdownOpen && (
-                    <div className="absolute left-0 mt-2 py-2 w-full bg-white border rounded-md shadow-xl z-20">
-                      <Link
-                        href="/profile"
-                        className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
-                        onClick={toggleSidebar}
-                      >
-                        Profile
-                      </Link>
+                    <div className="absolute right-0 mt-2 py-2 w-48 bg-white border rounded-md shadow-xl z-20">
                       <button
-                        onClick={() => {
-                          signOut();
-                          toggleSidebar();
-                        }}
+                        onClick={() => signOut()}
                         className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-100"
                       >
                         Logout
@@ -267,9 +254,9 @@ const Navbar = () => {
               <Link href="/cart" className="btn btn-ghost text-xl relative">
                 <FaShoppingCart className="text-2xl" />
                 {loading ? (
-                  <span className="loading-spinner" /> // You can replace this with a spinner or loader component
+                  <span className="loading-spinner" />
                 ) : error ? (
-                  <span className="text-red-500">!</span> // Or any error indication
+                  <span className="text-red-500">!</span>
                 ) : (
                   cartCount > 0 && (
                     <span className="absolute top-0 right-0 bg-red-500 text-white rounded-full px-1 text-xs transform translate-x-1 -translate-y-1">
