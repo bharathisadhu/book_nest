@@ -4,11 +4,17 @@ import Image from "next/image";
 import { Minus, Plus, X, ShoppingCart } from "lucide-react";
 import Swal from "sweetalert2";
 import axios from "axios";
+import { useState } from "react";
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
+import CheckoutForm from "./CheckoutForm";
+
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY);
 
 export default function CartComponent({ cartBook, setCartBook }) {
-  // Function to update the quantity of a specific item
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const updateQuantity = (id, newQuantity) => {
-    // Update only the item that matches the ID
     setCartBook((prevState) => ({
       cart: prevState.cart.map((item) =>
         item._id === id ? { ...item, quantity: Math.max(0, newQuantity) } : item
@@ -29,14 +35,10 @@ export default function CartComponent({ cartBook, setCartBook }) {
 
     if (result.isConfirmed) {
       try {
-        // Make the DELETE request to your API
         await axios.delete(`/api/cart?id=${id}`);
-
-        // Remove the item from the local state
         const updatedCart = cartBook.cart.filter((item) => item._id !== id);
         setCartBook({ cart: updatedCart });
 
-        // Show success message
         Swal.fire({
           title: "Deleted!",
           text: "Your item has been removed from the wishlist.",
@@ -66,7 +68,7 @@ export default function CartComponent({ cartBook, setCartBook }) {
         {cartBook?.cart?.length > 0 ? (
           cartBook.cart.map((item) => (
             <div
-              key={item.id}
+              key={item._id}
               className="flex items-center space-x-4 border-b pb-4"
             >
               <Image
@@ -83,7 +85,7 @@ export default function CartComponent({ cartBook, setCartBook }) {
               </div>
               <div className="flex items-center space-x-2">
                 <button
-                  onClick={() => updateQuantity(item._id, item.quantity - 1)} // Decrease quantity
+                  onClick={() => updateQuantity(item._id, item.quantity - 1)}
                   className="p-1 border rounded"
                 >
                   <Minus className="h-4 w-4" />
@@ -91,17 +93,17 @@ export default function CartComponent({ cartBook, setCartBook }) {
                 <input
                   type="number"
                   value={item.quantity}
-                  min="0" // Prevent negative values
+                  min="0"
                   onChange={(e) => {
                     const newQuantity = parseInt(e.target.value);
                     if (!isNaN(newQuantity)) {
-                      updateQuantity(item._id, newQuantity); // Update the specific item
+                      updateQuantity(item._id, newQuantity);
                     }
                   }}
                   className="w-16 text-center border rounded p-1"
                 />
                 <button
-                  onClick={() => updateQuantity(item._id, item.quantity + 1)} // Increase quantity
+                  onClick={() => updateQuantity(item._id, item.quantity + 1)}
                   className="p-1 border rounded"
                 >
                   <Plus className="h-4 w-4" />
@@ -137,11 +139,39 @@ export default function CartComponent({ cartBook, setCartBook }) {
             <span>${total.toFixed(2)}</span>
           </div>
         </div>
-        <button className="w-full bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition duration-200">
-          <ShoppingCart className="inline-block mr-2 h-4 w-4" /> Proceed to
-          Checkout
+        <button
+          onClick={() => setIsModalOpen(true)}
+          className="w-full bg-red-600 text-white py-2 px-4 rounded hover:bg-red-400 transition duration-200"
+          disabled={cartBook.cart.length === 0} // Disable button if cart is empty
+        >
+          <ShoppingCart className="inline-block mr-2 h-4 w-4" />
+          Proceed to Checkout
         </button>
       </div>
+
+      {/* Modal for Stripe Checkout Form */}
+      {isModalOpen && (
+        <div className="fixed inset-0 flex items-center justify-center z-50">
+          <div
+            className="fixed inset-0 bg-black opacity-50"
+            onClick={() => setIsModalOpen(false)}
+          ></div>
+          <div className="bg-white rounded-lg shadow-lg p-6 z-10 w-full max-w-4xl">
+            {" "}
+            {/* Increased modal width */}
+            <h2 className="text-xl font-semibold mb-4">Checkout</h2>
+            <Elements stripe={stripePromise}>
+              <CheckoutForm cartItems={cartBook.cart} />
+            </Elements>
+            <button
+              className="mt-4 w-full bg-red-600 text-white py-2 px-4 rounded hover:bg-red-700 transition duration-200"
+              onClick={() => setIsModalOpen(false)}
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
