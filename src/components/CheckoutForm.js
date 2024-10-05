@@ -243,14 +243,9 @@ const CheckoutForm = ({ cartItems }) => {
                 ))}
               </ul>
 
-              <li className="flex flex-wrap gap-4 text-sm font-bold border-t-2 pt-4">
-                Subtotal <span className="ml-auto">${subtotal.toFixed(2)}</span>
-              </li>
-              <li className="flex flex-wrap gap-4 text-sm font-bold">
-                Tax <span className="ml-auto">${tax.toFixed(2)}</span>
-              </li>
-              <li className="flex flex-wrap gap-4 text-lg font-extrabold">
-                Total <span className="ml-auto">${totalPrice.toFixed(2)}</span>
+              <li className="flex flex-wrap gap-4 text-sm font-bold border-t-2 border-dashed border-gray-600 mt-6 pt-4">
+                <span>Total</span>
+                <span className="ml-auto">${totalPrice.toFixed(2)}</span>
               </li>
             </div>
           </div>
