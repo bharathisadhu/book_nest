@@ -50,7 +50,7 @@ const BlogsPage = () => {
       } catch (error) {
         console.error("Failed to fetch Blogs:", error);
       } finally {
-        setIsLoading(false); // Set loading to false after fetching data
+        setIsLoading(false);
       }
     };
 
