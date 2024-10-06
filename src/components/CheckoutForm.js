@@ -163,8 +163,9 @@ const CheckoutForm = ({ cartItems }) => {
             &times;
           </button>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <div className="lg:col-span-2 max-md:order-1">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mt-16 md:mt-0">
+            {/* Adjusted for mobile to display heading at the top */}
+            <div className="lg:col-span-2 order-1 md:order-2 max-md:order-1">
               <h2 className="text-3xl font-extrabold text-gray-800">
                 Make a payment
               </h2>
@@ -221,7 +222,7 @@ const CheckoutForm = ({ cartItems }) => {
               )}
             </div>
 
-            <div className="bg-red-300 p-6 rounded-md">
+            <div className="bg-red-300 p-6 rounded-md order-2 md:order-1 max-md:order-2">
               <h2 className="text-3xl font-extrabold text-gray-800">
                 ${totalPrice.toFixed(2)}
               </h2>
@@ -243,10 +244,17 @@ const CheckoutForm = ({ cartItems }) => {
                 ))}
               </ul>
 
-              <li className="flex flex-wrap gap-4 text-sm font-bold border-t-2 border-dashed border-gray-600 mt-6 pt-4">
-                <span>Total</span>
-                <span className="ml-auto">${totalPrice.toFixed(2)}</span>
-              </li>
+              <div className="text-gray-800 mt-6 space-y-4 border-t-2 pt-2">
+                <div className="flex gap-4">
+                  <p>Subtotal:</p>
+                  <p className="ml-auto">${subtotal.toFixed(2)}</p>
+                </div>
+
+                <div className="flex gap-4">
+                  <p>Tax:</p>
+                  <p className="ml-auto">${tax.toFixed(2)}</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
