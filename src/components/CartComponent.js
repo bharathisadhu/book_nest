@@ -66,7 +66,11 @@ export default function CartComponent({ cartBook, setCartBook }) {
 
   const handleCouponApply = () => {
     const coupon = document.getElementById("couponInput").value;
-    if (cartBook.cart.length <= 3 && coupon === "BookNest10") {
+    if (
+      cartBook.cart.length > 0 &&
+      cartBook.cart.length <= 3 &&
+      coupon === "BookNest10"
+    ) {
       const discountAmount = (total * 10) / 100;
       setDiscount(discountAmount);
       setIsDiscountSectionHidden(true);
@@ -94,10 +98,23 @@ export default function CartComponent({ cartBook, setCartBook }) {
         icon: "success",
       });
     } else {
+      let errorMessage = "";
+      if (cartBook.cart.length < 1 && coupon === "BookNest10") {
+        errorMessage = "Please select a book to apply the coupon.";
+      }
+      // Check if the number of books in the cart is <= 3
+      else if (cartBook.cart.length < 3 && coupon === "BookNest20") {
+        errorMessage = "Please select more than 3 books to apply the coupon.";
+      }
+
+      // Check if the coupon code is invalid
+      else {
+        errorMessage = "The coupon code you entered is not valid.";
+      }
       Swal.fire({
         icon: "error",
         title: "Invalid Coupon",
-        text: "The coupon code you entered is not valid.",
+        text: errorMessage,
       });
     }
   };
