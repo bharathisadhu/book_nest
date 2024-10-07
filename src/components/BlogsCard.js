@@ -1,8 +1,9 @@
 import Image from "next/image";
+import Link from "next/link";
 
 
 export default function BlogsCard({ blog }) {
-  const { image,title, author, date, category, shortDescription } = blog;
+  const { _id,image,title, author, date, category, shortDescription } = blog;
  
 
   return (
@@ -31,7 +32,11 @@ export default function BlogsCard({ blog }) {
                 <sapn className="uppercase">
                   In <span className="text-rose-600">{category}</span>
                 </sapn>
-                <sapn className="font-semibold">Read More</sapn>
+                <sapn className="font-semibold">
+                <Link href={`/blogs/${_id}`}>
+                Read More
+            </Link>
+            </sapn>
               </sapn>
             </div>
     
