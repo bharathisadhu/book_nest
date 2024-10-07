@@ -1,17 +1,15 @@
-import Dashboard from '@/components/Dashboard';
-import React from 'react';
+// src/app/dashboard/insight/page.js
+import DashboardLayout from "@/components/DashboardLayout";
 
 
-const DashboardPage = () => {
+const InsightPage = () => {
   return (
-    <div className="flex">
-      <Dashboard />
-      <div className="ml-64 p-6"> {/* Adjust margin to accommodate the sidebar */}
-        <h1 className="text-2xl font-bold">Dashboard Content</h1>
-        {/* Your main dashboard content goes here */}
-      </div>
-    </div>
+      <DashboardLayout>
+        <h1 className="text-2xl font-bold">This is the main dashboard</h1>
+        <p>This is the dashboard page content.</p>
+        {/* Add more specific content here */}
+      </DashboardLayout>
   );
 };
 
-export default DashboardPage;
+export default InsightPage;
