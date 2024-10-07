@@ -66,9 +66,26 @@ export default function CartComponent({ cartBook, setCartBook }) {
 
   const handleCouponApply = () => {
     const coupon = document.getElementById("couponInput").value;
-
-    if (cartBook.cart.length > 1 && coupon === "BookNest20") {
+    if (cartBook.cart.length <= 3 && coupon === "BookNest10") {
+      const discountAmount = (total * 10) / 100;
+      setDiscount(discountAmount);
+      setIsDiscountSectionHidden(true);
+      Swal.fire({
+        title: "Coupon Applied!",
+        text: `You have received a discount of $${discountAmount.toFixed(2)}.`,
+        icon: "success",
+      });
+    } else if (cartBook.cart.length > 3 && coupon === "BookNest20") {
       const discountAmount = (total * 20) / 100;
+      setDiscount(discountAmount);
+      setIsDiscountSectionHidden(true);
+      Swal.fire({
+        title: "Coupon Applied!",
+        text: `You have received a discount of $${discountAmount.toFixed(2)}.`,
+        icon: "success",
+      });
+    } else if (cartBook.cart.length > 3 && coupon === "BookNest10") {
+      const discountAmount = (total * 10) / 100;
       setDiscount(discountAmount);
       setIsDiscountSectionHidden(true);
       Swal.fire({
