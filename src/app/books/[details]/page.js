@@ -5,9 +5,12 @@ import axios from "axios";
 import Image from "next/image";
 import { CiStar } from "react-icons/ci";
 import { useState } from "react";
+import Swal from "sweetalert2";
+
 
 export default async function BookDetails({ params }) {
   const [activeTab, setActiveTab] = useState('description');
+  const [isBookmarked, setIsBookmarked] = useState(false);
   const handleTabClick = (tab) => {
     setActiveTab(tab);
   };
@@ -33,6 +36,70 @@ export default async function BookDetails({ params }) {
     return <p className="text-3xl">Book not found.</p>;
   }
 
+  const {
+    _id,
+    name,
+    description,
+    image,
+    author,
+    price,
+    rating,
+    category
+  } = bookDetails;
+
+  const addToWishlist = async () => {
+    if (isBookmarked) {
+      Swal.fire({
+        icon: "info",
+        title: "Already Bookmarked",
+        text: `${name} is already in your bookmarks!`,
+      });
+      return;
+    }
+
+    try {
+      const response = await axios.post(`/api/wishlist/${_id}`, {
+        name,
+        description: bookDetails.description || "",
+        image,
+        author: bookDetails.author || "",
+        price,
+        rating: bookDetails.ratings,
+        category,
+      });
+
+      if (response.status === 201) {
+        setIsBookmarked(true);
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: `${name} added to bookmarks!`,
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }
+    } catch (error) {
+      console.error("Error adding to bookmark:", error);
+      const message =
+        error.response?.data?.message || "Failed to add to bookmarks!";
+
+      if (error.response?.status === 409) {
+        Swal.fire({
+          icon: "info",
+          title: "Already Bookmarked",
+          text: message,
+        });
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: message,
+        });
+      }
+    }
+  };
+
+
   return (
     <div className="font-sans">
       <div className="p-4 lg:max-w-6xl max-w-2xl max-lg:mx-auto">
@@ -45,26 +112,14 @@ export default async function BookDetails({ params }) {
                 src={bookDetails.image}
                 alt="Product" className="lg:w-11/12 w-full h-full rounded-md object-cover object-top" />
             </div>
-            {/* <div className="flex flex-wrap gap-4 justify-center mx-auto mt-4">
-              <Image
-                height={100}
-                width={100} src="https://readymadeui.com/images/product6.webp" alt="Product1" className="w-16 cursor-pointer rounded-md outline" />
-              <Image
-                height={100}
-                width={100}
-                src="https://readymadeui.com/images/product8.webp" alt="Product2" className="w-16 cursor-pointer rounded-md" />
-              <Image
-                height={100}
-                width={100} src="https://readymadeui.com/images/product5.webp" alt="Product3" className="w-16 cursor-pointer rounded-md" />
-              <Image
-                height={100}
-                width={100} src="https://readymadeui.com/images/product7.webp" alt="Product4" className="w-16 cursor-pointer rounded-md" />
-            </div> */}
-
-
           </div>
 
           <div>
+            <div className='mb-3'>
+              <button type="button" class="flex items-center text-green-600 text-sm bg-green-50 px-3 py-1.5 tracking-wide rounded-full">
+                IN STOCK
+              </button>
+            </div>
             <div className="flex flex-wrap items-start gap-4">
               <div>
                 <h2 className="text-2xl font-bold text-gray-800">{bookDetails.name} | {bookDetails.category}</h2>
@@ -121,7 +176,7 @@ export default async function BookDetails({ params }) {
 
             <div className="flex flex-wrap gap-4">
               <button type="button" className="min-w-[200px] px-4 py-3 bg-gray-800 hover:bg-gray-900 text-white text-sm font-semibold rounded-md">Add to cart</button>
-              <button type="button" className="min-w-[200px] px-4 py-2.5 border border-gray-800 bg-transparent hover:bg-gray-50 text-gray-800 text-sm font-semibold rounded-md">Add to wishlist</button>
+              <button onClick={addToWishlist} className="min-w-[200px] px-4 py-2.5 border border-gray-800 bg-transparent hover:bg-gray-50 text-gray-800 text-sm font-semibold rounded-md">Add to wishlist</button>
             </div>
           </div>
         </div>
