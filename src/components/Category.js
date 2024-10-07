@@ -1,4 +1,3 @@
-
 "use client";
 import { useEffect, useState } from "react";
 // Import Swiper React components
@@ -50,8 +49,10 @@ const Category = () => {
         {category.map((cat) => (
           <SwiperSlide key={cat.image}>
             <div className="relative flex flex-col items-center transition-transform cursor-pointer  group mt-10">
-              <div className="h-24 w-24 lg:h-40 lg:w-40 rounded-full bg-slate-200 absolute z-10
-        group-hover:bg-red-600 top-3/4 transform -translate-y-1/2"></div>
+              <div
+                className="h-24 w-24 lg:h-40 lg:w-40 rounded-full bg-slate-200 absolute z-10
+        group-hover:bg-red-600 top-3/4 transform -translate-y-1/2"
+              ></div>
               <Image
                 src={cat.image}
                 className="lg:w-[110px] lg:h-[170px] w-14 h-18 relative z-20 transform transition-transform duration-300 lg:group-hover:-translate-y-10 group-hover:-translate-y-4 rounded-sm"
@@ -61,7 +62,6 @@ const Category = () => {
                 style={{ objectFit: "cover" }}
               />
             </div>
-
             <p className="text-center text-lg font-medium text-gray-700 mt-14">
               {cat.category}
             </p>
