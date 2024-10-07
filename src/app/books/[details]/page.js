@@ -11,6 +11,7 @@ import Swal from "sweetalert2";
 export default async function BookDetails({ params }) {
   const [activeTab, setActiveTab] = useState('description');
   const [isBookmarked, setIsBookmarked] = useState(false);
+  const [isInCart, setIsInCart] = useState(false);
   const handleTabClick = (tab) => {
     setActiveTab(tab);
   };
@@ -44,7 +45,8 @@ export default async function BookDetails({ params }) {
     author,
     price,
     rating,
-    category
+    category,
+    quantity
   } = bookDetails;
 
   const addToWishlist = async () => {
@@ -87,6 +89,57 @@ export default async function BookDetails({ params }) {
         Swal.fire({
           icon: "info",
           title: "Already Bookmarked",
+          text: message,
+        });
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: message,
+        });
+      }
+    }
+  };
+  const addToCart = async () => {
+    if (isInCart) {
+      Swal.fire({
+        icon: "info",
+        title: "Already in Cart",
+        text: `${name} is already in your cart!`,
+      });
+      return;
+    }
+
+    try {
+      const response = await axios.post(`/api/cart/${_id}`, {
+        name,
+        description: bookDetails.description || "",
+        image,
+        author: bookDetails.author || "",
+        price,
+        rating: bookDetails.ratings,
+        category,
+        quantity,
+      });
+
+      if (response.status === 201) {
+        setIsInCart(true);
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: `${name} added to cart!`,
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }
+    } catch (error) {
+      console.error("Error adding to cart:", error);
+      const message = error.response?.data?.message || "Failed to add to cart!";
+
+      if (error.response?.status === 409) {
+        Swal.fire({
+          icon: "info",
+          title: "Already in Cart",
           text: message,
         });
       } else {
@@ -175,7 +228,8 @@ export default async function BookDetails({ params }) {
             <hr className="my-8" />
 
             <div className="flex flex-wrap gap-4">
-              <button type="button" className="min-w-[200px] px-4 py-3 bg-gray-800 hover:bg-gray-900 text-white text-sm font-semibold rounded-md">Add to cart</button>
+              
+              <button onClick={addToCart} className="min-w-[200px] px-4 py-3 bg-gray-800 hover:bg-gray-900 text-white text-sm font-semibold rounded-md">Add to cart</button>
               <button onClick={addToWishlist} className="min-w-[200px] px-4 py-2.5 border border-gray-800 bg-transparent hover:bg-gray-50 text-gray-800 text-sm font-semibold rounded-md">Add to wishlist</button>
             </div>
           </div>

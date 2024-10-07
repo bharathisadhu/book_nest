@@ -1,6 +1,6 @@
 import connectToDatabase from "@/lib/mongodb";
 import { NextResponse } from "next/server";
-import { WishList } from "../../../../models/Book";
+import { Cart, WishList } from "../../../../models/Book";
 
 
 export async function POST(request, { params }) {

@@ -10,6 +10,7 @@ export default function BooksCard({ book }) {
   const { name, image, price, category, ratings, _id, quantity } = book;
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [isInCart, setIsInCart] = useState(false);
+  
 
   const addToBookmark = async () => {
     if (isBookmarked) {
