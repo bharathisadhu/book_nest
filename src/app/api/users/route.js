@@ -5,7 +5,7 @@ import Users from "../../../../models/Users";
 export async function GET() {
   await connectToDatabase();
   const users = await Users.find();
-  return NextResponse.json({ users });
+  return NextResponse.json( users );
 }
 
 
