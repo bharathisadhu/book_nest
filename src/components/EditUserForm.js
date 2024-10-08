@@ -32,7 +32,7 @@ export default function EditUserForm({ id, name, email, password, image }) {
       }
 
       router.refresh();
-      router.push("/");
+      router.push("/dashboard/users");
     } catch (error) {
       console.log(error);
     }
