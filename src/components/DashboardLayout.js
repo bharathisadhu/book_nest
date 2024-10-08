@@ -1,8 +1,5 @@
 
-
-
-
-'use client';
+'use client'
 import { useSession, signOut } from "next-auth/react";
 import Image from "next/image";
 import { useState } from "react";
@@ -17,7 +14,7 @@ const DashboardLayout = ({ children }) => {
   };
 
   return (
-    <div className="flex">
+      <div className="flex">
       <button
         className="md:hidden p-2 text-white bg-blue-500 rounded"
         onClick={toggleSidebar}
