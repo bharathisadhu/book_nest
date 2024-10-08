@@ -1,5 +1,6 @@
+import Link from "next/link";
 import RemoveBtn from "./RemoveBtn";
-
+import { HiPencilAlt } from "react-icons/hi";
 
 const getUsers = async () => {
   try {
@@ -9,8 +10,6 @@ const getUsers = async () => {
     if (!res.ok) {
       throw new Error("Failed to fetch users");
     }
-
-
 
     const data = await res.json();
     return data.users || []; // Adjust according to your API response structure
@@ -57,12 +56,16 @@ export default async function UsersList() {
                   <td className="px-4 py-4 text-sm text-gray-800">
                     {user.email}
                   </td>
-                  <td className="px-4 py-4 text-sm text-gray-800">Yet to be done</td>
+                  <td className="px-4 py-4 text-sm text-gray-800">
+                    Yet to be done
+                  </td>
                   <td className="px-4 py-4 text-sm text-gray-800">
                     2022-05-15
                   </td>
-                  <td className="px-4 py-4 text-sm text-gray-800">
-                    <button className="text-blue-600 mr-4">Edit</button>
+                  <td className="flex px-4 py-4 text-sm text-gray-800">
+                    <Link href={`/dashboard/editUsers/${user._id}`}>
+                      <HiPencilAlt size={24} />
+                    </Link>
                     <RemoveBtn id={user._id} />
                   </td>
                 </tr>
@@ -73,4 +76,3 @@ export default async function UsersList() {
     </>
   );
 }
-
