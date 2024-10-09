@@ -42,6 +42,7 @@ const nextConfig = {
       "avatars.githubusercontent.com",
       "via.placeholder.com",
       "i.ibb.co.com",
+      "images.unsplash.com",
       "*",
     ],
   },

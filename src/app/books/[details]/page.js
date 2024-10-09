@@ -1,11 +1,11 @@
 /* eslint-disable @next/next/no-async-client-component */
-
 "use client"
 import axios from "axios";
 import Image from "next/image";
 import { CiStar } from "react-icons/ci";
 import { useState } from "react";
 import Swal from "sweetalert2";
+import RelatedBooks from "@/components/RelatedBooks";
 
 
 export default async function BookDetails({ params }) {
@@ -19,8 +19,8 @@ export default async function BookDetails({ params }) {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
   try {
-    const response = await axios.get(`${baseUrl}/api/books`); // Use the baseUrl for flexibility
-    console.log("API Response:", response.data);
+    const response = await axios.get(`${baseUrl}/api/books`);
+    // console.log("API Response:", response.data);
     listOfBooks = response.data;
   } catch (error) {
     console.error("Error fetching book details:", error.message);
@@ -29,7 +29,7 @@ export default async function BookDetails({ params }) {
 
   const bookId = params.details; // No conversion
   console.log("Params:", params);
-  console.log("List of Books:", listOfBooks);
+  // console.log("List of Books:", listOfBooks);
 
   const bookDetails = listOfBooks.find(book => book._id === bookId); // Ensure the correct property is used
 
@@ -228,7 +228,7 @@ export default async function BookDetails({ params }) {
             <hr className="my-8" />
 
             <div className="flex flex-wrap gap-4">
-              
+
               <button onClick={addToCart} className="min-w-[200px] px-4 py-3 bg-gray-800 hover:bg-gray-900 text-white text-sm font-semibold rounded-md">Add to cart</button>
               <button onClick={addToWishlist} className="min-w-[200px] px-4 py-2.5 border border-gray-800 bg-transparent hover:bg-gray-50 text-gray-800 text-sm font-semibold rounded-md">Add to wishlist</button>
             </div>
@@ -271,8 +271,11 @@ export default async function BookDetails({ params }) {
               </div>
             )}
           </div>
+
         </div>
+
       </div>
+      <RelatedBooks listOfBooks={listOfBooks}></RelatedBooks>
     </div>
   );
 }
