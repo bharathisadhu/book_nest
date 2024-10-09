@@ -1,6 +1,5 @@
 "use client";
-import Footer from "@/components/Footer";
-import Navbar from "@/components/Navbar";
+
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { GoArrowRight } from "react-icons/go";
