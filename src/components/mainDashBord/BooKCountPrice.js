@@ -33,8 +33,8 @@ const BookCount = () => {
   return (
     <>
   
-  <div className="flex gap-10"><p>Total Price</p><p>{parseFloat(totalPrice).toFixed(2)}$</p></div>
-  <div className="flex gap-10"><p>Total Quantity</p><p>{totalQuantity}</p></div>
+       <div className="flex gap-10 ml-10 pt-[20px] pb-[5px] font-bold uppercase"><p>Total Price</p><p>{parseFloat(totalPrice).toFixed(2)}$</p></div>
+       <div className="flex gap-10 ml-10 pb-[20px] font-bold uppercase"><p>Total Quantity</p><p>{totalQuantity}</p></div>
       
       
 

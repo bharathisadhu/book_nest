@@ -32,7 +32,7 @@ const UserCount = () => {
     
   
 
-      <div className="flex gap-10"><p>Total User</p><p>{users.length}</p></div>
+      <div className="flex gap-10 ml-10 py-[20px] font-bold uppercase"><p>Total User</p><p>{users.length}</p></div>
       
       
       
