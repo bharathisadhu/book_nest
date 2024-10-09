@@ -1,6 +1,7 @@
 'use client'
 import { useState,useEffect } from 'react';
 import Comment from './Comment';
+import Link from "next/link";
 import { useSession  } from "next-auth/react";
 const CommentsList = ({id}) => {
   const [comments, setComments] = useState([]);
@@ -20,7 +21,7 @@ const CommentsList = ({id}) => {
       setComments(data);
           };
     fetchComments();
-  }, []);
+  }, [baseUrl,id]);
 
   
 
@@ -45,16 +46,24 @@ const CommentsList = ({id}) => {
   console.log("check-status",status);
 
   return (
-    <div className="comments-list p-6 max-w-xl mx-auto">
+    <div className="comments-list p-6 w-full mx-auto grid grid-cols-1 md:grid-cols-2 gap-6">
     {/* <h1>Welcome, {session?.user?.name}</h1>
     <h1>Welcome, {session?.user?.email}</h1> */}
+    <div className="w-full">
       <h1 className="text-xl font-bold mb-4">Comments</h1>
-      
-      <form onSubmit={handleCommentSubmit} className="mb-6">
+
+      {!session?.user ? (
+          <Link href="/login">
+            <button className="btn btn-ghost text-xl">
+              login
+            </button>
+          </Link>
+        ) : (
+          <form onSubmit={handleCommentSubmit} className="mb-6">
         <textarea
           value={newComment}
           onChange={(e) => setNewComment(e.target.value)}
-          className="w-full p-2 border border-gray-300 rounded"
+          className="w-full p-2 border border-gray-300 rounded h-[200px]"
           placeholder="Write your comment..."
         />
         <button
@@ -65,7 +74,11 @@ const CommentsList = ({id}) => {
         </button>
       </form>
 
-      <div className="comment-section">
+
+        )} 
+      
+      </div>
+      <div className="comment-section w-full">
       
       {comments?.length>0 && comments.map((comment) => (
           <Comment key={comment._id} comment={comment} />

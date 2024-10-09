@@ -29,7 +29,10 @@ const Comment = ({ comment }) => {
    
   return (
     <div className="comment p-4 border border-gray-300 rounded mb-4">
+      <div>
       <p><span className="text-orange-800 uppercase">{comment.username}-</span><span className="text-[red] font-semibold">{comment.text}</span></p>
+      </div>
+      <div>
       {(!comment?.parentId)&&
           <button 
           className="mt-2 text-blue-500"
@@ -60,6 +63,8 @@ const Comment = ({ comment }) => {
         ))}
       </div>
     )}
+      </div>
+     
      
     </div>
   );
