@@ -4,11 +4,13 @@ import Image from "next/image";
 import { CiStar } from "react-icons/ci";
 import Swal from "sweetalert2";
 import { FaHeart, FaShoppingCart } from "react-icons/fa";
+import Link from "next/link";
 
 export default function BooksCard({ book }) {
   const { name, image, price, category, ratings, _id, quantity } = book;
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [isInCart, setIsInCart] = useState(false);
+  
 
   const addToBookmark = async () => {
     if (isBookmarked) {
@@ -147,12 +149,13 @@ export default function BooksCard({ book }) {
       <div className="p-4">
         <p className="text-sm text-gray-600 mb-1">Category: {category}</p>
 
-        <h3
+        <Link
+          href={`/books/${_id}`}
           title={name}
-          className="text-lg md:text-xl text-gray-800 font-bold line-clamp-2"
+          className="text-lg md:text-xl text-gray-800 font-bold line-clamp-2 hover:text-red-700"
         >
           {name.slice(0, 10)}...
-        </h3>
+        </Link>
 
         <div className="flex items-center mt-2">
           <p className="text-gray-800 font-semibold flex items-center">

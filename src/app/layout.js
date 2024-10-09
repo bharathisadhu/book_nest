@@ -4,6 +4,7 @@ import AuthProvider from "@/services/AuthProvider";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
+
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
@@ -21,14 +22,18 @@ export const metadata = {
   favicon: "BookNest.png",
 };
 
-export default function RootLayout({ children, showNavbar = true, showFooter = true }) {
+export default function RootLayout({
+  children,
+  showNavbar = true,
+  showFooter = true,
+}) {
   return (
     <html lang="en" data-theme="light">
       <body className="popins">
         <AuthProvider>
-          {showNavbar && <Navbar />}
-          <div className="container mx-auto">{children}</div>
-          {showFooter && <Footer />}
+            {showNavbar && <Navbar />}
+            <div className="container mx-auto">{children}</div>
+            {showFooter && <Footer />}
         </AuthProvider>
       </body>
     </html>

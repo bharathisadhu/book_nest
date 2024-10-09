@@ -4,6 +4,10 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import Banner from "@/components/share/banner";
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
+
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY);
 
 export default function CartPage() {
   const [cartBook, setCartBook] = useState({ cart: [] });
@@ -44,7 +48,9 @@ export default function CartPage() {
           </div>
         </div>
       ) : (
-        <CartComponent cartBook={cartBook} setCartBook={setCartBook} />
+        <Elements stripe={stripePromise}>
+          <CartComponent cartBook={cartBook} setCartBook={setCartBook} />
+        </Elements>
       )}
     </main>
   );

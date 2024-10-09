@@ -1,8 +1,8 @@
-// /api/payments/route.js
 import { NextResponse } from "next/server";
 import connectDB from "@/lib/connectDB";
 import Payment from "../../../../models/Payment";
 
+// POST: Create or update payment
 export async function POST(req) {
   try {
     await connectDB();
@@ -31,6 +31,24 @@ export async function POST(req) {
     console.error("Error updating payment:", error);
     return NextResponse.json(
       { error: "Failed to update payment" },
+      { status: 500 }
+    );
+  }
+}
+
+// GET: Retrieve all payments
+export async function GET(req) {
+  try {
+    await connectDB();
+
+    // Fetch all payments from the database
+    const payments = await Payment.find();
+
+    return NextResponse.json(payments);
+  } catch (error) {
+    console.error("Error fetching payments:", error);
+    return NextResponse.json(
+      { error: "Failed to retrieve payments" },
       { status: 500 }
     );
   }
