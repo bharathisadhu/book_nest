@@ -55,7 +55,7 @@ const BlogsPage = () => {
     };
 
     fetchData();
-  }, []);
+  }, [baseUrl]);
 
   useEffect(() => {
     let filtered = blogs;
