@@ -191,7 +191,7 @@ export default function CartComponent({ cartBook, setCartBook }) {
           title:
             "Thank you for the Payment, Your Order will be on their way soon! 🚚",
           showConfirmButton: false,
-          timer: 1500,
+          timer: 2000,
         });
 
         setTimeout(() => {
@@ -394,6 +394,11 @@ export default function CartComponent({ cartBook, setCartBook }) {
                 : `Pay $ ${(total - discount).toFixed(2)}`}
             </button>
             {error && <p className="text-red-500 text-center mt-2">{error}</p>}
+            {transactionId && (
+              <p className="text-green-600">
+                Your transaction ID: {transactionId}
+              </p>
+            )}
           </form>
         )}
       </div>
