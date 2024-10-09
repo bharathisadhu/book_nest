@@ -1,9 +1,16 @@
-
-'use client'
+"use client";
 import { useSession, signOut } from "next-auth/react";
 import Image from "next/image";
 import { useState } from "react";
-import { AiOutlineDashboard, AiOutlineUser, AiOutlineShoppingCart, AiOutlineFileText, AiOutlineLineChart, AiOutlineBarChart, AiOutlineSetting } from "react-icons/ai";
+import {
+  AiOutlineDashboard,
+  AiOutlineUser,
+  AiOutlineShoppingCart,
+  AiOutlineFileText,
+  AiOutlineLineChart,
+  AiOutlineBarChart,
+  AiOutlineSetting,
+} from "react-icons/ai";
 
 const DashboardLayout = ({ children }) => {
   const { data: session } = useSession();
@@ -14,7 +21,7 @@ const DashboardLayout = ({ children }) => {
   };
 
   return (
-      <div className="flex">
+    <div className="flex">
       <button
         className="md:hidden p-2 text-white bg-blue-500 rounded"
         onClick={toggleSidebar}
@@ -36,8 +43,12 @@ const DashboardLayout = ({ children }) => {
             alt="Profile"
           />
           <div className="mt-2 text-center">
-            <p className="text-sm text-white mt-2">{session?.user.name || "User Name"}</p>
-            <p className="text-xs text-gray-300 mt-0.5">{session?.user.email || "User Email"}</p>
+            <p className="text-sm text-white mt-2">
+              {session?.user.name || "User Name"}
+            </p>
+            <p className="text-xs text-gray-300 mt-0.5">
+              {session?.user.email || "User Email"}
+            </p>
             {session && (
               <button
                 onClick={() => signOut()}
@@ -51,13 +62,41 @@ const DashboardLayout = ({ children }) => {
 
         <ul className="space-y-1 mt-10">
           {[
-            { name: "Dashboard", icon: <AiOutlineDashboard className="text-3xl"/>, href: "/dashboard" },
-            { name: "Users", icon: <AiOutlineUser className="text-3xl"/>, href: "/dashboard/users" },
-            { name: "Products", icon: <AiOutlineShoppingCart className="text-3xl"/>, href: "/dashboard/products" },
-            { name: "Orders", icon: <AiOutlineFileText className="text-3xl"/>, href: "/dashboard/orders" },
-            { name: "Sales", icon: <AiOutlineLineChart className="text-3xl"/>, href: "/dashboard/sales" },
-            { name: "Reports", icon: <AiOutlineBarChart className="text-3xl"/>, href: "/dashboard/reports" },
-            { name: "Settings", icon: <AiOutlineSetting className="text-3xl"/>, href: "/dashboard/settings" },
+            {
+              name: "Dashboard",
+              icon: <AiOutlineDashboard className="text-3xl" />,
+              href: "/dashboard",
+            },
+            {
+              name: "Users",
+              icon: <AiOutlineUser className="text-3xl" />,
+              href: "/dashboard/users",
+            },
+            {
+              name: "Products",
+              icon: <AiOutlineShoppingCart className="text-3xl" />,
+              href: "/dashboard/products",
+            },
+            {
+              name: "Orders",
+              icon: <AiOutlineFileText className="text-3xl" />,
+              href: "/dashboard/orders",
+            },
+            {
+              name: "Sales",
+              icon: <AiOutlineLineChart className="text-3xl" />,
+              href: "/dashboard/sales",
+            },
+            {
+              name: "Reports",
+              icon: <AiOutlineBarChart className="text-3xl" />,
+              href: "/dashboard/reports",
+            },
+            {
+              name: "Settings",
+              icon: <AiOutlineSetting className="text-3xl" />,
+              href: "/dashboard/settings",
+            },
           ].map((item) => (
             <li key={item.name}>
               <a
@@ -71,7 +110,11 @@ const DashboardLayout = ({ children }) => {
           ))}
         </ul>
       </nav>
-      <main className={`flex-grow p-6 ${isSidebarOpen ? 'ml-64' : 'ml-0'} transition-all duration-300`}>
+      <main
+        className={`flex-grow p-6 ${
+          isSidebarOpen ? "ml-64" : "ml-0"
+        } transition-all duration-300`}
+      >
         {children}
       </main>
     </div>
