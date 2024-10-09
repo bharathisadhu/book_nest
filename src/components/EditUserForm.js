@@ -32,8 +32,8 @@ export default function EditUserForm({ id, name, email, password, image }) {
         throw new Error("Failed to update user");
       }
 
-      router.refresh();
       router.push("/dashboard/users");
+      router.refresh();
     } catch (error) {
       console.log(error);
     }
