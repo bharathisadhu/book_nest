@@ -17,6 +17,7 @@ const nextConfig = {
   images: {
     domains: [
       "static1.srcdn.com",
+      "readymadeui.com",
       "s.yimg.com",
       "discoverscifi.com",
       "wp.penguin.co.uk",
@@ -41,6 +42,7 @@ const nextConfig = {
       "avatars.githubusercontent.com",
       "via.placeholder.com",
       "i.ibb.co.com",
+      "images.unsplash.com",
       "*",
     ],
   },

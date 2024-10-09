@@ -7,7 +7,7 @@ import { useSession } from "next-auth/react";
 import axios from "axios"; // Adjust the import path as needed
 import { useRouter } from "next/navigation"; // Import useRouter for redirection
 
-const CheckoutForm = ({ cartItems }) => {
+const CheckoutForm = ({ cartItems, discount }) => {
   const [error, setError] = useState("");
   const [clientSecret, setClientSecret] = useState("");
   const [transactionId, setTransactionId] = useState("");
@@ -28,12 +28,15 @@ const CheckoutForm = ({ cartItems }) => {
   const tax = subtotal * 0.1;
 
   // Calculate total price including tax
-  const totalPrice = subtotal + tax;
+  const total = subtotal + tax;
+  const totalPrice = total - discount;
+  // console.log(totalPrice);
+  // console.log(discount);
 
   useEffect(() => {
     const fetchClientSecret = async () => {
       try {
-        if (totalPrice > 0) {
+        if (totaltorice > 0) {
           const response = await axios.post("/api/create-payment-intent", {
             price: totalPrice,
             email: session?.user?.email || "anonymous",

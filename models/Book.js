@@ -62,9 +62,9 @@ const PaymentSchema = new mongoose.Schema({
 
 const Book = mongoose.models.books || mongoose.model("books", BookSchema);
 const Blog = mongoose.models.blogs || mongoose.model("blogs", BlogSchema);
-const WishList =
-  mongoose.models.wishList || mongoose.model("wishList", WishlistSchema);
+const WishList = mongoose.models.wishList || mongoose.model("wishList", WishlistSchema);
 const Cart = mongoose.models.cart || mongoose.model("cart", CartsSchema);
+const Payement = mongoose.models.payments || mongoose.model("payments", PaymentSchema);
 
 // Export both models
-export { Book, Blog, WishList, Cart };
+export { Book, Blog, WishList, Cart, Payement };

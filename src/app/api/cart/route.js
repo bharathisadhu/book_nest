@@ -26,7 +26,7 @@ import { NextResponse } from "next/server"
 export async function GET() {
     await connectToDatabase()
     const cart = await Cart.find()
-    return NextResponse.json({ cart })
+    return NextResponse.json({cart})
 }
 
 export async function DELETE(request) {
