@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import DashboardLayout from "./DashboardLayout";
 
+
 export default function EditUserForm({ id, name, email, password, image }) {
   const [newName, setNewName] = useState(name);
   const [newEmail, setNewEmail] = useState(email);
@@ -53,7 +54,7 @@ export default function EditUserForm({ id, name, email, password, image }) {
           onChange={(e) => setNewEmail(e.target.value)}
           value={newEmail}
           className="border border-slate-500 px-8 py-2"
-          type="text"
+          type="email"
           placeholder="User Email"
         />
 
@@ -61,7 +62,7 @@ export default function EditUserForm({ id, name, email, password, image }) {
           onChange={(e) => setNewPassword(e.target.value)}
           value={newPassword}
           className="border border-slate-500 px-8 py-2"
-          type="text"
+          type="password"
           placeholder="User Password"
         />
 
