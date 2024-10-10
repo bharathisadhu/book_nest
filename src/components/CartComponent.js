@@ -254,7 +254,7 @@ export default function CartComponent({ cartBook, setCartBook }) {
                   </button>
                   <button
                     onClick={() => handleRemove(item._id)}
-                    className="p-1 border rounded text-red-500"
+                    className="p-1 border rounded text-[#F65D4E]"
                   >
                     <X className="h-4 w-4" />
                   </button>
@@ -296,13 +296,13 @@ export default function CartComponent({ cartBook, setCartBook }) {
                 value={couponInput}
                 onChange={(e) => setCouponInput(e.target.value)}
                 id="couponInput"
-                className="peer w-full rounded-l-lg border border-red-500 bg-transparent px-4 py-2 focus:outline-none"
+                className="peer w-full rounded-l-lg border border-[#F65D4E] bg-transparent px-4 py-2 focus:outline-none"
                 name="coupon"
                 type="text"
                 placeholder="Coupon Code"
               />
               <label
-                className="absolute -top-2 left-2 rounded-md bg-red-500 px-2 text-xs text-sky-100 duration-300 "
+                className="absolute -top-2 left-2 rounded-md bg-[#F65D4E] px-2 text-xs text-sky-100 duration-300 "
                 htmlFor="navigate_ui_input_33"
               >
                 Have a coupon code
@@ -311,7 +311,7 @@ export default function CartComponent({ cartBook, setCartBook }) {
               <div>
                 <button
                   onClick={handleCouponApply}
-                  className="py-2 px-6 h-[42px] bg-red-500 hover:bg-red-600 duration-300 text-white flex items-center justify-center overflow-hidden hover:overflow-visible relative group rounded-r-lg"
+                  className="py-2 px-6 h-[42px] bg-[#F65D4E] hover:bg-red-600 duration-300 text-white flex items-center justify-center overflow-hidden hover:overflow-visible relative group rounded-r-lg"
                 >
                   <svg
                     viewBox="0 0 1024 1024"
@@ -393,7 +393,7 @@ export default function CartComponent({ cartBook, setCartBook }) {
                 ? "Processing..."
                 : `Pay $ ${(total - discount).toFixed(2)}`}
             </button>
-            {error && <p className="text-red-500 text-center mt-2">{error}</p>}
+            {error && <p className="text-[#F65D4E] text-center mt-2">{error}</p>}
             {transactionId && (
               <p className="text-green-600">
                 Your transaction ID: {transactionId}
