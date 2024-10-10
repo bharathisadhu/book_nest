@@ -8,8 +8,6 @@ const CommentsList = ({id}) => {
   const [newComment, setNewComment] = useState('');
   const { data: session, status } = useSession();
 
-  
-  
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
    // Fetch comments from the backend
@@ -23,9 +21,6 @@ const CommentsList = ({id}) => {
     fetchComments();
   }, [baseUrl,id]);
 
-  
-
-  // Add new comment to the comments list
   const handleCommentSubmit =async (e) => {
     e.preventDefault();
     const commentData = { text: newComment,email:session.user.email,username:session.user.name,blogId:id};
@@ -37,7 +32,6 @@ const CommentsList = ({id}) => {
     });
 
     const data = await response.json();
-   
     setComments([...comments, { ...commentData, _id: data._id }]);
     setNewComment('');
 
@@ -47,8 +41,7 @@ const CommentsList = ({id}) => {
 
   return (
     <div className="comments-list p-6 w-full mx-auto grid grid-cols-1 md:grid-cols-2 gap-6">
-    {/* <h1>Welcome, {session?.user?.name}</h1>
-    <h1>Welcome, {session?.user?.email}</h1> */}
+
     <div className="w-full">
       <h1 className="text-xl font-bold mb-4">Comments</h1>
 

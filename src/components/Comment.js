@@ -16,15 +16,14 @@ const Comment = ({ comment }) => {
     });
     
     const data = await response.json();
-    // console.log("testing ------",replyData);
+
     setReply('');
     if (!comment.replies) {
-          // If replies is not already defined, initialize it as an empty array
+
           comment.replies = [];
         }
-    comment.replies.push(data); // Update local replies
-   
-    
+    comment.replies.push(data); 
+
   };
    
   return (
@@ -64,11 +63,9 @@ const Comment = ({ comment }) => {
       </div>
     )}
       </div>
-     
-     
+      
     </div>
   );
-
   
 };
 
