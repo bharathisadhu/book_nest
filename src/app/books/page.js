@@ -26,11 +26,6 @@ const BooksPage = () => {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
   useEffect(() => {
-    const data = {
-      title: "Books",
-      linkName: "Home",
-    };
-
     const fetchData = async () => {
       try {
         setIsLoading(true); // Set loading to true when fetching starts
@@ -259,7 +254,7 @@ const BooksPage = () => {
                   {categories.length > 5 && (
                     <button
                       onClick={() => setSeeMoreCategories(!seeMoreCategories)}
-                      className="text-blue-500 mt-2"
+                      className="text-[#F65D4E] mt-2"
                     >
                       {seeMoreCategories ? "See Less" : "See More"}
                     </button>
@@ -285,7 +280,7 @@ const BooksPage = () => {
                   {authors.length > 5 && (
                     <button
                       onClick={() => setSeeMoreAuthors(!seeMoreAuthors)}
-                      className="text-blue-500 mt-2"
+                      className="text-[#F65D4E] mt-2"
                     >
                       {seeMoreAuthors ? "See Less" : "See More"}
                     </button>
@@ -301,7 +296,7 @@ const BooksPage = () => {
                     max="20"
                     value={priceRange[1]}
                     onChange={(e) => setPriceRange([0, e.target.value])}
-                    className="w-full"
+                    className="w-full range-slider"
                   />
                   <p>
                     Price Range: ${priceRange[0]} - ${priceRange[1]}
@@ -324,7 +319,7 @@ const BooksPage = () => {
                       <button
                         className={`px-4 py-2 rounded ${
                           index + 1 === currentPage
-                            ? "bg-blue-500 text-white"
+                            ? "bg-[#F65D4E] text-white"
                             : "bg-gray-200"
                         }`}
                         onClick={() => handlePageChange(index + 1)}
@@ -378,7 +373,7 @@ const BooksPage = () => {
                     {categories.length > 5 && (
                       <button
                         onClick={() => setSeeMoreCategories(!seeMoreCategories)}
-                        className="text-blue-500 mt-2"
+                        className="text-[#F65D4E] mt-2"
                       >
                         {seeMoreCategories ? "See Less" : "See More"}
                       </button>
@@ -403,7 +398,7 @@ const BooksPage = () => {
                     {authors.length > 5 && (
                       <button
                         onClick={() => setSeeMoreAuthors(!seeMoreAuthors)}
-                        className="text-blue-500 mt-2"
+                        className="text-[#F65D4E] mt-2"
                       >
                         {seeMoreAuthors ? "See Less" : "See More"}
                       </button>
