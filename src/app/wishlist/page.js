@@ -1,5 +1,7 @@
 "use client";
 
+import Footer from "@/components/Footer";
+import Navbar from "@/components/Navbar";
 import PrivateRoute from "@/services/PrivateRoute";
 import axios from "axios";
 import Image from "next/image";
@@ -68,6 +70,8 @@ const Page = () => {
   };
 
   return (
+    <>
+    <Navbar />
     <div className="mb-3">
       <div className="font-sans bg-white max-w-6xl mx-auto p-4">
         <h2 className="text-3xl font-bold text-gray-800">
@@ -157,6 +161,8 @@ const Page = () => {
         </div>
       </div>
     </div>
+    <Footer />
+    </>
   );
 };
 
