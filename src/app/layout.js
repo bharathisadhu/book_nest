@@ -4,7 +4,6 @@ import AuthProvider from "@/services/AuthProvider";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
-
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
@@ -31,9 +30,9 @@ export default function RootLayout({
     <html lang="en" data-theme="light">
       <body className="popins">
         <AuthProvider>
-            {showNavbar && <Navbar />}
-            <div className="container mx-auto">{children}</div>
-            {showFooter && <Footer />}
+          {showNavbar && <Navbar />}
+          <div className="container mx-auto">{children}</div>
+          {showFooter && <Footer />}
         </AuthProvider>
       </body>
     </html>

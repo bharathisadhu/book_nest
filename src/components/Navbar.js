@@ -89,6 +89,9 @@ const Navbar = () => {
       </div>
 
       <div className="navbar-end hidden lg:flex relative">
+        <Link href="/subscription">
+          <button className="btn btn-outline mr-2">Get Subscription</button>
+        </Link>
         <Link href="/wishlist" className="btn btn-ghost text-xl relative">
           <FaHeart className="text-2xl" />
           {loading ? (
