@@ -4,12 +4,14 @@ import { FaShoppingCart, FaHeart } from "react-icons/fa";
 import { MdAccountCircle } from "react-icons/md";
 import { CiSearch } from "react-icons/ci";
 import { RxHamburgerMenu } from "react-icons/rx";
+import { IoCloseOutline } from "react-icons/io5";
 import Image from "next/image";
 import Link from "next/link";
 import { useSession, signOut } from "next-auth/react";
 import logo from "../../public/BookNest.png";
 import { usePathname } from "next/navigation";
 import axios from "axios";
+import { IoIosArrowForward } from "react-icons/io";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -70,7 +72,7 @@ const Navbar = () => {
             className="w-[160px] h-auto"
           />
         </Link>
-        <ul className="navbar justify-end menu menu-horizontal px-1 text-xl">
+        <ul className="navbar justify-end menu menu-horizontal px-1 text-xl ">
           {navlinks.map((navlink, index) => (
             <li key={index}>
               <Link
@@ -79,7 +81,7 @@ const Navbar = () => {
                   pathname === navlink.link
                     ? "border-b-2 bg-white border-b-[#F65D4E] rounded-b-lg rounded text-white"
                     : ""
-                } px-3 py-2 rounded`}
+                } px-3 py-2 bg-white hover:bg-white hover:border-white hover:rounded-b-lg hover:border-b-2 hover:border-b-[#F65D4E] hover:rounded transition-transform`}
               >
                 {navlink.label}
               </Link>
@@ -87,28 +89,27 @@ const Navbar = () => {
           ))}
         </ul>
       </div>
-
+      {/* get subscription button */}
       <div className="navbar-end hidden lg:flex relative">
         <Link href="/subscription">
-          <button className="btn btn-outline mr-2">Get Subscription</button>
+          <button className="btn btn-outline border-[#F65D4E] mr-2 hover:bg-[#F65D4E] hover:border-[#F65D4E]">
+            Get Subscription
+          </button>
         </Link>
         <Link href="/wishlist" className="btn btn-ghost text-xl relative">
           <FaHeart className="text-2xl" />
           {loading ? (
             <span className="loading-spinner" /> // You can replace this with a spinner or loader component
           ) : error ? (
-            <span className="text-red-500">!</span> // Or any error indication
+            <span className="text-[#F65D4E]">!</span> // Or any error indication
           ) : (
             wishlistCount > 0 && (
-              <span className="absolute top-0 right-0 bg-red-500 text-white rounded-full px-1 text-xs transform translate-x-1 -translate-y-1">
+              <span className="absolute top-0 right-0 bg-[#F65D4E] text-white rounded-full px-1 text-xs transform translate-x-1 -translate-y-1">
                 {wishlistCount}
               </span>
             )
           )}
         </Link>
-        <button className="btn btn-ghost text-xl">
-          <CiSearch className="text-2xl" />
-        </button>
         {!session?.user ? (
           <Link href="/login">
             <button className="btn btn-ghost text-xl">
@@ -147,17 +148,16 @@ const Navbar = () => {
           {loading ? (
             <span className="loading-spinner" /> // You can replace this with a spinner or loader component
           ) : error ? (
-            <span className="text-red-500">!</span> // Or any error indication
+            <span className="text-[#F65D4E]">!</span> // Or any error indication
           ) : (
             cartCount > 0 && (
-              <span className="absolute top-0 right-0 bg-red-500 text-white rounded-full px-1 text-xs transform translate-x-1 -translate-y-1">
+              <span className="absolute top-0 right-0 bg-[#F65D4E] text-white rounded-full px-1 text-xs transform translate-x-1 -translate-y-1">
                 {cartCount}
               </span>
             )
           )}
         </Link>
       </div>
-
       {/* Tablet and Mobile View */}
       <div className="lg:hidden flex justify-between w-full mb-4">
         <Link href="/" className="normal-case text-3xl">
@@ -170,61 +170,63 @@ const Navbar = () => {
           />
         </Link>
         <button className="btn btn-ghost text-xl" onClick={toggleSidebar}>
-          <RxHamburgerMenu className="text-2xl" />
+          <RxHamburgerMenu className="text-3xl" />
         </button>
       </div>
 
       {/* Sidebar for Mobile and Tablet */}
       {isOpen && (
         <div className="fixed inset-0 bg-gray-800 bg-opacity-50 z-40">
-          <div className="fixed left-0 top-0 w-3/4 h-full bg-white shadow-lg z-50 p-5">
+          <div className="fixed left-0 top-0 h-full bg-white z-50 p-5 transition-transform">
             <button
               className="btn btn-ghost text-xl mb-5"
               onClick={toggleSidebar}
             >
-              <RxHamburgerMenu className="text-2xl" />
+              <IoCloseOutline className="text-4xl" />
             </button>
-            <ul className="menu flex flex-col gap-4 text-lg">
+            <ul className="menu flex flex-col text-lg font-bold space-y-4">
               {navlinks.map((navlink, index) => (
-                <li key={index}>
+                <>
                   <Link
                     href={navlink.link}
                     className={`${
-                      pathname === navlink.link ? "bg-blue-500 text-white" : ""
-                    } block px-3 py-2 rounded hover:bg-blue-300`}
+                      pathname === navlink.link ? " text-[#F65D4E]" : ""
+                    }`}
                     onClick={toggleSidebar}
                   >
-                    {navlink.label}
+                    <div className="flex justify-between items-center border-b pb-4">
+                      <li key={index}>{navlink.label}</li>
+                      <div>
+                        <IoIosArrowForward className="text-xl font-bold" />
+                      </div>
+                    </div>
                   </Link>
-                </li>
+                </>
               ))}
             </ul>
 
             {/* Buttons in a single row */}
-            <div className="mt-8 flex justify-around">
+            <div className="mt-6 flex justify-around">
               <Link href="/wishlist" className="btn btn-ghost text-xl relative">
-                <FaHeart className="text-2xl" />
+                <FaHeart className="text-3xl" />
                 {loading ? (
                   <span className="loading-spinner" />
                 ) : error ? (
-                  <span className="text-red-500">!</span>
+                  <span className="text-[#F65D4E]">!</span>
                 ) : (
                   wishlistCount > 0 && (
-                    <span className="absolute top-0 right-0 bg-red-500 text-white rounded-full px-1 text-xs transform translate-x-1 -translate-y-1">
+                    <span className="absolute top-0 right-0 bg-[#F65D4E] text-white rounded-full px-1 text-xs transform translate-x-1 -translate-y-1">
                       {wishlistCount}
                     </span>
                   )
                 )}
               </Link>
-              <button className="btn btn-ghost text-xl mb-3">
-                <CiSearch className="text-2xl" />
-              </button>
 
               {/* Account Dropdown for Mobile/Tablet */}
               {!session?.user ? (
                 <Link href="/login" onClick={toggleSidebar}>
                   <button className="btn btn-ghost text-xl">
-                    <MdAccountCircle className="text-2xl" />
+                    <MdAccountCircle className="text-3xl" />
                   </button>
                 </Link>
               ) : (
@@ -239,7 +241,7 @@ const Navbar = () => {
                         className="rounded-full"
                       />
                     ) : (
-                      <MdAccountCircle className="text-2xl" />
+                      <MdAccountCircle className="text-3xl" />
                     )}
                   </button>
                   {isDropdownOpen && (
@@ -255,14 +257,14 @@ const Navbar = () => {
                 </div>
               )}
               <Link href="/cart" className="btn btn-ghost text-xl relative">
-                <FaShoppingCart className="text-2xl" />
+                <FaShoppingCart className="text-3xl" />
                 {loading ? (
                   <span className="loading-spinner" />
                 ) : error ? (
-                  <span className="text-red-500">!</span>
+                  <span className="text-[#F65D4E]">!</span>
                 ) : (
                   cartCount > 0 && (
-                    <span className="absolute top-0 right-0 bg-red-500 text-white rounded-full px-1 text-xs transform translate-x-1 -translate-y-1">
+                    <span className="absolute top-0 right-0 bg-[#F65D4E] text-white rounded-full px-1 text-xs transform translate-x-1 -translate-y-1">
                       {cartCount}
                     </span>
                   )

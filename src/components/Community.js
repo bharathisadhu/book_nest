@@ -8,7 +8,7 @@ export default function Community (){
         <div className="flex flex-col justify-center items-center">
           <div className="text-center">
             <h1 className="text-2xl sm:text-3xl lg:text-4xl text-white font-bold my-2">
-              Get <span className="text-orange-600">10%</span> off your order!
+              Get <span className="text-orange-500">10%</span> off your order!
             </h1>
             <p className="text-sm sm:text-base lg:text-lg font-medium text-white">
               Enter your email and receive a 10% discount on your next order!

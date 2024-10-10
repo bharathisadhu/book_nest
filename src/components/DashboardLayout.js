@@ -52,7 +52,7 @@ const DashboardLayout = ({ children }) => {
             {session && (
               <button
                 onClick={() => signOut()}
-                className="btn btn-sm mt-2 text-xs text-red-500 hover:underline"
+                className="btn btn-sm mt-2 text-xs text-[#F65D4E] hover:underline"
               >
                 Logout
               </button>

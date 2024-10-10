@@ -30,7 +30,7 @@ export default async function  SalesList () {
   console.log("Payment List:", payments); 
 
   if (payments.length === 0) {
-    return <div className="text-2xl font-bold text-red-500 my-10 text-center">No users found or failed to load users.</div>; // Show a message if no users
+    return <div className="text-2xl font-bold text-[#F65D4E] my-10 text-center">No users found or failed to load users.</div>; // Show a message if no users
   }
 
 

@@ -39,7 +39,7 @@ const SuccessPage = () => {
           Payment Successful!
         </h1>
         {error ? (
-          <p className="text-red-500 text-center">{error}</p>
+          <p className="text-[#F65D4E] text-center">{error}</p>
         ) : session ? (
           <div>
             <h2 className="text-2xl font-semibold text-center mb-2">
