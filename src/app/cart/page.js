@@ -6,6 +6,8 @@ import Swal from "sweetalert2";
 import Banner from "@/components/share/banner";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY);
 
@@ -36,6 +38,8 @@ export default function CartPage() {
   }, []);
 
   return (
+    <>
+    <Navbar />
     <main className="container mx-auto px-4 py-8">
       <Banner title="Shopping Cart" linkName="Home" />
 
@@ -53,5 +57,7 @@ export default function CartPage() {
         </Elements>
       )}
     </main>
+    <Footer />
+    </>
   );
 }

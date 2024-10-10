@@ -22,17 +22,13 @@ export const metadata = {
 };
 
 export default function RootLayout({
-  children,
-  showNavbar = true,
-  showFooter = true,
+  children
 }) {
   return (
     <html lang="en" data-theme="light">
       <body className="popins">
         <AuthProvider>
-          {showNavbar && <Navbar />}
           <div className="container mx-auto">{children}</div>
-          {showFooter && <Footer />}
         </AuthProvider>
       </body>
     </html>

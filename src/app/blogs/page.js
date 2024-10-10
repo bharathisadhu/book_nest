@@ -7,6 +7,8 @@ import { FaSearch } from "react-icons/fa";
 import Link from "next/link";
 import BlogsCard from "@/components/BlogsCard";
 import Banner from "@/components/share/banner";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 
 const BlogsPage = () => {
   const [blogs, setBlogs] = useState([]);
@@ -94,6 +96,7 @@ const BlogsPage = () => {
 
   return (
     <>
+    <Navbar />
       <Banner title="Blogs" linkName="Home" />
 
       <div className="container mx-auto px-4 py-8">
@@ -221,6 +224,7 @@ const BlogsPage = () => {
           </div>
         )}
       </div>
+      <Footer/>
     </>
   );
 };
