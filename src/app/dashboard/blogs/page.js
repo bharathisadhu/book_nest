@@ -1,7 +1,7 @@
 // src/app/dashboard/insight/page.js
 // import RootLayout from "@/app/layout";
 import DashboardLayout from "@/components/DashboardLayout";
-import BlogTable from "@/components/mainDashBord/AllBloga";
+import BlogTable from "@/components/mainDashBord/AllBlogs";
 
 const Blogs = () => {
   return (

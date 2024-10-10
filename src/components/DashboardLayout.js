@@ -77,11 +77,11 @@ const DashboardLayout = ({ children }) => {
               icon: <AiOutlineShoppingCart className="text-3xl" />,
               href: "/dashboard/products",
             },
-            {
-              name: "Orders",
-              icon: <AiOutlineFileText className="text-3xl" />,
-              href: "/dashboard/orders",
-            },
+            // {
+            //   name: "Orders",
+            //   icon: <AiOutlineFileText className="text-3xl" />,
+            //   href: "/dashboard/orders",
+            // },
             {
               name: "Blogs",
               icon: <AiOutlineFileText className="text-3xl" />,
@@ -92,16 +92,16 @@ const DashboardLayout = ({ children }) => {
               icon: <AiOutlineLineChart className="text-3xl" />,
               href: "/dashboard/sales",
             },
-            {
-              name: "Reports",
-              icon: <AiOutlineBarChart className="text-3xl" />,
-              href: "/dashboard/reports",
-            },
-            {
-              name: "Settings",
-              icon: <AiOutlineSetting className="text-3xl" />,
-              href: "/dashboard/settings",
-            },
+            // {
+            //   name: "Reports",
+            //   icon: <AiOutlineBarChart className="text-3xl" />,
+            //   href: "/dashboard/reports",
+            // },
+            // {
+            //   name: "Settings",
+            //   icon: <AiOutlineSetting className="text-3xl" />,
+            //   href: "/dashboard/settings",
+            // },
           ].map((item) => (
             <li key={item.name}>
               <a
