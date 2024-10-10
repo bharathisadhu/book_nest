@@ -58,21 +58,11 @@ export async function POST(request) {
     // Log the user data for verification
     console.log("User retrieved:", user);
 
-    // Create the response and set CORS headers
-    const response = NextResponse.json({
+    // Return the session URL and the user's subscription status
+    return NextResponse.json({
       url: session.url,
       subscriptionStatus: user ? user.subscriptionPlan : "Not found",
     });
-
-    // Set CORS headers
-    response.headers.set(
-      "Access-Control-Allow-Origin",
-      "https://booknest-self.vercel.app/"
-    ); // Change this to your actual domain
-    response.headers.set("Access-Control-Allow-Methods", "POST, OPTIONS");
-    response.headers.set("Access-Control-Allow-Headers", "Content-Type");
-
-    return response;
   } catch (error) {
     console.error("Error creating Stripe session:", error);
     return NextResponse.json(
@@ -80,16 +70,4 @@ export async function POST(request) {
       { status: 500 }
     );
   }
-}
-
-// Handle OPTIONS request for CORS preflight
-export async function OPTIONS() {
-  const response = NextResponse.json({});
-  response.headers.set(
-    "Access-Control-Allow-Origin",
-    "https://booknest-self.vercel.app/"
-  ); // Change this to your actual domain
-  response.headers.set("Access-Control-Allow-Methods", "POST, OPTIONS");
-  response.headers.set("Access-Control-Allow-Headers", "Content-Type");
-  return response;
 }
