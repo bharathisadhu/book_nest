@@ -6,6 +6,8 @@ import { CiStar } from "react-icons/ci";
 import { useState } from "react";
 import Swal from "sweetalert2";
 import RelatedBooks from "@/components/RelatedBooks";
+import Footer from "@/components/Footer";
+import Navbar from "@/components/Navbar";
 
 
 export default async function BookDetails({ params }) {
@@ -154,6 +156,8 @@ export default async function BookDetails({ params }) {
 
 
   return (
+    <>
+    <Navbar />
     <div className="font-sans">
       <div className="p-4 lg:max-w-6xl max-w-2xl max-lg:mx-auto">
         <div className="grid items-start grid-cols-1 lg:grid-cols-2 gap-8 max-lg:gap-16">
@@ -277,6 +281,8 @@ export default async function BookDetails({ params }) {
       </div>
       <RelatedBooks listOfBooks={listOfBooks}></RelatedBooks>
     </div>
+    <Footer />
+    </>
   );
 }
 

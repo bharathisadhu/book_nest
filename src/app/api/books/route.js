@@ -1,7 +1,7 @@
 //....................Main code....................
 
 import connectToDatabase from "@/lib/mongodb";
-import { Book,} from "../../../../models/Book";
+import { Book} from "../../../../models/Book";
 import { NextResponse } from "next/server";
 
 
