@@ -2,7 +2,6 @@
 import { useState, useEffect } from "react";
 import { FaShoppingCart, FaHeart } from "react-icons/fa";
 import { MdAccountCircle } from "react-icons/md";
-import { CiSearch } from "react-icons/ci";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { IoCloseOutline } from "react-icons/io5";
 import Image from "next/image";
@@ -22,7 +21,7 @@ const Navbar = () => {
   const [cartCount, setCartCount] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
+  console.log(pathname);
   useEffect(() => {
     const fetchCounts = async () => {
       try {
@@ -164,7 +163,8 @@ const Navbar = () => {
         </Link>
       </div>
       {/* Tablet and Mobile View */}
-      <div className="lg:hidden flex justify-between w-full mb-4">
+      <div className="lg:hidden flex justify-between w-full">
+        {/* Website logo in navbar */}
         <Link href="/" className="normal-case text-3xl">
           <Image
             height={200}
@@ -174,11 +174,29 @@ const Navbar = () => {
             className="w-[120px] h-auto"
           />
         </Link>
-        <button className="btn btn-ghost text-xl" onClick={toggleSidebar}>
-          <RxHamburgerMenu className="text-3xl" />
-        </button>
+        {/* navbar right side drawer and  photo*/}
+        {!session?.user ? (
+          <button onClick={toggleSidebar} className="btn btn-ghost text-xl">
+            <RxHamburgerMenu className="text-3xl" />
+          </button>
+        ) : (
+          <div className="relative">
+            <button className="text-xl" onClick={toggleSidebar}>
+              {session.user.image || session.user.photo ? (
+                <Image
+                  src={session.user.image || session.user.photo}
+                  alt="User Image"
+                  width={40}
+                  height={40}
+                  className="rounded-full"
+                />
+              ) : (
+                <MdAccountCircle className="text-3xl" />
+              )}
+            </button>
+          </div>
+        )}
       </div>
-
       {/* Sidebar for Mobile and Tablet */}
       {isOpen && (
         <div className="fixed inset-0 bg-gray-800 bg-opacity-50 z-40">
@@ -199,7 +217,7 @@ const Navbar = () => {
                     }`}
                     onClick={toggleSidebar}
                   >
-                    <div className="flex justify-between items-center border-b pb-4">
+                    <div className="flex justify-between items-center border-b pb-4 gap-20">
                       <li key={index}>{navlink.label}</li>
                       <div>
                         <IoIosArrowForward className="text-xl font-bold" />
@@ -210,72 +228,80 @@ const Navbar = () => {
               ))}
             </ul>
 
-            {/* Buttons in a single row */}
-            <div className="mt-6 flex justify-around">
-              <Link href="/wishlist" className="btn btn-ghost text-xl relative">
-                <FaHeart className="text-3xl" />
-                {loading ? (
-                  <span className="loading-spinner" />
-                ) : error ? (
-                  <span className="text-[#F65D4E]">!</span>
-                ) : (
-                  wishlistCount > 0 && (
-                    <span className="absolute top-0 right-0 bg-[#F65D4E] text-white rounded-full px-1 text-xs transform translate-x-1 -translate-y-1">
-                      {wishlistCount}
-                    </span>
-                  )
-                )}
-              </Link>
-
-              {/* Account Dropdown for Mobile/Tablet */}
-              {!session?.user ? (
-                <Link href="/login" onClick={toggleSidebar}>
-                  <button className="btn btn-ghost text-xl">
-                    <MdAccountCircle className="text-3xl" />
-                  </button>
-                </Link>
-              ) : (
-                <div className="relative">
-                  <button className="text-xl" onClick={toggleDropdown}>
-                    {session.user.image || session.user.photo ? (
-                      <Image
-                        src={session.user.image || session.user.photo}
-                        alt="User Image"
-                        width={40}
-                        height={40}
-                        className="rounded-full"
-                      />
-                    ) : (
-                      <MdAccountCircle className="text-3xl" />
-                    )}
-                  </button>
-                  {isDropdownOpen && (
-                    <div className="absolute right-0 mt-2 py-2 w-48 bg-white border rounded-md shadow-xl z-20">
-                      <button
-                        onClick={() => signOut()}
-                        className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-100"
-                      >
-                        Logout
-                      </button>
-                    </div>
-                  )}
+            <ul className="menu flex flex-col text-lg font-bold space-y-4">
+              <Link
+                href="/dashboard"
+                onClick={toggleSidebar}
+                className={`${
+                  pathname === "/dashboard" ? " text-[#F65D4E]" : ""
+                } flex justify-between items-center border-b pb-4`}
+              >
+                <li>Dashboard</li>
+                <div>
+                  <IoIosArrowForward className="text-xl font-bold" />
                 </div>
-              )}
-              <Link href="/cart" className="btn btn-ghost text-xl relative">
-                <FaShoppingCart className="text-3xl" />
-                {loading ? (
-                  <span className="loading-spinner" />
-                ) : error ? (
-                  <span className="text-[#F65D4E]">!</span>
-                ) : (
-                  cartCount > 0 && (
-                    <span className="absolute top-0 right-0 bg-[#F65D4E] text-white rounded-full px-1 text-xs transform translate-x-1 -translate-y-1">
-                      {cartCount}
-                    </span>
-                  )
-                )}
               </Link>
-            </div>
+            </ul>
+            <ul className="menu flex flex-col text-lg font-bold space-y-4">
+              <Link
+                href="/wishlist"
+                onClick={toggleSidebar}
+                className={`${
+                  pathname === "/wishlist" ? " text-[#F65D4E]" : ""
+                } flex justify-between items-center border-b pb-4`}
+              >
+                <li>Wishlist</li>
+                <div>
+                  <IoIosArrowForward className="text-xl font-bold" />
+                </div>
+              </Link>
+            </ul>
+            <ul className="menu flex flex-col text-lg font-bold space-y-4">
+              <Link
+                href="/cart"
+                onClick={toggleSidebar}
+                className={`${
+                  pathname === "/cart" ? " text-[#F65D4E]" : ""
+                } flex justify-between items-center border-b pb-4`}
+              >
+                <li>Cart</li>
+                <div>
+                  <IoIosArrowForward className="text-xl font-bold" />
+                </div>
+              </Link>
+            </ul>
+            {/* Account Dropdown for Mobile/Tablet */}
+            {!session?.user ? (
+              <ul className="menu flex flex-col text-lg font-bold space-y-4">
+                <Link
+                  href="/login"
+                  onClick={toggleSidebar}
+                  className={`${
+                    pathname === "/login" ? " text-[#F65D4E]" : ""
+                  } flex justify-between items-center border-b pb-4`}
+                >
+                  <li>Login</li>
+                  <div>
+                    <IoIosArrowForward className="text-xl font-bold" />
+                  </div>
+                </Link>
+              </ul>
+            ) : (
+              <ul className="menu flex flex-col text-lg font-bold space-y-4">
+                <div
+                  href="/login"
+                  onClick={() => signOut()}
+                  className={`${
+                    pathname === "/login" ? " text-[#F65D4E]" : ""
+                  } flex justify-between items-center border-b pb-4`}
+                >
+                  <li>Logout</li>
+                  <div>
+                    <IoIosArrowForward className="text-xl font-bold" />
+                  </div>
+                </div>
+              </ul>
+            )}
           </div>
         </div>
       )}
