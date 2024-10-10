@@ -33,10 +33,24 @@ const BookCount = () => {
   return (
     <>
   
-       <div className="flex gap-10 ml-10 pt-[20px] pb-[5px] font-bold uppercase"><p>Total Price</p><p>{parseFloat(totalPrice).toFixed(2)}$</p></div>
-       <div className="flex gap-10 ml-10 pb-[20px] font-bold uppercase"><p>Total Quantity</p><p>{totalQuantity}</p></div>
+     
       
-      
+       <div className="card bg-base-100 w-96 shadow-xl border-2">
+  
+  <div className="card-body font-bold uppercase text-center">
+  
+   
+    <p className="font-bold text-[red]">BooK Summary</p>
+    <div className="card-actions justify-between border-t-slate-700 pt-5">
+      <div className="">Total Price</div>
+      <div className="">{parseFloat(totalPrice).toFixed(2)}$</div>
+    </div>
+    <div className="card-actions justify-between border-t-slate-700">
+      <div className="">Total Quantity</div>
+      <div className="">{totalQuantity}</div>
+    </div>
+  </div>
+</div>
 
       
       

@@ -4,11 +4,6 @@ import { useState,useEffect } from 'react';
 const SaleCount = () => {
   const [totalPrice, setTotalPrice] = useState(0);
 
-  
- 
-
-  
-  
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
    // Fetch comments from the backend
@@ -25,18 +20,19 @@ const SaleCount = () => {
 
   
 
-  
-  
-
-
-
   return (
     <>
+    
+      <div className="card bg-base-100 w-96 shadow-xl border-2">
   
-  
-      <div className="flex gap-10 ml-10 py-[20px] font-bold uppercase"><p>Total Sale</p><p>{parseFloat(totalPrice).toFixed(2)}$</p></div>
-      
-     
+  <div className="card-body font-bold uppercase text-center">
+    <p className="font-bold text-[red]">Sale</p>
+    <div className="card-actions justify-between border-t-slate-700 font-bold uppercase">
+      <div className="p-5">Total Sale</div>
+      <div className="p-5">{parseFloat(totalPrice).toFixed(2)}$</div>
+    </div>
+  </div>
+</div>
       
       
       </>

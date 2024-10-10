@@ -1,8 +1,8 @@
 'use client'
 import { useState,useEffect } from 'react';
 
-const UserCount = () => {
-  const [users, setUsers] = useState([]);
+const BlogCount = () => {
+  const [Blog, setBlog] = useState([]);
   
  
 
@@ -13,10 +13,10 @@ const UserCount = () => {
    // Fetch comments from the backend
    useEffect(() => {
     const fetchUser = async () => {
-      const response = await fetch(`${baseUrl}/api/users`);
+      const response = await fetch(`${baseUrl}/api/blogs`);
       const data = await response.json();
       
-      setUsers(data);
+      setBlog(data);
           };
     fetchUser();
   }, [baseUrl]);
@@ -38,10 +38,10 @@ const UserCount = () => {
   <div className="card-body font-bold uppercase text-center">
   
    
-    <p className="font-bold text-[red]">User Information</p>
+    <p className="font-bold text-[red]">Blog Information</p>
     <div className="card-actions justify-between border-t-slate-700">
       <div className="p-5">Total User</div>
-      <div className="p-5">{users.length}</div>
+      <div className="p-5">{Blog.length}</div>
     </div>
   </div>
 </div>
@@ -51,4 +51,4 @@ const UserCount = () => {
   );
 };
 
-export default UserCount;
+export default BlogCount;
