@@ -413,7 +413,7 @@ const BooksPage = () => {
                       max="20"
                       value={priceRange[1]}
                       onChange={(e) => setPriceRange([0, e.target.value])}
-                      className="w-full"
+                      className="w-full range-slider"
                     />
                     <p className="mb-10">
                       Price Range: ${priceRange[0]} - ${priceRange[1]}
