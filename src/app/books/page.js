@@ -22,7 +22,7 @@ const BooksPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false); // State for the mobile drawer
   const [isLoading, setIsLoading] = useState(true); // New state for loader
-  const itemsPerPage = 10;
+  const itemsPerPage = 12;
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
   useEffect(() => {
@@ -151,7 +151,7 @@ const BooksPage = () => {
 
   return (
     <>
-    <Navbar />
+      <Navbar />
       <div>
         <div className="flex flex-col lg:flex-row items-center justify-center lg:justify-between p-2 bg-[#F0F0F0] py-10">
           <h2 className="lg:py-10 lg:ml-10 font-extrabold text-5xl">Books</h2>
@@ -161,7 +161,6 @@ const BooksPage = () => {
             <span className="text-orange-600">Books</span>
           </h3>
         </div>
-
         {isLoading ? (
           // Loader section
           <Loader />
@@ -197,7 +196,6 @@ const BooksPage = () => {
                       <a>Sort by price: low to high</a>
                     </li>
                   </button>
-
                   <button
                     onClick={() => {
                       sorting("HighToLow");
@@ -207,7 +205,6 @@ const BooksPage = () => {
                       <a>Sort by price: high to low</a>
                     </li>
                   </button>
-
                   <button
                     onClick={() => {
                       sorting("topRatings");
@@ -217,7 +214,6 @@ const BooksPage = () => {
                       <a>Sort by popularity: high to low</a>
                     </li>
                   </button>
-
                   <button
                     onClick={() => {
                       sorting("lowRatings");
@@ -230,7 +226,6 @@ const BooksPage = () => {
                 </ul>
               </div>
             </div>
-
             {/* Main Layout with Sidebar and Books Grid */}
             <div className="grid grid-cols-4 mx-auto mt-6 gap-8">
               {/* Left Sidebar */}
@@ -313,17 +308,15 @@ const BooksPage = () => {
                   </p>
                 </div>
               </div>
-
               {/* Books Grid */}
-              <div className="col-span-4 lg:col-span-3 grid grid-cols-2 lg:grid-cols-5 md:grid-cols-3 justify-center divide-y divide-x p-2 gap-4">
+              <div className="col-span-4 lg:col-span-3 grid grid-cols-2 lg:grid-cols-6 md:grid-cols-3 justify-center divide-y divide-x p-2 gap-4">
                 {currentBooks.map((book) => (
                   <BooksCard key={book.id} book={book} />
                 ))}
               </div>
             </div>
-
             {/* Pagination */}
-            <div className="flex justify-center my-10">
+            <div className="flex justify-center my-10 lg:ml-96">
               <nav>
                 <ul className="flex">
                   {Array.from({ length: totalPages }, (_, index) => (
@@ -343,7 +336,6 @@ const BooksPage = () => {
                 </ul>
               </nav>
             </div>
-
             {/* Mobile Drawer for Filters */}
             {isDrawerOpen && (
               <div className="fixed inset-0 bg-gray-800 bg-opacity-50 z-40">
@@ -357,9 +349,7 @@ const BooksPage = () => {
                       <HiX />
                     </button>
                   </div>
-
                   {/* Mobile Filter Options */}
-
                   <div className="mb-6">
                     <input
                       type="text"
@@ -369,7 +359,6 @@ const BooksPage = () => {
                       className="w-full p-2 border border-gray-300 rounded"
                     />
                   </div>
-
                   {/* Category Checkboxes */}
                   <div className="mb-6">
                     <h4 className="font-bold mb-2">Categories</h4>
@@ -395,7 +384,6 @@ const BooksPage = () => {
                       </button>
                     )}
                   </div>
-
                   {/* Author Checkboxes */}
                   <div className="mb-6">
                     <h4 className="font-bold mb-2">Authors</h4>
@@ -421,7 +409,6 @@ const BooksPage = () => {
                       </button>
                     )}
                   </div>
-
                   {/* Price Range Slider */}
                   <div>
                     <h4 className="font-bold mb-2">Price Range</h4>
