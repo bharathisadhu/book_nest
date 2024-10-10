@@ -40,7 +40,7 @@ const BlogCount = () => {
    
     <p className="font-bold text-[red]">Blog Information</p>
     <div className="card-actions justify-between border-t-slate-700">
-      <div className="p-5">Total User</div>
+      <div className="p-5">Total BLog</div>
       <div className="p-5">{Blog.length}</div>
     </div>
   </div>
