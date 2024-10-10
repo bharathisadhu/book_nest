@@ -9,10 +9,13 @@ import Devesh from "../../../public/devesh.jpeg";
 import Didar from "../../../public/didar.png";
 import Fahim from "../../../public/fahim.jpeg";
 import Monsur from "../../../public/Monsur.jpeg";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 
 export default function AboutUs() {
   return (
     <>
+    <Navbar />
       <div className="my-10 py-20 px-20 bg-gray-200 flex justify-between items-center">
         <h1 className="lg:text-6xl md:text-4xl text-xl font-bold">About Us</h1>
         <div className="flex justify-center items-center gap-2">
@@ -242,6 +245,7 @@ export default function AboutUs() {
           </div>
         </div>
       </div>
+      <Footer />
     </>
   );
 }

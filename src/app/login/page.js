@@ -6,6 +6,8 @@ import { signIn, getSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import Swal from "sweetalert2";
+import Footer from "@/components/Footer";
+import Navbar from "@/components/Navbar";
 
 export default function Login() {
   const data = {
@@ -64,6 +66,8 @@ export default function Login() {
   };
   
   return (
+    <>
+    <Navbar />
     <main>
       {/* Login section */}
       <div className="flex items-center justify-center p-6">
@@ -176,5 +180,7 @@ export default function Login() {
         </div>
       </div>
     </main>
+    <Footer />
+    </>
   );
 }

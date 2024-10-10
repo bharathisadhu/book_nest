@@ -5,6 +5,8 @@ import { GoArrowRight, GoChevronDown } from "react-icons/go";
 import { HiX } from "react-icons/hi"; // for mobile drawer close button
 import Link from "next/link";
 import Loader from "../loading";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 
 const BooksPage = () => {
   const [books, setBooks] = useState([]);
@@ -149,6 +151,7 @@ const BooksPage = () => {
 
   return (
     <>
+    <Navbar />
       <div>
         <div className="flex flex-col lg:flex-row items-center justify-center lg:justify-between p-2 bg-[#F0F0F0] py-10">
           <h2 className="lg:py-10 lg:ml-10 font-extrabold text-5xl">Books</h2>
@@ -440,6 +443,7 @@ const BooksPage = () => {
           </>
         )}
       </div>
+      <Footer />
     </>
   );
 };

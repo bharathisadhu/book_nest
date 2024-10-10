@@ -25,8 +25,9 @@ export default async function SalesList() {
   console.log("Payment List:", payments);
 
   if (payments.length === 0) {
+
     return (
-      <div className="text-2xl font-bold text-[#F65D4E] my-10 text-center">
+      <div className="text-2xl font-bold text-red-500 my-10 text-center">
         No users found or failed to load users.
       </div>
     ); // Show a message if no users
@@ -57,7 +58,7 @@ export default async function SalesList() {
         <tbody className="bg-white divide-y divide-gray-200 whitespace-nowrap">
           {Array.isArray(payments) &&
             payments.map((pay) => (
-              <tr key={pay.id}>
+              <tr key={pay._id}>
                 <td className="px-4 py-4 text-sm text-gray-800">{pay?.name}</td>
                 <td className="px-4 py-4 text-sm text-gray-800">{pay.email}</td>
                 <td className="px-4 py-4 text-sm text-gray-800">
