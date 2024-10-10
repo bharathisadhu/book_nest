@@ -83,6 +83,11 @@ const DashboardLayout = ({ children }) => {
               href: "/dashboard/orders",
             },
             {
+              name: "Blogs",
+              icon: <AiOutlineFileText className="text-3xl" />,
+              href: "/dashboard/blogs",
+            },
+            {
               name: "Sales",
               icon: <AiOutlineLineChart className="text-3xl" />,
               href: "/dashboard/sales",
