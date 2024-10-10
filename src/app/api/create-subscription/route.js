@@ -35,16 +35,15 @@ export async function POST(request) {
     console.log("Stripe session created:", session);
 
     // Connect to the database
-    const db = await connectDB(); // Make sure to await the DB connection
+    const db = await connectDB(); // Ensure the DB connection is awaited
 
-    // Update user subscription in the database if the session is created successfully
+    // Update user subscription in the database
     if (plan === "pro") {
       const userUpdateResult = await Users.updateOne(
         { email: email },
         { $set: { subscriptionPlan: "Pro" } }
       );
 
-      // Check if the user was found and updated
       if (userUpdateResult.matchedCount === 0) {
         console.warn("No user found with the specified email.");
       } else {
@@ -52,13 +51,10 @@ export async function POST(request) {
       }
     }
 
-    // Fetch the updated user subscription status
     const user = await Users.findOne({ email });
 
-    // Log the user data for verification
     console.log("User retrieved:", user);
 
-    // Create the response and set CORS headers
     const response = NextResponse.json({
       url: session.url,
       subscriptionStatus: user ? user.subscriptionPlan : "Not found",
@@ -76,17 +72,15 @@ export async function POST(request) {
   } catch (error) {
     console.error("Error creating Stripe session:", error);
     return NextResponse.json(
-      { error: "Failed to create checkout session" },
+      { error: "Failed to create checkout session", details: error.message }, // Include details
       { status: 500 }
     );
   }
 }
 
-// Handle OPTIONS request for CORS preflight
 export async function OPTIONS() {
   const response = NextResponse.json({});
   
-  // Set CORS headers
   response.headers.set(
     "Access-Control-Allow-Origin",
     "https://booknest-self.vercel.app" // Ensure no trailing slash
