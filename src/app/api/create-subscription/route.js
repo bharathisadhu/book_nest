@@ -67,8 +67,8 @@ export async function POST(request) {
     // Set CORS headers
     response.headers.set(
       "Access-Control-Allow-Origin",
-      "https://booknest-self.vercel.app/"
-    ); // Change this to your actual domain
+      "https://booknest-self.vercel.app" // Ensure no trailing slash
+    );
     response.headers.set("Access-Control-Allow-Methods", "POST, OPTIONS");
     response.headers.set("Access-Control-Allow-Headers", "Content-Type");
 
@@ -85,11 +85,14 @@ export async function POST(request) {
 // Handle OPTIONS request for CORS preflight
 export async function OPTIONS() {
   const response = NextResponse.json({});
+  
+  // Set CORS headers
   response.headers.set(
     "Access-Control-Allow-Origin",
-    "https://booknest-self.vercel.app/"
-  ); // Change this to your actual domain
+    "https://booknest-self.vercel.app" // Ensure no trailing slash
+  );
   response.headers.set("Access-Control-Allow-Methods", "POST, OPTIONS");
   response.headers.set("Access-Control-Allow-Headers", "Content-Type");
+  
   return response;
 }
