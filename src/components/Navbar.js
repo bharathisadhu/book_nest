@@ -103,8 +103,22 @@ const Navbar = () => {
             <span className="text-[#F65D4E]">!</span> // Or any error indication
           ) : (
             wishlistCount > 0 && (
-              <span className="absolute top-0 right-0 bg-[#F65D4E] text-white rounded-full px-1 text-xs transform translate-x-1 -translate-y-1">
+              <span className="absolute top-1 right-2 bg-[#F65D4E] text-white rounded-full px-1 text-xs transform translate-x-1 -translate-y-1">
                 {wishlistCount}
+              </span>
+            )
+          )}
+        </Link>
+        <Link href="/cart" className="btn btn-ghost text-xl relative">
+          <FaShoppingCart className="text-2xl" />
+          {loading ? (
+            <span className="loading-spinner" /> // You can replace this with a spinner or loader component
+          ) : error ? (
+            <span className="text-[#F65D4E]">!</span> // Or any error indication
+          ) : (
+            cartCount > 0 && (
+              <span className="absolute top-1 right-2 bg-[#F65D4E] text-white rounded-full px-1 text-xs transform translate-x-1 -translate-y-1">
+                {cartCount}
               </span>
             )
           )}
@@ -116,7 +130,7 @@ const Navbar = () => {
             </button>
           </Link>
         ) : (
-          <div className="relative">
+          <div className="relative ml-4">
             <button className="text-xl" onClick={toggleDropdown}>
               {session.user.image || session.user.photo ? (
                 <Image
@@ -147,20 +161,6 @@ const Navbar = () => {
             )}
           </div>
         )}
-        <Link href="/cart" className="btn btn-ghost text-xl relative">
-          <FaShoppingCart className="text-2xl" />
-          {loading ? (
-            <span className="loading-spinner" /> // You can replace this with a spinner or loader component
-          ) : error ? (
-            <span className="text-[#F65D4E]">!</span> // Or any error indication
-          ) : (
-            cartCount > 0 && (
-              <span className="absolute top-0 right-0 bg-[#F65D4E] text-white rounded-full px-1 text-xs transform translate-x-1 -translate-y-1">
-                {cartCount}
-              </span>
-            )
-          )}
-        </Link>
       </div>
       {/* Tablet and Mobile View */}
       <div className="lg:hidden flex justify-between w-full">
