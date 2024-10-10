@@ -3,7 +3,7 @@ import Link from "next/link";
 import { GoArrowRight } from "react-icons/go";
 const getBlogById = async (id) => {
   try {
-    const res = await fetch(`http://localhost:3000/api/blogs/${id}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/blogs/${id}`, {
       cache: "no-store",
     });
 
@@ -34,7 +34,7 @@ export default async function BlogCard({ id }) {
               <Link href="/">home</Link>
 
               <GoArrowRight className="" />
-              <sapn className="text-orange-600">{category}</sapn>
+              <span className="text-orange-600">{category}</span>
             </h3>
           </div>
         </div>
@@ -49,9 +49,9 @@ export default async function BlogCard({ id }) {
 
         <h3 className="uppercase font-thin my-3">
           {date} By {author} ||{" "}
-          <sapn className="uppercase">
+          <span className="uppercase">
             In <span className="text-rose-600">{category}</span>
-          </sapn>
+          </span>
         </h3>
         <h2 className="text-2xl font-bold mb-4">{title}</h2>
         <p className="text-gray-600">{content}</p>
