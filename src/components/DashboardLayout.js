@@ -8,33 +8,35 @@ import {
   AiOutlineShoppingCart,
   AiOutlineFileText,
   AiOutlineLineChart,
-  AiOutlineBarChart,
-  AiOutlineSetting,
 } from "react-icons/ai";
+import { HiMenuAlt3 } from "react-icons/hi";
 
 const DashboardLayout = ({ children }) => {
   const { data: session } = useSession();
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false); // Default false for mobile
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
   return (
-    <div className="flex">
+    <div className="flex min-h-screen">
+      {/* Hamburger Button for Mobile */}
       <button
-        className="md:hidden p-2 text-white bg-blue-500 rounded"
+        className="md:hidden p-2 text-white bg-[#F65D4E] fixed z-20 top-4 left-4 rounded-lg"
         onClick={toggleSidebar}
       >
-        {isSidebarOpen ? "Close" : "Open"} Sidebar
+        <HiMenuAlt3 size={24} />
       </button>
 
+      {/* Sidebar */}
       <nav
-        className={`bg-[#121e31] h-screen w-64 py-6 font-[sans-serif] overflow-auto transition-transform duration-300 transform ${
+        className={`bg-[#121e31] h-screen w-64 py-6 font-[sans-serif] overflow-auto fixed z-10 transition-transform duration-300 transform ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-        } md:translate-x-0`}
+        } md:relative md:translate-x-0`}
       >
-        <div className="flex flex-col flex-wrap items-center cursor-pointer px-4">
+        {/* User Profile Section */}
+        <div className="flex flex-col items-center px-4">
           <Image
             height={200}
             width={200}
@@ -60,6 +62,7 @@ const DashboardLayout = ({ children }) => {
           </div>
         </div>
 
+        {/* Sidebar Links */}
         <ul className="space-y-1 mt-10">
           {[
             {
@@ -77,11 +80,6 @@ const DashboardLayout = ({ children }) => {
               icon: <AiOutlineShoppingCart className="text-3xl" />,
               href: "/dashboard/products",
             },
-            // {
-            //   name: "Orders",
-            //   icon: <AiOutlineFileText className="text-3xl" />,
-            //   href: "/dashboard/orders",
-            // },
             {
               name: "Blogs",
               icon: <AiOutlineFileText className="text-3xl" />,
@@ -92,16 +90,6 @@ const DashboardLayout = ({ children }) => {
               icon: <AiOutlineLineChart className="text-3xl" />,
               href: "/dashboard/sales",
             },
-            // {
-            //   name: "Reports",
-            //   icon: <AiOutlineBarChart className="text-3xl" />,
-            //   href: "/dashboard/reports",
-            // },
-            // {
-            //   name: "Settings",
-            //   icon: <AiOutlineSetting className="text-3xl" />,
-            //   href: "/dashboard/settings",
-            // },
           ].map((item) => (
             <li key={item.name}>
               <a
@@ -115,13 +103,23 @@ const DashboardLayout = ({ children }) => {
           ))}
         </ul>
       </nav>
+
+      {/* Main Content */}
       <main
-        className={`flex-grow p-6 ${
+        className={`flex-grow p-6 transition-all overflow-auto mt-10 duration-300 ${
           isSidebarOpen ? "ml-64" : "ml-0"
-        } transition-all duration-300`}
+        } md:ml-32`}
       >
         {children}
       </main>
+
+      {/* Overlay for Sidebar in Mobile View */}
+      {isSidebarOpen && (
+        <div
+          className="fixed inset-0 bg-black opacity-50 z-5 md:hidden"
+          onClick={toggleSidebar}
+        />
+      )}
     </div>
   );
 };
