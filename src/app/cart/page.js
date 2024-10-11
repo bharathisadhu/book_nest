@@ -8,7 +8,7 @@ import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { Helmet } from "react-helmet-async";
+import Head from "next/head";
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY);
 
@@ -40,7 +40,9 @@ export default function CartPage() {
 
   return (
     <>
-      <Helmet>BookNest | Cart</Helmet>
+      <Head>
+        <title>BookNest | Cart</title>
+      </Head>
       <Navbar />
       <main className="container mx-auto px-4 py-8">
         <Banner title="Shopping Cart" linkName="Home" />

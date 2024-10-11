@@ -8,7 +8,7 @@ import Link from "next/link";
 import Swal from "sweetalert2";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
-import { Helmet } from "react-helmet-async";
+import Head from "next/head";
 
 export default function Login() {
   const data = {
@@ -67,7 +67,9 @@ export default function Login() {
 
   return (
     <>
-      <Helmet>BookNest | Login</Helmet>
+      <Head>
+        <title>BookNest | Login</title>
+      </Head>
       <Navbar />
       <main>
         {/* Login section */}

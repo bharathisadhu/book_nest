@@ -9,12 +9,14 @@ import Review from "@/components/Review";
 import Navbar from "@/components/Navbar";
 import Banner from "@/components/Banner";
 import PopularBooks from "@/components/PopularBooks";
-import { Helmet } from "react-helmet-async";
+import Head from "next/head";
 
 export default function Home() {
   return (
     <>
-      <Helmet>BookNest | Home</Helmet>
+      <Head>
+        <title>BookNest | Home</title>
+      </Head>
       <Navbar />
       <Banner />
       <Category></Category>

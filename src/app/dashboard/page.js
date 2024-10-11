@@ -4,11 +4,13 @@ import BookCount from "@/components/mainDashBord/BooKCountPrice";
 
 import SaleCount from "@/components/mainDashBord/SaleCount";
 import BlogCount from "@/components/mainDashBord/BlogCount";
-import { Helmet } from "react-helmet-async";
+import Head from "next/head";
 const Users = () => {
   return (
     <>
-      <Helmet>BookNest | Dashboard</Helmet>
+      <Head>
+        <title>BookNest | Dashboard</title>
+      </Head>
       <DashboardLayout>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
           <UserCount />

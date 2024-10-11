@@ -6,7 +6,7 @@ import { useSession } from "next-auth/react"; // Import useSession
 import Swal from "sweetalert2"; // Import SweetAlert2
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
-import { Helmet } from "react-helmet-async";
+import Head from "next/head";
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY);
 
@@ -46,7 +46,9 @@ const SubscriptionPage = () => {
 
   return (
     <>
-      <Helmet>BookNest | Subscription</Helmet>
+      <Head>
+        <title>BookNest | Subscription</title>
+      </Head>
       <Navbar />
       <div className="container mx-auto p-6">
         <div>

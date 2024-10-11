@@ -4,9 +4,9 @@ import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import PrivateRoute from "@/services/PrivateRoute";
 import axios from "axios";
+import Head from "next/head";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
-import { Helmet } from "react-helmet-async";
 import { CiStar } from "react-icons/ci";
 import Swal from "sweetalert2";
 
@@ -72,7 +72,9 @@ const Page = () => {
 
   return (
     <>
-      <Helmet>BookNest | Wishlist</Helmet>
+      <Head>
+        <title>BookNest | Wishlist</title>
+      </Head>
       <Navbar />
       <div className="mb-3">
         <div className="font-sans bg-white max-w-6xl mx-auto p-4">
