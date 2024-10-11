@@ -8,6 +8,7 @@ import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { Helmet } from "react-helmet-async";
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY);
 
@@ -39,25 +40,26 @@ export default function CartPage() {
 
   return (
     <>
-    <Navbar />
-    <main className="container mx-auto px-4 py-8">
-      <Banner title="Shopping Cart" linkName="Home" />
+      <Helmet>BookNest | Cart</Helmet>
+      <Navbar />
+      <main className="container mx-auto px-4 py-8">
+        <Banner title="Shopping Cart" linkName="Home" />
 
-      {/* Loader inside the cart section */}
-      {loading ? (
-        <div className="flex items-center justify-center h-32">
-          <div className="relative">
-            <div className="h-24 w-24 rounded-full border-t-8 border-b-8 border-gray-200"></div>
-            <div className="absolute top-0 left-0 h-24 w-24 rounded-full border-t-8 border-b-8 border-blue-500 animate-spin"></div>
+        {/* Loader inside the cart section */}
+        {loading ? (
+          <div className="flex items-center justify-center h-32">
+            <div className="relative">
+              <div className="h-24 w-24 rounded-full border-t-8 border-b-8 border-gray-200"></div>
+              <div className="absolute top-0 left-0 h-24 w-24 rounded-full border-t-8 border-b-8 border-blue-500 animate-spin"></div>
+            </div>
           </div>
-        </div>
-      ) : (
-        <Elements stripe={stripePromise}>
-          <CartComponent cartBook={cartBook} setCartBook={setCartBook} />
-        </Elements>
-      )}
-    </main>
-    <Footer />
+        ) : (
+          <Elements stripe={stripePromise}>
+            <CartComponent cartBook={cartBook} setCartBook={setCartBook} />
+          </Elements>
+        )}
+      </main>
+      <Footer />
     </>
   );
 }

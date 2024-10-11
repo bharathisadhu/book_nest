@@ -7,6 +7,7 @@ import Link from "next/link";
 import Loader from "../loading";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { Helmet } from "react-helmet-async";
 
 const BooksPage = () => {
   const [books, setBooks] = useState([]);
@@ -146,6 +147,7 @@ const BooksPage = () => {
 
   return (
     <>
+      <Helmet>BookNest | Books</Helmet>
       <Navbar />
       <div>
         <div className="flex flex-col lg:flex-row items-center justify-center lg:justify-between p-2 bg-[#F0F0F0] py-10">

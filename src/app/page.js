@@ -9,10 +9,12 @@ import Review from "@/components/Review";
 import Navbar from "@/components/Navbar";
 import Banner from "@/components/Banner";
 import PopularBooks from "@/components/PopularBooks";
+import { Helmet } from "react-helmet-async";
 
 export default function Home() {
   return (
     <>
+      <Helmet>BookNest | Home</Helmet>
       <Navbar />
       <Banner />
       <Category></Category>

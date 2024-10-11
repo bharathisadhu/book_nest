@@ -9,6 +9,7 @@ import BlogsCard from "@/components/BlogsCard";
 import Banner from "@/components/share/banner";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { Helmet } from "react-helmet-async";
 
 const BlogsPage = () => {
   const [blogs, setBlogs] = useState([]);
@@ -96,7 +97,8 @@ const BlogsPage = () => {
 
   return (
     <>
-    <Navbar />
+      <Helmet>BookNest | Blogs</Helmet>
+      <Navbar />
       <Banner title="Blogs" linkName="Home" />
 
       <div className="container mx-auto px-4 py-8">
@@ -224,7 +226,7 @@ const BlogsPage = () => {
           </div>
         )}
       </div>
-      <Footer/>
+      <Footer />
     </>
   );
 };
