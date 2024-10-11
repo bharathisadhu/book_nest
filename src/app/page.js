@@ -9,10 +9,14 @@ import Review from "@/components/Review";
 import Navbar from "@/components/Navbar";
 import Banner from "@/components/Banner";
 import PopularBooks from "@/components/PopularBooks";
+import Head from "next/head";
 
 export default function Home() {
   return (
     <>
+      <Head>
+        <title>BookNest | Home</title>
+      </Head>
       <Navbar />
       <Banner />
       <Category></Category>

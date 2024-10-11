@@ -1,32 +1,32 @@
 import Navbar from "@/components/Navbar";
-import { Span } from "next/dist/trace";
 import React from "react";
-import { IoIosArrowForward } from "react-icons/io";
-import { FaArrowRightLong } from "react-icons/fa6";
 import { GoArrowRight } from "react-icons/go";
 import Footer from "@/components/Footer";
 import Image from "next/image";
 import Link from "next/link";
 import ContactForm from "@/components/ContactForm";
+import Head from "next/head";
 
 const ContactPage = () => {
   const bannerData = {
-    title: 'Contact',
-    linkName: 'Home',
-    
+    title: "Contact",
+    linkName: "Home",
   };
-  
+
   return (
     <>
-    <Navbar />
+      <Head>
+        <title>BookNest | Contact</title>
+      </Head>
+      <Navbar />
       <div className="flex flex-col lg:flex-row items-center justify-center lg:justify-between p-2 bg-[#F0F0F0] py-10">
-        <h2 className=" lg:py-10 lg:ml-10 font-extrabold text-5xl">CONTACT</h2>
+        <h2 className="lg:py-10 lg:ml-10 font-extrabold text-5xl">CONTACT</h2>
 
-        <h3 className=" lg:py-10 lg:mr-10 mt-3 flex justify-center items-center gap-2">
+        <h3 className="lg:py-10 lg:mr-10 mt-3 flex justify-center items-center gap-2">
           <Link href="/">HOME</Link>
 
-          <GoArrowRight className="" />
-          <sapn className="text-orange-600">CONTACT</sapn>
+          <GoArrowRight />
+          <span className="text-orange-600">CONTACT</span>
         </h3>
       </div>
       <div className="flex flex-col lg:flex-row items-center justify-center min-h-screen p-2 lg:p-10 lg:gap-3 mt-10">
@@ -58,7 +58,7 @@ const ContactPage = () => {
       </h2>
       <div className="container mx-auto px-4 py-8">
         <div className="grid gap-0 md:grid-cols-1 lg:grid-cols-3">
-          <div className=" rounded-lg  p-4">
+          <div className="rounded-lg p-4">
             <Image
               height={200}
               width={200}
@@ -83,7 +83,7 @@ const ContactPage = () => {
             </p>
           </div>
 
-          <div className=" rounded-lg  p-4">
+          <div className="rounded-lg p-4">
             <Image
               height={200}
               width={200}
@@ -108,7 +108,8 @@ const ContactPage = () => {
               Saturday – Sunday: Close
             </p>
           </div>
-          <div className=" rounded-lg  p-4">
+
+          <div className="rounded-lg p-4">
             <Image
               height={200}
               width={200}
