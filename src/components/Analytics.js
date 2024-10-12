@@ -4,7 +4,7 @@ import { HiOutlineEmojiHappy } from "react-icons/hi";
 
 const Analytics = () => {
   return (
-    <div className="my-5">
+    <div className="container mx-auto mb-10 md:mb-20">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-8">
         <div className="bg-white shadow rounded-lg p-10 flex items-center justify-center space-x-4">
           <div className="bg-purple-100 p-3 rounded-full">

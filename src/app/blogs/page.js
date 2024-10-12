@@ -161,7 +161,7 @@ const BlogsPage = () => {
                     {categories.length > 5 && (
                       <button
                         onClick={() => setSeeMoreCategories(!seeMoreCategories)}
-                        className="text-blue-500 mt-2"
+                        className="text-[#F65D4E] mt-2"
                       >
                         {seeMoreCategories ? "See Less" : "See More"}
                       </button>
@@ -191,9 +191,9 @@ const BlogsPage = () => {
                           <h3 className="font-thin uppercase text-[15px]">
                             {post.date}
                           </h3>
-                          <h2 className="font-semibold leading-5">
+                          <Link href={`/blogs/${post._id}`}><h2 className="font-semibold leading-5 hover:text-[#F65D4E]">
                             {post.title} BY {post.author}
-                          </h2>
+                          </h2></Link>
                         </div>
                       </li>
                     ))}
@@ -208,13 +208,13 @@ const BlogsPage = () => {
         {!isLoading && (
           <div className="flex justify-center my-10">
             <nav>
-              <ul className="flex">
+              <ul className="flex flex-wrap items-center justify-center gap-2 md:gap-0">
                 {Array.from({ length: totalPages }, (_, index) => (
                   <li key={index} className="mx-2">
                     <button
                       className={`px-4 py-2 rounded ${
                         index + 1 === currentPage
-                          ? "bg-blue-500 text-white"
+                          ? "bg-[#F65D4E] text-white"
                           : "bg-gray-200"
                       }`}
                       onClick={() => handlePageChange(index + 1)}

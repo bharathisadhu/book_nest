@@ -226,7 +226,7 @@ const BooksPage = () => {
               </div>
             </div>
             {/* Main Layout with Sidebar and Books Grid */}
-            <div className="grid grid-cols-4 mx-auto mt-6 gap-8">
+            <div className="grid grid-cols-4 mx-auto mt-6 gap-8 container">
               {/* Left Sidebar */}
               <div className="hidden lg:block col-span-1 bg-gray-100 p-4 rounded-lg">
                 <div className="mb-6">

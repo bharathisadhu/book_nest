@@ -6,15 +6,15 @@ import { useEffect, useState } from "react";
 
 const Blogs = () => {
   const [posts, setPosts] = useState([]);
-
+  const baseURL = process.env.NEXT_PUBLIC_API_URL
   useEffect(() => {
-    fetch("blogs.json")
+    fetch(`${baseURL}/api/blogs`)
       .then((response) => response.json())
       .then((data) => setPosts(data));
-  }, []);
+  }, [baseURL]);
 
   return (
-    <div className="bg-gray-50 w-full p-4 my-4 ">
+    <div className="bg-gray-50 w-full p-4 my-10 md:my-12 lg:my-28 container mx-auto">
       <div className="flex items-center justify-between mb-8">
         <h2 className="text-xl lg:text-4xl font-semibold text-black">
           Latest Blog Post
@@ -39,9 +39,9 @@ const Blogs = () => {
               />
               <div>
                 <p className="text-gray-400 text-sm">{post.date}</p>
-                <h3 className="text-lg font-semibold hover:text-red-400">
+                <Link href={`/blogs/${post._id}`}><h3 className="text-lg font-semibold hover:text-red-400">
                   {post.title}
-                </h3>
+                </h3></Link>
               </div>
             </div>
           ))}
@@ -59,9 +59,9 @@ const Blogs = () => {
               <div className="absolute inset-0 bg-gradient-to-t from-black"></div>
               <div className="absolute bottom-0 left-0 px-8 pt-52 w-full h-full">
                 <p className="text-white text-sm">{post.date} / BY ADMIN</p>
-                <h3 className="text-white text-2xl font-bold mt-2 hover:text-red-400">
+                <Link href={`/blogs/${post._id}`}><h3 className="text-lg font-semibold hover:text-red-400">
                   {post.title}
-                </h3>
+                </h3></Link>
                 <button className="text-white mt-6 underline">Read More</button>
               </div>
             </div>
@@ -80,9 +80,9 @@ const Blogs = () => {
               />
               <div>
                 <p className="text-gray-400 text-sm">{post.date}</p>
-                <h3 className="text-lg font-semibold hover:text-red-400">
+                <Link href={`/blogs/${post._id}`}><h3 className="text-lg font-semibold hover:text-red-400">
                   {post.title}
-                </h3>
+                </h3></Link>
               </div>
             </div>
           ))}

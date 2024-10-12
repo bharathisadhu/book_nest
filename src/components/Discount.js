@@ -4,7 +4,7 @@ import Link from "next/link";
 
 function Discount() {
   return (
-    <div className="mt-20 container mx-auto">
+    <div className=" container mx-auto">
       <div className="flex flex-col lg:flex-row justify-between gap-6 p-2">
         {/* Book 20% gift card */}
         <div className="bg-gray-50 font-[sans-serif] relative shadow-lg shadow-[#e9d9f3] mx-auto rounded-3xl overflow-hidden cursor-pointer w-full">
