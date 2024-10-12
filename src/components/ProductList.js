@@ -5,17 +5,18 @@ import { HiPencilAlt, HiOutlineTrash } from "react-icons/hi";
 import Loading from "../app/loading";
 import Swal from "sweetalert2";
 
-export default function ProductsList() {
+export default function BooksList() {
   const [books, setBooks] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
   const [isUpdating, setIsUpdating] = useState(false);
   const [selectedBook, setSelectedBook] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const itemsPerPage = 10;
+  const itemsPerPage = 10; // Keep this to control the number of books loaded at once
+  const [hasMore, setHasMore] = useState(true); // To track if more books are available
+  const [currentStartIndex, setCurrentStartIndex] = useState(0); // Current index for loading books
 
   useEffect(() => {
-    const fetchProducts = async () => {
+    const fetchBooks = async () => {
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/books`, {
         cache: "no-store",
       });
@@ -23,6 +24,7 @@ export default function ProductsList() {
       if (res.ok) {
         const data = await res.json();
         setBooks(Array.isArray(data) ? data : []);
+        setHasMore(data.length > itemsPerPage); // Check if more books are available
       } else {
         console.error("Failed to fetch books: ", res.status);
         setBooks([]);
@@ -31,12 +33,46 @@ export default function ProductsList() {
       setIsLoading(false);
     };
 
-    fetchProducts();
+    fetchBooks();
   }, []);
 
-  const totalPages = Math.ceil(books.length / itemsPerPage);
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const currentBooks = books.slice(startIndex, startIndex + itemsPerPage);
+  const loadMoreBooks = async () => {
+    if (!hasMore || isLoading) return; // Prevent loading if no more books or already loading
+
+    setIsLoading(true);
+
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/books?start=${currentStartIndex}&limit=${itemsPerPage}`,
+      {
+        cache: "no-store",
+      }
+    );
+
+    if (res.ok) {
+      const newBooks = await res.json();
+      setBooks((prev) => [...prev, ...newBooks]);
+      setCurrentStartIndex((prev) => prev + itemsPerPage); // Update the start index
+      setHasMore(newBooks.length === itemsPerPage); // Check if more books are available
+    }
+
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const bottom =
+        window.innerHeight + window.scrollY >=
+        document.documentElement.scrollHeight - 100; // Adjust threshold as needed
+      if (bottom) {
+        loadMoreBooks();
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [hasMore, isLoading, loadMoreBooks]);
 
   const removeBook = async (id) => {
     const bookToDelete = books.find((book) => book._id === id);
@@ -148,16 +184,16 @@ export default function ProductsList() {
     setSelectedBook((prev) => ({ ...prev, [name]: updatedValue }));
   };
 
-  if (isLoading) {
+  if (isLoading && books.length === 0) {
     return <Loading />; // Use your existing loading component
   }
 
-  if (currentBooks.length === 0) {
+  if (books.length === 0) {
     return <div>No books found or failed to load books.</div>;
   }
 
   return (
-    <div className="font-sans overflow-x-auto">
+    <div className="font-sans max-h-[580px] overflow-x-auto overflow-y-auto">
       <table className="min-w-full divide-y divide-gray-200">
         <thead className="bg-gray-100 whitespace-nowrap">
           <tr>
@@ -182,7 +218,7 @@ export default function ProductsList() {
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200 whitespace-nowrap">
-          {currentBooks.map((book) => (
+          {books.map((book) => (
             <tr key={book._id}>
               <td className="px-4 py-4 text-sm text-gray-800">{book?.name}</td>
               <td className="px-4 py-4 text-sm text-gray-800">
@@ -211,21 +247,9 @@ export default function ProductsList() {
         </tbody>
       </table>
 
-      <div className="flex justify-center mt-4">
-        {Array.from({ length: totalPages }, (_, index) => (
-          <button
-            key={index + 1}
-            onClick={() => setCurrentPage(index + 1)}
-            className={`mx-1 px-4 py-2 rounded ${
-              currentPage === index + 1
-                ? "bg-blue-500 text-white"
-                : "bg-gray-200 text-gray-800"
-            }`}
-          >
-            {index + 1}
-          </button>
-        ))}
-      </div>
+      {isLoading && (
+        <div className="text-center mt-4">Loading more books...</div>
+      )}
 
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
@@ -295,7 +319,7 @@ export default function ProductsList() {
               <div className="mt-4 flex justify-between">
                 <button
                   type="submit"
-                  className="bg-[#F65D4E] text-black px-4 py-2 rounded"
+                  className="bg-[#F65D4E] text-white px-4 py-2 rounded"
                 >
                   {isUpdating ? "Updating..." : "Update Book"}
                 </button>

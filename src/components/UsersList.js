@@ -95,7 +95,7 @@ export default function UsersList() {
     setIsUpdating(true); // Set loading state for update operation
 
     try {
-      let imageUrl = selectedUser.image || ""; // Default to the current image or empty string
+      let imageUrl = selectedUser.image; // Default to the current image
 
       // Upload the new image if a file is selected
       if (selectedImage) {
@@ -156,43 +156,49 @@ export default function UsersList() {
 
   return (
     <div className="font-sans overflow-x-auto">
-      <table className="min-w-full divide-y divide-gray-200">
-        <thead className="bg-gray-100 whitespace-nowrap">
-          <tr>
-            <th className="px-4 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
-              Name
-            </th>
-            <th className="px-4 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
-              Email
-            </th>
-            <th className="px-4 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
-              Role
-            </th>
-            <th className="px-4 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
-              Actions
-            </th>
-          </tr>
-        </thead>
-        <tbody className="bg-white divide-y divide-gray-200 whitespace-nowrap">
-          {users.map((user) => (
-            <tr key={user._id}>
-              <td className="px-4 py-4 text-sm text-gray-800">{user.name}</td>
-              <td className="px-4 py-4 text-sm text-gray-800">{user.email}</td>
-              <td className="px-4 py-4 text-sm text-gray-800">
-                {user.role || "Not assigned"} {/* Use actual role */}
-              </td>
-              <td className="flex px-4 py-4 text-sm text-gray-800 space-x-4">
-                <HiPencilAlt
-                  size={24}
-                  onClick={() => handleEditClick(user)} // Trigger modal on click
-                  className="cursor-pointer"
-                />
-                <RemoveBtn id={user._id} />
-              </td>
+      <div className="max-h-[580px] overflow-y-auto">
+        {" "}
+        {/* Fixed height container */}
+        <table className="min-w-full divide-y divide-gray-200">
+          <thead className="bg-gray-100 whitespace-nowrap">
+            <tr>
+              <th className="px-4 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                Name
+              </th>
+              <th className="px-4 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                Email
+              </th>
+              <th className="px-4 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                Role
+              </th>
+              <th className="px-4 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                Actions
+              </th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody className="bg-white divide-y divide-gray-200 whitespace-nowrap">
+            {users.map((user) => (
+              <tr key={user._id}>
+                <td className="px-4 py-4 text-sm text-gray-800">{user.name}</td>
+                <td className="px-4 py-4 text-sm text-gray-800">
+                  {user.email}
+                </td>
+                <td className="px-4 py-4 text-sm text-gray-800">
+                  {user.role || "Not assigned"} {/* Use actual role */}
+                </td>
+                <td className="flex px-4 py-4 text-sm text-gray-800 space-x-4">
+                  <HiPencilAlt
+                    size={24}
+                    onClick={() => handleEditClick(user)} // Trigger modal on click
+                    className="cursor-pointer"
+                  />
+                  <RemoveBtn id={user._id} />
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
 
       {/* Update Modal */}
       {isModalOpen && selectedUser && (
@@ -229,19 +235,13 @@ export default function UsersList() {
               </div>
               <div className="mt-4">
                 <label className="block text-sm">Current Image</label>
-                {selectedUser.image ? ( // Conditional rendering for image
-                  <Image
-                    src={selectedUser.image}
-                    alt="User"
-                    className="mb-4 w-32 h-32 object-cover"
-                    width={128}
-                    height={128}
-                  />
-                ) : (
-                  <div className="mb-4 w-32 h-32 bg-gray-200 flex items-center justify-center">
-                    No Image
-                  </div>
-                )}
+                <Image
+                  src={selectedUser.image}
+                  alt="User"
+                  className="mb-4 w-32 h-32 object-cover"
+                  width={128}
+                  height={128}
+                />
                 <input
                   type="file"
                   accept="image/*"

@@ -1,15 +1,18 @@
 // src/app/dashboard/insight/page.js
 // import RootLayout from "@/app/layout";
 import DashboardLayout from "@/components/DashboardLayout";
-import ProductsList from "@/components/ProductList";
+import BooksList from "@/components/ProductList";
 
-const Products = () => {
+const books = () => {
   return (
-    <DashboardLayout>
-      <h1 className="text-2xl font-bold text-center">Book List</h1>
-      <ProductsList />
-    </DashboardLayout>
+    <main>
+      <DashboardLayout>
+        <h1 className="text-2xl font-bold text-center mb-2">Books List </h1>
+        {/* Add more specific content here */}
+        <BooksList />
+      </DashboardLayout>
+    </main>
   );
 };
 
-export default Products;
+export default books;
