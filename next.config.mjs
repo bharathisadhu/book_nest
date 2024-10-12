@@ -43,6 +43,7 @@ const nextConfig = {
       "via.placeholder.com",
       "i.ibb.co.com",
       "images.unsplash.com",
+      "m.media-amazon.com",
       "*",
     ],
   },

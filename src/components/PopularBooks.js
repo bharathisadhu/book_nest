@@ -1,30 +1,33 @@
 "use client";
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 export default function PopularBooks() {
   const [popularBooks, setPopularBooks] = useState([]);
-
+  const baseURL = process.env.NEXT_PUBLIC_API_URL;
   useEffect(() => {
-    fetch("popular-data.json")
+    fetch(`${baseURL}/api/books`)
       .then((response) => response.json())
       .then((data) => {
         setPopularBooks(data);
       });
-  }, []);
+  }, [baseURL]);
 
   return (
     <>
-      <div className="my-10 container mx-auto">
+      <div className="my-4 md:my-8 lg:mt-28 lg:mb-20 container mx-auto">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <h2 className="text-xl lg:text-4xl font-semibold text-black">
             Popular Books
           </h2>
           <div className="border-t-2 border-gray-300 w-[25%] md:w-[60%] lg:w-[65%] mt-4"></div>
-          <button className="btn rounded-3xl bg-[#F65D4E] text-white px-8">
-            View All
-          </button>
+          <Link href="/books">
+            <button className="btn rounded-3xl bg-[#F65D4E] text-white px-8">
+              View All
+            </button>
+          </Link>
         </div>
         {/* Popular Book Grid Section */}
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 p-2">
@@ -32,13 +35,13 @@ export default function PopularBooks() {
             {popularBooks.slice(0, 8).map((book) => (
               <div key={book.name} className="col-span-1">
                 <div className="flex flex-col ">
-                  <Image
+                  <Link href={`/books/${book._id}`}><Image
                     width={500}
                     height={500}
                     className="w-56 h-80 object-cover rounded-xl mb-3 transition-transform hover:scale-105"
                     src={book.image}
                     alt={book.name}
-                  />
+                  /></Link>
                   <div className="text-left">
                     <div className="text-lg font-medium mb-1">{book.name}</div>
                     <div className="flex items-center text-orange-400 mb-1">

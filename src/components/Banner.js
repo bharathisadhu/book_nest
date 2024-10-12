@@ -6,10 +6,9 @@ import { IoIosArrowForward } from "react-icons/io";
 
 const Banner = () => {
   return (
-    <div className="hero">
-      <div className="hero-overlay bg-[#00453E] rounded-2xl border-2"></div>
-
-      <div className="carousel w-full">
+    <div className="hero lg:h-[700px]">
+      <div className="hero-overlay bg-[#00453E] rounded-b-2xl border-2"></div>
+      <div className="carousel w-full ">
         <div id="slide1" className="carousel-item relative w-full border-5">
           <div className="container flex flex-col justify-center p-1 mx-auto sm:py-12 lg:py-4 lg:flex-row lg:justify-between">
             <div className="w-full mx-auto flex  flex-col md:flex-row  overflow-hidden">
@@ -57,7 +56,7 @@ const Banner = () => {
               </div>
             </div>
           </div>
-          <div className="absolute   right-5  bottom-5    flex gap-2">
+          <div className="absolute right-5 bottom-5 flex gap-2">
             <a href="#slide2" className="btn btn-circle">
               ❮
             </a>
@@ -113,7 +112,7 @@ const Banner = () => {
               </div>
             </div>
           </div>
-          <div className="absolute   right-5  bottom-5    flex gap-2">
+          <div className="absolute right-5 bottom-5 flex gap-2">
             <a href="#slide1" className="btn btn-circle">
               ❮
             </a>

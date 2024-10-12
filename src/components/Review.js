@@ -11,7 +11,7 @@ import Image from "next/image";
 export default function Reviews() {
   return (
     <>
-      <div className="relative mb-32 md:mb-72 my-5">
+      <div className="relative mb-32 md:mb-64 my-6 md:my-16">
         <Image
           className="w-full h-60 md:h-auto object-cover"
           src="https://demo2.pavothemes.com/bookory/wp-content/uploads/2022/02/h1-bg2.jpg"
@@ -20,7 +20,7 @@ export default function Reviews() {
           height={1080}
         />
         {/* review card */}
-        <div className="absolute w-[90%] lg:w-1/3 rounded-lg -mt-44 lg:-mt-60 left-1/2 transform -translate-x-1/2 bg-gray-50 border-2 md:p-4">
+        <div className="absolute w-[90%] lg:w-1/3 rounded-lg -mt-44 lg:-mt-60 left-1/2 lg:left-1/3 transform -translate-x-1/2 bg-gray-50 border-2 md:p-4">
           <Swiper
             cssMode={true}
             navigation={true}

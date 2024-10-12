@@ -21,7 +21,7 @@ const Category = () => {
   }, []);
 
   return (
-    <div className="container mx-auto my-6 md:my-14 lg:my-28 relative">
+    <div className="container mx-auto my-4 md:my-8 lg:mt-20 lg:mb-24 relative">
       <Swiper
         slidesPerView={3}
         spaceBetween={30}
@@ -48,7 +48,7 @@ const Category = () => {
       >
         {category.map((cat) => (
           <SwiperSlide key={cat.image}>
-            <div className="relative flex flex-col items-center transition-transform cursor-pointer  group mt-10">
+            <div className="relative flex flex-col items-center transition-transform cursor-pointer group mt-10">
               <div
                 className="h-24 w-24 lg:h-40 lg:w-40 rounded-full bg-slate-200 absolute z-10
         group-hover:bg-red-600 top-3/4 transform -translate-y-1/2"

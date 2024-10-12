@@ -20,7 +20,7 @@ export default function AboutUs() {
         <title>BookNest | About Us</title>
       </Head>
       <Navbar />
-      <div className="my-10 py-20 px-20 bg-gray-200 flex justify-between items-center">
+      <div className="my-10 py-20 px-2 md:px-20 bg-gray-200 flex justify-between items-center">
         <h1 className="lg:text-6xl md:text-4xl text-xl font-bold">About Us</h1>
         <div className="flex justify-center items-center gap-2">
           <Link legacyBehavior href="/">
@@ -33,7 +33,7 @@ export default function AboutUs() {
         </div>
       </div>
 
-      <div className="lg:my-20 md:my-10 my-5 p-2">
+      <div className="lg:my-20 md:my-10 my-5 p-2 container mx-auto">
         <div className="flex justify-center items-center">
           <Image
             className=""
@@ -49,10 +49,10 @@ export default function AboutUs() {
           <h1>stores in 32 states.</h1>
         </div>
       </div>
-
-      <div className="flex justify-center -mb-36">
+      {/* banner section */}
+      <div className="flex justify-center -mb-36 container mx-auto">
         <Image
-          className="w-11/12 rounded-xl"
+          className="w-full rounded-xl"
           src="https://demo2.pavothemes.com/bookory/wp-content/uploads/2022/02/About_04.jpg"
           alt=""
           width={1920}
@@ -110,7 +110,6 @@ export default function AboutUs() {
               books delivered to their doorsteps. We strive to create a seamless
               shopping experience for all our readers.
             </p>
-
             <p className="text-justify my-10">
               As the digital age evolves, so does our approach to offering
               e-books, audiobooks, and online reading communities. We connect

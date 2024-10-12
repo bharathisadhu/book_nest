@@ -11,7 +11,7 @@ import Image from "next/image";
 
 export default function Brand() {
   return (
-    <div className="container mx-auto my-6 md:my-14 lg:my-28">
+    <div className="container mx-auto">
       <Swiper
         slidesPerView={3} // Default for large screens (desktop)
         spaceBetween={30}
