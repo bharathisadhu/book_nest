@@ -6,7 +6,6 @@ import { useState } from "react";
 import {
   AiOutlineDashboard,
   AiOutlineUser,
-  AiOutlineShoppingCart,
   AiOutlineFileText,
   AiOutlineLineChart,
 } from "react-icons/ai";
@@ -14,6 +13,7 @@ import { HiMenuAlt3 } from "react-icons/hi";
 import { FaHome } from "react-icons/fa";
 import Banner from "./share/banner";
 import Link from "next/link";
+import { IoBookSharp } from "react-icons/io5";
 import { usePathname } from "next/navigation";
 
 const DashboardLayout = ({ children }) => {
@@ -27,9 +27,6 @@ const DashboardLayout = ({ children }) => {
 
   return (
     <main>
-      <div className="hidden lg:block">
-        <Banner title="Dashboard" linkName="Home" />
-      </div>
       <div className="flex container mx-auto mt-6">
         {/* Hamburger Button for Mobile and tablet */}
         <button
@@ -42,7 +39,7 @@ const DashboardLayout = ({ children }) => {
 
         {/* Sidebar */}
         <nav
-          className={`text-black h-full lg:h-[650px] w-full lg:w-80 py-6 font-[sans-serif] overflow-auto fixed z-10 transition-transform duration-300 transform shadow-xl bg-white border rounded-lg ${
+          className={`text-black min-h-min w-80 py-6 font-[sans-serif] overflow-auto fixed z-10 transition-transform duration-300 transform shadow-xl ${
             isSidebarOpen ? "translate-x-0" : "-translate-x-full"
           } lg:relative lg:translate-x-0`}
         >
@@ -56,7 +53,7 @@ const DashboardLayout = ({ children }) => {
               alt="Profile"
             />
             <div className="mt-2 text-center">
-              <p className="text-sm  mt-2">
+              <p className="text-sm mt-2">
                 {session?.user.name || "User Name"}
               </p>
               <p className="text-xs mt-0.5">
@@ -79,9 +76,9 @@ const DashboardLayout = ({ children }) => {
                 href: "/dashboard/users",
               },
               {
-                name: "Products",
-                icon: <AiOutlineShoppingCart className="text-xl" />,
-                href: "/dashboard/products",
+                name: "Books",
+                icon: <IoBookSharp className="text-xl" />,
+                href: "/dashboard/books",
               },
               {
                 name: "Blogs",
@@ -97,21 +94,17 @@ const DashboardLayout = ({ children }) => {
               <li key={item.name}>
                 <Link
                   href={item.href}
-                  className={`${
-                    pathname === item.href
-                      ? " text-[#F65D4E]"
-                      : "text-gray-800 "
-                  } text-sm flex justify-between items-center gap-4 hover:text-[#F65D4E]  rounded px-4 py-5 transition-all lg:mx-4 border-b`}
+                  className="text-gray-800 text-sm flex justify-between items-center gap-4 hover:text-[#F65D4E] rounded px-4 py-5 transition-all lg:mx-4 border-b"
                 >
                   <span className="font-semibold text-lg">{item.name}</span>
-                  <span className=" ">{item.icon}</span>
+                  <span>{item.icon}</span>
                 </Link>
               </li>
             ))}
           </ul>
           {!session ? (
             <Link href={"/login"}>
-              <div className="text-gray-800 flex justify-between items-center gap-4 hover:text-[#F65D4E]  rounded px-4 py-5 transition-all lg:mx-4 font-semibold text-lg cursor-pointer border-b">
+              <div className="text-gray-800 flex justify-between items-center gap-4 hover:text-[#F65D4E] rounded px-4 py-5 transition-all lg:mx-4 font-semibold text-lg cursor-pointer">
                 <p>Login</p>
                 <FiLogIn />
               </div>
@@ -119,7 +112,7 @@ const DashboardLayout = ({ children }) => {
           ) : (
             <div
               onClick={() => signOut()}
-              className="text-gray-800 flex justify-between items-center gap-4 hover:text-[#F65D4E]  rounded px-4 py-5 transition-all lg:mx-4 font-semibold text-lg hover:underline cursor-pointer border-b"
+              className="text-gray-800 flex justify-between items-center gap-4 hover:text-[#F65D4E] rounded px-4 py-5 transition-all lg:mx-4 font-semibold text-lg hover:underline cursor-pointer"
             >
               <p>Logout</p>
               <FiLogIn />
@@ -135,9 +128,9 @@ const DashboardLayout = ({ children }) => {
 
         {/* Main Content */}
         <main
-          className={`flex-grow p-6 transition-all overflow-auto duration-300 ${
-            isSidebarOpen ? "ml-64" : "ml-0"
-          } lg:ml-24`}
+          className={`flex-grow p-6 transition-all duration-300 overflow-hidden ${
+            isSidebarOpen ? "modal-toggle" : "ml-0"
+          } md:ml-16`}
         >
           {children}
         </main>
