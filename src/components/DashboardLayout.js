@@ -10,11 +10,14 @@ import {
   AiOutlineLineChart,
 } from "react-icons/ai";
 import { HiMenuAlt3 } from "react-icons/hi";
+import { FaHome } from "react-icons/fa";
 import Banner from "./share/banner";
 import Link from "next/link";
 import { IoBookSharp } from "react-icons/io5";
+import { usePathname } from "next/navigation";
 
 const DashboardLayout = ({ children }) => {
+  const pathname = usePathname();
   const { data: session } = useSession();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false); // Default false for mobile
 
@@ -25,19 +28,20 @@ const DashboardLayout = ({ children }) => {
   return (
     <main>
       <div className="flex container mx-auto mt-6">
-        {/* Hamburger Button for Mobile */}
+        {/* Hamburger Button for Mobile and tablet */}
         <button
-          className="md:hidden p-2 text-white bg-[#F65D4E] fixed z-20 top-4 left-4 rounded-lg"
+          className="lg:hidden p-2 text-white bg-[#F65D4E] fixed z-50 top-0 w-full flex justify-between items-center"
           onClick={toggleSidebar}
         >
-          <HiMenuAlt3 size={24} />
+          <p>Sidebar</p>
+          <HiMenuAlt3 className="text-xl" />
         </button>
 
         {/* Sidebar */}
         <nav
           className={`text-black min-h-min w-80 py-6 font-[sans-serif] overflow-auto fixed z-10 transition-transform duration-300 transform shadow-xl ${
             isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-          } md:relative md:translate-x-0`}
+          } lg:relative lg:translate-x-0`}
         >
           {/* User Profile Section */}
           <div className="flex flex-col items-center px-4">
@@ -59,7 +63,7 @@ const DashboardLayout = ({ children }) => {
           </div>
 
           {/* Sidebar Links */}
-          <ul className="space-y-1 mt-8">
+          <ul className="mt-4">
             {[
               {
                 name: "Dashboard",
@@ -88,13 +92,13 @@ const DashboardLayout = ({ children }) => {
               },
             ].map((item) => (
               <li key={item.name}>
-                <a
+                <Link
                   href={item.href}
                   className="text-gray-800 text-sm flex justify-between items-center gap-4 hover:text-[#F65D4E] rounded px-4 py-5 transition-all lg:mx-4 border-b"
                 >
                   <span className="font-semibold text-lg">{item.name}</span>
                   <span>{item.icon}</span>
-                </a>
+                </Link>
               </li>
             ))}
           </ul>
@@ -114,6 +118,12 @@ const DashboardLayout = ({ children }) => {
               <FiLogIn />
             </div>
           )}
+          <Link href={"/"}>
+            <div className="text-gray-800 flex justify-between items-center gap-4 hover:text-[#F65D4E]  rounded px-4 py-5 transition-all lg:mx-4 font-semibold text-lg cursor-pointer">
+              <p>Back to Home</p>
+              <FaHome />
+            </div>
+          </Link>
         </nav>
 
         {/* Main Content */}
@@ -128,7 +138,7 @@ const DashboardLayout = ({ children }) => {
         {/* Overlay for Sidebar in Mobile View */}
         {isSidebarOpen && (
           <div
-            className="fixed inset-0 bg-black opacity-50 z-5 md:hidden"
+            className="fixed inset-0 bg-black opacity-50 z-5 lg:hidden"
             onClick={toggleSidebar}
           />
         )}
