@@ -1,10 +1,9 @@
+import { MongoClient, ServerApiVersion } from "mongodb"; // Use import for server-side
 let clientPromise;
 let db;
 
 // Ensure the MongoDB client is only initialized on the server side
 if (typeof window === "undefined") {
-  const { MongoClient, ServerApiVersion } = require("mongodb"); // Use require for server-side imports
-
   const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.j8y0i.mongodb.net/`;
   const options = {
     serverApi: {
@@ -34,6 +33,7 @@ const connectDB = async () => {
     return db;
   } catch (error) {
     console.error("Failed to connect to MongoDB:", error);
+    throw new Error("Database connection failed");
   }
 };
 
