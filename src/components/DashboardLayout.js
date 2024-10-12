@@ -29,12 +29,11 @@ const DashboardLayout = ({ children }) => {
     <main>
       <div className="flex container mx-auto mt-6">
         {/* Hamburger Button for Mobile and tablet */}
-        <button
-          className="lg:hidden p-2 text-white bg-[#F65D4E] fixed z-50 top-0 w-full flex justify-between items-center"
+       <button
+          className="md:hidden p-2 text-white bg-[#F65D4E] fixed z-20 top-4 left-4 rounded-lg"
           onClick={toggleSidebar}
         >
-          <p>Sidebar</p>
-          <HiMenuAlt3 className="text-xl" />
+          <HiMenuAlt3 size={24} />
         </button>
 
         {/* Sidebar */}
