@@ -11,6 +11,7 @@ import {
   AiOutlineLineChart,
 } from "react-icons/ai";
 import { HiMenuAlt3 } from "react-icons/hi";
+import { FaHome } from "react-icons/fa";
 import Banner from "./share/banner";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -65,7 +66,7 @@ const DashboardLayout = ({ children }) => {
           </div>
 
           {/* Sidebar Links */}
-          <ul className="space-y-1 mt-8">
+          <ul className="mt-4">
             {[
               {
                 name: "Dashboard",
@@ -110,7 +111,7 @@ const DashboardLayout = ({ children }) => {
           </ul>
           {!session ? (
             <Link href={"/login"}>
-              <div className="text-gray-800 flex justify-between items-center gap-4 hover:text-[#F65D4E]  rounded px-4 py-5 transition-all lg:mx-4 font-semibold text-lg cursor-pointer">
+              <div className="text-gray-800 flex justify-between items-center gap-4 hover:text-[#F65D4E]  rounded px-4 py-5 transition-all lg:mx-4 font-semibold text-lg cursor-pointer border-b">
                 <p>Login</p>
                 <FiLogIn />
               </div>
@@ -118,12 +119,18 @@ const DashboardLayout = ({ children }) => {
           ) : (
             <div
               onClick={() => signOut()}
-              className="text-gray-800 flex justify-between items-center gap-4 hover:text-[#F65D4E]  rounded px-4 py-5 transition-all lg:mx-4 font-semibold text-lg hover:underline cursor-pointer"
+              className="text-gray-800 flex justify-between items-center gap-4 hover:text-[#F65D4E]  rounded px-4 py-5 transition-all lg:mx-4 font-semibold text-lg hover:underline cursor-pointer border-b"
             >
               <p>Logout</p>
               <FiLogIn />
             </div>
           )}
+          <Link href={"/"}>
+            <div className="text-gray-800 flex justify-between items-center gap-4 hover:text-[#F65D4E]  rounded px-4 py-5 transition-all lg:mx-4 font-semibold text-lg cursor-pointer">
+              <p>Back to Home</p>
+              <FaHome />
+            </div>
+          </Link>
         </nav>
 
         {/* Main Content */}
