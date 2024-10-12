@@ -6,8 +6,7 @@ import ProductsList from "@/components/ProductList";
 const Products = () => {
   return (
     <DashboardLayout>
-      <h1 className="text-2xl font-bold">This is the Product List </h1>
-      {/* Add more specific content here */}
+      <h1 className="text-2xl font-bold text-center">Book List</h1>
       <ProductsList />
     </DashboardLayout>
   );

@@ -5,11 +5,11 @@ import { useState } from "react";
 import {
   AiOutlineDashboard,
   AiOutlineUser,
-  AiOutlineShoppingCart,
   AiOutlineFileText,
   AiOutlineLineChart,
 } from "react-icons/ai";
 import { HiMenuAlt3 } from "react-icons/hi";
+import { IoBookSharp } from "react-icons/io5";
 
 const DashboardLayout = ({ children }) => {
   const { data: session } = useSession();
@@ -31,7 +31,7 @@ const DashboardLayout = ({ children }) => {
 
       {/* Sidebar */}
       <nav
-        className={`bg-[#121e31] h-screen w-64 py-6 font-[sans-serif] overflow-auto fixed z-10 transition-transform duration-300 transform ${
+        className={`bg-[#121e31] min-h-min w-64 py-6 font-[sans-serif] overflow-auto fixed z-10 transition-transform duration-300 transform ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
         } md:relative md:translate-x-0`}
       >
@@ -76,9 +76,9 @@ const DashboardLayout = ({ children }) => {
               href: "/dashboard/users",
             },
             {
-              name: "Products",
-              icon: <AiOutlineShoppingCart className="text-3xl" />,
-              href: "/dashboard/products",
+              name: "Books",
+              icon: <IoBookSharp className="text-3xl" />,
+              href: "/dashboard/books",
             },
             {
               name: "Blogs",
@@ -108,7 +108,7 @@ const DashboardLayout = ({ children }) => {
       <main
         className={`flex-grow p-6 transition-all overflow-auto mt-10 duration-300 ${
           isSidebarOpen ? "ml-64" : "ml-0"
-        } md:ml-32`}
+        } md:ml-20`}
       >
         {children}
       </main>

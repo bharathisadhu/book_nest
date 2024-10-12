@@ -21,14 +21,12 @@ export const metadata = {
   favicon: "BookNest.png",
 };
 
-export default function RootLayout({
-  children
-}) {
+export default function RootLayout({ children }) {
   return (
     <html lang="en" data-theme="light">
-      <body className="poppins">
+      <body className="popins">
         <AuthProvider>
-          <div>{children}</div>
+          <div className="container mx-auto">{children}</div>
         </AuthProvider>
       </body>
     </html>
