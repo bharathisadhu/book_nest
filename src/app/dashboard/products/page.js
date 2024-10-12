@@ -7,7 +7,7 @@ const Products = () => {
   return (
     <main>
       <DashboardLayout>
-      <h1 className="text-2xl font-bold">This is the Product List </h1>
+      <h1 className="text-2xl font-bold text-center mb-4 text-[#F65D4E]">This is the Product List </h1>
       {/* Add more specific content here */}
       <ProductsList />
     </DashboardLayout>
