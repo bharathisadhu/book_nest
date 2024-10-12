@@ -13,8 +13,10 @@ import {
 import { HiMenuAlt3 } from "react-icons/hi";
 import Banner from "./share/banner";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const DashboardLayout = ({ children }) => {
+  const pathname = usePathname();
   const { data: session } = useSession();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false); // Default false for mobile
 
@@ -24,21 +26,24 @@ const DashboardLayout = ({ children }) => {
 
   return (
     <main>
-      <Banner title="Dashboard" linkName="Home" />
+      <div className="hidden lg:block">
+        <Banner title="Dashboard" linkName="Home" />
+      </div>
       <div className="flex container mx-auto mt-6">
-        {/* Hamburger Button for Mobile */}
+        {/* Hamburger Button for Mobile and tablet */}
         <button
-          className="md:hidden p-2 text-white bg-[#F65D4E] fixed z-20 top-4 left-4 rounded-lg"
+          className="lg:hidden p-2 text-white bg-[#F65D4E] fixed z-50 top-0 w-full flex justify-between items-center"
           onClick={toggleSidebar}
         >
-          <HiMenuAlt3 size={24} />
+          <p>Sidebar</p>
+          <HiMenuAlt3 className="text-xl" />
         </button>
 
         {/* Sidebar */}
         <nav
-          className={`text-black h-[650px] w-80 py-6 font-[sans-serif] overflow-auto fixed z-10 transition-transform duration-300 transform shadow-xl ${
+          className={`text-black h-full lg:h-[650px] w-full lg:w-80 py-6 font-[sans-serif] overflow-auto fixed z-10 transition-transform duration-300 transform shadow-xl bg-white border rounded-lg ${
             isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-          } md:relative md:translate-x-0`}
+          } lg:relative lg:translate-x-0`}
         >
           {/* User Profile Section */}
           <div className="flex flex-col items-center px-4">
@@ -89,13 +94,17 @@ const DashboardLayout = ({ children }) => {
               },
             ].map((item) => (
               <li key={item.name}>
-                <a
+                <Link
                   href={item.href}
-                  className="text-gray-800 text-sm flex justify-between items-center gap-4 hover:text-[#F65D4E]  rounded px-4 py-5 transition-all lg:mx-4 border-b"
+                  className={`${
+                    pathname === item.href
+                      ? " text-[#F65D4E]"
+                      : "text-gray-800 "
+                  } text-sm flex justify-between items-center gap-4 hover:text-[#F65D4E]  rounded px-4 py-5 transition-all lg:mx-4 border-b`}
                 >
                   <span className="font-semibold text-lg">{item.name}</span>
                   <span className=" ">{item.icon}</span>
-                </a>
+                </Link>
               </li>
             ))}
           </ul>
@@ -121,7 +130,7 @@ const DashboardLayout = ({ children }) => {
         <main
           className={`flex-grow p-6 transition-all overflow-auto duration-300 ${
             isSidebarOpen ? "ml-64" : "ml-0"
-          } md:ml-32`}
+          } lg:ml-24`}
         >
           {children}
         </main>
@@ -129,7 +138,7 @@ const DashboardLayout = ({ children }) => {
         {/* Overlay for Sidebar in Mobile View */}
         {isSidebarOpen && (
           <div
-            className="fixed inset-0 bg-black opacity-50 z-5 md:hidden"
+            className="fixed inset-0 bg-black opacity-50 z-5 lg:hidden"
             onClick={toggleSidebar}
           />
         )}

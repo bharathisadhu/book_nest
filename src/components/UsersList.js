@@ -1,5 +1,3 @@
-
-
 import Link from "next/link";
 import RemoveBtn from "./RemoveBtn";
 import { HiPencilAlt } from "react-icons/hi";
@@ -19,7 +17,6 @@ const getUsers = async () => {
     const data = await res.json();
     console.log("API Data:", JSON.stringify(data, null, 2)); // Log the entire data structure
     return Array.isArray(data.users) ? data.users : data || []; // Adjust according to your API response structure
-    
   } catch (error) {
     console.error("Error loading users:", error.message); // Log the error message
     return []; // Return an empty array in case of error
@@ -36,7 +33,7 @@ export default async function UsersList() {
   }
 
   return (
-    <div className="font-sans overflow-x-auto">
+    <div className="font-sans lg:max-h-[580px] overflow-x-auto overflow-y-auto">
       <table className="min-w-full divide-y divide-gray-200">
         <thead className="bg-gray-100 whitespace-nowrap">
           <tr>
