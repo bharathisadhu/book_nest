@@ -36,6 +36,7 @@ export default function BooksList() {
     fetchBooks();
   }, []);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const loadMoreBooks = async () => {
     if (!hasMore || isLoading) return; // Prevent loading if no more books or already loading
 
