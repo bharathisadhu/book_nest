@@ -73,7 +73,7 @@ export default function Login() {
       <Navbar />
       <main>
         {/* Login section */}
-        <div className="flex items-center justify-center p-6">
+        <div className="flex items-center justify-center p-6 container mx-auto">
           <div className="flex flex-col lg:flex-row h-full w-full overflow-hidden rounded-xl">
             {/* register design side  */}
             <div className="relative w-full h-[96] items-center justify-center bg-[#F65D4E] md:flex ">
@@ -102,7 +102,7 @@ export default function Login() {
                 START FOR FREE
               </p>
               <h2 className="text-center text-2xl md:text-3xl font-bold">
-                Sign Up to BookNest
+                Sign In to BookNest
               </h2>
               <form
                 onSubmit={handleSubmit(onSubmit)}
