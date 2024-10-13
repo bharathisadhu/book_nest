@@ -14,30 +14,37 @@ export default function UsersList() {
   const [isModalOpen, setIsModalOpen] = useState(false); // Modal visibility
   const [selectedImage, setSelectedImage] = useState(null); // Store the image file
 
-  useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const res = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/users`,
-          {
-            cache: "no-store",
-          }
-        );
+  // Function to fetch users from the API
+  const fetchUsers = async () => {
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/users`, {
+        cache: "no-store",
+      });
 
-        if (res.ok) {
-          const data = await res.json();
-          setUsers(Array.isArray(data) ? data : []); // Use data directly as it's already an array
-        } else {
-          setUsers([]);
-        }
-      } catch (error) {
+      if (res.ok) {
+        const data = await res.json();
+        setUsers(Array.isArray(data) ? data : []); // Use data directly as it's already an array
+      } else {
         setUsers([]);
-      } finally {
-        setIsLoading(false);
       }
-    };
+    } catch (error) {
+      setUsers([]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-    fetchUsers(); // Fetch users on mount
+  useEffect(() => {
+    // Fetch users initially
+    fetchUsers();
+
+    // Set up a polling interval to fetch users every 5 seconds
+    const intervalId = setInterval(() => {
+      fetchUsers();
+    }, 5000); // 5000 milliseconds = 5 seconds
+
+    // Cleanup the interval on component unmount
+    return () => clearInterval(intervalId);
   }, []);
 
   const handleEditClick = (user) => {
@@ -65,7 +72,7 @@ export default function UsersList() {
     formData.append("image", file);
 
     const res = await fetch(
-      `https://api.imgbb.com/1/upload?key=${process.env.IMAGE_UPLOAD_KEY}`,
+      `https://api.imgbb.com/1/upload?key=${process.env.NEXT_PUBLIC_IMAGE_UPLOAD_KEY}`,
       {
         method: "POST",
         body: formData,
@@ -74,71 +81,81 @@ export default function UsersList() {
 
     if (res.ok) {
       const data = await res.json();
-      console.log("Image Upload Response: ", data); // Log image upload response
       return data.data.url; // Return the uploaded image URL
     } else {
-      const errorData = await res.text(); // Log the image upload error details
-      console.error("Image Upload Error: ", errorData);
       throw new Error("Image upload failed");
     }
   };
 
   const updateUser = async (userData) => {
-    const previousUser = users.find((user) => user._id === userData._id); // Store previous user data
+    setIsUpdating(true);
+    let imageUrl = selectedUser.image || selectedUser.photo;
 
-    setUsers((prevUsers) =>
-      prevUsers.map((user) =>
-        user._id === userData._id ? { ...user, ...userData } : user
-      )
-    ); // Optimistic update
-
-    setIsUpdating(true); // Set loading state for update operation
-
-    try {
-      let imageUrl = selectedUser.image; // Default to the current image
-
-      // Upload the new image if a file is selected
-      if (selectedImage) {
+    // Upload the image if a new one is selected
+    if (selectedImage) {
+      try {
         imageUrl = await uploadImage(selectedImage);
-      }
-
-      const updatedUserData = { ...userData, image: imageUrl };
-
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/users/${userData._id}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(updatedUserData),
-        }
-      );
-
-      if (res.ok) {
-        await Swal.fire({
-          title: "Updated!",
-          text: "The user has been updated.",
-          icon: "success",
+      } catch (error) {
+        console.error("Error uploading image:", error);
+        Swal.fire({
+          icon: "error",
+          title: "Image Upload Failed",
+          text: "There was an error uploading the image. Please try again.",
         });
-        setIsModalOpen(false);
-        setSelectedUser(null);
-      } else {
-        // Revert optimistic update on failure
-        setUsers((prevUsers) =>
-          prevUsers.map((user) =>
-            user._id === previousUser._id ? previousUser : user
-          )
-        );
+        setIsUpdating(false);
+        return; // Exit the function if the image upload fails
       }
-    } catch (error) {
+    }
+
+    const updatedUserData = {
+      newName: selectedUser.name,
+      newEmail: selectedUser.email,
+      ...(selectedUser.image ? { newImage: imageUrl } : { newPhoto: imageUrl }),
+    };
+
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/users/${userData._id}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updatedUserData),
+      }
+    );
+
+    setIsUpdating(false);
+
+    if (res.ok) {
+      // Update the user state only after a successful MongoDB update
+      setUsers((prevUsers) =>
+        prevUsers.map((user) =>
+          user._id === userData._id
+            ? {
+                ...user,
+                image: updatedUserData.newImage || user.image,
+                photo: updatedUserData.newPhoto || user.photo,
+              }
+            : user
+        )
+      );
+      setIsModalOpen(false);
+      setSelectedUser(null);
+
+      // Show success alert after the user update is successful
       Swal.fire({
-        title: "Error!",
-        text: "An error occurred while updating the user.",
-        icon: "error",
+        icon: "success",
+        title: "User Updated",
+        text: "The user has been successfully updated.",
       });
-    } finally {
-      setIsUpdating(false); // Reset loading state after operation
+    } else {
+      const errorMessage = await res.text();
+      console.error("Error updating user:", errorMessage);
+      Swal.fire({
+        icon: "error",
+        title: "Update Failed",
+        text: "There was an error updating the user. Please try again.",
+      });
     }
   };
 
@@ -157,8 +174,6 @@ export default function UsersList() {
   return (
     <div className="font-sans overflow-x-auto lg:max-h-screen overflow-y-auto">
       <div className="">
-        {" "}
-        {/* Fixed height container */}
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-100 whitespace-nowrap">
             <tr>
@@ -204,51 +219,59 @@ export default function UsersList() {
       {isModalOpen && selectedUser && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
           <div className="bg-white p-8 rounded shadow-lg max-w-md w-full">
-            <h2 className="text-lg font-semibold">Update User</h2>
+            <h2 className="text-lg font-semibold mb-4">Update User</h2>
             <form
               onSubmit={(e) => {
                 e.preventDefault();
                 updateUser(selectedUser);
               }}
             >
-              <div className="mt-4">
-                <label className="block text-sm">Name</label>
-                <input
-                  type="text"
-                  name="name"
-                  value={selectedUser.name}
-                  onChange={handleInputChange}
-                  className="border p-2 w-full"
-                  required
-                />
+              <div className="flex">
+                {/* Left side: Name and Email */}
+                <div className="w-1/2 pr-4">
+                  <div className="mb-4">
+                    <label className="block text-sm">Name</label>
+                    <input
+                      type="text"
+                      name="name"
+                      value={selectedUser.name}
+                      onChange={handleInputChange}
+                      className="border p-2 w-full"
+                      required
+                    />
+                  </div>
+                  <div className="mb-4">
+                    <label className="block text-sm">Email</label>
+                    <input
+                      type="email"
+                      name="email"
+                      value={selectedUser.email}
+                      onChange={handleInputChange}
+                      className="border p-2 w-full"
+                      required
+                    />
+                  </div>
+                </div>
+
+                {/* Right side: Image and File Input */}
+                <div className="w-1/2 pl-4 flex flex-col items-center">
+                  <label className="block text-sm mb-2">Current Image</label>
+                  <Image
+                    src={selectedUser.image || selectedUser.photo}
+                    alt="User"
+                    className="mb-4 w-32 h-32 object-cover"
+                    width={128}
+                    height={128}
+                  />
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                    className="border p-2 w-full"
+                  />
+                </div>
               </div>
-              <div className="mt-4">
-                <label className="block text-sm">Email</label>
-                <input
-                  type="email"
-                  name="email"
-                  value={selectedUser.email}
-                  onChange={handleInputChange}
-                  className="border p-2 w-full"
-                  required
-                />
-              </div>
-              <div className="mt-4">
-                <label className="block text-sm">Current Image</label>
-                <Image
-                  src={selectedUser.image}
-                  alt="User"
-                  className="mb-4 w-32 h-32 object-cover"
-                  width={128}
-                  height={128}
-                />
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleImageChange}
-                  className="border p-2 w-full"
-                />
-              </div>
+
               <div className="mt-4 flex justify-between">
                 <button
                   type="submit"

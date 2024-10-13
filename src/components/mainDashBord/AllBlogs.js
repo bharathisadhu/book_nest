@@ -1,5 +1,3 @@
-
-
 // import Link from "next/link";
 // import RemoveBtn from "./RemoveBtn";
 // import { HiPencilAlt } from "react-icons/hi";
@@ -27,9 +25,6 @@ const getBlogs = async () => {
 
 export default async function BlogList() {
   const blogs = await getBlogs();
-  console.log("blogs Array Length:", blogs.length); // Check if blogs array is populated
-  console.log("blogs List:", blogs); // Check the blogs list
-
   if (blogs.length === 0) {
     return <div>No blogs found or failed to load blogs.</div>; // Show a message if no blogs
   }
