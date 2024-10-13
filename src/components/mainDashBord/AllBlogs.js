@@ -15,7 +15,6 @@ const getBlogs = async () => {
     }
 
     const data = await res.json();
-    console.log("API Data:", JSON.stringify(data, null, 2)); // Log the entire data structure
     return Array.isArray(data) ? data : []; // Return blogs directly if it's an array
   } catch (error) {
     console.error("Error loading blogs:", error.message); // Log the error message
