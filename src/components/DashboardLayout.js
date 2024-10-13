@@ -15,6 +15,7 @@ import Banner from "./share/banner";
 import Link from "next/link";
 import { IoBookSharp } from "react-icons/io5";
 import { usePathname } from "next/navigation";
+import logo from "../../public/BookNest.png";
 
 const DashboardLayout = ({ children }) => {
   const pathname = usePathname();
@@ -30,15 +31,23 @@ const DashboardLayout = ({ children }) => {
       <div className="flex container mx-auto lg:max-h-screen">
         {/* Hamburger Button for Mobile and tablet */}
         <button
-          className="lg:hidden p-2 text-white bg-[#F65D4E] fixed z-50 w-full flex items-center justify-between"
+          className="lg:hidden p-2 text-white bg-gradient-to-r from-[#F65D4E99] to-[#F65D4E] fixed z-50 w-full flex items-center justify-between"
           onClick={toggleSidebar}
         >
-          <p className="text-xl">Sidebar</p>
-          <HiMenuAlt3 className="text-xl" />
+          <Link href="/" className="normal-case text-3xl">
+            <Image
+              height={200}
+              width={200}
+              src={logo}
+              alt="BookNest Logo"
+              className="w-[120px] h-auto"
+            />
+          </Link>
+          <HiMenuAlt3 className="text-3xl" />
         </button>
         {/* Sidebar */}
         <nav
-          className={`text-black bg-white w-full lg:w-80 lg:h-[850px] py-6 font-[sans-serif] overflow-auto fixed z-10 transition-transform duration-300 transform shadow-xl mt-10 ${
+          className={`text-black bg-white w-full lg:w-80 lg:min-h-min py-6 font-[sans-serif] overflow-auto fixed z-10 transition-transform duration-300 transform shadow-xl mt-[70px] ${
             isSidebarOpen ? "translate-x-0" : "-translate-x-full"
           } lg:relative lg:translate-x-0`}
         >
@@ -129,7 +138,7 @@ const DashboardLayout = ({ children }) => {
         <main
           className={`flex-grow lg:p-6 transition-all duration-300 overflow-hidden ${
             isSidebarOpen ? "modal-toggle" : ""
-          } lg:ml-16 mt-14 lg:mt-0`}
+          } lg:ml-16 mt-20 lg:mt-0`}
         >
           {children}
         </main>
