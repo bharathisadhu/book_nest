@@ -12,7 +12,7 @@ const Users = () => {
         <title>BookNest | Dashboard</title>
       </Head>
       <DashboardLayout>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+        <div className="flex flex-col lg:flex-row">
           <UserCount />
           <BookCount />
           <SaleCount />

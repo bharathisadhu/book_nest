@@ -27,18 +27,18 @@ const DashboardLayout = ({ children }) => {
 
   return (
     <main>
-      <div className="flex container mx-auto mt-6">
+      <div className="flex container mx-auto lg:max-h-screen">
         {/* Hamburger Button for Mobile and tablet */}
-       <button
-          className="md:hidden p-2 text-white bg-[#F65D4E] fixed z-20 top-4 left-4 rounded-lg"
+        <button
+          className="lg:hidden p-2 text-white bg-[#F65D4E] fixed z-50 w-full flex items-center justify-between"
           onClick={toggleSidebar}
         >
+          <p className="text-xl">Sidebar</p>
           <HiMenuAlt3 size={24} />
         </button>
-
         {/* Sidebar */}
         <nav
-          className={`text-black min-h-min w-80 py-6 font-[sans-serif] overflow-auto fixed z-10 transition-transform duration-300 transform shadow-xl ${
+          className={`text-black bg-white w-full lg:w-80 py-6 font-[sans-serif] overflow-auto fixed z-10 transition-transform duration-300 transform shadow-xl mt-10 ${
             isSidebarOpen ? "translate-x-0" : "-translate-x-full"
           } lg:relative lg:translate-x-0`}
         >
@@ -127,9 +127,9 @@ const DashboardLayout = ({ children }) => {
 
         {/* Main Content */}
         <main
-          className={`flex-grow p-6 transition-all duration-300 overflow-hidden ${
-            isSidebarOpen ? "modal-toggle" : "ml-0"
-          } md:ml-16`}
+          className={`flex-grow lg:p-6 transition-all duration-300 overflow-hidden ${
+            isSidebarOpen ? "modal-toggle" : ""
+          } lg:ml-16 mt-14 lg:mt-0`}
         >
           {children}
         </main>
