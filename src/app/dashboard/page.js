@@ -12,11 +12,11 @@ const Users = () => {
         <title>BookNest | Dashboard</title>
       </Head>
       <DashboardLayout>
-        <div className="flex flex-col lg:flex-row">
-          <UserCount />
-          <BookCount />
-          <SaleCount />
-          <BlogCount />
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <UserCount className=" col-span-1"/>
+          <BookCount className=" col-span-1"/>
+          <SaleCount className=" col-span-1"/>
+          <BlogCount className=" col-span-1"/>
         </div>
         {/* Add more specific content here */}
       </DashboardLayout>
