@@ -1,28 +1,38 @@
-
-
 import connectToDatabase from "@/lib/mongodb";
 import Users from "../../../../../models/Users";
 import { NextResponse } from "next/server";
 
 export async function PUT(request, { params }) {
-  const { id } = params; // Make sure this is correctly extracted
-  const {
-    newName: name,
-    newEmail: email,
-    newPassword: password,
-    newImage: image,
-  } = await request.json();
+  const { id } = params; // Extract the user ID from the request params
+  const { newName, newEmail, newImage, newPhoto } = await request.json(); // Extract data from the request body
 
   await connectToDatabase();
 
-  // Ensure you're updating with an object
-  await Users.findByIdAndUpdate(id, { name, email, password, image });
+  // Create an object to update only the fields that are passed
+  const updateFields = {
+    ...(newName && { name: newName }), // Update name only if provided
+    ...(newEmail && { email: newEmail }), // Update email only if provided
+    ...(newImage && { image: newImage }), // Update image if provided
+    ...(newPhoto && { photo: newPhoto }), // Update photo if provided
+  };
 
-  return NextResponse.json({ message: "User Updated" }, { status: 200 });
+  // Ensure you're updating with the fields that exist
+  const updatedUser = await Users.findByIdAndUpdate(id, updateFields, {
+    new: true,
+  });
+
+  if (!updatedUser) {
+    return NextResponse.json({ message: "User not found" }, { status: 404 });
+  }
+
+  return NextResponse.json(
+    { message: "User Updated", user: updatedUser },
+    { status: 200 }
+  );
 }
 
 export async function GET(request, { params }) {
-  const { id } = params; // Make sure this is correctly extracted
+  const { id } = params; // Extract the user ID from the request params
   await connectToDatabase();
 
   // Ensure you're using the correct ID format
