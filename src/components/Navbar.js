@@ -59,7 +59,7 @@ const Navbar = () => {
   ];
 
   return (
-    <nav className="sticky navbar justify-between">
+    <nav className="sticky navbar justify-between bg-none">
       <div className="container mx-auto">
         {/* Desktop View */}
         <div className="navbar hidden lg:flex items-center">
