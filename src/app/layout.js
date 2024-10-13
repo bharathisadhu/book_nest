@@ -26,7 +26,7 @@ export default function RootLayout({ children }) {
     <html lang="en" data-theme="light">
       <body className="popins">
         <AuthProvider>
-          <div className="container mx-auto">{children}</div>
+          <div>{children}</div>
         </AuthProvider>
       </body>
     </html>

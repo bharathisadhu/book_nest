@@ -37,12 +37,6 @@ export default function BooksList() {
     };
 
     fetchBooks();
-
-    // Set up an interval to fetch books every 2 seconds
-    const interval = setInterval(fetchBooks, 2000); // 2 seconds
-
-    // Clean up the interval on unmount
-    return () => clearInterval(interval);
   }, []);
 
   const loadMoreBooks = async () => {

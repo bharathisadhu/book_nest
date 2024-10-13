@@ -37,14 +37,6 @@ export default function UsersList() {
   useEffect(() => {
     // Fetch users initially
     fetchUsers();
-
-    // Set up a polling interval to fetch users every 5 seconds
-    const intervalId = setInterval(() => {
-      fetchUsers();
-    }, 5000); // 5000 milliseconds = 5 seconds
-
-    // Cleanup the interval on component unmount
-    return () => clearInterval(intervalId);
   }, []);
 
   const handleEditClick = (user) => {
