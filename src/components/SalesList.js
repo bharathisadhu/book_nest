@@ -34,8 +34,8 @@ export default async function SalesList() {
   }
 
   return (
-    <div className="font-sans lg:max-h-[580px] overflow-x-auto overflow-y-auto">
-      <table className="min-w-full divide-y divide-gray-200">
+    <div className="font-sans lg:max-h-screen overflow-x-auto overflow-y-auto">
+      <table className=" divide-y divide-gray-200">
         <thead className="bg-gray-100 whitespace-nowrap">
           <tr>
             <th className="px-4 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">

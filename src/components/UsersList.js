@@ -155,8 +155,8 @@ export default function UsersList() {
   }
 
   return (
-    <div className="font-sans overflow-x-auto">
-      <div className="max-h-[580px] overflow-y-auto">
+    <div className="font-sans overflow-x-auto lg:max-h-screen overflow-y-auto">
+      <div className="">
         {" "}
         {/* Fixed height container */}
         <table className="min-w-full divide-y divide-gray-200">
