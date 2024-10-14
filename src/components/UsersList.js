@@ -13,7 +13,6 @@ export default function UsersList() {
   const [selectedUser, setSelectedUser] = useState(null); // Selected user for update
   const [isModalOpen, setIsModalOpen] = useState(false); // Modal visibility
   const [selectedImage, setSelectedImage] = useState(null); // Store the image file
-
   // Function to fetch users from the API
   const fetchUsers = async () => {
     try {
@@ -103,6 +102,7 @@ export default function UsersList() {
       newName: selectedUser.name,
       newEmail: selectedUser.email,
       ...(selectedUser.image ? { newImage: imageUrl } : { newPhoto: imageUrl }),
+      newRole: selectedUser.role,
     };
 
     const res = await fetch(
@@ -243,6 +243,25 @@ export default function UsersList() {
                       required
                     />
                   </div>
+                  {selectedUser.role === "admin" ? (
+                    <button
+                      className="bg-[#F65D4E] px-4 py-2 rounded text-white font-medium w-full"
+                      onClick={() =>
+                        setSelectedUser((prev) => ({ ...prev, role: "user" }))
+                      }
+                    >
+                      Remove Admin
+                    </button>
+                  ) : (
+                    <button
+                      className="bg-orange-400 px-4 py-2 rounded text-white font-medium w-full"
+                      onClick={() =>
+                        setSelectedUser((prev) => ({ ...prev, role: "admin" }))
+                      }
+                    >
+                      Make Admin
+                    </button>
+                  )}
                 </div>
 
                 {/* Right side: Image and File Input */}

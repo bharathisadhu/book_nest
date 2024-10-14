@@ -16,6 +16,7 @@ import Link from "next/link";
 import { IoBookSharp } from "react-icons/io5";
 import { usePathname } from "next/navigation";
 import logo from "../../public/BookNest.png";
+import axios from "axios";
 
 const DashboardLayout = ({ children }) => {
   const pathname = usePathname();
@@ -25,6 +26,12 @@ const DashboardLayout = ({ children }) => {
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
+
+  const baseURL = process.env.NEXT_PUBLIC_API_URL;
+
+  const isAdmin = axios.get(`${baseURL}/api/users`)
+  .then(data => console.log(data))
+  // console.log(isAdmin);
 
   return (
     <main>
