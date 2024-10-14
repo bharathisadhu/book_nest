@@ -3,18 +3,21 @@ import { useState,useEffect } from 'react';
 import Comment from './Comment';
 import Link from "next/link";
 import { useSession  } from "next-auth/react";
+import { useRouter } from "next/navigation";
+
 const CommentsList = ({id}) => {
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState('');
   const { data: session, status } = useSession();
-  const [isExpanded, setIsExpanded] = useState(false);
 
+   const router = useRouter();
 
-  const [visibleCommentCount, setVisibleCommentCount] = useState(1);
+  const [visibleCommentCount, setVisibleCommentCount] = useState(2);
   // Load more comments
   const loadMoreComments = () => {
-    setVisibleCommentCount(visibleCommentCount + 1); // Show 3 more comments each time
+    setVisibleCommentCount(visibleCommentCount + 3); // Show 3 more comments each time
   };
+
 
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
@@ -42,6 +45,13 @@ const CommentsList = ({id}) => {
     const data = await response.json();
     setComments([...comments, { ...commentData, _id: data._id }]);
     setNewComment('');
+    if (response.ok) {
+        router.refresh();
+        
+      } else {
+        throw new Error("Failed to create a comment");
+      }
+
 
   };
 

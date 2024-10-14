@@ -26,10 +26,10 @@ export async function GET(request) {
     }
    
 
-    const comments = await Comment.find({ blogId, parentId: null });
+    const comments = await Comment.find({ blogId, parentId: null }).sort({ createdAt: -1 });
       const populatedComments = await Promise.all(
         comments.map(async (comment) => {
-          const replies = await Comment.find({ parentId: comment._id });
+          const replies = await Comment.find({ parentId: comment._id }).sort({ createdAt: -1 });
           return { ...comment.toObject(), replies };
         })
       );
