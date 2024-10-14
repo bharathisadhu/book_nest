@@ -173,18 +173,6 @@ export default function BooksCard({ book }) {
             {price.toFixed(2)}
           </span>
         </h3>
-        {/* <div className="flex items-center justify-between">
-          <div className="flex items-center justify-center rounded-full cursor-pointer hover:scale-125 transition duration-200">
-            <button onClick={addToBookmark}>
-              <FaHeart className="text-2xl" />
-            </button>
-          </div>
-          <div className=" flex items-center justify-center rounded-full cursor-pointer hover:scale-125 transition duration-200 mt-2">
-            <button onClick={addToCart}>
-              <FaShoppingCart className="text-2xl" />
-            </button>
-          </div>
-        </div> */}
       </div>
     </div>
   );

@@ -12,7 +12,6 @@ const Footer = () => {
   return (
     <div className="">
       <footer className="footer bg-[#282828] text-base-content py-10 lg:px-24">
-
         <aside className="text-white flex flex-col justify-center md:justify-start items-center md:items-start mx-auto">
           <p>
             <span className="text-3xl font-semibold text-orange-600 flex items-center md:items-start">
@@ -36,104 +35,87 @@ const Footer = () => {
           </div>
         </aside>
 
-{/* need help and services div */}
+        {/* need help and services div */}
         <div className="flex justify-between md:justify-normal md:gap-6 lg:gap-40 px-2 w-full">
-        <nav className="flex flex-col space-y-3">
-          <h6 className="footer-title text-white">Need Help</h6>
-          <h2 className="md:text-2xl text-orange-600 font-semibold">
-            8802136548566
-          </h2>
-          <a className="text-white">Monday – Friday: 9:00-20:00</a>
-          <a className="text-white">Saturday: 11:00 – 15:00</a>
-          <h2 className="md:text-xl text-white">contact@example.com</h2>
-        </nav>
-{/* services nav */}
-        <nav className="flex flex-col space-y-2 items-end md:items-start">
-          <h6 className="footer-title text-white">Services</h6>
-          <Link
-            href="#"
-            className="link no-underline hover:text-orange-600 text-white"
-          >
-            Branding
-          </Link>
-          <Link
-            href="#"
-            className="link no-underline hover:text-orange-600 text-white"
-          >
-            Design
-          </Link>
-          <Link
-            href="#"
-            className="link no-underline hover:text-orange-600 text-white"
-          >
-            Marketing
-          </Link>
-          <Link
-            href="#"
-            className="link no-underline hover:text-orange-600 text-white"
-          >
-            Advertisement
-          </Link>
-        </nav>
+          <nav className="flex flex-col space-y-3">
+            <h6 className="footer-title text-white">Need Help</h6>
+            <h2 className="md:text-2xl text-orange-600 font-semibold">
+              8802136548566
+            </h2>
+            <a className="text-white">Monday – Friday: 9:00-20:00</a>
+            <a className="text-white">Saturday: 11:00 – 15:00</a>
+            <h2 className="md:text-xl text-white">contact@example.com</h2>
+          </nav>
+          {/* services nav */}
+          <nav className="flex flex-col space-y-2 items-end md:items-start">
+            <h6 className="footer-title text-white">Services</h6>
+            <Link
+              href="/branding"
+              className="link no-underline hover:text-orange-600 text-white"
+            >
+              Branding
+            </Link>
+            <Link
+              href="/design"
+              className="link no-underline hover:text-orange-600 text-white"
+            >
+              Design
+            </Link>
+            <Link
+              href="/advertisement"
+              className="link no-underline hover:text-orange-600 text-white"
+            >
+              Advertisement
+            </Link>
+          </nav>
         </div>
-{/* company and legal div */}
-<div className="flex justify-between md:justify-normal md:gap-6 lg:gap-40 px-2 w-full">
-
-{/* company section */}
-<nav className="flex flex-col space-y-3">
-          <h6 className="footer-title text-white">Company</h6>
-          <Link
-            href="#"
-            className="link no-underline hover:text-orange-600 text-white"
-          >
-            About us
-          </Link>
-          <Link
-            href="#"
-            className="link no-underline hover:text-orange-600 text-white"
-          >
-            Contact
-          </Link>
-          <Link
-            href="#"
-            className="link no-underline hover:text-orange-600 text-white"
-          >
-            Jobs
-          </Link>
-          <Link
-            href="#"
-            className="link no-underline hover:text-orange-600 text-white"
-          >
-            Press kit
-          </Link>
-        </nav>
-{/* legal section */}
-        <nav  className="flex flex-col space-y-3">
-          <h6 className="footer-title text-white">Legal</h6>
-          <Link
-            href="#"
-            className="link no-underline hover:text-orange-600 text-white"
-          >
-            Terms of use
-          </Link>
-          <Link
-            href="#"
-            className="link no-underline hover:text-orange-600 text-white"
-          >
-            Privacy policy
-          </Link>
-          <Link
-            href="#"
-            className="link no-underline hover:text-orange-600 text-white"
-          >
-            Cookie policy
-          </Link>
-        </nav> 
-
-
-</div>
-
-
+        {/* company and legal div */}
+        <div className="flex justify-between md:justify-normal md:gap-6 lg:gap-40 px-2 w-full">
+          {/* company section */}
+          <nav className="flex flex-col space-y-3">
+            <h6 className="footer-title text-white">Company</h6>
+            <Link
+              href="/about"
+              className="link no-underline hover:text-orange-600 text-white"
+            >
+              About us
+            </Link>
+            <Link
+              href="/contact"
+              className="link no-underline hover:text-orange-600 text-white"
+            >
+              Contact
+            </Link>
+            <Link
+              href="/jobs"
+              className="link no-underline hover:text-orange-600 text-white"
+            >
+              Jobs
+            </Link>
+          </nav>
+          {/* legal section */}
+          <nav className="flex flex-col space-y-3">
+            <h6 className="footer-title text-white">Legal</h6>
+            <Link
+              href="/terms"
+              className="link no-underline hover:text-orange-600 text-white"
+            >
+              Terms of use
+            </Link>
+            <Link
+              href="/privacy"
+              className="link no-underline hover:text-orange-600 text-white"
+            >
+              Privacy policy
+            </Link>
+            <Link
+              href="/cookies"
+              className="link no-underline hover:text-orange-600 text-white"
+            >
+              Cookie policy
+            </Link>
+          </nav>
+        </div>
       </footer>
 
       <hr />

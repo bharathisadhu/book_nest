@@ -1,5 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation"; // To get query params
 import BooksCard from "@/components/BooksCard";
 import { GoArrowRight, GoChevronDown } from "react-icons/go";
 import { HiX } from "react-icons/hi"; // for mobile drawer close button
@@ -25,6 +26,9 @@ const BooksPage = () => {
   const [isLoading, setIsLoading] = useState(true); // New state for loader
   const itemsPerPage = 12;
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+
+  const searchParams = useSearchParams();
+  const selectedCategory = searchParams.get("category"); // Get category from query params
 
   useEffect(() => {
     const fetchData = async () => {
@@ -63,6 +67,12 @@ const BooksPage = () => {
   useEffect(() => {
     let filtered = books;
 
+    // Filter by selected category from URL if present
+    if (selectedCategory) {
+      filtered = filtered.filter((book) => book.category === selectedCategory);
+      setSelectedCategories([selectedCategory]); // Pre-select the category
+    }
+
     if (searchTerm) {
       filtered = filtered.filter((book) =>
         book.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -86,7 +96,14 @@ const BooksPage = () => {
     );
 
     setFilteredBooks(filtered);
-  }, [searchTerm, selectedCategories, selectedAuthors, priceRange, books]);
+  }, [
+    searchTerm,
+    selectedCategories,
+    selectedAuthors,
+    priceRange,
+    books,
+    selectedCategory,
+  ]);
 
   const handleCategoryChange = (category) => {
     setSelectedCategories((prev) =>
