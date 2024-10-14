@@ -41,7 +41,7 @@ export async function POST(request) {
     if (plan === "pro") {
       const userUpdateResult = await Users.updateOne(
         { email: email },
-        { $set: { subscriptionPlan: "Pro" } }
+        { $set: { subscriptionPlan: "pro" } }
       );
 
       // Check if the user was found and updated
