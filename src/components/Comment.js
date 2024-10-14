@@ -1,9 +1,23 @@
 import { useState } from 'react';
 
 const Comment = ({ comment }) => {
+
+  console.log("commmm-dida------",comment);
   const [reply, setReply] = useState('');
   const [showReply, setShowReply] = useState(false);
 
+  const [replyVisibleCount, setReplyVisibleCount] = useState(0);
+
+    // Load more replies for a specific comment
+  const loadMoreReplies = (commentId) => {
+    setReplyVisibleCount({
+      ...replyVisibleCount,
+      [commentId]: (replyVisibleCount[commentId] || 2) + 2, // Show 2 more replies each time
+    });
+  };
+
+
+  
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
   const handleReplySubmit = async (e) => {
     e.preventDefault();
@@ -57,11 +71,21 @@ const Comment = ({ comment }) => {
     )}
     {comment.replies && (
       <div>
-        {comment.replies?.length>0 && comment.replies.map((reply) => (
+
+        {comment.replies?.length>0 && comment.replies.slice(0, replyVisibleCount[comment?.parentId] || 2).map((reply) => (
           <Comment key={reply._id} comment={reply} />
         ))}
+
+
+        <button  className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700" 
+
+        onClick={() => loadMoreReplies(comment?.parentId)}>
+                          Load More Replies
+                        </button>
+
       </div>
     )}
+
       </div>
       
     </div>
