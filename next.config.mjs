@@ -28,6 +28,7 @@ const nextConfig = {
       "assets.penguinrandomhouse.com",
       "thewritepractice.com",
       "demo2.pavothemes.com",
+      "collegeinfogeek.com",
       "i.ibb.co.com",
       "i.ibb.co",
       "demo2.pavothemes.com",

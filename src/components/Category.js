@@ -2,23 +2,27 @@
 import { useEffect, useState } from "react";
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
-
-// Import Swiper styles
 import "swiper/css";
-// import 'swiper/css/navigation';
-
 // Import required modules
 import { Autoplay, Navigation } from "swiper/modules";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 const Category = () => {
   const [category, setCategory] = useState([]);
+  const router = useRouter();
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
   useEffect(() => {
-    fetch("popular-data.json")
+    fetch(`${baseUrl}/api/books`)
       .then((response) => response.json())
       .then((data) => setCategory(data));
-  }, []);
+  }, [baseUrl]);
+
+  // Handle navigation to books page with selected category
+  const handleCategoryClick = (categoryName) => {
+    router.push(`/books?category=${encodeURIComponent(categoryName)}`);
+  };
 
   return (
     <div className="container mx-auto my-4 md:my-8 lg:mt-20 lg:mb-24 relative">
@@ -48,10 +52,13 @@ const Category = () => {
       >
         {category.map((cat) => (
           <SwiperSlide key={cat.image}>
-            <div className="relative flex flex-col items-center transition-transform cursor-pointer group mt-10">
+            <div
+              className="relative flex flex-col items-center transition-transform cursor-pointer group mt-10"
+              onClick={() => handleCategoryClick(cat.category)} // Navigate to books page
+            >
               <div
                 className="h-24 w-24 lg:h-40 lg:w-40 rounded-full bg-slate-200 absolute z-10
-        group-hover:bg-red-600 top-3/4 transform -translate-y-1/2"
+                group-hover:bg-red-600 top-3/4 transform -translate-y-1/2"
               ></div>
               <Image
                 src={cat.image}
