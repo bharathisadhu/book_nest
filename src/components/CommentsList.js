@@ -96,7 +96,7 @@ const CommentsList = ({id}) => {
         ))}
 
       {visibleCommentCount < comments.length && (
-        <button  className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700"
+        <button  className="mt-5 px-4 py-2 btn btn-outline bg-blue-500 text-white rounded hover:bg-blue-700"
 
         onClick={loadMoreComments}>Load More Comments</button>
 
