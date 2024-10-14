@@ -2,7 +2,7 @@
 import mongoose from "mongoose";
 
 const UserSchema = new mongoose.Schema({
-  email: String,
+  email: { type: String, required: true, unique: true },
   stripeSessionId: String,
   paidSubscription: { type: Boolean, default: false },
 });
