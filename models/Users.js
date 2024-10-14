@@ -8,6 +8,7 @@ const usersSchema = new Schema(
     image: String,
     photo: String,
     plan: String,
+    role: String,
   },
   {
     timestamps: true,
