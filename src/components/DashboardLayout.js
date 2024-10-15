@@ -17,24 +17,80 @@ import { IoBookSharp } from "react-icons/io5";
 import { usePathname } from "next/navigation";
 import logo from "../../public/BookNest.png";
 import axios from "axios";
+import useAdmin from "@/app/hooks/useAdmin/page";
+import PrivateRoute from "@/services/PrivateRoute";
 
 const DashboardLayout = ({ children }) => {
   const pathname = usePathname();
   const { data: session } = useSession();
+  const { isAdmin } = useAdmin();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false); // Default false for mobile
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
-  const baseURL = process.env.NEXT_PUBLIC_API_URL;
+  const adminMenuItems = [
+    {
+      name: "Dashboard",
+      icon: <AiOutlineDashboard className="text-xl" />,
+      href: "/dashboard",
+    },
+    {
+      name: "Users",
+      icon: <AiOutlineUser className="text-xl" />,
+      href: "/dashboard/users",
+    },
+    {
+      name: "Books",
+      icon: <IoBookSharp className="text-xl" />,
+      href: "/dashboard/books",
+    },
+    {
+      name: "Blogs",
+      icon: <AiOutlineFileText className="text-xl" />,
+      href: "/dashboard/blogs",
+    },
+    {
+      name: "Sales",
+      icon: <AiOutlineLineChart className="text-xl" />,
+      href: "/dashboard/sales",
+    },
+  ];
 
-  const isAdmin = axios.get(`${baseURL}/api/users`)
-  .then(data => console.log(data))
-  // console.log(isAdmin);
+  const nonAdminMenuItems = [
+    {
+      name: "Dashboard",
+      icon: <AiOutlineDashboard className="text-xl" />,
+      href: "/dashboard",
+    },
+    {
+      name: "Profile",
+      icon: <AiOutlineUser className="text-xl" />,
+      href: "/dashboard/analytics",
+    },
+    {
+      name: "Analytics",
+      icon: <IoBookSharp className="text-xl" />,
+      href: "/dashboard/books",
+    },
+    {
+      name: "Cart",
+      icon: <AiOutlineFileText className="text-xl" />,
+      href: "/dashboard/blogs",
+    },
+    {
+      name: "Wishlist",
+      icon: <AiOutlineLineChart className="text-xl" />,
+      href: "/dashboard/sales",
+    },
+  ];
+ // Choose the appropriate menu items based on isAdmin
+ const menuItems = isAdmin  ? adminMenuItems : nonAdminMenuItems;
 
   return (
     <main>
+      <PrivateRoute>
       <div className="flex container mx-auto lg:max-h-screen">
         {/* Hamburger Button for Mobile and tablet */}
         <button
@@ -79,33 +135,7 @@ const DashboardLayout = ({ children }) => {
 
           {/* Sidebar Links */}
           <ul className="mt-4">
-            {[
-              {
-                name: "Dashboard",
-                icon: <AiOutlineDashboard className="text-xl" />,
-                href: "/dashboard",
-              },
-              {
-                name: "Users",
-                icon: <AiOutlineUser className="text-xl" />,
-                href: "/dashboard/users",
-              },
-              {
-                name: "Books",
-                icon: <IoBookSharp className="text-xl" />,
-                href: "/dashboard/books",
-              },
-              {
-                name: "Blogs",
-                icon: <AiOutlineFileText className="text-xl" />,
-                href: "/dashboard/blogs",
-              },
-              {
-                name: "Sales",
-                icon: <AiOutlineLineChart className="text-xl" />,
-                href: "/dashboard/sales",
-              },
-            ].map((item) => (
+            {menuItems.map((item) => (
               <li key={item.name}>
                 <Link
                   href={item.href}
@@ -158,6 +188,7 @@ const DashboardLayout = ({ children }) => {
           />
         )}
       </div>
+      </PrivateRoute>
     </main>
   );
 };
