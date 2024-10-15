@@ -53,6 +53,7 @@ const authOptions = {
           prompt: "consent",
           access_type: "offline",
           response_type: "code",
+          state: true,  // Enabling state parameter for CSRF protection
         },
       },
     }),
