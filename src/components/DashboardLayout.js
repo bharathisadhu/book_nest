@@ -2,7 +2,7 @@
 import { useSession, signOut } from "next-auth/react";
 import { FiLogIn } from "react-icons/fi";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   AiOutlineDashboard,
   AiOutlineUser,
@@ -15,105 +15,209 @@ import Link from "next/link";
 import { IoBookSharp } from "react-icons/io5";
 import { usePathname } from "next/navigation";
 import logo from "../../public/BookNest.png";
-import useAdmin from "@/app/hooks/useAdmin/page";
 import axios from "axios";
 
 const DashboardLayout = ({ children }) => {
+  // const pathname = usePathname();
+  // const { data: session } = useSession();
+  // // console.log(session?.user?.email);
+  // const [isSidebarOpen, setIsSidebarOpen] = useState(false); // Default false for mobile
+  // const [isAdmin, setIsAdmin] = useState(null);
+  // const [loading, setLoading] = useState(true);
+  // const baseURL = process.env.NEXT_PUBLIC_API_URL;
+
   const pathname = usePathname();
   const { data: session } = useSession();
-  console.log(session);
-  // const [ isAdmin ] = useAdmin();
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false); // Default false for mobile
-  const [isAdmin, setIsAdmin] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(null);
   const [loading, setLoading] = useState(true);
   const baseURL = process.env.NEXT_PUBLIC_API_URL;
-  useEffect(() => {
-    const fetchAdminStatus = async () => {
-      if (session?.user?.email) {
-        try {
-          const response = await axios.get(
-            `${baseURL}/api/user/${session.user.email}`
-          );
-          console.log(response);
-          setIsAdmin(response?.data?.role === "admin"); // Set admin status based on the response
-          setLoading(true);
-        } catch (error) {
-          console.error("Error fetching admin status:", error);
-          setIsAdmin(null); // Handle error (or set to false if you prefer)
-        } finally {
-          setLoading(false); // Set loading to false after fetching
-        }
-      } else {
-        setLoading(false); // If there's no session, just stop loading
+
+  // useEffect(() => {
+  //   const fetchAdminStatus = async () => {
+  //     if (session) {
+  //       try {
+  //         const response = await axios.get(
+  //           `${baseURL}/api/user/${session?.user?.email}`
+  //         );
+  //         // console.log(response);
+  //         setIsAdmin(response); // Set admin status based on the response
+  //         setLoading(true);
+  //       } catch (error) {
+  //         console.error("Error fetching admin status:", error);
+  //         setIsAdmin(null); // Handle error (or set to false if you prefer)
+  //       } finally {
+  //         setLoading(false); // Set loading to false after fetching
+  //       }
+  //     } else {
+  //       setLoading(false); // If there's no session, just stop loading
+  //     }
+  //   };
+
+  //   fetchAdminStatus();
+  // }, [session, baseURL ]); // Dependencies: session and baseURL
+
+  const fetchAdminStatus = useCallback(async () => {
+    if (session) {
+      try {
+        const response = await axios.get(
+          `${baseURL}/api/user/${session?.user?.email}`
+        );
+        setIsAdmin(response?.data?.role === "admin");
+      } catch (error) {
+        console.error("Error fetching admin status:", error);
+        setIsAdmin(null);
+      } finally {
+        setLoading(false);
       }
-    };
+    } else {
+      setLoading(false);
+    }
+  }, [session, baseURL]);
 
+  useEffect(() => {
     fetchAdminStatus();
-  }, [session, baseURL]); // Dependencies: session and baseURL
+  }, [fetchAdminStatus]);
 
-  const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen);
-  };
+  // const toggleSidebar = () => {
+  //   setIsSidebarOpen(!isSidebarOpen);
+  // };
 
-  const adminMenuItems = [
-    {
-      name: "Dashboard",
-      icon: <AiOutlineDashboard className="text-xl" />,
-      href: "/dashboard",
-    },
-    {
-      name: "Users",
-      icon: <AiOutlineUser className="text-xl" />,
-      href: "/dashboard/users",
-    },
-    {
-      name: "Books",
-      icon: <IoBookSharp className="text-xl" />,
-      href: "/dashboard/books",
-    },
-    {
-      name: "Blogs",
-      icon: <AiOutlineFileText className="text-xl" />,
-      href: "/dashboard/blogs",
-    },
-    {
-      name: "Sales",
-      icon: <AiOutlineLineChart className="text-xl" />,
-      href: "/dashboard/sales",
-    },
-  ];
+  const toggleSidebar = useCallback(() => {
+    setIsSidebarOpen((prev) => !prev);
+  }, []);
 
-  const nonAdminMenuItems = [
-    {
-      name: "Dashboard",
-      icon: <AiOutlineDashboard className="text-xl" />,
-      href: "/dashboard",
-    },
-    {
-      name: "Profile",
-      icon: <AiOutlineUser className="text-xl" />,
-      href: "/dashboard/analytics",
-    },
-    {
-      name: "Analytics",
-      icon: <IoBookSharp className="text-xl" />,
-      href: "/dashboard/books",
-    },
-    {
-      name: "Cart",
-      icon: <AiOutlineFileText className="text-xl" />,
-      href: "/dashboard/blogs",
-    },
-    {
-      name: "Wishlist",
-      icon: <AiOutlineLineChart className="text-xl" />,
-      href: "/dashboard/sales",
-    },
-  ];
+  // const adminMenuItems = [
+  //   {
+  //     name: "Dashboard",
+  //     icon: <AiOutlineDashboard className="text-xl" />,
+  //     href: "/dashboard",
+  //   },
+  //   {
+  //     name: "Users",
+  //     icon: <AiOutlineUser className="text-xl" />,
+  //     href: "/dashboard/users",
+  //   },
+  //   {
+  //     name: "Books",
+  //     icon: <IoBookSharp className="text-xl" />,
+  //     href: "/dashboard/books",
+  //   },
+  //   {
+  //     name: "Blogs",
+  //     icon: <AiOutlineFileText className="text-xl" />,
+  //     href: "/dashboard/blogs",
+  //   },
+  //   {
+  //     name: "Sales",
+  //     icon: <AiOutlineLineChart className="text-xl" />,
+  //     href: "/dashboard/sales",
+  //   },
+  // ];
+
+  // const nonAdminMenuItems = [
+  //   {
+  //     name: "Dashboard",
+  //     icon: <AiOutlineDashboard className="text-xl" />,
+  //     href: "/dashboard",
+  //   },
+  //   {
+  //     name: "Profile",
+  //     icon: <AiOutlineUser className="text-xl" />,
+  //     href: "/dashboard/analytics",
+  //   },
+  //   {
+  //     name: "Analytics",
+  //     icon: <IoBookSharp className="text-xl" />,
+  //     href: "/dashboard/books",
+  //   },
+  //   {
+  //     name: "Cart",
+  //     icon: <AiOutlineFileText className="text-xl" />,
+  //     href: "/dashboard/blogs",
+  //   },
+  //   {
+  //     name: "Wishlist",
+  //     icon: <AiOutlineLineChart className="text-xl" />,
+  //     href: "/dashboard/sales",
+  //   },
+  // ];
+
+  // Memoize the adminMenuItems array
+  const adminMenuItems = useMemo(
+    () => [
+      {
+        name: "Dashboard",
+        icon: <AiOutlineDashboard className="text-xl" />,
+        href: "/dashboard",
+      },
+      {
+        name: "Users",
+        icon: <AiOutlineUser className="text-xl" />,
+        href: "/dashboard/users",
+      },
+      {
+        name: "Books",
+        icon: <IoBookSharp className="text-xl" />,
+        href: "/dashboard/books",
+      },
+      {
+        name: "Blogs",
+        icon: <AiOutlineFileText className="text-xl" />,
+        href: "/dashboard/blogs",
+      },
+      {
+        name: "Sales",
+        icon: <AiOutlineLineChart className="text-xl" />,
+        href: "/dashboard/sales",
+      },
+    ],
+    []
+  );
+
+  // Memoize the nonAdminMenuItems array
+  const nonAdminMenuItems = useMemo(
+    () => [
+      {
+        name: "Dashboard",
+        icon: <AiOutlineDashboard className="text-xl" />,
+        href: "/dashboard",
+      },
+      {
+        name: "Profile",
+        icon: <AiOutlineUser className="text-xl" />,
+        href: "/dashboard/analytics",
+      },
+      {
+        name: "Analytics",
+        icon: <IoBookSharp className="text-xl" />,
+        href: "/dashboard/books",
+      },
+      {
+        name: "Cart",
+        icon: <AiOutlineFileText className="text-xl" />,
+        href: "/dashboard/blogs",
+      },
+      {
+        name: "Wishlist",
+        icon: <AiOutlineLineChart className="text-xl" />,
+        href: "/dashboard/sales",
+      },
+    ],
+    []
+  );
+
   // Choose the appropriate menu items based on isAdmin
-  const menuItems = isAdmin ? adminMenuItems : nonAdminMenuItems;
+  // const menuItems = isAdmin ? adminMenuItems : nonAdminMenuItems;
+
+  const menuItems = useMemo(() => {
+    return isAdmin ? adminMenuItems : nonAdminMenuItems;
+  }, [isAdmin, adminMenuItems, nonAdminMenuItems]);
 
   console.log(isAdmin);
+  if (loading) {
+    <p>loading.......</p>;
+  }
 
   return (
     <main>
