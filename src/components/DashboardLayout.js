@@ -2,7 +2,7 @@
 import { useSession, signOut } from "next-auth/react";
 import { FiLogIn } from "react-icons/fi";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   AiOutlineDashboard,
   AiOutlineUser,
@@ -16,12 +16,40 @@ import { IoBookSharp } from "react-icons/io5";
 import { usePathname } from "next/navigation";
 import logo from "../../public/BookNest.png";
 import useAdmin from "@/app/hooks/useAdmin/page";
+import axios from "axios";
 
 const DashboardLayout = ({ children }) => {
   const pathname = usePathname();
   const { data: session } = useSession();
-  const [ isAdmin ] = useAdmin();
+  console.log(session);
+  // const [ isAdmin ] = useAdmin();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false); // Default false for mobile
+  const [isAdmin, setIsAdmin] = useState(true);
+  const [loading, setLoading] = useState(true);
+  const baseURL = process.env.NEXT_PUBLIC_API_URL;
+  useEffect(() => {
+    const fetchAdminStatus = async () => {
+      if (session?.user?.email) {
+        try {
+          const response = await axios.get(
+            `${baseURL}/api/user/${session.user.email}`
+          );
+          console.log(response);
+          setIsAdmin(response?.data?.role === "admin"); // Set admin status based on the response
+          setLoading(true);
+        } catch (error) {
+          console.error("Error fetching admin status:", error);
+          setIsAdmin(null); // Handle error (or set to false if you prefer)
+        } finally {
+          setLoading(false); // Set loading to false after fetching
+        }
+      } else {
+        setLoading(false); // If there's no session, just stop loading
+      }
+    };
+
+    fetchAdminStatus();
+  }, [session, baseURL]); // Dependencies: session and baseURL
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -82,12 +110,13 @@ const DashboardLayout = ({ children }) => {
       href: "/dashboard/sales",
     },
   ];
- // Choose the appropriate menu items based on isAdmin
- const menuItems = isAdmin  ? adminMenuItems : nonAdminMenuItems;
+  // Choose the appropriate menu items based on isAdmin
+  const menuItems = isAdmin ? adminMenuItems : nonAdminMenuItems;
+
+  console.log(isAdmin);
 
   return (
     <main>
-
       <div className="flex container mx-auto lg:max-h-screen">
         {/* Hamburger Button for Mobile and tablet */}
         <button
