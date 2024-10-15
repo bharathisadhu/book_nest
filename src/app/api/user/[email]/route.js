@@ -1,7 +1,7 @@
-// pages/api/users/[email].js
-import { NextResponse } from 'next/server';
-import connectToDatabase from '../../../lib/connectToDatabase'; // Adjust the path as necessary
-import Users from '../../../models/Users'; // Adjust the path as necessary
+// pages/api/user/[email].js
+import { NextResponse } from "next/server";
+import Users from "../../../../../models/Users";
+import connectToDatabase from "@/lib/mongodb";
 
 export async function GET(request, { params }) {
   const { email } = params; // Get the email from the URL params
