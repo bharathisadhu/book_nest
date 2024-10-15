@@ -4,7 +4,7 @@ import Users from "../../../../../models/Users";
 import connectToDatabase from "@/lib/mongodb";
 
 export async function GET(request, { params }) {
-  const { email } = params; // Get the email from the URL params
+  const { email } = params;
   const sanitizedEmail = email.trim().toLowerCase(); // Sanitize the email
 
   await connectToDatabase();

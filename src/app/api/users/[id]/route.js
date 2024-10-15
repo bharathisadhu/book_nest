@@ -24,7 +24,6 @@ export async function PUT(request, { params }) {
   if (!updatedUser) {
     return NextResponse.json({ message: "User not found" }, { status: 404 });
   }
-
   return NextResponse.json(
     { message: "User Updated", user: updatedUser },
     { status: 200 }
