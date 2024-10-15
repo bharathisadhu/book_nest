@@ -4,14 +4,11 @@ const getPayments = async () => {
       cache: "no-store",
     });
 
-    console.log("Response Status:", res.status); // Log the response status
-
     if (!res.ok) {
       throw new Error("Failed to fetch users");
     }
 
     const data = await res.json();
-    console.log("API Data:", JSON.stringify(data, null, 2)); // Log the entire data structure
     return Array.isArray(data.users) ? data.users : data || []; // Adjust according to your API response structure
   } catch (error) {
     console.error("Error loading payments:", error.message); // Log the error message
@@ -21,8 +18,6 @@ const getPayments = async () => {
 
 export default async function SalesList() {
   const payments = await getPayments();
-  console.log("Payment Array Length:", payments.length);
-  console.log("Payment List:", payments);
 
   if (payments.length === 0) {
 
