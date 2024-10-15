@@ -216,14 +216,14 @@ import Head from "next/head";
 export default function Login() {
   const router = useRouter();
   const { register, handleSubmit, reset, formState: { errors } } = useForm();
-  const [redirect, setRedirect] = useState(""); // State to store redirect URL
+  // const [redirect, setRedirect] = useState(""); // State to store redirect URL
 
-  useEffect(() => {
-    const { redirect } = router.query || {}; // Access redirect query parameter
-    if (redirect) {
-      setRedirect(redirect); // Set the redirect state if available
-    }
-  }, [router.query]); // Run effect when router.query changes
+  // useEffect(() => {
+  //   const { redirect } = router.query || {}; // Access redirect query parameter
+  //   if (redirect) {
+  //     setRedirect(redirect); // Set the redirect state if available
+  //   }
+  // }, [router.query]); // Run effect when router.query changes
 
   const onSubmit = async (e) => {
     const email = e.email;
@@ -232,8 +232,8 @@ export default function Login() {
     const result = await signIn("credentials", {
       email,
       password,
-      redirect: false,
-      callbackUrl: redirect || "/", // Use redirect or default to "/"
+      redirect: true,
+      callbackUrl: "/", // Use redirect or default to "/"
     });
 
     const session = await getSession(); // Fetch session after signing in
@@ -247,14 +247,14 @@ export default function Login() {
         showConfirmButton: false,
         timer: 1500,
       });
-      router.push(redirect || "/"); // Redirect after successful login
+      // router.push( "/"); // Redirect after successful login
     }
   };
 
   const handleSocialLogin = (provider) => {
     signIn(provider, {
       redirect: true,
-      callbackUrl: redirect || "/",
+      callbackUrl: "/",
     });
   };
 

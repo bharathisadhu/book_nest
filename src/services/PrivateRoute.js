@@ -4,22 +4,22 @@ import { useRouter } from "next/navigation";
 
 const PrivateRoute = ({ children }) => {
   const { data: session, status } = useSession();
-  const router = useRouter();
+  // const router = useRouter();
 
-  useEffect(() => {
-    // Wait for session loading to finish
-    if (status === "loading") return;
+  // useEffect(() => {
+  //   // Wait for session loading to finish
+  //   if (status === "loading") return;
 
-    // If not authenticated, redirect to login page
-    if (!session) {
-      // Check if router.query is defined before accessing redirect
-      const redirect = router?.query?.redirect ? router?.query?.redirect : '/'; // Use '/' as a default if redirect is not available
-      console.log("Redirecting to login. Current redirect:", redirect);
+  //   // If not authenticated, redirect to login page
+  //   if (!session) {
+  //     // Check if router.query is defined before accessing redirect
+  //     const redirect = router?.query?.redirect ? router?.query?.redirect : '/'; // Use '/' as a default if redirect is not available
+  //     console.log("Redirecting to login. Current redirect:", redirect);
 
-      // Redirect to login with the current path as a query parameter
-      router.push(`/login?redirect=${encodeURIComponent(redirect)}`);
-    }
-  }, [session, status, router]);
+  //     // Redirect to login with the current path as a query parameter
+  //     router.push(`/login?redirect=${encodeURIComponent(redirect)}`);
+  //   }
+  // }, [session, status, router]);
 
   // Handle loading state
   if (status === "loading") {
