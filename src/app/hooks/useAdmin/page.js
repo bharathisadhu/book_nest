@@ -29,5 +29,5 @@ export default function useAdmin() {
     fetchAdminStatus();
   }, [session, baseURL]); // Dependencies: session and baseURL
 
-  return { isAdmin, loading }; // Return both isAdmin and loading
+  return [ isAdmin, loading ]; // Return both isAdmin and loading
 }

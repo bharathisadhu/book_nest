@@ -11,19 +11,16 @@ import {
 } from "react-icons/ai";
 import { HiMenuAlt3 } from "react-icons/hi";
 import { FaHome } from "react-icons/fa";
-import Banner from "./share/banner";
 import Link from "next/link";
 import { IoBookSharp } from "react-icons/io5";
 import { usePathname } from "next/navigation";
 import logo from "../../public/BookNest.png";
-import axios from "axios";
 import useAdmin from "@/app/hooks/useAdmin/page";
-import PrivateRoute from "@/services/PrivateRoute";
 
 const DashboardLayout = ({ children }) => {
   const pathname = usePathname();
   const { data: session } = useSession();
-  const { isAdmin } = useAdmin();
+  const [ isAdmin ] = useAdmin();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false); // Default false for mobile
 
   const toggleSidebar = () => {
@@ -90,7 +87,7 @@ const DashboardLayout = ({ children }) => {
 
   return (
     <main>
-      <PrivateRoute>
+
       <div className="flex container mx-auto lg:max-h-screen">
         {/* Hamburger Button for Mobile and tablet */}
         <button
@@ -188,7 +185,6 @@ const DashboardLayout = ({ children }) => {
           />
         )}
       </div>
-      </PrivateRoute>
     </main>
   );
 };
