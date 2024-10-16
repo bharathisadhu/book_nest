@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import axios from "axios";
 import Image from "next/image";
 import { CiStar } from "react-icons/ci";
@@ -12,6 +12,21 @@ export default function BooksCard({ book }) {
   const { name, image, price, category, ratings, _id, quantity } = book;
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [isInCart, setIsInCart] = useState(false);
+  const [stock, setStock] = useState(null);
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+
+
+useEffect(() => {
+    const fetchTotalQuantity = async () => {
+      const response = await fetch(`${baseUrl}/api/payments-total-quantity?blogId=${_id}`);
+      const data = await response.json();
+      const status = (quantity-data) > 0 ? "Stock In" : "Stock Out";
+      setStock(status);
+    };
+    fetchTotalQuantity();
+  }, [baseUrl, _id]);
+
+
 
   const addToBookmark = async () => {
     if (isBookmarked) {
@@ -147,7 +162,9 @@ export default function BooksCard({ book }) {
           >
             <FaShoppingCart className="text-xl" />
           </button>
+
         </div>
+
       </div>
 
       {/* Book Details */}
@@ -174,6 +191,7 @@ export default function BooksCard({ book }) {
             {price.toFixed(2)}
           </span>
         </h3>
+        <h2>{stock}</h2>
       </div>
 
     </div>
