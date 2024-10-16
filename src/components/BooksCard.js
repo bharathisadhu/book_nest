@@ -1,17 +1,17 @@
 import { useState } from "react";
 import axios from "axios";
 import Image from "next/image";
-import { CiStar } from "react-icons/ci";
 import Swal from "sweetalert2";
 import { FaHeart, FaShoppingCart, FaStar } from "react-icons/fa";
 import Link from "next/link";
 import { FaDollarSign } from "react-icons/fa6";
-import { Span } from "next/dist/trace";
+import { useSession } from "next-auth/react";
 
 export default function BooksCard({ book }) {
   const { name, image, price, category, ratings, _id, quantity } = book;
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [isInCart, setIsInCart] = useState(false);
+  const { data: session } = useSession();
 
   const addToBookmark = async () => {
     if (isBookmarked) {
@@ -76,16 +76,22 @@ export default function BooksCard({ book }) {
     }
 
     try {
-      const response = await axios.post(`/api/cart/${_id}`, {
-        name,
-        description: book.description || "",
-        image,
-        author: book.author || "",
-        price,
-        rating: ratings,
-        category,
-        quantity,
-      });
+      const response = await axios.post(
+        "/api/carts",
+        {
+          name,
+          description: book.description || "",
+          image,
+          author: book.author || "",
+          price,
+          rating: ratings,
+          category,
+          quantity,
+          email: session?.user?.email,
+        },
+        { email: session?.user?.email } // Pass email in the request body
+      );
+      console.log(response);
 
       if (response.status === 201) {
         setIsInCart(true);

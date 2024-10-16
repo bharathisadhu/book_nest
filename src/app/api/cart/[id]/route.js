@@ -54,6 +54,7 @@ export async function POST(request, { params }) {
     rating,
     category,
     quantity,
+    email,
   } = await request.json();
 
   await connectToDatabase();
@@ -75,6 +76,7 @@ export async function POST(request, { params }) {
     rating,
     category,
     quantity,
+    email,
   });
 
   return NextResponse.json(
