@@ -1,42 +1,51 @@
-/* eslint-disable @next/next/no-async-client-component */
 "use client"
 import axios from "axios";
 import Image from "next/image";
 import { CiStar } from "react-icons/ci";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import RelatedBooks from "@/components/RelatedBooks";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
+import Stock from "@/components/Stock";
 
-
-export default async function BookDetails({ params }) {
+export default function BookDetails({ params }) {
   const [activeTab, setActiveTab] = useState('description');
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [isInCart, setIsInCart] = useState(false);
-  const handleTabClick = (tab) => {
-    setActiveTab(tab);
-  };
-  let listOfBooks = [];
+  const [stock, setStock] = useState(null);
+  const [listOfBooks, setListOfBooks] = useState([]);
+  const [bookDetails, setBookDetails] = useState(null);
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+  const bookId = params.details;
 
-  try {
-    const response = await axios.get(`${baseUrl}/api/books`);
-    // console.log("API Response:", response.data);
-    listOfBooks = response.data;
-  } catch (error) {
-    console.error("Error fetching book details:", error.message);
-    return <p className="text-3xl">Error fetching book details: {error.message}</p>;
-  }
+  useEffect(() => {
+    const fetchBooks = async () => {
+      try {
+        const response = await axios.get(`${baseUrl}/api/books`);
+        setListOfBooks(response.data);
+        const book = response.data.find(book => book._id === bookId);
+        setBookDetails(book);
+      } catch (error) {
+        console.error("Error fetching book details:", error.message);
+      }
+    };
+    fetchBooks();
+  }, [baseUrl, bookId]);
 
-  const bookId = params.details; // No conversion
-  console.log("Params:", params);
-  // console.log("List of Books:", listOfBooks);
-
-  const bookDetails = listOfBooks.find(book => book._id === bookId); // Ensure the correct property is used
+  useEffect(() => {
+    const fetchTotalQuantity = async () => {
+      if (!bookDetails) return;
+      const response = await fetch(`${baseUrl}/api/payments-total-quantity?blogId=${bookDetails._id}`);
+      const data = await response.json();
+      const status = (bookDetails.quantity - data) > 0 ? "Stock In" : "Stock Out";
+      setStock(status);
+    };
+    fetchTotalQuantity();
+  }, [baseUrl, bookDetails]);
 
   if (!bookDetails) {
-    return <p className="text-3xl">Book not found.</p>;
+    return <p className="text-3xl">Loading book details...</p>;
   }
 
   const {
@@ -50,6 +59,10 @@ export default async function BookDetails({ params }) {
     category,
     quantity
   } = bookDetails;
+
+  const handleTabClick = (tab) => {
+    setActiveTab(tab);
+  };
 
   const addToWishlist = async () => {
     if (isBookmarked) {
@@ -84,24 +97,16 @@ export default async function BookDetails({ params }) {
       }
     } catch (error) {
       console.error("Error adding to bookmark:", error);
-      const message =
-        error.response?.data?.message || "Failed to add to bookmarks!";
+      const message = error.response?.data?.message || "Failed to add to bookmarks!";
 
-      if (error.response?.status === 409) {
-        Swal.fire({
-          icon: "info",
-          title: "Already Bookmarked",
-          text: message,
-        });
-      } else {
-        Swal.fire({
-          icon: "error",
-          title: "Error",
-          text: message,
-        });
-      }
+      Swal.fire({
+        icon: error.response?.status === 409 ? "info" : "error",
+        title: error.response?.status === 409 ? "Already Bookmarked" : "Error",
+        text: message,
+      });
     }
   };
+
   const addToCart = async () => {
     if (isInCart) {
       Swal.fire({
@@ -138,22 +143,13 @@ export default async function BookDetails({ params }) {
       console.error("Error adding to cart:", error);
       const message = error.response?.data?.message || "Failed to add to cart!";
 
-      if (error.response?.status === 409) {
-        Swal.fire({
-          icon: "info",
-          title: "Already in Cart",
-          text: message,
-        });
-      } else {
-        Swal.fire({
-          icon: "error",
-          title: "Error",
-          text: message,
-        });
-      }
+      Swal.fire({
+        icon: error.response?.status === 409 ? "info" : "error",
+        title: error.response?.status === 409 ? "Already in Cart" : "Error",
+        text: message,
+      });
     }
   };
-
 
   return (
     <>
@@ -173,8 +169,8 @@ export default async function BookDetails({ params }) {
 
           <div>
             <div className='mb-3'>
-              <button type="button" class="flex items-center text-green-600 text-sm bg-green-50 px-3 py-1.5 tracking-wide rounded-full">
-                IN STOCK
+              <button type="button" class="flex items-center text-green-600 text-sm bg-green-50 px-3 py-1.5 tracking-wide rounded-full uppercase">
+              {stock}
               </button>
             </div>
             <div className="flex flex-wrap items-start gap-4">
