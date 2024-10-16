@@ -196,7 +196,7 @@ const DashboardLayout = ({ children }) => {
       {
         name: "Cart",
         icon: <AiOutlineFileText className="text-xl" />,
-        href: "/dashboard/blogs",
+        href: "/dashboard/cart",
       },
       {
         name: "Wishlist",
@@ -214,7 +214,6 @@ const DashboardLayout = ({ children }) => {
     return isAdmin ? adminMenuItems : nonAdminMenuItems;
   }, [isAdmin, adminMenuItems, nonAdminMenuItems]);
 
-  console.log(isAdmin);
   if (loading) {
     <p>loading.......</p>;
   }
