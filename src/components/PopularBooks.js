@@ -84,16 +84,16 @@ export default function PopularBooks() {
     }
 
     try {
-      const response = await axios.post(`/api/cart/${book._id}`, {
-        name: book.name,
-        description: book.description || "",
-        image: book.image,
-        author: book.author || "",
-        price: book.price,
-        rating: book.ratings,
-        category: book.category,
-        quantity: 1, // Default quantity value, you can update it as needed
-      });
+      // const response = await axios.post("/api/carts", {
+      //   name: book.name,
+      //   description: book.description || "",
+      //   image: book.image,
+      //   author: book.author || "",
+      //   price: book.price,
+      //   rating: book.ratings,
+      //   category: book.category,
+      //   quantity: 1, // Default quantity value, you can update it as needed
+      // });
 
       if (response.status === 201) {
         setCartBooks((prev) => ({ ...prev, [book._id]: true }));

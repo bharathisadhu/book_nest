@@ -208,8 +208,8 @@ export default function CartComponent({ cartBook, setCartBook }) {
       <div className="md:col-span-2 space-y-4">
         {/* Cart items display */}
         <div className="max-h-[400px] md:max-h-[500px] overflow-y-auto pr-2">
-          {cartBook?.cart?.length > 0 ? (
-            cartBook.cart.map((item) => (
+          {cartBook?.length > 0 ? (
+            cartBook.map((item) => (
               <div
                 key={item._id}
                 className="flex items-center space-x-4 border-b pb-4"
