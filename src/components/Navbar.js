@@ -8,11 +8,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { useSession, signOut } from "next-auth/react";
 import logo from "../../public/BookNest.png";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import axios from "axios";
 import { IoIosArrowForward } from "react-icons/io";
 
 const Navbar = () => {
+  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const { data: session } = useSession();
@@ -30,6 +31,7 @@ const Navbar = () => {
         ]);
         setWishlistCount(wishlistResponse.data.wishList.length);
         setCartCount(cartResponse.data.cart.length);
+        router.refresh();
       } catch (error) {
         console.error("Error fetching counts:", error);
         setError("Failed to load counts.");
