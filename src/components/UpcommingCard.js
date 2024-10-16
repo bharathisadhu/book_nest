@@ -8,8 +8,8 @@ import Link from "next/link";
 import { FaDollarSign } from "react-icons/fa6";
 import { Span } from "next/dist/trace";
 
-export default function BooksCard({ book }) {
-  const { name, image, price, category, ratings, _id, quantity } = book;
+export default function UpcommingCard({ book }) {
+  const { name, image, price, category, ratings, _id, quantity,publishType } = book;
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [isInCart, setIsInCart] = useState(false);
 
@@ -174,7 +174,10 @@ export default function BooksCard({ book }) {
             {price.toFixed(2)}
           </span>
         </h3>
+      {publishType === "released" ? "" : "not"}
+         
       </div>
+       
 
     </div>
   );
