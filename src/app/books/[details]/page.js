@@ -15,6 +15,7 @@ export default function BookDetails({ params }) {
   const [isInCart, setIsInCart] = useState(false);
   const [listOfBooks, setListOfBooks] = useState([]);
   const [bookDetails, setBookDetails] = useState(null);
+  const [stock, setStock] = useState(null);
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
   useEffect(() => {
@@ -33,6 +34,17 @@ export default function BookDetails({ params }) {
     fetchBooks();
   }, [baseUrl, params.details]);
 
+  useEffect(() => {
+    const fetchTotalQuantity = async () => {
+      if (!bookDetails) return;
+      const response = await fetch(`${baseUrl}/api/payments-total-quantity?blogId=${bookDetails._id}`);
+      const data = await response.json();
+      const status = (bookDetails.quantity - data) > 0 ? "Stock In" : "Stock Out";
+      setStock(status);
+    };
+    fetchTotalQuantity();
+  }, [baseUrl, bookDetails]);
+
   if (!bookDetails) {
     return <p className="text-3xl">Loading book details...</p>;
   }
@@ -46,6 +58,7 @@ export default function BookDetails({ params }) {
     price,
     ratings,
     category,
+    publishType,
   } = bookDetails;
 
   const addToWishlist = async () => {
@@ -176,7 +189,7 @@ export default function BookDetails({ params }) {
                   type="button"
                   className="flex items-center text-green-600 text-sm bg-green-50 px-3 py-1.5 tracking-wide rounded-full"
                 >
-                  IN STOCK
+                  {publishType === "released" ? <>{stock}</> : ""}
                 </button>
               </div>
               <div className="flex flex-wrap items-start gap-4">
@@ -210,20 +223,30 @@ export default function BookDetails({ params }) {
                   </p>
                 </div>
 
-                <div className="flex flex-wrap gap-4 ml-auto">
-                  <button
-                    onClick={addToCart}
-                    className="min-w-[200px] px-4 py-3 bg-gray-800 hover:bg-gray-900 text-white text-sm font-semibold rounded-md"
-                  >
-                    Add to cart
-                  </button>
-                  <button
-                    onClick={addToWishlist}
-                    className="min-w-[200px] px-4 py-2.5 border border-gray-800 bg-transparent hover:bg-gray-50 text-gray-800 text-sm font-semibold rounded-md"
-                  >
-                    Add to wishlist
-                  </button>
-                </div>
+
+                {stock === "Stock Out" ? <></> :  <div className="flex flex-wrap gap-4">
+
+             {publishType === "released" ? <><button onClick={addToCart} className="min-w-[200px] px-4 py-3 bg-gray-800 hover:bg-gray-900 text-white text-sm font-semibold rounded-md">
+              
+
+              Add to cart
+
+              </button>
+              <button onClick={addToWishlist} className="min-w-[200px] px-4 py-2.5 border border-gray-800 bg-transparent hover:bg-gray-50 text-gray-800 text-sm font-semibold rounded-md">Add to wishlist
+              </button></> : 
+              <>
+              <button onClick={addToCart} className="min-w-[200px] px-4 py-3 bg-gray-800 hover:bg-gray-900 text-white text-sm font-semibold rounded-md">
+              
+
+              {publishType === "released" ? <span className="bg-gray-800 hover:bg-gray-900 text-white">Add to cart</span> : <span className="bg-gray-800 hover:bg-gray-900 text-[red] uppercase">Pre-Order</span>}
+
+              </button>
+
+              </>}
+
+            </div>}
+
+
               </div>
 
               <hr className="my-8" />
