@@ -17,6 +17,7 @@ export default function BooksCard({ book }) {
     _id,
     publishType,
     cardCount,
+    quantity
   } = book;
 
   const [isBookmarked, setIsBookmarked] = useState(false);
@@ -26,34 +27,47 @@ export default function BooksCard({ book }) {
   const [stock, setStock] = useState(null);
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
+  // useEffect(() => {
+  //   const fetchTotalcardCount = async () => {
+  //     const response = await fetch(
+  //       `${baseUrl}/api/payments-total-cardCount?blogId=${_id}`
+  //     );
+  //     const data = await response.json();
+  //     const status = cardCount - data > 0 ? "Stock In" : "Stock Out";
+  //     setStock(status);
+  //   };
+
+  //   const checkIfInCart = async () => {
+  //     if (!session?.user?.email) return;
+
+  //     try {
+  //       const response = await axios.get(
+  //         `${baseUrl}/api/carts/${session?.user?.email}`
+  //       );
+  //       const cartItems = response.data.cart || [];
+  //       const foundItem = cartItems.find((item) => item._id === _id);
+  //       setIsInCart(!!foundItem);
+  //     } catch (error) {
+  //       console.error("Error fetching cart items:", error);
+  //     }
+  //   };
+
+  //   fetchTotalcardCount();
+  //   checkIfInCart();
+  // }, [baseUrl, _id, cardCount, session]);
+
   useEffect(() => {
-    const fetchTotalcardCount = async () => {
-      const response = await fetch(
-        `${baseUrl}/api/payments-total-cardCount?blogId=${_id}`
-      );
+    if (!stock) {
+    const fetchTotalQuantity = async () => {
+      const response = await fetch(`${baseUrl}/api/payments-total-quantity?blogId=${_id}`)
       const data = await response.json();
-      const status = cardCount - data > 0 ? "Stock In" : "Stock Out";
-      setStock(status);
-    };
+      const status = (quantity - data) > 0 ? "Stock In" : "Stock Out"
+      setStock(status)
+    }
+    fetchTotalQuantity()
+  }
 
-    const checkIfInCart = async () => {
-      if (!session?.user?.email) return;
-
-      try {
-        const response = await axios.get(
-          `${baseUrl}/api/carts/${session?.user?.email}`
-        );
-        const cartItems = response.data.cart || [];
-        const foundItem = cartItems.find((item) => item._id === _id);
-        setIsInCart(!!foundItem);
-      } catch (error) {
-        console.error("Error fetching cart items:", error);
-      }
-    };
-
-    fetchTotalcardCount();
-    checkIfInCart();
-  }, [baseUrl, _id, cardCount, session]);
+}, [stock,baseUrl, _id, quantity]);
 
   const addToBookmark = async () => {
     if (isBookmarked) {
@@ -222,9 +236,12 @@ export default function BooksCard({ book }) {
             {price.toFixed(2)}
           </span>
         </h3>
-        <h2 className="flex gap-2">
+        {/* <h2 className="flex gap-2">
           <span>{stock}</span>
           <span>{publishType === "released" ? "" : "upcoming"}</span>
+        </h2> */}
+        <h2 className="flex gap-2">
+          <span className="text-base md:text-base text-gray-800 font-semibold line-clamp-2 hover:text-[#F65D4E] text-center uppercase">{publishType === "released" ? <>{stock}</> : "upcoming"}</span>
         </h2>
       </div>
     </div>
