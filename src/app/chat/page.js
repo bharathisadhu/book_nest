@@ -1,28 +1,60 @@
+'use client'
+
 import { IoMdSend } from "react-icons/io";
+import { MdSupportAgent } from "react-icons/md";
 
-export default function Chatbox () {
+import { useState } from "react";
 
 
-    return (
+export default function Chatbox (){
+    
+    const [messages, setMessages] = useState([]);
+    const [newMessage, setNewMessage] = useState("");
+  
+    const handleSendMessage = () => {
+      if (newMessage.trim()) {
+        setMessages([...messages, { text: newMessage, sender: "You" }]);
+        setNewMessage("");
+      }
+    };
+
+    return(
         <>
-    <div className="h-full pb-12 md:p-4">
-            <div className="w-full h-full max-h-screen rounded-md overflow-y-auto gradient pt-2 md:pt-6">
-               
-                
-            </div>
-        </div>
+         <h1 className="text-xl font-bold md:text-5xl text-center mt-5">Chat with Agent</h1>
+         <h1 className="text-3xl font-bold md:text-5xl flex justify-center items-center mb-5" ><MdSupportAgent /></h1>
+        <div className="flex flex-col h-full mt-10 max-w-md mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
+      <div className="flex flex-col flex-grow p-4 overflow-auto h-96">
+        {messages.map((message, index) => (
+          <div
+            key={index}
+            className={`mb-2 p-2 rounded-lg ${
+              message.sender === "You"
+                ? "bg-blue-500 text-white self-end"
+                : "bg-gray-200 text-gray-800 self-start"
+            }`}
+          >
+            {message.text}
+          </div>
+        ))}
 
-        <div className="w-full absolute bottom-0 text-xl grid grid-cols-5 gradient md:bg-none md:text-3xl md:flex md:justify-center md:relative">
-            <input className="focus:outline-none rounded-2xl p-3  placeholder-slate-200 col-span-4 gradient md:w-6/12 md:mr-3" type="text" placeholder="Enter your message"
-             
-            />
-           
-            <button className="w-full py-2 px-3 bg-sky-400 text-white font-fold rounded-md text-xl gradient md:w-1/12 md:text-2xl flex justify-center items-center"
-               
-            >
-               <IoMdSend />
-            </button>
-        </div>
+      </div>
+      <div className="flex p-4 border-t border-gray-200">
+        <input
+          type="text"
+          className="flex-grow p-2 border border-gray-300 rounded-l-lg focus:outline-none"
+          placeholder="Type your message..."
+          value={newMessage}
+          onChange={(e) => setNewMessage(e.target.value)}
+          onKeyPress={(e) => e.key === "Enter" && handleSendMessage()}
+        />
+        <button
+          className="p-2 bg-blue-500 text-white rounded-r-lg flex justify-center items-center gap-2"
+          onClick={handleSendMessage}
+        >
+          Send <IoMdSend />
+        </button>
+      </div>
+    </div>
         </>
     )
 }
