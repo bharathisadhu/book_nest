@@ -26,10 +26,10 @@ const Navbar = () => {
     const fetchCounts = async () => {
       try {
         const [wishlistResponse, cartResponse] = await Promise.all([
-          axios.get("/api/wishlist"),
+          axios.get(`/api/wishlists/${session?.user?.email}`),
           axios.get(`/api/carts/${session?.user?.email}`),
         ]);
-        setWishlistCount(wishlistResponse.data.wishList.length);
+        setWishlistCount(wishlistResponse?.data?.length);
         setCartCount(cartResponse?.data?.length);
         
       } catch (error) {
