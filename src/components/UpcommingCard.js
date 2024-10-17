@@ -1,32 +1,17 @@
-
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import axios from "axios";
 import Image from "next/image";
+import { CiStar } from "react-icons/ci";
 import Swal from "sweetalert2";
 import { FaHeart, FaShoppingCart, FaStar } from "react-icons/fa";
 import Link from "next/link";
 import { FaDollarSign } from "react-icons/fa6";
-import { useSession } from "next-auth/react";
+import { Span } from "next/dist/trace";
 
-export default function BooksCard({ book }) {
-  const { name, image, price, category, ratings, _id, quantity, publishType, cardCount } = book;
-
+export default function UpcommingCard({ book }) {
+  const { name, image, price, category, ratings, _id, quantity,publishType } = book;
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [isInCart, setIsInCart] = useState(false);
-  const { data: session } = useSession();
-
-  const [stock, setStock] = useState(null);
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
-
-  useEffect(() => {
-    const fetchTotalQuantity = async () => {
-      const response = await fetch(`${baseUrl}/api/payments-total-quantity?blogId=${_id}`);
-      const data = await response.json();
-      const status = (quantity - data) > 0 ? "Stock In" : "Stock Out";
-      setStock(status);
-    };
-    fetchTotalQuantity();
-  }, [baseUrl, _id]);
 
   const addToBookmark = async () => {
     if (isBookmarked) {
@@ -39,7 +24,7 @@ export default function BooksCard({ book }) {
     }
 
     try {
-      const response = await axios.post("/api/wishlists", {
+      const response = await axios.post(`/api/wishlist/${_id}`, {
         name,
         description: book.description || "",
         image,
@@ -47,11 +32,7 @@ export default function BooksCard({ book }) {
         price,
         rating: ratings,
         category,
-        quantity,
-        email: session?.user?.email,
-        cardCount,
       });
-      console.log(response);
 
       if (response.status === 201) {
         setIsBookmarked(true);
@@ -65,7 +46,8 @@ export default function BooksCard({ book }) {
       }
     } catch (error) {
       console.error("Error adding to bookmark:", error);
-      const message = error.response?.data?.message || "Failed to add to bookmarks!";
+      const message =
+        error.response?.data?.message || "Failed to add to bookmarks!";
 
       if (error.response?.status === 409) {
         Swal.fire({
@@ -94,7 +76,7 @@ export default function BooksCard({ book }) {
     }
 
     try {
-      const response = await axios.post("/api/carts", {
+      const response = await axios.post(`/api/cart/${_id}`, {
         name,
         description: book.description || "",
         image,
@@ -103,8 +85,6 @@ export default function BooksCard({ book }) {
         rating: ratings,
         category,
         quantity,
-        email: session?.user?.email,
-        cardCount,
       });
 
       if (response.status === 201) {
@@ -140,7 +120,8 @@ export default function BooksCard({ book }) {
   return (
     <div className="transition h-fit duration-500 w-full font-sans overflow-hidden mx-auto mt-4 pl-4 pt-4">
       {/* Full Height Image */}
-      <div className="w-full h-60 md:h-80 lg:h-52 relative group">
+      
+      <div className="w-full  h-60 md:h-80 lg:h-52 relative group">
         <Image
           src={image}
           alt={name}
@@ -152,13 +133,17 @@ export default function BooksCard({ book }) {
         <div>
           <button
             onClick={addToBookmark}
-            className={`cursor-pointer absolute bottom-16 right-2 p-2 rounded-full bg-white shadow-md transition-transform duration-500 opacity-0 group-hover:opacity-100 hover:duration-500 ${isBookmarked ? "text-[#F65D4E]" : ""}`}
+            className={`cursor-pointer absolute bottom-16 right-2 p-2 rounded-full bg-white shadow-md transition-transform duration-500 opacity-0 group-hover:opacity-100 hover:duration-500 ${
+              isBookmarked ? "text-[#F65D4E]" : ""
+            }`}
           >
             <FaHeart className="text-xl" />
           </button>
           <button
             onClick={addToCart}
-            className={`cursor-pointer absolute bottom-5 right-2 p-2 rounded-full bg-white shadow-md transition-transform duration-500 opacity-0 group-hover:opacity-100 hover:duration-500 ${isInCart ? "text-[#F65D4E]" : ""}`}
+            className={`cursor-pointer absolute bottom-5 right-2 p-2 rounded-full bg-white shadow-md transition-transform duration-500 opacity-0 group-hover:opacity-100 hover:duration-500 ${
+              isInCart ? "text-[#F65D4E]" : ""
+            }`}
           >
             <FaShoppingCart className="text-xl" />
           </button>
@@ -189,10 +174,11 @@ export default function BooksCard({ book }) {
             {price.toFixed(2)}
           </span>
         </h3>
-        <h2 className="flex gap-2"><span>{stock}</span>
-          <span>{publishType === "released" ? "" : "upcoming"}</span>
-        </h2>
+      {publishType === "released" ? "released" : "upcoming"}
+         
       </div>
+       
+
     </div>
   );
 }
