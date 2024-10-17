@@ -21,14 +21,15 @@ export default function CartComponent({ cartBook, setCartBook }) {
   const elements = useElements();
   const { data: session } = useSession();
   const router = useRouter();
-
   const updateQuantity = (id, newQuantity) => {
-    setCartBook((prevState) => ({
-      cart: prevState.cart.map((item) =>
+    setCartBook((prevState) =>
+      prevState.map((item) =>
         item._id === id ? { ...item, quantity: Math.max(0, newQuantity) } : item
-      ),
-    }));
+      )
+    );
   };
+  
+
 
   const handleRemove = async (id) => {
     const result = await Swal.fire({
@@ -40,13 +41,13 @@ export default function CartComponent({ cartBook, setCartBook }) {
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes, delete it!",
     });
-
+  
     if (result.isConfirmed) {
       try {
         await axios.delete(`/api/cart?id=${id}`);
-        const updatedCart = cartBook.cart.filter((item) => item._id !== id);
-        setCartBook({ cart: updatedCart });
-
+        const updatedCart = cartBook.filter((item) => item._id !== id);
+        setCartBook(updatedCart);
+  
         Swal.fire({
           title: "Deleted!",
           text: "Your item has been removed from the cart.",
@@ -62,9 +63,10 @@ export default function CartComponent({ cartBook, setCartBook }) {
       }
     }
   };
+  
 
-  const subtotal = Array.isArray(cartBook.cart)
-    ? cartBook.cart.reduce((sum, item) => sum + item.price * item.quantity, 0)
+  const subtotal = Array.isArray(cartBook)
+    ? cartBook.reduce((sum, item) => sum + item.price * item.quantity, 0)
     : 0;
 
   const tax = subtotal * 0.1; // Assuming 10% tax
@@ -93,7 +95,7 @@ export default function CartComponent({ cartBook, setCartBook }) {
       let errorMessage = "The coupon code you entered is not valid.";
       if (cartBook.cart.length < 1) {
         errorMessage = "Please select a book to apply the coupon.";
-      } else if (cartBook.cart.length < 3 && couponInput === "BookNest20") {
+      } else if (cartBook.length < 3 && couponInput === "BookNest20") {
         errorMessage = "Please select more than 3 books to apply the coupon.";
       }
       Swal.fire({
@@ -108,7 +110,7 @@ export default function CartComponent({ cartBook, setCartBook }) {
     const fetchClientSecret = async () => {
       try {
         if (total > 0) {
-          const booksArray = cartBook.cart.map((item) => ({
+          const booksArray = cartBook.map((item) => ({
             bookId: item._id,
             bookName: item.name,
             price: item.price,
@@ -131,7 +133,7 @@ export default function CartComponent({ cartBook, setCartBook }) {
     if (session) {
       fetchClientSecret();
     }
-  }, [cartBook.cart, session, total, discount]);
+  }, [cartBook, session, total, discount]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -208,8 +210,8 @@ export default function CartComponent({ cartBook, setCartBook }) {
       <div className="md:col-span-2 space-y-4">
         {/* Cart items display */}
         <div className="max-h-[400px] md:max-h-[500px] overflow-y-auto pr-2">
-          {cartBook?.cart?.length > 0 ? (
-            cartBook.cart.map((item) => (
+          {cartBook?.length > 0 ? (
+            cartBook.map((item) => (
               <div
                 key={item._id}
                 className="flex items-center space-x-4 border-b pb-4"
