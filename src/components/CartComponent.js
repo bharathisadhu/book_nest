@@ -13,22 +13,23 @@ export default function CartComponent({ cartBook, setCartBook }) {
   const [isDiscountSectionHidden, setIsDiscountSectionHidden] = useState(false);
   const [discount, setDiscount] = useState(0);
   const [couponInput, setCouponInput] = useState("");
-  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [clientSecret, setClientSecret] = useState("");
   const [transactionId, setTransactionId] = useState("");
+  const [error, setError] = useState("");
   const stripe = useStripe();
   const elements = useElements();
   const { data: session } = useSession();
   const router = useRouter();
-
   const updateQuantity = (id, newQuantity) => {
-    setCartBook((prevState) => ({
-      cart: prevState.cart.map((item) =>
+    setCartBook((prevState) =>
+      prevState.map((item) =>
         item._id === id ? { ...item, quantity: Math.max(0, newQuantity) } : item
-      ),
-    }));
+      )
+    );
   };
+  
+
 
   const handleRemove = async (id) => {
     const result = await Swal.fire({
@@ -40,13 +41,13 @@ export default function CartComponent({ cartBook, setCartBook }) {
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes, delete it!",
     });
-
+  
     if (result.isConfirmed) {
       try {
         await axios.delete(`/api/cart?id=${id}`);
-        const updatedCart = cartBook.cart.filter((item) => item._id !== id);
-        setCartBook({ cart: updatedCart });
-
+        const updatedCart = cartBook.filter((item) => item._id !== id);
+        setCartBook(updatedCart);
+  
         Swal.fire({
           title: "Deleted!",
           text: "Your item has been removed from the cart.",
@@ -62,20 +63,17 @@ export default function CartComponent({ cartBook, setCartBook }) {
       }
     }
   };
+  
 
-  const subtotal = Array.isArray(cartBook.cart)
-    ? cartBook.cart.reduce((sum, item) => sum + item.price * item.quantity, 0)
+  const subtotal = Array.isArray(cartBook)
+    ? cartBook.reduce((sum, item) => sum + item.price * item.quantity, 0)
     : 0;
 
   const tax = subtotal * 0.1; // Assuming 10% tax
   const total = subtotal + tax;
 
   const handleCouponApply = () => {
-    if (
-      cartBook.cart.length > 0 &&
-      cartBook.cart.length <= 3 &&
-      couponInput === "BookNest10"
-    ) {
+    if (cartBook.cart.length > 0 && couponInput === "BookNest10") {
       const discountAmount = (total * 10) / 100;
       setDiscount(discountAmount);
       setIsDiscountSectionHidden(true);
@@ -97,7 +95,7 @@ export default function CartComponent({ cartBook, setCartBook }) {
       let errorMessage = "The coupon code you entered is not valid.";
       if (cartBook.cart.length < 1) {
         errorMessage = "Please select a book to apply the coupon.";
-      } else if (cartBook.cart.length < 3 && couponInput === "BookNest20") {
+      } else if (cartBook.length < 3 && couponInput === "BookNest20") {
         errorMessage = "Please select more than 3 books to apply the coupon.";
       }
       Swal.fire({
@@ -112,40 +110,53 @@ export default function CartComponent({ cartBook, setCartBook }) {
     const fetchClientSecret = async () => {
       try {
         if (total > 0) {
+          const booksArray = cartBook.map((item) => ({
+            bookId: item._id,
+            bookName: item.name,
+            price: item.price,
+            quantity: item.quantity,
+          }));
+
           const response = await axios.post("/api/create-payment-intent", {
-            price: total,
+            price: total - discount,
             email: session?.user?.email || "anonymous",
-            name: cartBook.cart[0]?.name,
-            _id: cartBook.cart[0]?._id,
+            name: session?.user?.name || "anonymous",
+            books: booksArray, // Include the books array here
           });
           setClientSecret(response.data.clientSecret);
         }
       } catch (error) {
         console.error("Error fetching client secret:", error);
-        setError("Failed to fetch payment details. Please try again later.");
       }
     };
 
     if (session) {
       fetchClientSecret();
     }
-  }, [cartBook.cart, session, total]);
+  }, [cartBook, session, total, discount]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    if (!stripe || !elements || loading) return; // Prevent further submissions
+
     setLoading(true);
-    if (!stripe || !elements) {
-      setLoading(false);
-      return;
-    }
     const card = elements.getElement(CardElement);
 
     if (!card) {
       setLoading(false);
       return;
     }
+
     try {
-      const { error } = await stripe.createPaymentMethod({
+      const booksArray = cartBook.cart.map((item) => ({
+        bookId: item._id,
+        bookName: item.name,
+        price: item.price,
+        quantity: item.quantity,
+      }));
+
+      const { paymentMethod, error } = await stripe.createPaymentMethod({
         type: "card",
         card,
         billing_details: {
@@ -156,40 +167,28 @@ export default function CartComponent({ cartBook, setCartBook }) {
 
       if (error) throw new Error(error.message);
 
-      const { paymentIntent, error: confirmError } =
-        await stripe.confirmCardPayment(clientSecret, {
-          payment_method: {
-            card: card,
-            billing_details: {
-              email: session?.user?.email || "anonymous",
-              name: session?.user?.name || "anonymous",
-            },
-          },
-        });
-
-      if (confirmError) throw new Error(confirmError.message);
+      const { paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
+        payment_method: paymentMethod.id,
+      });
 
       if (paymentIntent.status === "succeeded") {
-        setTransactionId(paymentIntent.id);
-        for (const item of cartBook.cart) {
-          const payment = {
-            email: session?.user?.email,
-            price: item.price,
-            transactionId: paymentIntent.id,
-            date: new Date(),
-            bookId: item._id,
-            bookName: item.name,
-            status: "pending",
-            name: session?.user?.name || "anonymous",
-          };
-          await axios.post("/api/payments", payment);
-        }
+        const payment = {
+          email: session?.user?.email,
+          name: session?.user?.name || "anonymous",
+          transactionId: paymentIntent.id,
+          date: new Date(),
+          books: booksArray, // Include the books array here
+          totalAmount: total - discount,
+          status: "pending",
+        };
+
+        await axios.post("/api/payments", payment);
 
         Swal.fire({
           position: "center",
           icon: "success",
           title:
-            "Thank you for the Payment, Your Order will be on their way soon! 🚚",
+            "Thank you for your payment! Your order will be on its way soon! 🚚",
           showConfirmButton: false,
           timer: 2000,
         });
@@ -200,7 +199,8 @@ export default function CartComponent({ cartBook, setCartBook }) {
       }
     } catch (error) {
       console.error("Error processing payment:", error);
-      setError(error.message || "Payment failed. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -210,8 +210,8 @@ export default function CartComponent({ cartBook, setCartBook }) {
       <div className="md:col-span-2 space-y-4">
         {/* Cart items display */}
         <div className="max-h-[400px] md:max-h-[500px] overflow-y-auto pr-2">
-          {cartBook?.cart?.length > 0 ? (
-            cartBook.cart.map((item) => (
+          {cartBook?.length > 0 ? (
+            cartBook.map((item) => (
               <div
                 key={item._id}
                 className="flex items-center space-x-4 border-b pb-4"
@@ -393,7 +393,9 @@ export default function CartComponent({ cartBook, setCartBook }) {
                 ? "Processing..."
                 : `Pay $ ${(total - discount).toFixed(2)}`}
             </button>
-            {error && <p className="text-[#F65D4E] text-center mt-2">{error}</p>}
+            {error && (
+              <p className="text-[#F65D4E] text-center mt-2">{error}</p>
+            )}
             {transactionId && (
               <p className="text-green-600">
                 Your transaction ID: {transactionId}

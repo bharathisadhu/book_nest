@@ -26,7 +26,7 @@ export default async function BlogCard({ id }) {
 
   return (
     <>
-      <div className="rounded-l mb-6">
+      <div className="rounded-l mb-6 mx-5">
         <div>
           <div className="flex flex-col lg:flex-row items-center justify-center lg:justify-between p-2 bg-[#F0F0F0] py-10 rounded-xl mb-10">
             <h2 className="lg:py-10 lg:ml-10 font-extrabold text-lg md:text-xl lg:text-3xl">
@@ -58,7 +58,7 @@ export default async function BlogCard({ id }) {
             </span>
           </h3>
           <h2 className="text-2xl font-bold mb-4">{title}</h2>
-          <p className="text-gray-600">{content}</p>
+          <p className="text-gray-600 text-justify">{content}</p>
           <hr className="mt-5 mb-1 border-t-1 border-gray-300" />
         </div>
       </div>

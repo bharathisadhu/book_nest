@@ -10,6 +10,8 @@ module.exports = {
       backgroundImage: {
         Community:
           "url('https://demo2.pavothemes.com/bookory/wp-content/uploads/2022/11/h6_bg1.jpg')",
+        branding:
+          "url('https://collegeinfogeek.com/wp-content/uploads/2018/11/Essential-Books.jpg')",
       },
       fontFamily: {
         poppins: "Poppins, sans-serif", // Adds a new `font-display` class

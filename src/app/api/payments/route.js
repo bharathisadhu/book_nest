@@ -1,3 +1,4 @@
+// /api/payments/route.js
 import { NextResponse } from "next/server";
 import connectDB from "@/lib/connectDB";
 import Payment from "../../../../models/Payment";
@@ -7,17 +8,24 @@ export async function POST(req) {
   try {
     await connectDB();
 
-    const { email, price, transactionId, bookId, bookName } = await req.json();
+    const {
+      email,
+      name,
+      books, // Expecting an array of books
+      totalAmount, // Total amount for the payment
+      transactionId, // Transaction ID from Stripe
+    } = await req.json();
 
     // Update the payment status to "completed" in the database
     const updatedPayment = await Payment.findOneAndUpdate(
       { transactionId }, // Find the payment by transaction ID
       {
         email,
-        price,
-        bookId,
-        bookName,
+        name,
+        books, // Include the books array
+        totalAmount, // Update the total amount
         status: "completed", // Mark payment as completed
+        date: new Date(), // Update the date to the current date
       },
       { new: true } // Return the updated payment record
     );
@@ -26,7 +34,10 @@ export async function POST(req) {
       return NextResponse.json({ error: "Payment not found" }, { status: 404 });
     }
 
-    return NextResponse.json({ message: "Payment updated successfully" });
+    return NextResponse.json({
+      message: "Payment updated successfully",
+      payment: updatedPayment, // Return the updated payment details
+    });
   } catch (error) {
     console.error("Error updating payment:", error);
     return NextResponse.json(

@@ -9,15 +9,28 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
 });
 
 export async function POST(req) {
-  console.log("hit payment intent route");
+  console.log("Hit payment intent route");
+
   try {
     await connectDB();
 
-    const { price, email, _id, name } = await req.json();
-    const amount = parseInt(price * 100); // Convert to cents
+    // Parse the request body
+    const data = await req.json();
+    console.log("Request Data:", data); // Log the incoming data
+
+    const { books, email, name } = data; // Destructure after logging
+
+    if (!Array.isArray(books)) {
+      throw new Error("Books must be an array");
+    }
+
+    // Calculate the total amount
+    const totalAmount = books.reduce((total, book) => {
+      return total + book.price * book.quantity; // Calculate total based on book price and quantity
+    }, 0);
 
     const paymentIntent = await stripe.paymentIntents.create({
-      amount,
+      amount: Math.round(totalAmount * 100), // Convert to cents
       currency: "usd",
       payment_method_types: ["card"],
     });
@@ -25,13 +38,12 @@ export async function POST(req) {
     // Save payment with "pending" status
     const payment = new Payment({
       email,
-      price,
+      name,
+      books, // Include books array
+      totalAmount, // Store the total amount
       transactionId: paymentIntent.id,
-      bookId: _id,
-      bookName: name,
       status: "pending", // Initially "pending"
-      // Add the required field here
-      name, // Include the name field
+      date: new Date(), // Add the current date
     });
 
     await payment.save();

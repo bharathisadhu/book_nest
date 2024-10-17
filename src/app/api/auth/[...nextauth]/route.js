@@ -53,6 +53,7 @@ const authOptions = {
           prompt: "consent",
           access_type: "offline",
           response_type: "code",
+          state: true,  // Enabling state parameter for CSRF protection
         },
       },
     }),
@@ -72,15 +73,13 @@ const authOptions = {
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token.id = user.id;
+        token.role = user.role;
       }
       return token;
     },
 
     async session({ session, token }) {
-      if (token?.id) {
-        session.user.id = token.id;
-      }
+      session.user.role = token.role || "user"; // Pass the role from the token to the session
       return session;
     },
 
@@ -100,6 +99,7 @@ const authOptions = {
               name: user.name,
               email: user.email,
               image: user.image,
+              role: user.role || "user",
             };
             await userCollection.insertOne(newUser);
           }

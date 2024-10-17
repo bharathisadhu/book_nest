@@ -13,6 +13,7 @@ export const POST = async (request) => {
     const res = await userCollection.insertOne({
       ...newUser,
       password: hashedPassword,
+      role: "user"
     });
     return Response.json(
       { message: "new User created", data: res },
