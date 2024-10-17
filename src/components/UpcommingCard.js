@@ -174,7 +174,7 @@ export default function UpcommingCard({ book }) {
             {price.toFixed(2)}
           </span>
         </h3>
-      {publishType === "released" ? "" : "not"}
+      {publishType === "released" ? "released" : "upcoming"}
          
       </div>
        

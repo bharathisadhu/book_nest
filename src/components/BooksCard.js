@@ -1,17 +1,18 @@
 import { useState,useEffect } from "react";
 import axios from "axios";
 import Image from "next/image";
-import { CiStar } from "react-icons/ci";
 import Swal from "sweetalert2";
 import { FaHeart, FaShoppingCart, FaStar } from "react-icons/fa";
 import Link from "next/link";
 import { FaDollarSign } from "react-icons/fa6";
-import { Span } from "next/dist/trace";
+import { useSession } from "next-auth/react";
 
 export default function BooksCard({ book }) {
-  const { name, image, price, category, ratings, _id, quantity } = book;
+ 
+  const { name, image, price, category, ratings, _id, quantity,publishType } = book;
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [isInCart, setIsInCart] = useState(false);
+   const { data: session } = useSession();
   const [stock, setStock] = useState(null);
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
@@ -27,6 +28,8 @@ useEffect(() => {
   }, [baseUrl, _id]);
 
 
+
+  
 
   const addToBookmark = async () => {
     if (isBookmarked) {
@@ -91,16 +94,22 @@ useEffect(() => {
     }
 
     try {
-      const response = await axios.post(`/api/cart/${_id}`, {
-        name,
-        description: book.description || "",
-        image,
-        author: book.author || "",
-        price,
-        rating: ratings,
-        category,
-        quantity,
-      });
+      const response = await axios.post(
+        "/api/carts",
+        {
+          name,
+          description: book.description || "",
+          image,
+          author: book.author || "",
+          price,
+          rating: ratings,
+          category,
+          quantity,
+          email: session?.user?.email,
+        },
+        { email: session?.user?.email } // Pass email in the request body
+      );
+      console.log(response);
 
       if (response.status === 201) {
         setIsInCart(true);
@@ -191,7 +200,10 @@ useEffect(() => {
             {price.toFixed(2)}
           </span>
         </h3>
-        <h2>{stock}</h2>
+        <h2 className="flex gap-2"><span>{stock}</span>
+
+        <span>{publishType === "released" ? "" : "upcoming"}</span>
+        </h2>
       </div>
 
     </div>

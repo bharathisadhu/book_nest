@@ -45,10 +45,8 @@ const CartsSchema = new Schema(
     rating: { type: Number, required: true },
     category: { type: String, required: true },
     quantity: { type: Number, required: true },
+    email: { type: String, required: true },
   },
-  {
-    timestamps: true,
-  }
 );
 
 const PaymentSchema = new mongoose.Schema({
@@ -67,7 +65,7 @@ const Book = mongoose.models.Books || mongoose.model("Books", BookSchema);
 const Blog = mongoose.models.blogs || mongoose.model("blogs", BlogSchema);
 const WishList =
   mongoose.models.wishList || mongoose.model("wishList", WishlistSchema);
-const Cart = mongoose.models.cart || mongoose.model("cart", CartsSchema);
+const Cart = mongoose.models.Cart || mongoose.model("Cart", CartsSchema);
 const Payment =
   mongoose.models.payments || mongoose.model("payments", PaymentSchema);
 

@@ -9,19 +9,21 @@ import { loadStripe } from "@stripe/stripe-js";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Head from "next/head";
+import { useSession } from "next-auth/react";
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY);
 
 export default function CartPage() {
   const [cartBook, setCartBook] = useState({ cart: [] });
   const [loading, setLoading] = useState(true); // Loading state
+  const { data: session } = useSession();
 
   useEffect(() => {
     const fetchWishlist = async () => {
       setLoading(true); // Start loading
 
       try {
-        const response = await axios.get("/api/cart");
+        const response = await axios.get(`/api/carts/${session?.user?.email}`);
         setCartBook(response.data);
       } catch (error) {
         console.error("Error fetching wishlist:", error);
@@ -36,7 +38,7 @@ export default function CartPage() {
     };
 
     fetchWishlist();
-  }, []);
+  }, [session?.user?.email]);
 
   return (
     <>
