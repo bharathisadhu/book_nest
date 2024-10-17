@@ -189,8 +189,8 @@ export default function BooksCard({ book }) {
             {price.toFixed(2)}
           </span>
         </h3>
-        <h2 className="flex gap-2"><span>{stock}</span>
-          <span>{publishType === "released" ? "" : "upcoming"}</span>
+        <h2 className="flex gap-2">
+          <span className="text-lg md:text-xl text-gray-800 font-bold line-clamp-2 hover:text-[#F65D4E] text-center uppercase">{publishType === "released" ? <>{stock}</> : "upcoming"}</span>
         </h2>
       </div>
     </div>
