@@ -8,6 +8,7 @@ import UserCount from '@/components/mainDashBord/UserCount';
 import BookCount from '@/components/mainDashBord/BooKCountPrice';
 import SaleCount from '@/components/mainDashBord/SaleCount';
 import BlogCount from '@/components/mainDashBord/BlogCount';
+import UsedDevice from '@/components/mainDashBord/UsedDevice';
 
 
 
@@ -27,6 +28,7 @@ const Users = () => {
         <div className="mt-4 grid grid-cols-12 gap-4 md:mt-6 md:gap-6 2xl:mt-9 2xl:gap-7.5">
           <BarCharts />
           <ProfitChart />
+          <UsedDevice />
         </div>
       </DashboardLayout>
     </>
