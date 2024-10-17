@@ -12,7 +12,7 @@ export async function GET(request, { params }) {
     if (!individualCart) {
       return NextResponse.json({ message: " individualCart not found" }, { status: 404 });
     }
-    console.log(individualCart);
+    // console.log(individualCart);
     return NextResponse.json(individualCart, { status: 200 });
   } catch (error) {
     console.error("Error fetching user:", error);

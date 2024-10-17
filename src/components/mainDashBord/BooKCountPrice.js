@@ -1,10 +1,68 @@
+
+// "use client";
+// import { useState, useEffect } from "react";
+// import { MdPriceCheck } from "react-icons/md";
+
+// const BookCount = () => {
+//   const [totalPrice, setTotalPrice] = useState(0);
+//   const [totalcardCount, setTotalcardCount] = useState(0);
+//   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+
+//   // Fetch books data from the backend
+//   useEffect(() => {
+//     const fetchBook = async () => {
+//       try {
+//         const response = await fetch(`${baseUrl}/api/books-count`);
+//         const data = await response.json();
+
+//         setTotalPrice(data.totalPrice);
+//         setTotalcardCount(data.totalcardCount);
+//       } catch (error) {
+//         console.error("Error fetching book data:", error);
+//       }
+//     };
+//     fetchBook();
+//   }, [baseUrl]);
+
+//   return (
+//     <div className="book-card p-4 border rounded shadow-md bg-white dark:bg-gray-800">
+//       <div className="flex items-center mb-3">
+//         <MdPriceCheck className="text-5xl text-blue-500 mr-2" />
+//         <h4 className="text-heading-6 font-bold text-dark dark:text-white">
+//           Total Books: {totalcardCount}
+//         </h4>
+//       </div>
+//       <span className="text-body-sm font-medium">Total Price: ${totalPrice.toFixed(2)}</span>
+//       <div className="flex items-center gap-2 mt-2">
+//         <span className="text-body-sm font-medium">
+//           Price per Book: ${(totalPrice / (totalcardCount || 1)).toFixed(2)}
+//         </span>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default BookCount;
+
+
+
+
+
+
+
+
+
+
+//............................MAin Code...............................
+
+
 "use client";
 import { useState, useEffect } from "react";
 import { MdPriceCheck } from "react-icons/md";
 
 const BookCount = () => {
   const [totalPrice, setTotalPrice] = useState(0);
-  const [totalQuantity, setTotalQuantity] = useState(0);
+  const [totalcardCount, setTotalcardCount] = useState(0);
 
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
@@ -15,7 +73,7 @@ const BookCount = () => {
       const data = await response.json();
 
       setTotalPrice(data.totalPrice);
-      setTotalQuantity(data.totalQuantity);
+      setTotalcardCount(data.totalcardCount);
     };
     fetchBook();
   }, [baseUrl]);
@@ -39,3 +97,4 @@ const BookCount = () => {
 };
 
 export default BookCount;
+
