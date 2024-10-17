@@ -10,7 +10,7 @@ export async function POST(req) {
 
     if (!body.email) {
       return new Response(
-        JSON.stringify({ success: false, message: "Please Login" }),
+        JSON.stringify({ success: false, message: "Email is required" }),
         { status: 400 }
       );
     }
@@ -36,11 +36,8 @@ export async function POST(req) {
   } catch (error) {
     console.error("Error in POST request:", error);
     return new Response(
-      JSON.stringify({
-        success: false,
-        message: `${body.name} already in cart`,
-      }),
-      { status: 409 } // Conflict if already exists
+      JSON.stringify({ success: false, message: "Failed to add book to cart" }),
+      { status: 400 }
     );
   }
 }
