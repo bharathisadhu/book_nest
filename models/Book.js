@@ -31,7 +31,9 @@ const WishlistSchema = new Schema({
   email: { type: String, required: true },
 });
 
-const CartsSchema = new Schema({
+const CartsSchema = new mongoose.Schema({
+  email: { type: String, required: true },
+  bookId: { type: mongoose.Schema.Types.ObjectId, ref: "Book", required: true }, // Ensure bookId is defined
   name: { type: String, required: true },
   description: { type: String, required: true },
   image: { type: String, required: true },
@@ -40,8 +42,7 @@ const CartsSchema = new Schema({
   rating: { type: Number, required: true },
   category: { type: String, required: true },
   quantity: { type: Number, required: true },
-  email: { type: String, required: true },
-  cardCount: { type: Number, required: true },
+  cardCount: { type: Number, default: 1 },
 });
 
 const PaymentSchema = new mongoose.Schema({
