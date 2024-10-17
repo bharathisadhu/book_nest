@@ -28,8 +28,6 @@ export default function CartComponent({ cartBook, setCartBook }) {
       )
     );
   };
-  
-
 
   const handleRemove = async (id) => {
     const result = await Swal.fire({
@@ -41,13 +39,13 @@ export default function CartComponent({ cartBook, setCartBook }) {
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes, delete it!",
     });
-  
+
     if (result.isConfirmed) {
       try {
         await axios.delete(`/api/cart?id=${id}`);
         const updatedCart = cartBook.filter((item) => item._id !== id);
         setCartBook(updatedCart);
-  
+
         Swal.fire({
           title: "Deleted!",
           text: "Your item has been removed from the cart.",
@@ -63,7 +61,6 @@ export default function CartComponent({ cartBook, setCartBook }) {
       }
     }
   };
-  
 
   const subtotal = Array.isArray(cartBook)
     ? cartBook.reduce((sum, item) => sum + item.price * item.quantity, 0)
@@ -149,27 +146,45 @@ export default function CartComponent({ cartBook, setCartBook }) {
     }
 
     try {
-      const booksArray = cartBook.cart.map((item) => ({
-        bookId: item._id,
-        bookName: item.name,
-        price: item.price,
-        quantity: item.quantity,
-      }));
+      const { paymentMethod, error: paymentMethodError } =
+        await stripe.createPaymentMethod({
+          type: "card",
+          card,
+          billing_details: {
+            email: session?.user?.email || "anonymous",
+            name: session?.user?.name || "anonymous",
+          },
+        });
 
-      const { paymentMethod, error } = await stripe.createPaymentMethod({
-        type: "card",
-        card,
-        billing_details: {
-          email: session?.user?.email || "anonymous",
-          name: session?.user?.name || "anonymous",
-        },
-      });
+      if (paymentMethodError) {
+        setError(paymentMethodError.message);
+        setLoading(false);
+        return;
+      }
 
-      if (error) throw new Error(error.message);
+      // Confirm payment with client secret and payment method
+      const { paymentIntent, error: confirmError } =
+        await stripe.confirmCardPayment(clientSecret, {
+          payment_method: paymentMethod.id,
+        });
 
-      const { paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
-        payment_method: paymentMethod.id,
-      });
+      if (confirmError) {
+        setError(confirmError.message);
+        setLoading(false);
+        return;
+      }
+
+      // Ensure cartBook is defined and is an array
+      const booksArray = Array.isArray(cartBook)
+        ? cartBook.map((item) => ({
+            bookId: item._id,
+            bookName: item.name,
+            price: item.price,
+            quantity: item.quantity,
+          }))
+        : []; // Fallback in case cartBook is undefined or not an array
+
+      console.log("Books Array being sent for payment:", booksArray);
 
       if (paymentIntent.status === "succeeded") {
         const payment = {
@@ -177,11 +192,12 @@ export default function CartComponent({ cartBook, setCartBook }) {
           name: session?.user?.name || "anonymous",
           transactionId: paymentIntent.id,
           date: new Date(),
-          books: booksArray, // Include the books array here
+          books: booksArray,
           totalAmount: total - discount,
           status: "pending",
         };
 
+        // Save payment to your backend
         await axios.post("/api/payments", payment);
 
         Swal.fire({
@@ -196,9 +212,17 @@ export default function CartComponent({ cartBook, setCartBook }) {
         setTimeout(() => {
           router.push("/");
         }, 500);
+      } else if (paymentIntent.status === "requires_action") {
+        Swal.fire({
+          icon: "info",
+          title: "Authentication Required",
+          text: "Please complete the additional authentication steps.",
+        });
+      } else {
+        setError("Payment failed. Please try again.");
       }
     } catch (error) {
-      console.error("Error processing payment:", error);
+      setError(`Error processing payment: ${error.message}`);
     } finally {
       setLoading(false);
     }
