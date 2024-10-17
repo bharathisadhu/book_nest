@@ -11,8 +11,8 @@ export default function BooksCard({ book }) {
  
   const { name, image, price, category, ratings, _id, quantity,publishType } = book;
   const [isBookmarked, setIsBookmarked] = useState(false);
-  const [isInCart, setIsInCart] = useState(false);
-   const { data: session } = useSession();
+  const [isInCart, setIsInCart] = useState(false)
+  const { data: session } = useSession();
   const [stock, setStock] = useState(null);
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
@@ -27,9 +27,6 @@ useEffect(() => {
     fetchTotalQuantity();
   }, [baseUrl, _id]);
 
-
-
-  
 
   const addToBookmark = async () => {
     if (isBookmarked) {

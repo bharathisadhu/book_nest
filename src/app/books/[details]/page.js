@@ -1,4 +1,9 @@
+<<<<<<< HEAD
 "use client"
+=======
+"use client";
+
+>>>>>>> f53e19e7fec380749f141f9450f82a8e1711e7ad
 import axios from "axios";
 import Image from "next/image";
 import { CiStar } from "react-icons/ci";
@@ -98,7 +103,6 @@ export default function BookDetails({ params }) {
     } catch (error) {
       console.error("Error adding to bookmark:", error);
       const message = error.response?.data?.message || "Failed to add to bookmarks!";
-
       Swal.fire({
         icon: error.response?.status === 409 ? "info" : "error",
         title: error.response?.status === 409 ? "Already Bookmarked" : "Error",
@@ -118,6 +122,7 @@ export default function BookDetails({ params }) {
     }
 
     try {
+<<<<<<< HEAD
       const response = await axios.post(`/api/cart/${_id}`, {
         name,
         description: bookDetails.description || "",
@@ -128,6 +133,19 @@ export default function BookDetails({ params }) {
         category,
         quantity,
       });
+=======
+      // Assuming you have the correct cart API
+      // const response = await axios.post("/api/carts", {
+      //   name,
+      //   description: bookDetails.description || "",
+      //   image,
+      //   author: bookDetails.author || "",
+      //   price,
+      //   rating,
+      //   category,
+      //   quantity,
+      // });
+>>>>>>> f53e19e7fec380749f141f9450f82a8e1711e7ad
 
       if (response.status === 201) {
         setIsInCart(true);
@@ -142,7 +160,6 @@ export default function BookDetails({ params }) {
     } catch (error) {
       console.error("Error adding to cart:", error);
       const message = error.response?.data?.message || "Failed to add to cart!";
-
       Swal.fire({
         icon: error.response?.status === 409 ? "info" : "error",
         title: error.response?.status === 409 ? "Already in Cart" : "Error",
@@ -153,6 +170,7 @@ export default function BookDetails({ params }) {
 
   return (
     <>
+<<<<<<< HEAD
     <Navbar />
     <div className="font-sans">
       <div className="p-4 lg:max-w-6xl max-w-2xl max-lg:mx-auto">
@@ -281,10 +299,22 @@ export default function BookDetails({ params }) {
 
         </div>
 
+=======
+      <Navbar />
+      <div className="font-sans">
+        <div className="p-4 lg:max-w-6xl max-w-2xl max-lg:mx-auto">
+          {/* Book details rendering code goes here */}
+        </div>
+        <RelatedBooks listOfBooks={listOfBooks} />
+>>>>>>> f53e19e7fec380749f141f9450f82a8e1711e7ad
       </div>
       <RelatedBooks listOfBooks={listOfBooks}></RelatedBooks>
     </div>
     <Footer />
     </>
   );
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> f53e19e7fec380749f141f9450f82a8e1711e7ad
