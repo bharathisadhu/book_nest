@@ -31,16 +31,12 @@
 
 // export default Users;
 
-
+"use client"
+import { useEffect, useState } from 'react';
 import DashboardLayout from "@/components/DashboardLayout";
-import UserCount from "@/components/mainDashBord/UserCount";
-import BookCount from "@/components/mainDashBord/BooKCountPrice";
-import SaleCount from "@/components/mainDashBord/SaleCount";
-import BlogCount from "@/components/mainDashBord/BlogCount";
 import BarCharts from "@/components/mainDashBord/BarCharts";
+import ProfitChart from "@/components/mainDashBord/ProfitChart";
 import Head from "next/head";
-
-
 
 const dataStatsList = [
   {
@@ -109,15 +105,15 @@ const dataStatsList = [
           fill="white"
         />
         <path
-          d="M12.1875 23.7292V13.502L2.43923 8.62788C2.16663 9.60421 2.16663 10.8861 2.16663 12.9365V13.0632C2.16663 15.7984 2.16663 17.1661 2.81381 18.2651C3.46099 19.3642 4.62647 19.9758 6.95744 21.199L9.12411 22.336C10.5248 23.0711 11.4097 23.5355 12.1875 23.7292Z"
+          d="M12.1875 23.7292V13.502L2.43923 8.62788C2.16663 9.60421 2.16663 10.8861 2.16663 12.9365V13.0632C2.16663 15.7984 2.16663 17.1661 2.81385 18.2651C3.46107 19.3642 4.62662 19.9758 6.95753 21.199L9.12422 22.336C10.524 23.0711 11.4088 23.5355 12.1875 23.7292Z"
           fill="white"
         />
       </svg>
     ),
-    color: "#8155FF",
-    title: "Total Product",
-    value: "2.450",
-    growthRate: 2.59,
+    color: "#8C9EDE",
+    title: "Total Sales",
+    value: "1,789",
+    growthRate: -1.23,
   },
   {
     icon: (
@@ -128,39 +124,30 @@ const dataStatsList = [
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
       >
-        <ellipse
-          cx="9.75106"
-          cy="6.49984"
-          rx="4.33333"
-          ry="4.33333"
-          fill="white"
-        />
-        <ellipse
-          cx="9.75106"
-          cy="18.4178"
-          rx="7.58333"
-          ry="4.33333"
-          fill="white"
-        />
         <path
-          d="M22.7496 18.4173C22.7496 20.2123 20.5445 21.6673 17.8521 21.6673C18.6453 20.8003 19.1907 19.712 19.1907 18.4189C19.1907 17.1242 18.644 16.0349 17.8493 15.1674C20.5417 15.1674 22.7496 16.6224 22.7496 18.4173Z"
-          fill="white"
-        />
-        <path
-          d="M19.4996 6.50098C19.4996 8.2959 18.0446 9.75098 16.2496 9.75098C15.8582 9.75098 15.483 9.68179 15.1355 9.55498C15.648 8.65355 15.9407 7.61084 15.9407 6.49977C15.9407 5.38952 15.6484 4.34753 15.1366 3.44656C15.4838 3.32001 15.8587 3.25098 16.2496 3.25098C18.0446 3.25098 19.4996 4.70605 19.4996 6.50098Z"
+          fillRule="evenodd"
+          clipRule="evenodd"
+          d="M17.3641 7.23258L11.8313 12.7863L14.8752 15.8302L20.407 10.2984C20.5858 10.1195 20.5858 9.74541 20.407 9.56656L18.5752 7.73483C18.3964 7.556 18.0223 7.556 17.8435 7.73483L14.9106 10.6677L11.8313 7.5884L7.66372 11.756L5.17808 9.27042C4.99923 9.09156 4.62514 9.09156 4.4463 9.27042L2.61456 11.1021C2.43571 11.2809 2.43571 11.654 2.61456 11.8329L6.52814 15.7465L9.48198 12.7927L7.90496 11.2157L11.6188 7.50188L14.9166 10.7997L19.3027 6.41354L21.2108 8.32166C21.3896 8.50052 21.7637 8.50052 21.9425 8.32166L24.4052 5.85894C24.584 5.68009 24.584 5.306 24.4052 5.12714L22.5735 3.29541C22.3947 3.11656 22.0206 3.11656 21.8418 3.29541L19.3266 5.81061L17.3641 7.23258Z"
           fill="white"
         />
       </svg>
     ),
-    color: "#18BFFF",
-    title: "Total Users",
-    value: "3.465",
-    growthRate: -0.95,
+    color: "#F95656",
+    title: "Total Blogs",
+    value: "102",
+    growthRate: 1.50,
   },
 ];
 
-
 const Users = () => {
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  if (!isMounted) return null; // Prevent rendering until mounted
+
   return (
     <>
       <Head>
@@ -189,8 +176,7 @@ const Users = () => {
                 </div>
 
                 <span
-                  className={`flex items-center gap-1.5 text-body-sm font-medium ${item.growthRate > 0 ? "text-green" : "text-red"
-                    }`}
+                  className={`flex items-center gap-1.5 text-body-sm font-medium ${item.growthRate > 0 ? "text-green" : "text-red"}`}
                 >
                   {item.growthRate}%
                   {item.growthRate > 0 ? (
@@ -204,7 +190,6 @@ const Users = () => {
                     >
                       <path
                         d="M4.35716 2.3925L0.908974 5.745L5.0443e-07 4.86125L5 -5.1656e-07L10 4.86125L9.09103 5.745L5.64284 2.3925L5.64284 10L4.35716 10L4.35716 2.3925Z"
-                        fill=""
                       />
                     </svg>
                   ) : (
@@ -218,7 +203,6 @@ const Users = () => {
                     >
                       <path
                         d="M5.64284 7.6075L9.09102 4.255L10 5.13875L5 10L-8.98488e-07 5.13875L0.908973 4.255L4.35716 7.6075L4.35716 7.6183e-07L5.64284 9.86625e-07L5.64284 7.6075Z"
-                        fill=""
                       />
                     </svg>
                   )}
@@ -227,9 +211,9 @@ const Users = () => {
             </div>
           ))}
         </div>
-        {/* Add more specific content here */}
-        <div>
+        <div className="mt-4 grid grid-cols-12 gap-4 md:mt-6 md:gap-6 2xl:mt-9 2xl:gap-7.5">
           <BarCharts />
+          <ProfitChart />
         </div>
       </DashboardLayout>
     </>
@@ -237,6 +221,7 @@ const Users = () => {
 };
 
 export default Users;
+
 
 
 
