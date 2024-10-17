@@ -13,6 +13,7 @@ import axios from "axios";
 import { IoIosArrowForward } from "react-icons/io";
 
 const Navbar = () => {
+  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const { data: session } = useSession();
@@ -21,7 +22,6 @@ const Navbar = () => {
   const [cartCount, setCartCount] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const router = useRouter();
   useEffect(() => {
     const fetchCounts = async () => {
       try {
@@ -29,9 +29,15 @@ const Navbar = () => {
           axios.get(`/api/wishlists/${session?.user?.email}`),
           axios.get(`/api/carts/${session?.user?.email}`),
         ]);
+
+        setWishlistCount(wishlistResponse.data.wishList.length);
+        setCartCount(cartResponse.data.cart.length);
+        router.refresh();
+
         setWishlistCount(wishlistResponse?.data?.length);
         setCartCount(cartResponse?.data?.length);
-        
+        router.refresh();
+
       } catch (error) {
         console.error("Error fetching counts:", error);
         setError("Failed to load counts.");
