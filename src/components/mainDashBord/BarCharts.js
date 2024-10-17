@@ -117,7 +117,7 @@ const BarCharts = ({ totalPrice }) => {
     };
 
     return (
-        <div className="col-span-12 rounded-[10px] bg-white px-7.5 pb-6 pt-7.5 shadow-1 dark:bg-gray-dark dark:shadow-card xl:col-span-7 mt-5 p-5">
+        <div className="col-span-12 rounded-[10px] bg-white px-7.5 pb-6 pt-7.5 shadow-1 dark:bg-gray-dark dark:shadow-card xl:col-span-7 p-5">
             <div className="mb-3.5 flex flex-col gap-2.5 sm:flex-row sm:items-center sm:justify-between">
                 <div>
                     <h4 className="text-body-2xlg font-bold text-dark dark:text-white">
