@@ -21,10 +21,10 @@ export default function CartComponent({ cartBook, setCartBook }) {
   const elements = useElements();
   const { data: session } = useSession();
   const router = useRouter();
-  const updateQuantity = (id, newQuantity) => {
+  const updatecardCount = (id, newcardCount) => {
     setCartBook((prevState) =>
       prevState.map((item) =>
-        item._id === id ? { ...item, quantity: Math.max(0, newQuantity) } : item
+        item._id === id ? { ...item, cardCount: Math.max(0, newcardCount) } : item
       )
     );
   };
@@ -63,14 +63,14 @@ export default function CartComponent({ cartBook, setCartBook }) {
   };
 
   const subtotal = Array.isArray(cartBook)
-    ? cartBook.reduce((sum, item) => sum + item.price * item.quantity, 0)
+    ? cartBook.reduce((sum, item) => sum + item.price * item.cardCount, 0)
     : 0;
 
   const tax = subtotal * 0.1; // Assuming 10% tax
   const total = subtotal + tax;
 
   const handleCouponApply = () => {
-    if (cartBook.cart.length > 0 && couponInput === "BookNest10") {
+    if (cartBook.length > 0 && couponInput === "BookNest10") {
       const discountAmount = (total * 10) / 100;
       setDiscount(discountAmount);
       setIsDiscountSectionHidden(true);
@@ -79,7 +79,7 @@ export default function CartComponent({ cartBook, setCartBook }) {
         text: `You have received a discount of $${discountAmount.toFixed(2)}.`,
         icon: "success",
       });
-    } else if (cartBook.cart.length > 3 && couponInput === "BookNest20") {
+    } else if (cartBook.length > 3 && couponInput === "BookNest20") {
       const discountAmount = (total * 20) / 100;
       setDiscount(discountAmount);
       setIsDiscountSectionHidden(true);
@@ -90,7 +90,7 @@ export default function CartComponent({ cartBook, setCartBook }) {
       });
     } else {
       let errorMessage = "The coupon code you entered is not valid.";
-      if (cartBook.cart.length < 1) {
+      if (cartBook.length < 1) {
         errorMessage = "Please select a book to apply the coupon.";
       } else if (cartBook.length < 3 && couponInput === "BookNest20") {
         errorMessage = "Please select more than 3 books to apply the coupon.";
@@ -111,7 +111,7 @@ export default function CartComponent({ cartBook, setCartBook }) {
             bookId: item._id,
             bookName: item.name,
             price: item.price,
-            quantity: item.quantity,
+            cardCount: item.cardCount,
           }));
 
           const response = await axios.post("/api/create-payment-intent", {
@@ -180,7 +180,7 @@ export default function CartComponent({ cartBook, setCartBook }) {
             bookId: item._id,
             bookName: item.name,
             price: item.price,
-            quantity: item.quantity,
+            cardCount: item.cardCount,
           }))
         : []; // Fallback in case cartBook is undefined or not an array
 
@@ -254,24 +254,24 @@ export default function CartComponent({ cartBook, setCartBook }) {
                 </div>
                 <div className="flex items-center space-x-2">
                   <button
-                    onClick={() => updateQuantity(item._id, item.quantity - 1)}
+                    onClick={() => updatecardCount(item._id, item.cardCount - 1)}
                     className="p-1 border rounded"
                   >
                     <Minus className="h-4 w-4" />
                   </button>
                   <input
                     type="number"
-                    value={item.quantity}
+                    value={item.cardCount}
                     min="0"
                     onChange={(e) => {
-                      const newQuantity = parseInt(e.target.value);
-                      if (!isNaN(newQuantity))
-                        updateQuantity(item._id, newQuantity);
+                      const newcardCount = parseInt(e.target.value);
+                      if (!isNaN(newcardCount))
+                        updatecardCount(item._id, newcardCount);
                     }}
                     className="w-16 text-center border rounded p-1"
                   />
                   <button
-                    onClick={() => updateQuantity(item._id, item.quantity + 1)}
+                    onClick={() => updatecardCount(item._id, item.cardCount + 1)}
                     className="p-1 border rounded"
                   >
                     <Plus className="h-4 w-4" />

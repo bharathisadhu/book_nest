@@ -30,8 +30,8 @@ const Navbar = () => {
           axios.get(`/api/carts/${session?.user?.email}`),
         ]);
 
-        setWishlistCount(wishlistResponse.data.wishList.length);
-        setCartCount(cartResponse.data.cart.length);
+        setWishlistCount(wishlistResponse?.data?.length);
+        setCartCount(cartResponse?.data?.length);
         router.refresh();
 
         setWishlistCount(wishlistResponse?.data?.length);

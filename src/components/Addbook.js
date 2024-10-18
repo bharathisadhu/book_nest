@@ -9,7 +9,7 @@ const AddBookPage = () => {
   const [description, setDescription] = useState("");
   const [image, setImage] = useState(null); // Image for upload
   const [price, setPrice] = useState(""); // New state for price
-  const [quantity, setQuantity] = useState(""); // New state for quantity
+  const [cardCount, setcardCount] = useState(""); // New state for cardCount
   const [category, setCategory] = useState(""); // New state for catogory
   const [ratings, setRatings] = useState(""); // New state for ratings
   const [publishType, setPublishType] = useState("upcoming"); // New state for publish type
@@ -47,7 +47,7 @@ const AddBookPage = () => {
         image: imageUrl,
         price: parseFloat(price), // Ensure price is a number
         ratings: parseFloat(ratings), // Ensure ratings is a number
-        quantity: parseInt(quantity, 10), // Ensure quantity is an integer
+        cardCount: parseInt(cardCount, 10), // Ensure cardCount is an integer
         publishType,
         cardCount: 1,
       };
@@ -157,14 +157,14 @@ const AddBookPage = () => {
           </div>
 
           <div className="flex-1 mb-4">
-            <label htmlFor="quantity" className="block font-medium mb-2">
-              Quantity
+            <label htmlFor="cardCount" className="block font-medium mb-2">
+              cardCount
             </label>
             <input
               type="number"
-              id="quantity"
-              value={quantity}
-              onChange={(e) => setQuantity(e.target.value)}
+              id="cardCount"
+              value={cardCount}
+              onChange={(e) => setcardCount(e.target.value)}
               className="w-full p-2 border border-gray-300 rounded"
               required
             />

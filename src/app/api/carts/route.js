@@ -13,12 +13,12 @@ export async function POST(req, { params }) {
     // Check for existing cart item
     const existingCartItem = await Cart.findOne({ email, _id: body._id });
 
-    if (existingCartItem) {
-      return NextResponse.json(
-        { message: "Book already in cart" },
-        { status: 409 }
-      );
-    }
+    // if (existingCartItem) {
+    //   return new Response(
+    //     JSON.stringify({ success: false, message: "Book already in cart" }),
+    //     { status: 409 } // Conflict if already exists
+    //   );
+    // }
 
     // Create a new cart item
     const cartItem = new Cart({ ...body, email });
