@@ -1,6 +1,6 @@
 "use client";
 import DashboardLayout from "@/components/DashboardLayout";
-import dynamic from "next/dynamic"; // Import dynamic for client-side rendering
+import dynamic from "next/dynamic";
 import Head from "next/head";
 
 const BarCharts = dynamic(() => import("@/components/mainDashBord/BarCharts"), {
@@ -23,10 +23,6 @@ const SaleCount = dynamic(() => import("@/components/mainDashBord/SaleCount"), {
 const BlogCount = dynamic(() => import("@/components/mainDashBord/BlogCount"), {
   ssr: false,
 });
-const UsedDevice = dynamic(
-  () => import("@/components/mainDashBord/UsedDevice"),
-  { ssr: false }
-);
 
 const Users = () => {
   return (
@@ -44,8 +40,6 @@ const Users = () => {
         <div className="mt-4 grid grid-cols-12 gap-4 md:mt-6 md:gap-6 2xl:mt-9 2xl:gap-7.5 text-black">
           <BarCharts totalPrice={100000} /> {/* Pass totalPrice as needed */}
           <ProfitChart />
-          <UsedDevice />
-          <BarCharts totalPrice={100000} /> {/* Pass totalPrice as needed */}
         </div>
       </DashboardLayout>
     </>
