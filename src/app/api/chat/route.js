@@ -1,30 +1,32 @@
-// const express = require("express");
-// const http = require("http");
+const http = require('http');
+const { Server } = require('socket.io');
 
-// const app = express();
-// const server = http.createServer(app);
+// Create HTTP server
+const server = http.createServer();
 
-// const { Server } = require("socket.io");
-// const io = new Server(server, {
-//     cors: {
-//         origin: "localhost:3000",
-//     }
-// })
+// Create Socket.IO server
+const io = new Server(server, {
+  path: '/api/chat', // Ensure this matches the client-side
+});
 
-// io.on("connection", (socket) => {
-//     socket.on("send_message", (msg) => {
-//         socket.broadcast.emit("recieve_message", msg);
-//     })
+// Handle socket connections
+io.on('connection', (socket) => {
+  console.log('A user connected');
 
-//     socket.on("user_typing", (data) => {
-//         socket.broadcast.emit("user_typing", data)
-//     })
+  // Listen for messages
+  socket.on('sendMessage', (message) => {
+    console.log('Message received:', message);
+    // Broadcast the message to all connected clients
+    io.emit('receiveMessage', message);
+  });
 
-//     socket.on("new_user", (data) => {
-//         socket.broadcast.emit("new_user", data.user)
-//     })
-// })
+  socket.on('disconnect', () => {
+    console.log('User disconnected');
+  });
+});
 
-// server.listen(3000, () => {
-//     console.log("Server is running on port 3000");
-// })
+// Start the server
+const PORT = 3000; // or any other port
+server.listen(PORT, () => {
+  console.log(`Socket.IO server running at http://localhost:${PORT}/`);
+});
