@@ -2,9 +2,9 @@ import mongoose from "mongoose";
 
 // Define the schema for individual books
 const bookSchema = new mongoose.Schema({
-  bookId: { type: mongoose.Schema.Types.ObjectId, required: true },
+  bookId: { type: mongoose.Schema.Types.ObjectId, required: false },
   bookName: { type: String, required: true },
-  quantity: { type: Number, required: true },
+  cardCount: { type: Number, required: true },
   price: { type: Number, required: true },
 });
 

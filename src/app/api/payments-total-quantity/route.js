@@ -25,19 +25,19 @@ export async function GET(req) {
         {
           "bookId": "66f2b86492d389553d55b00e",
           "bookName": "1984",
-          "quantity": 5,
+          "cardCount": 5,
           "price": 9.99
         },
         {
           "bookId": "66f2b86492d389553d55b00f",
           "bookName": "The Glass Castle",
-          "quantity": 1,
+          "cardCount": 1,
           "price": 10.99
         },
         {
           "bookId": "66f2b86492d389553d55b010",
           "bookName": "1984",
-          "quantity": 110,
+          "cardCount": 110,
           "price": 9.99
         }
       ],
@@ -53,19 +53,19 @@ export async function GET(req) {
         {
           "bookId": "66f2b86492d389553d55b00e",
           "bookName": "1984",
-          "quantity": 5,
+          "cardCount": 5,
           "price": 9.99
         },
         {
           "bookId": "66f2b86492d389553d55b00f",
           "bookName": "The Glass Castle",
-          "quantity": 1,
+          "cardCount": 1,
           "price": 10.99
         },
         {
           "bookId": "66f2b86492d389553d55b010",
           "bookName": "1984",
-          "quantity": 90,
+          "cardCount": 90,
           "price": 9.99
         }
       ],
@@ -80,19 +80,19 @@ export async function GET(req) {
     const url = new URL(req.url);
     const bookId = url.searchParams.get('blogId');
 
-     // Calculate the total quantity for the specified bookId
-      let totalQuantity = 0;
+     // Calculate the total cardCount for the specified bookId
+      let totalcardCount = 0;
     data.forEach(order => {
       order.books.forEach(book => {
         if (book.bookId === bookId) {
-          totalQuantity += book.quantity;
+          totalcardCount += book.cardCount;
         }
       });
     });
 
 
 
-    return NextResponse.json(totalQuantity);
+    return NextResponse.json(totalcardCount);
 
 
 

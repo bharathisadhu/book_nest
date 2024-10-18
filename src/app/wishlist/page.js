@@ -52,7 +52,7 @@ const Page = () => {
         await axios.delete(`/api/wishlist?id=${id}`);
 
         // Remove the item from the local state
-        const updatedWishList = wishListBook.wishList.filter(
+        const updatedWishList = wishListBook.filter(
           (item) => item._id !== id
         );
         setWishListBook({ wishList: updatedWishList });

@@ -1,30 +1,25 @@
 "use client";
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 
+const Stock = ({ _id, cardCount }) => {
+  const [stock, setStock] = useState(null);
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
-const Stock = ({ _id,quantity }) => {
+  useEffect(() => {
+    const fetchTotalcardCount = async () => {
+      const response = await fetch(
+        `${baseUrl}/api/payments-total-cardCount?blogId=${_id}`
+      );
+      const data = await response.json();
+      const status = cardCount - data > 0 ? "Stock In" : "Stock Out";
+      setStock(status);
+    };
+    fetchTotalcardCount();
+  }, [baseUrl, _id, cardCount]);
 
-    const [stock, setStock] = useState(null);
-    const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+  console.log("dddddddddddddddddd------", stock);
 
-    useEffect(() => {
-      const fetchTotalQuantity = async () => {
-        const response = await fetch(`${baseUrl}/api/payments-total-quantity?blogId=${_id}`);
-        const data = await response.json();
-        const status = (quantity-data) > 0 ? "Stock In" : "Stock Out";
-        setStock(status);
-      };
-      fetchTotalQuantity();
-    }, [baseUrl, _id]);
-  
-    console.log("dddddddddddddddddd------",stock)
-   
-  return (
-   <>{stock}</>
-  );
-  
+  return <>{stock}</>;
 };
-
-
 
 export default Stock;

@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Image from "next/image";
@@ -9,7 +8,17 @@ import { FaDollarSign } from "react-icons/fa6";
 import { useSession } from "next-auth/react";
 
 export default function BooksCard({ book }) {
-  const { name, image, price, category, ratings, _id, quantity, publishType, cardCount } = book;
+  const {
+    name,
+    image,
+    price,
+    category,
+    ratings,
+    _id,
+    publishType,
+    cardCount,
+    quantity
+  } = book;
 
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [isInCart, setIsInCart] = useState(false);
@@ -18,15 +27,47 @@ export default function BooksCard({ book }) {
   const [stock, setStock] = useState(null);
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
+  // useEffect(() => {
+  //   const fetchTotalcardCount = async () => {
+  //     const response = await fetch(
+  //       `${baseUrl}/api/payments-total-cardCount?blogId=${_id}`
+  //     );
+  //     const data = await response.json();
+  //     const status = cardCount - data > 0 ? "Stock In" : "Stock Out";
+  //     setStock(status);
+  //   };
+
+  //   const checkIfInCart = async () => {
+  //     if (!session?.user?.email) return;
+
+  //     try {
+  //       const response = await axios.get(
+  //         `${baseUrl}/api/carts/${session?.user?.email}`
+  //       );
+  //       const cartItems = response.data.cart || [];
+  //       const foundItem = cartItems.find((item) => item._id === _id);
+  //       setIsInCart(!!foundItem);
+  //     } catch (error) {
+  //       console.error("Error fetching cart items:", error);
+  //     }
+  //   };
+
+  //   fetchTotalcardCount();
+  //   checkIfInCart();
+  // }, [baseUrl, _id, cardCount, session]);
+
   useEffect(() => {
+    if (!stock) {
     const fetchTotalQuantity = async () => {
-      const response = await fetch(`${baseUrl}/api/payments-total-quantity?blogId=${_id}`);
+      const response = await fetch(`${baseUrl}/api/payments-total-quantity?blogId=${_id}`)
       const data = await response.json();
-      const status = (quantity - data) > 0 ? "Stock In" : "Stock Out";
-      setStock(status);
-    };
-    fetchTotalQuantity();
-  }, [baseUrl, _id]);
+      const status = (quantity - data) > 0 ? "Stock In" : "Stock Out"
+      setStock(status)
+    }
+    fetchTotalQuantity()
+  }
+
+}, [stock,baseUrl, _id, quantity]);
 
   const addToBookmark = async () => {
     if (isBookmarked) {
@@ -47,11 +88,10 @@ export default function BooksCard({ book }) {
         price,
         rating: ratings,
         category,
-        quantity,
+        cardCount,
         email: session?.user?.email,
         cardCount,
       });
-      console.log(response);
 
       if (response.status === 201) {
         setIsBookmarked(true);
@@ -65,7 +105,8 @@ export default function BooksCard({ book }) {
       }
     } catch (error) {
       console.error("Error adding to bookmark:", error);
-      const message = error.response?.data?.message || "Failed to add to bookmarks!";
+      const message =
+        error.response?.data?.message || "Failed to add to bookmarks!";
 
       if (error.response?.status === 409) {
         Swal.fire({
@@ -95,6 +136,7 @@ export default function BooksCard({ book }) {
 
     try {
       const response = await axios.post("/api/carts", {
+        _id, // Book ID
         name,
         description: book.description || "",
         image,
@@ -102,8 +144,8 @@ export default function BooksCard({ book }) {
         price,
         rating: ratings,
         category,
-        quantity,
-        email: session?.user?.email,
+        cardCount,
+        email: session?.user?.email, // Ensure this is not undefined
         cardCount,
       });
 
@@ -127,11 +169,12 @@ export default function BooksCard({ book }) {
           title: "Already in Cart",
           text: message,
         });
-      } else {
+      }
+       else {
         Swal.fire({
-          icon: "error",
-          title: "Error",
-          text: message,
+          icon: "info",
+          title: "Already in Cart",
+          text: `${name} is already in your cart!`,
         });
       }
     }
@@ -152,13 +195,17 @@ export default function BooksCard({ book }) {
         <div>
           <button
             onClick={addToBookmark}
-            className={`cursor-pointer absolute bottom-16 right-2 p-2 rounded-full bg-white shadow-md transition-transform duration-500 opacity-0 group-hover:opacity-100 hover:duration-500 ${isBookmarked ? "text-[#F65D4E]" : ""}`}
+            className={`cursor-pointer absolute bottom-16 right-2 p-2 rounded-full bg-white shadow-md transition-transform duration-500 opacity-0 group-hover:opacity-100 hover:duration-500 ${
+              isBookmarked ? "text-[#F65D4E]" : ""
+            }`}
           >
             <FaHeart className="text-xl" />
           </button>
           <button
             onClick={addToCart}
-            className={`cursor-pointer absolute bottom-5 right-2 p-2 rounded-full bg-white shadow-md transition-transform duration-500 opacity-0 group-hover:opacity-100 hover:duration-500 ${isInCart ? "text-[#F65D4E]" : ""}`}
+            className={`cursor-pointer absolute bottom-5 right-2 p-2 rounded-full bg-white shadow-md transition-transform duration-500 opacity-0 group-hover:opacity-100 hover:duration-500 ${
+              isInCart ? "text-[#F65D4E]" : ""
+            }`}
           >
             <FaShoppingCart className="text-xl" />
           </button>
@@ -189,8 +236,12 @@ export default function BooksCard({ book }) {
             {price.toFixed(2)}
           </span>
         </h3>
+        {/* <h2 className="flex gap-2">
+          <span>{stock}</span>
+          <span>{publishType === "released" ? "" : "upcoming"}</span>
+        </h2> */}
         <h2 className="flex gap-2">
-          <span className="text-lg md:text-xl text-gray-800 font-bold line-clamp-2 hover:text-[#F65D4E] text-center uppercase">{publishType === "released" ? <>{stock}</> : "upcoming"}</span>
+          <span className="text-base md:text-base text-gray-800 font-semibold line-clamp-2 hover:text-[#F65D4E] text-center uppercase">{publishType === "released" ? <>{stock}</> : "upcoming"}</span>
         </h2>
       </div>
     </div>

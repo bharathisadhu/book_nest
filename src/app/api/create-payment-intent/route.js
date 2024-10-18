@@ -9,14 +9,11 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
 });
 
 export async function POST(req) {
-  console.log("Hit payment intent route");
-
   try {
     await connectDB();
 
     // Parse the request body
     const data = await req.json();
-    console.log("Request Data:", data); // Log the incoming data
 
     const { books, email, name } = data; // Destructure after logging
 
@@ -26,7 +23,7 @@ export async function POST(req) {
 
     // Calculate the total amount
     const totalAmount = books.reduce((total, book) => {
-      return total + book.price * book.quantity; // Calculate total based on book price and quantity
+      return total + book.price * book.cardCount; // Calculate total based on book price and cardCount
     }, 0);
 
     const paymentIntent = await stripe.paymentIntents.create({

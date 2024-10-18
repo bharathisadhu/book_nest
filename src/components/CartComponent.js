@@ -21,15 +21,13 @@ export default function CartComponent({ cartBook, setCartBook }) {
   const elements = useElements();
   const { data: session } = useSession();
   const router = useRouter();
-  const updateQuantity = (id, newQuantity) => {
+  const updatecardCount = (id, newcardCount) => {
     setCartBook((prevState) =>
       prevState.map((item) =>
-        item._id === id ? { ...item, quantity: Math.max(0, newQuantity) } : item
+        item._id === id ? { ...item, cardCount: Math.max(0, newcardCount) } : item
       )
     );
   };
-  
-
 
   const handleRemove = async (id) => {
     const result = await Swal.fire({
@@ -41,13 +39,13 @@ export default function CartComponent({ cartBook, setCartBook }) {
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes, delete it!",
     });
-  
+
     if (result.isConfirmed) {
       try {
         await axios.delete(`/api/cart?id=${id}`);
         const updatedCart = cartBook.filter((item) => item._id !== id);
         setCartBook(updatedCart);
-  
+
         Swal.fire({
           title: "Deleted!",
           text: "Your item has been removed from the cart.",
@@ -63,17 +61,16 @@ export default function CartComponent({ cartBook, setCartBook }) {
       }
     }
   };
-  
 
   const subtotal = Array.isArray(cartBook)
-    ? cartBook.reduce((sum, item) => sum + item.price * item.quantity, 0)
+    ? cartBook.reduce((sum, item) => sum + item.price * item.cardCount, 0)
     : 0;
 
   const tax = subtotal * 0.1; // Assuming 10% tax
   const total = subtotal + tax;
 
   const handleCouponApply = () => {
-    if (cartBook.cart.length > 0 && couponInput === "BookNest10") {
+    if (cartBook.length > 0 && couponInput === "BookNest10") {
       const discountAmount = (total * 10) / 100;
       setDiscount(discountAmount);
       setIsDiscountSectionHidden(true);
@@ -82,7 +79,7 @@ export default function CartComponent({ cartBook, setCartBook }) {
         text: `You have received a discount of $${discountAmount.toFixed(2)}.`,
         icon: "success",
       });
-    } else if (cartBook.cart.length > 3 && couponInput === "BookNest20") {
+    } else if (cartBook.length > 3 && couponInput === "BookNest20") {
       const discountAmount = (total * 20) / 100;
       setDiscount(discountAmount);
       setIsDiscountSectionHidden(true);
@@ -93,7 +90,7 @@ export default function CartComponent({ cartBook, setCartBook }) {
       });
     } else {
       let errorMessage = "The coupon code you entered is not valid.";
-      if (cartBook.cart.length < 1) {
+      if (cartBook.length < 1) {
         errorMessage = "Please select a book to apply the coupon.";
       } else if (cartBook.length < 3 && couponInput === "BookNest20") {
         errorMessage = "Please select more than 3 books to apply the coupon.";
@@ -114,7 +111,7 @@ export default function CartComponent({ cartBook, setCartBook }) {
             bookId: item._id,
             bookName: item.name,
             price: item.price,
-            quantity: item.quantity,
+            cardCount: item.cardCount,
           }));
 
           const response = await axios.post("/api/create-payment-intent", {
@@ -149,27 +146,45 @@ export default function CartComponent({ cartBook, setCartBook }) {
     }
 
     try {
-      const booksArray = cartBook.cart.map((item) => ({
-        bookId: item._id,
-        bookName: item.name,
-        price: item.price,
-        quantity: item.quantity,
-      }));
+      const { paymentMethod, error: paymentMethodError } =
+        await stripe.createPaymentMethod({
+          type: "card",
+          card,
+          billing_details: {
+            email: session?.user?.email || "anonymous",
+            name: session?.user?.name || "anonymous",
+          },
+        });
 
-      const { paymentMethod, error } = await stripe.createPaymentMethod({
-        type: "card",
-        card,
-        billing_details: {
-          email: session?.user?.email || "anonymous",
-          name: session?.user?.name || "anonymous",
-        },
-      });
+      if (paymentMethodError) {
+        setError(paymentMethodError.message);
+        setLoading(false);
+        return;
+      }
 
-      if (error) throw new Error(error.message);
+      // Confirm payment with client secret and payment method
+      const { paymentIntent, error: confirmError } =
+        await stripe.confirmCardPayment(clientSecret, {
+          payment_method: paymentMethod.id,
+        });
 
-      const { paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
-        payment_method: paymentMethod.id,
-      });
+      if (confirmError) {
+        setError(confirmError.message);
+        setLoading(false);
+        return;
+      }
+
+      // Ensure cartBook is defined and is an array
+      const booksArray = Array.isArray(cartBook)
+        ? cartBook.map((item) => ({
+            bookId: item._id,
+            bookName: item.name,
+            price: item.price,
+            cardCount: item.cardCount,
+          }))
+        : []; // Fallback in case cartBook is undefined or not an array
+
+      console.log("Books Array being sent for payment:", booksArray);
 
       if (paymentIntent.status === "succeeded") {
         const payment = {
@@ -177,11 +192,12 @@ export default function CartComponent({ cartBook, setCartBook }) {
           name: session?.user?.name || "anonymous",
           transactionId: paymentIntent.id,
           date: new Date(),
-          books: booksArray, // Include the books array here
+          books: booksArray,
           totalAmount: total - discount,
           status: "pending",
         };
 
+        // Save payment to your backend
         await axios.post("/api/payments", payment);
 
         Swal.fire({
@@ -196,9 +212,17 @@ export default function CartComponent({ cartBook, setCartBook }) {
         setTimeout(() => {
           router.push("/");
         }, 500);
+      } else if (paymentIntent.status === "requires_action") {
+        Swal.fire({
+          icon: "info",
+          title: "Authentication Required",
+          text: "Please complete the additional authentication steps.",
+        });
+      } else {
+        setError("Payment failed. Please try again.");
       }
     } catch (error) {
-      console.error("Error processing payment:", error);
+      setError(`Error processing payment: ${error.message}`);
     } finally {
       setLoading(false);
     }
@@ -230,24 +254,24 @@ export default function CartComponent({ cartBook, setCartBook }) {
                 </div>
                 <div className="flex items-center space-x-2">
                   <button
-                    onClick={() => updateQuantity(item._id, item.quantity - 1)}
+                    onClick={() => updatecardCount(item._id, item.cardCount - 1)}
                     className="p-1 border rounded"
                   >
                     <Minus className="h-4 w-4" />
                   </button>
                   <input
                     type="number"
-                    value={item.quantity}
+                    value={item.cardCount}
                     min="0"
                     onChange={(e) => {
-                      const newQuantity = parseInt(e.target.value);
-                      if (!isNaN(newQuantity))
-                        updateQuantity(item._id, newQuantity);
+                      const newcardCount = parseInt(e.target.value);
+                      if (!isNaN(newcardCount))
+                        updatecardCount(item._id, newcardCount);
                     }}
                     className="w-16 text-center border rounded p-1"
                   />
                   <button
-                    onClick={() => updateQuantity(item._id, item.quantity + 1)}
+                    onClick={() => updatecardCount(item._id, item.cardCount + 1)}
                     className="p-1 border rounded"
                   >
                     <Plus className="h-4 w-4" />
