@@ -23,7 +23,6 @@ export default function BooksCard({ book }) {
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [isInCart, setIsInCart] = useState(false);
   const { data: session } = useSession();
-
   const [stock, setStock] = useState(null);
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
@@ -94,20 +93,11 @@ export default function BooksCard({ book }) {
       console.error("Error adding to bookmark:", error);
       const message =
         error.response?.data?.message || "Failed to add to bookmarks!";
-
-      if (error.response?.status === 409) {
-        Swal.fire({
-          icon: "info",
-          title: "Already Bookmarked",
-          text: message,
-        });
-      } else {
-        Swal.fire({
-          icon: "error",
-          title: "Error",
-          text: message,
-        });
-      }
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: message,
+      });
     }
   };
 
@@ -122,19 +112,21 @@ export default function BooksCard({ book }) {
     }
 
     try {
-      const response = await axios.post("/api/carts", {
-        _id, // Book ID
-        name,
-        description: book.description || "",
-        image,
-        author: book.author || "",
-        price,
-        rating: ratings,
-        category,
-        quantity,
-        email: session?.user?.email, // Ensure this is not undefined
-        cardCount,
-      });
+      const response = await axios.post(
+        `${baseUrl}/api/carts`, // Correctly formatted endpoint
+        {
+          _id, // Book ID
+          name,
+          description: book.description || "",
+          image,
+          author: book.author || "",
+          price,
+          rating: ratings,
+          category,
+          quantity,
+          cardCount,
+        }
+      );
 
       if (response.status === 201) {
         setIsInCart(true);
@@ -158,9 +150,9 @@ export default function BooksCard({ book }) {
         });
       } else {
         Swal.fire({
-          icon: "info",
-          title: "Already in Cart",
-          text: `${name} is already in your cart!`,
+          icon: "error",
+          title: "Error",
+          text: message,
         });
       }
     }
@@ -177,7 +169,7 @@ export default function BooksCard({ book }) {
           objectFit="cover"
           className="rounded-2xl"
         />
-        {/* Bookmark Icon on the left side */}
+        {/* Bookmark and Cart Icons */}
         <div>
           <button
             onClick={addToBookmark}
