@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import connectDB from "@/lib/connectDB";
 import Payment from "../../../../models/Payment";
+// import Payment from "../../../../models/Payment";
 
 // POST: Create or update payment
 export async function POST(req) {
@@ -46,22 +47,15 @@ export async function GET(req) {
     const total = payments.reduce(
       (acc, book) => {
         acc.totalPrice += book.price;
-      
+
         return acc;
       },
       { totalPrice: 0 }
-    )
-
-
-
+    );
 
     return NextResponse.json({
-      
-      totalPrice: total.totalPrice,    // Total price of all books
-      
+      totalPrice: total.totalPrice, // Total price of all books
     });
-
-
   } catch (error) {
     console.error("Error fetching payments:", error);
     return NextResponse.json(

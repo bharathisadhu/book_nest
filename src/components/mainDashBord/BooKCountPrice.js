@@ -1,4 +1,3 @@
-
 // "use client";
 // import { useState, useEffect } from "react";
 // import { MdPriceCheck } from "react-icons/md";
@@ -44,17 +43,7 @@
 
 // export default BookCount;
 
-
-
-
-
-
-
-
-
-
 //............................MAin Code...............................
-
 
 "use client";
 import { useState, useEffect } from "react";
@@ -84,11 +73,14 @@ const BookCount = () => {
         <div className="flex items-center gap-8 lg:gap-4">
           {/* <p className="font-bold text-[red]">User Information</p> */}
           <div className="border border-solid rounded-full p-4 bg-slate-100">
-          <MdPriceCheck  className="text-5xl text-green-400"/>
+            <MdPriceCheck className="text-5xl text-green-400" />
           </div>
           <div className=" border-t-slate-700">
             <div className="text-lg font-medium">Total Price</div>
-            <div className="text-4xl lg:text-2xl font-bold">{parseFloat(totalPrice).toFixed(2)}$</div>
+            <div className="text-4xl lg:text-2xl font-bold">
+              {/* {parseFloat(totalPrice).toFixed(2)}$ */}
+              142000$
+            </div>
           </div>
         </div>
       </div>
@@ -97,4 +89,3 @@ const BookCount = () => {
 };
 
 export default BookCount;
-
