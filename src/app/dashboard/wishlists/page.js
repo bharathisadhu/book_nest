@@ -1,5 +1,5 @@
 import DashboardLayout from "@/components/DashboardLayout";
-import Wishlist from "@/components/Wishlists";
+import Wishlist from "@/components/wishlists";
 
 const Wishlists = () => {
   return (
