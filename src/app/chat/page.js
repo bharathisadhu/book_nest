@@ -50,7 +50,7 @@ export default function Chatbox() {
       <h1 className="text-3xl font-bold md:text-5xl flex justify-center items-center mb-5">
         <MdSupportAgent />
       </h1>
-      <div className="flex flex-col h-full mt-10 max-w-md mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
+      <div className="flex flex-col h-full mt-10 max-w-md mx-auto my-5 bg-white shadow-lg rounded-lg overflow-hidden">
         <div className="flex flex-col flex-grow p-4 overflow-auto h-96">
           {messages.map((message, index) => (
             <div
