@@ -4,6 +4,7 @@ import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import PrivateRoute from "@/services/PrivateRoute";
 import axios from "axios";
+import { useSession } from "next-auth/react";
 import Head from "next/head";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
@@ -12,11 +13,14 @@ import Swal from "sweetalert2";
 
 const Page = () => {
   const [wishListBook, setWishListBook] = useState({ wishList: [] });
+  const { data: session } = useSession();
 
   useEffect(() => {
     const fetchWishlist = async () => {
       try {
-        const response = await axios.get("/api/wishlist");
+        const response = await axios.get(
+          `/api/wishlists/${session?.user?.email}`
+        );
         setWishListBook(response.data);
       } catch (error) {
         console.error("Error fetching wishlist:", error);
@@ -29,7 +33,7 @@ const Page = () => {
     };
 
     fetchWishlist();
-  }, []);
+  }, [session?.user?.email]);
 
   const handleRemove = async (id) => {
     const result = await Swal.fire({
@@ -79,7 +83,7 @@ const Page = () => {
       <div className="mb-3">
         <div className="font-sans bg-white max-w-6xl mx-auto p-4">
           <h2 className="text-3xl font-bold text-gray-800">
-            Your Wishlist ({wishListBook.wishList.length})
+            Your Wishlist ({wishListBook?.length})
           </h2>
           <div className="overflow-x-auto">
             <table className="mt-12 w-full border-collapse divide-y">
@@ -103,18 +107,18 @@ const Page = () => {
                 </tr>
               </thead>
               <tbody className="whitespace-nowrap divide-y">
-                {wishListBook.wishList.length > 0 ? (
-                  wishListBook.wishList.map((c) => (
+                {wishListBook?.length > 0 ? (
+                  wishListBook.map((c) => (
                     <tr key={c._id} className="hover:bg-gray-100 transition">
                       <td className="px-2 py-4">
                         <div className="flex items-center gap-4 w-max">
                           <div className="h-32 shrink-0">
                             <Image
-                              height={200}
-                              width={200}
+                              width={80}
+                              height={120}
                               src={c.image}
                               alt={c.name}
-                              className="w-full h-full object-contain rounded-lg"
+                              className="object-cover"
                             />
                           </div>
                           <div>

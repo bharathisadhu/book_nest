@@ -8,11 +8,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { useSession, signOut } from "next-auth/react";
 import logo from "../../public/BookNest.png";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import axios from "axios";
 import { IoIosArrowForward } from "react-icons/io";
 
 const Navbar = () => {
+  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const { data: session } = useSession();
@@ -25,11 +26,18 @@ const Navbar = () => {
     const fetchCounts = async () => {
       try {
         const [wishlistResponse, cartResponse] = await Promise.all([
-          axios.get("/api/wishlist"),
-          axios.get("/api/cart"),
+          axios.get(`/api/wishlists/${session?.user?.email}`),
+          axios.get(`/api/carts/${session?.user?.email}`),
         ]);
+
         setWishlistCount(wishlistResponse.data.wishList.length);
         setCartCount(cartResponse.data.cart.length);
+        router.refresh();
+
+        setWishlistCount(wishlistResponse?.data?.length);
+        setCartCount(cartResponse?.data?.length);
+        router.refresh();
+
       } catch (error) {
         console.error("Error fetching counts:", error);
         setError("Failed to load counts.");
@@ -37,9 +45,10 @@ const Navbar = () => {
         setLoading(false);
       }
     };
-
+    router.refresh()
     fetchCounts(); // Fetch counts once when component mounts
-  }, []);
+  }, [session?.user?.email, router]);
+  
 
   const toggleSidebar = () => {
     setIsOpen(!isOpen);

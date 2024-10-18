@@ -21,13 +21,12 @@ export default function CartComponent({ cartBook, setCartBook }) {
   const elements = useElements();
   const { data: session } = useSession();
   const router = useRouter();
-
   const updateQuantity = (id, newQuantity) => {
-    setCartBook((prevState) => ({
-      cart: prevState.cart.map((item) =>
+    setCartBook((prevState) =>
+      prevState.map((item) =>
         item._id === id ? { ...item, quantity: Math.max(0, newQuantity) } : item
-      ),
-    }));
+      )
+    );
   };
 
   const handleRemove = async (id) => {
@@ -44,8 +43,8 @@ export default function CartComponent({ cartBook, setCartBook }) {
     if (result.isConfirmed) {
       try {
         await axios.delete(`/api/cart?id=${id}`);
-        const updatedCart = cartBook.cart.filter((item) => item._id !== id);
-        setCartBook({ cart: updatedCart });
+        const updatedCart = cartBook.filter((item) => item._id !== id);
+        setCartBook(updatedCart);
 
         Swal.fire({
           title: "Deleted!",
@@ -63,8 +62,8 @@ export default function CartComponent({ cartBook, setCartBook }) {
     }
   };
 
-  const subtotal = Array.isArray(cartBook.cart)
-    ? cartBook.cart.reduce((sum, item) => sum + item.price * item.quantity, 0)
+  const subtotal = Array.isArray(cartBook)
+    ? cartBook.reduce((sum, item) => sum + item.price * item.quantity, 0)
     : 0;
 
   const tax = subtotal * 0.1; // Assuming 10% tax
@@ -93,7 +92,7 @@ export default function CartComponent({ cartBook, setCartBook }) {
       let errorMessage = "The coupon code you entered is not valid.";
       if (cartBook.cart.length < 1) {
         errorMessage = "Please select a book to apply the coupon.";
-      } else if (cartBook.cart.length < 3 && couponInput === "BookNest20") {
+      } else if (cartBook.length < 3 && couponInput === "BookNest20") {
         errorMessage = "Please select more than 3 books to apply the coupon.";
       }
       Swal.fire({
@@ -108,7 +107,7 @@ export default function CartComponent({ cartBook, setCartBook }) {
     const fetchClientSecret = async () => {
       try {
         if (total > 0) {
-          const booksArray = cartBook.cart.map((item) => ({
+          const booksArray = cartBook.map((item) => ({
             bookId: item._id,
             bookName: item.name,
             price: item.price,
@@ -131,7 +130,7 @@ export default function CartComponent({ cartBook, setCartBook }) {
     if (session) {
       fetchClientSecret();
     }
-  }, [cartBook.cart, session, total, discount]);
+  }, [cartBook, session, total, discount]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -147,27 +146,45 @@ export default function CartComponent({ cartBook, setCartBook }) {
     }
 
     try {
-      const booksArray = cartBook.cart.map((item) => ({
-        bookId: item._id,
-        bookName: item.name,
-        price: item.price,
-        quantity: item.quantity,
-      }));
+      const { paymentMethod, error: paymentMethodError } =
+        await stripe.createPaymentMethod({
+          type: "card",
+          card,
+          billing_details: {
+            email: session?.user?.email || "anonymous",
+            name: session?.user?.name || "anonymous",
+          },
+        });
 
-      const { paymentMethod, error } = await stripe.createPaymentMethod({
-        type: "card",
-        card,
-        billing_details: {
-          email: session?.user?.email || "anonymous",
-          name: session?.user?.name || "anonymous",
-        },
-      });
+      if (paymentMethodError) {
+        setError(paymentMethodError.message);
+        setLoading(false);
+        return;
+      }
 
-      if (error) throw new Error(error.message);
+      // Confirm payment with client secret and payment method
+      const { paymentIntent, error: confirmError } =
+        await stripe.confirmCardPayment(clientSecret, {
+          payment_method: paymentMethod.id,
+        });
 
-      const { paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
-        payment_method: paymentMethod.id,
-      });
+      if (confirmError) {
+        setError(confirmError.message);
+        setLoading(false);
+        return;
+      }
+
+      // Ensure cartBook is defined and is an array
+      const booksArray = Array.isArray(cartBook)
+        ? cartBook.map((item) => ({
+            bookId: item._id,
+            bookName: item.name,
+            price: item.price,
+            quantity: item.quantity,
+          }))
+        : []; // Fallback in case cartBook is undefined or not an array
+
+      console.log("Books Array being sent for payment:", booksArray);
 
       if (paymentIntent.status === "succeeded") {
         const payment = {
@@ -175,11 +192,12 @@ export default function CartComponent({ cartBook, setCartBook }) {
           name: session?.user?.name || "anonymous",
           transactionId: paymentIntent.id,
           date: new Date(),
-          books: booksArray, // Include the books array here
+          books: booksArray,
           totalAmount: total - discount,
           status: "pending",
         };
 
+        // Save payment to your backend
         await axios.post("/api/payments", payment);
 
         Swal.fire({
@@ -194,9 +212,17 @@ export default function CartComponent({ cartBook, setCartBook }) {
         setTimeout(() => {
           router.push("/");
         }, 500);
+      } else if (paymentIntent.status === "requires_action") {
+        Swal.fire({
+          icon: "info",
+          title: "Authentication Required",
+          text: "Please complete the additional authentication steps.",
+        });
+      } else {
+        setError("Payment failed. Please try again.");
       }
     } catch (error) {
-      console.error("Error processing payment:", error);
+      setError(`Error processing payment: ${error.message}`);
     } finally {
       setLoading(false);
     }
@@ -208,8 +234,8 @@ export default function CartComponent({ cartBook, setCartBook }) {
       <div className="md:col-span-2 space-y-4">
         {/* Cart items display */}
         <div className="max-h-[400px] md:max-h-[500px] overflow-y-auto pr-2">
-          {cartBook?.cart?.length > 0 ? (
-            cartBook.cart.map((item) => (
+          {cartBook?.length > 0 ? (
+            cartBook.map((item) => (
               <div
                 key={item._id}
                 className="flex items-center space-x-4 border-b pb-4"

@@ -1,60 +1,17 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import axios from "axios";
 import Image from "next/image";
+import { CiStar } from "react-icons/ci";
 import Swal from "sweetalert2";
 import { FaHeart, FaShoppingCart, FaStar } from "react-icons/fa";
 import Link from "next/link";
 import { FaDollarSign } from "react-icons/fa6";
-import { useSession } from "next-auth/react";
+import { Span } from "next/dist/trace";
 
-export default function BooksCard({ book }) {
-  const {
-    name,
-    image,
-    price,
-    category,
-    ratings,
-    _id,
-    quantity,
-    publishType,
-    cardCount,
-  } = book;
-
+export default function UpcommingCard({ book }) {
+  const { name, image, price, category, ratings, _id, quantity,publishType } = book;
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [isInCart, setIsInCart] = useState(false);
-  const { data: session } = useSession();
-
-  const [stock, setStock] = useState(null);
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
-
-  useEffect(() => {
-    const fetchTotalQuantity = async () => {
-      const response = await fetch(
-        `${baseUrl}/api/payments-total-quantity?blogId=${_id}`
-      );
-      const data = await response.json();
-      const status = quantity - data > 0 ? "Stock In" : "Stock Out";
-      setStock(status);
-    };
-
-    const checkIfInCart = async () => {
-      if (!session?.user?.email) return;
-
-      try {
-        const response = await axios.get(
-          `${baseUrl}/api/carts/${session.user.email}`
-        );
-        const cartItems = response.data.cart || [];
-        const foundItem = cartItems.find((item) => item._id === _id);
-        setIsInCart(!!foundItem);
-      } catch (error) {
-        console.error("Error fetching cart items:", error);
-      }
-    };
-
-    fetchTotalQuantity();
-    checkIfInCart();
-  }, [baseUrl, _id, quantity, session]);
 
   const addToBookmark = async () => {
     if (isBookmarked) {
@@ -67,7 +24,7 @@ export default function BooksCard({ book }) {
     }
 
     try {
-      const response = await axios.post("/api/wishlists", {
+      const response = await axios.post(`/api/wishlist/${_id}`, {
         name,
         description: book.description || "",
         image,
@@ -75,9 +32,6 @@ export default function BooksCard({ book }) {
         price,
         rating: ratings,
         category,
-        quantity,
-        email: session?.user?.email,
-        cardCount,
       });
 
       if (response.status === 201) {
@@ -122,8 +76,7 @@ export default function BooksCard({ book }) {
     }
 
     try {
-      const response = await axios.post("/api/carts", {
-        _id, // Book ID
+      const response = await axios.post(`/api/cart/${_id}`, {
         name,
         description: book.description || "",
         image,
@@ -132,8 +85,6 @@ export default function BooksCard({ book }) {
         rating: ratings,
         category,
         quantity,
-        email: session?.user?.email, // Ensure this is not undefined
-        cardCount,
       });
 
       if (response.status === 201) {
@@ -158,9 +109,9 @@ export default function BooksCard({ book }) {
         });
       } else {
         Swal.fire({
-          icon: "info",
-          title: "Already in Cart",
-          text: `${name} is already in your cart!`,
+          icon: "error",
+          title: "Error",
+          text: message,
         });
       }
     }
@@ -169,7 +120,8 @@ export default function BooksCard({ book }) {
   return (
     <div className="transition h-fit duration-500 w-full font-sans overflow-hidden mx-auto mt-4 pl-4 pt-4">
       {/* Full Height Image */}
-      <div className="w-full h-60 md:h-80 lg:h-52 relative group">
+      
+      <div className="w-full  h-60 md:h-80 lg:h-52 relative group">
         <Image
           src={image}
           alt={name}
@@ -222,11 +174,11 @@ export default function BooksCard({ book }) {
             {price.toFixed(2)}
           </span>
         </h3>
-        <h2 className="flex gap-2">
-          <span>{stock}</span>
-          <span>{publishType === "released" ? "" : "upcoming"}</span>
-        </h2>
+      {publishType === "released" ? "released" : "upcoming"}
+         
       </div>
+       
+
     </div>
   );
 }
