@@ -92,7 +92,7 @@ export default function PopularBooks() {
       //   price: book.price,
       //   rating: book.ratings,
       //   category: book.category,
-      //   quantity: 1, // Default quantity value, you can update it as needed
+      //   cardCount: 1, // Default cardCount value, you can update it as needed
       // });
 
       if (response.status === 201) {

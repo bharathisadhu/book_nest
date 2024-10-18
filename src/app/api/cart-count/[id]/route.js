@@ -53,7 +53,7 @@ export async function POST(request, { params }) {
     price,
     rating,
     category,
-    quantity,
+    cardCount,
     email,
   } = await request.json();
 
@@ -75,7 +75,7 @@ export async function POST(request, { params }) {
     price,
     rating,
     category,
-    quantity,
+    cardCount,
     email,
   });
 

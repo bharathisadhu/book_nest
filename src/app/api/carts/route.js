@@ -21,12 +21,12 @@ export async function POST(req) {
       bookId: body._id, // Ensure you are passing the bookId
     });
 
-    if (existingCartItem) {
-      return new Response(
-        JSON.stringify({ success: false, message: "Book already in cart" }),
-        { status: 409 } // Conflict if already exists
-      );
-    }
+    // if (existingCartItem) {
+    //   return new Response(
+    //     JSON.stringify({ success: false, message: "Book already in cart" }),
+    //     { status: 409 } // Conflict if already exists
+    //   );
+    // }
 
     // Create a new cart item using the existing book _id
     const cartItem = await Cart.create(body);

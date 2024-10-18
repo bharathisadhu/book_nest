@@ -442,7 +442,7 @@ const DashboardLayout = ({ children }) => {
       {
         name: "Wishlist",
         icon: <AiOutlineLineChart className="text-xl" />,
-        href: "/dashboard/sales",
+        href: "/dashboard/wishlists",
       },
     ],
     []

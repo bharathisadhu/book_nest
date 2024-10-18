@@ -23,7 +23,7 @@ export async function POST(req) {
 
     // Calculate the total amount
     const totalAmount = books.reduce((total, book) => {
-      return total + book.price * book.quantity; // Calculate total based on book price and quantity
+      return total + book.price * book.cardCount; // Calculate total based on book price and cardCount
     }, 0);
 
     const paymentIntent = await stripe.paymentIntents.create({
