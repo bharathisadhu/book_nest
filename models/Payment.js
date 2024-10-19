@@ -1,26 +1,26 @@
-const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
+import mongoose from "mongoose";
 
-const paymentSchema = new Schema({
-  name: { type: String, required: true },
-  email: { type: String, required: true },
-  address: { type: String, required: true },
-  city: { type: String, required: true },
-  country: { type: String, required: true },
-  postalCode: { type: String, required: true },
+const PaymentSchema = new mongoose.Schema({
+  name: { type: String },
+  email: { type: String },
+  address: { type: String },
+  city: { type: String },
+  country: { type: String },
+  postalCode: { type: String },
   books: [
     {
-      bookId: { type: String, required: true },
-      bookName: { type: String, required: true },
-      price: { type: Number, required: true },
-      cardCount: { type: Number, required: true },
+      bookId: { type: String },
+      bookName: { type: String },
+      price: { type: Number },
+      cardCount: { type: Number },
     },
   ],
-  totalAmount: { type: Number, required: true },
-  transactionId: { type: String, required: true },
+  totalAmount: { type: Number },
+  transactionId: { type: String },
   status: { type: String, default: "pending" },
   date: { type: Date, default: Date.now },
 });
 
-module.exports =
-  mongoose.models.Payment || mongoose.model("Payment", paymentSchema);
+const Payment =
+  mongoose.models.Payment || mongoose.model("Payment", PaymentSchema);
+export { Payment };

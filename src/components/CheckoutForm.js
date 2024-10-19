@@ -14,6 +14,7 @@ const CheckoutForm = ({ cartBook, setCartBook }) => {
   const [transactionId, setTransactionId] = useState("");
   const [error, setError] = useState("");
   const [isCashOnDelivery, setIsCashOnDelivery] = useState(false);
+  const [isStripePayment, setIsStripePayment] = useState(true);
   const stripe = useStripe();
   const elements = useElements();
   const { data: session } = useSession();
@@ -142,11 +143,8 @@ const CheckoutForm = ({ cartBook, setCartBook }) => {
       console.log("Payment (Cash on Delivery):", payment);
 
       try {
-        const response = await axios.post("/api/payments", payment, {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
+        const response = await axios.post("/api/payments", payment);
+        console.log(response.data);
         Swal.fire({
           position: "center",
           icon: "success",
@@ -174,9 +172,20 @@ const CheckoutForm = ({ cartBook, setCartBook }) => {
       try {
         // Call create-payment-intent API to get clientSecret
         const { data } = await axios.post("/api/create-payment-intent", {
-          books: booksArray,
-          email: customerDetails.email,
+          // books: booksArray,
+          // customerDetails: customerDetails,
+          // email: customerDetails.email,
+          // name: customerDetails.name,
           name: customerDetails.name,
+          email: customerDetails.email,
+          address: customerDetails.address,
+          city: customerDetails.city,
+          country: customerDetails.country,
+          postalCode: customerDetails.postalCode,
+          date: new Date(),
+          books: booksArray,
+          totalAmount: total + deliveryCharge - discount,
+          status: "pending",
         });
 
         if (data.error) {
@@ -235,11 +244,8 @@ const CheckoutForm = ({ cartBook, setCartBook }) => {
             status: "pending",
           };
 
-          await axios.post("/api/payments", payment, {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          });
+          const response = await axios.post("/api/payments", payment);
+          console.log(response.data);
 
           Swal.fire({
             position: "center",
@@ -274,7 +280,7 @@ const CheckoutForm = ({ cartBook, setCartBook }) => {
       >
         <div className="mt-6 sm:mt-8 lg:flex lg:items-start lg:gap-12 xl:gap-16">
           <div className="min-w-0 flex-1 space-y-8">
-            <div className="flex gap-4 w-full">
+            <div className="flex flex-col lg:flex-row gap-4 w-full">
               <div className="space-y-4 w-full">
                 {/* Set this div to full width */}
                 <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
@@ -511,7 +517,8 @@ const CheckoutForm = ({ cartBook, setCartBook }) => {
               <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
                 Delivery Methods
               </h3>
-              <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
+              <div className="flex flex-col md:flex-row gap-6">
+              <div class="grid grid-cols-1 gap-4 ">
                 <div class="rounded-lg border border-gray-200 bg-gray-50 p-4 ps-4 dark:border-gray-700 dark:bg-gray-800">
                   <div class="flex items-start">
                     <div class="flex h-5 items-center">
@@ -544,9 +551,43 @@ const CheckoutForm = ({ cartBook, setCartBook }) => {
                   </div>
                 </div>
               </div>
+              <div class="grid grid-cols-1 gap-4">
+                <div class="rounded-lg border border-gray-200 bg-gray-50 p-4 ps-4 dark:border-gray-700 dark:bg-gray-800">
+                  <div class="flex items-start">
+                    <div class="flex h-5 items-center">
+                      <input
+                        id="dhl1"
+                        aria-describedby="dhl1-text"
+                        type="radio"
+                        name="delivery-method"
+                        value=""
+                        class="h-4 w-4 border-gray-300 bg-white text-primary-600 focus:ring-2 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600"
+                        checked={isStripePayment}
+                        onChange={() => setIsStripePayment(isStripePayment)}
+                      />
+                    </div>
+
+                    <div class="ms-4 text-sm">
+                      <label
+                        for="dhl1"
+                        class="font-medium leading-none text-gray-900 dark:text-white"
+                      >
+                        Payment by Stripe
+                      </label>
+                      <p
+                        id="dhl1-text"
+                        class="mt-1 text-xs font-normal text-gray-500 dark:text-gray-400"
+                      >
+                        Instant Payment
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              </div>
             </div>
             <div className="space-y-4">
-              {!isCashOnDelivery && (
+              {!isCashOnDelivery && isStripePayment && (
                 <>
                   <div className="mt-4">
                     <input
