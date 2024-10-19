@@ -1,24 +1,26 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 
-// Define the schema for individual books
-const bookSchema = new mongoose.Schema({
-  bookId: { type: mongoose.Schema.Types.ObjectId, required: false },
-  bookName: { type: String, required: true },
-  cardCount: { type: Number, required: true },
-  price: { type: Number, required: true },
-});
-
-// Define the schema for payments
-const paymentSchema = new mongoose.Schema({
-  email: { type: String, required: true },
+const paymentSchema = new Schema({
   name: { type: String, required: true },
-  books: { type: [bookSchema], required: true },
-  totalAmount: { type: Number, required: true }, // Use totalAmount to reflect the total cost
+  email: { type: String, required: true },
+  address: { type: String, required: true },
+  city: { type: String, required: true },
+  country: { type: String, required: true },
+  postalCode: { type: String, required: true },
+  books: [
+    {
+      bookId: { type: String, required: true },
+      bookName: { type: String, required: true },
+      price: { type: Number, required: true },
+      cardCount: { type: Number, required: true },
+    },
+  ],
+  totalAmount: { type: Number, required: true },
   transactionId: { type: String, required: true },
-  status: { type: String, required: true },
+  status: { type: String, default: "pending" },
   date: { type: Date, default: Date.now },
 });
 
-// Export the Payment model
-export default mongoose.models.Payment ||
-  mongoose.model("Payment", paymentSchema);
+module.exports =
+  mongoose.models.Payment || mongoose.model("Payment", paymentSchema);

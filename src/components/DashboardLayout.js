@@ -93,7 +93,7 @@ const DashboardLayout = ({ children }) => {
       {
         name: "Profile",
         icon: <AiOutlineUser className="text-xl" />,
-        href: "/dashboard/profile",
+        href: "/dashboard/userProfile",
       },
       {
         name: "Analytics",
