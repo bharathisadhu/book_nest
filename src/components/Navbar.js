@@ -1,5 +1,5 @@
 "use client"; // Make sure this is a client component
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { FaShoppingCart, FaHeart } from "react-icons/fa";
 import { MdAccountCircle } from "react-icons/md";
 import { RxHamburgerMenu } from "react-icons/rx";
@@ -22,6 +22,8 @@ const Navbar = () => {
   const [cartCount, setCartCount] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isAdmin, setIsAdmin] = useState(null);
+  const baseURL = process.env.NEXT_PUBLIC_API_URL;
   useEffect(() => {
     const fetchCounts = async () => {
       try {
@@ -65,6 +67,35 @@ const Navbar = () => {
     { label: "Contact", link: "/contact" },
     { label: "About", link: "/about" },
   ];
+
+  const fetchAdminStatus = useCallback(async () => {
+    if (session) {
+      try {
+        const response = await axios.get(
+          `${baseURL}/api/user/${session?.user?.email}`
+        );
+        setIsAdmin(response?.data?.role === "admin");
+        setLoading(true)
+      } catch (error) {
+        console.error("Error fetching admin status:", error);
+        setIsAdmin(null);
+      } finally {
+        setLoading(false);
+      }
+    } else {
+      setLoading(false);
+    }
+  }, [session, baseURL]);
+
+  useEffect(() => {
+    fetchAdminStatus();
+  }, [fetchAdminStatus]);
+
+  // const menuItems = useMemo(() => {
+  //   setLoading(true)
+  //   return isAdmin ? <Link>Dashboard</Link> : nonAdminMenuItems;
+
+  // }, [isAdmin]);
 
   return (
     <nav className="sticky navbar justify-between bg-none">
@@ -155,11 +186,20 @@ const Navbar = () => {
               </button>
               {isDropdownOpen && (
                 <div className="absolute right-0 mt-2 py-2 w-48 bg-white border rounded-md shadow-xl z-20">
-                  <Link href="/dashboard">
+                  {/* <Link href="/dashboard">
                     <button className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-100">
                       Dashboard
                     </button>
-                  </Link>
+                  </Link> */}
+                  {isAdmin ? <Link href="/dashboard/adminDashboard">
+                    <button className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-100">
+                      Dashboard
+                    </button>
+                  </Link> : <Link href="/dashboard/userDashboard">
+                    <button className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-100">
+                      Dashboard
+                    </button>
+                  </Link>}
                   <button
                     onClick={() => signOut()}
                     className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-100"
