@@ -1,65 +1,100 @@
-// /api/payments/route.js
 import { NextResponse } from "next/server";
 import connectDB from "@/lib/connectDB";
 import Payment from "../../../../models/Payment";
 
-// POST: Create or update payment
+// POST: Create a new payment (Stripe or COD)
 export async function POST(req) {
   try {
-    await connectDB();
+    await connectDB(); // Connect to your database
+
+    const body = await req.json(); // Parse the request body
+    console.log("Request Body:", body); // Log the request body to verify the data
 
     const {
-      email,
       name,
-      books, // Expecting an array of books
-      totalAmount, // Total amount for the payment
-      transactionId, // Transaction ID from Stripe
-    } = await req.json();
+      email,
+      address,
+      city,
+      country,
+      postalCode,
+      books,
+      totalAmount,
+      transactionId,
+    } = body;
 
-    // Update the payment status to "completed" in the database
-    const updatedPayment = await Payment.findOneAndUpdate(
-      { transactionId }, // Find the payment by transaction ID
-      {
-        email,
-        name,
-        books, // Include the books array
-        totalAmount, // Update the total amount
-        status: "completed", // Mark payment as completed
-        date: new Date(), // Update the date to the current date
-      },
-      { new: true } // Return the updated payment record
-    );
+    // Validate required fields
+    const requiredFields = [
+      "name",
+      "email",
+      "address",
+      "city",
+      "country",
+      "postalCode",
+      "books",
+      "totalAmount",
+      "transactionId",
+    ];
 
-    if (!updatedPayment) {
-      return NextResponse.json({ error: "Payment not found" }, { status: 404 });
+    // Ensure all required fields are present
+    for (const field of requiredFields) {
+      if (!body[field]) {
+        return NextResponse.json(
+          { error: `Missing required field: ${field}` },
+          { status: 400 }
+        );
+      }
     }
 
-    return NextResponse.json({
-      message: "Payment updated successfully",
-      payment: updatedPayment, // Return the updated payment details
+    // Round totalAmount to avoid floating-point precision issues
+    const roundedTotalAmount = Math.round(totalAmount * 100) / 100;
+
+    // Create a new payment object
+    const newPayment = new Payment({
+      name,
+      email,
+      address,
+      city,
+      country,
+      postalCode,
+      books,
+      totalAmount: roundedTotalAmount,
+      transactionId,
+      status: "pending", // Default status is "pending"
+      date: new Date(), // Current date
     });
-  } catch (error) {
-    console.error("Error updating payment:", error);
+
+    // Log the new payment before saving to verify all fields
+    console.log("New Payment Object:", newPayment);
+
+    // Save the payment to the database
+    await newPayment.save();
+
+    // Log and return success response
+    console.log("Payment created successfully:", newPayment);
     return NextResponse.json(
-      { error: "Failed to update payment" },
-      { status: 500 }
+      {
+        message: "Payment created successfully",
+        payment: {
+          email: newPayment.email,
+          name: newPayment.name,
+          address: newPayment.address,
+          city: newPayment.city,
+          country: newPayment.country,
+          postalCode: newPayment.postalCode,
+          transactionId: newPayment.transactionId,
+          date: newPayment.date,
+          books: newPayment.books,
+          totalAmount: newPayment.totalAmount,
+          status: newPayment.status,
+          _id: newPayment._id,
+        },
+      },
+      { status: 201 }
     );
-  }
-}
-
-// GET: Retrieve all payments
-export async function GET(req) {
-  try {
-    await connectDB();
-
-    // Fetch all payments from the database
-    const payments = await Payment.find();
-
-    return NextResponse.json(payments);
   } catch (error) {
-    console.error("Error fetching payments:", error);
+    console.error("Error creating payment:", error);
     return NextResponse.json(
-      { error: "Failed to retrieve payments" },
+      { error: "Failed to create payment" },
       { status: 500 }
     );
   }
