@@ -59,9 +59,9 @@ export async function GET(request) {
   db = await connectDB();
 
   try {
-    // Fetch all books
-    const payment = await Payment.find({});
-    return NextResponse.json(payment);
+    // Fetch all payments
+    const payments = await Payment.find({});
+    return NextResponse.json(payments);
   } catch (error) {
     console.error("Error fetching books:", error);
     return NextResponse.json(
