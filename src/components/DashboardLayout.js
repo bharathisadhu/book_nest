@@ -119,6 +119,9 @@ const DashboardLayout = ({ children }) => {
     [isAdmin, adminMenuItems, nonAdminMenuItems]
   );
 
+  if (loading) {
+    return <p><Loading /></p>;
+  }
   return (
     <main className="flex">
       <button
