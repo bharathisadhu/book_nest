@@ -237,19 +237,7 @@ export default function BooksList() {
       </table>
 
       {/* Pagination controls */}
-      <div className="mt-4 flex justify-center">
-        {Array.from({ length: totalPages }, (_, index) => (
-          <button
-            key={index}
-            onClick={() => handlePageChange(index + 1)}
-            className={`mx-1 px-3 py-2 border ${
-              currentPage === index + 1 ? "bg-gray-200" : ""
-            }`}
-          >
-            {index + 1}
-          </button>
-        ))}
-      </div>
+      
     </div>
   );
 }
