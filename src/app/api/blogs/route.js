@@ -5,6 +5,8 @@ export async function GET(req) {
   await connectToDatabase();
 
   try {
+   
+    
     const blogs = await Blog.find({});
     return new Response(JSON.stringify(blogs), {
       status: 200,
@@ -37,3 +39,6 @@ export async function POST(req) {
     );
   }
 }
+
+
+
