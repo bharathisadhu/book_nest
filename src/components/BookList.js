@@ -12,26 +12,22 @@ export default function BooksList() {
   const [isUpdating, setIsUpdating] = useState(false);
   const [selectedBook, setSelectedBook] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [imageUrl, setImageUrl] = useState("");
-  const [imageFile, setImageFile] = useState(null);
-  const itemsPerPage = 10;
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalBooks, setTotalBooks] = useState(0);
+  const [imageUrl, setImageUrl] = useState(""); // State for the uploaded image URL
+  const [imageFile, setImageFile] = useState(null); // State for the image file
+  const itemsPerPage = 10; // Keep this to control the number of books loaded at once
+  const [hasMore, setHasMore] = useState(true); // To track if more books are available
+  const [currentStartIndex, setCurrentStartIndex] = useState(0); // Current index for loading books
 
   useEffect(() => {
     const fetchBooks = async () => {
-      setIsLoading(true);
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/books?start=${
-          (currentPage - 1) * itemsPerPage
-        }&limit=${itemsPerPage}`,
-        { cache: "no-store" }
-      );
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/books`, {
+        cache: "no-store",
+      });
 
       if (res.ok) {
         const data = await res.json();
-        setBooks(Array.isArray(data.books) ? data.books : []);
-        setTotalBooks(data.total); // Total number of books available
+        setBooks(Array.isArray(data) ? data : []);
+        setHasMore(data.length > itemsPerPage); // Check if more books are available
       } else {
         console.error("Failed to fetch books: ", res.status);
         setBooks([]);
@@ -41,9 +37,46 @@ export default function BooksList() {
     };
 
     fetchBooks();
-  }, [currentPage]);
+  }, []);
 
-  const totalPages = Math.ceil(totalBooks / itemsPerPage);
+  const loadMoreBooks = async () => {
+    if (!hasMore || isLoading) return;
+
+    setIsLoading(true);
+
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/books?start=${currentStartIndex}&limit=${itemsPerPage}`,
+      {
+        cache: "no-store",
+      }
+    );
+
+    if (res.ok) {
+      const newBooks = await res.json();
+      setBooks((prev) => [...prev, ...newBooks]);
+      setCurrentStartIndex((prev) => prev + itemsPerPage); // Update the start index
+      setHasMore(newBooks.length === itemsPerPage); // Check if more books are available
+    }
+
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const bottom =
+        window.innerHeight + window.scrollY >=
+        document.documentElement.scrollHeight - 100; // Adjust threshold as needed
+      if (bottom) {
+        loadMoreBooks();
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [hasMore, isLoading]);
 
   const removeBook = async (id) => {
     const bookToDelete = books.find((book) => book._id === id);
@@ -86,8 +119,31 @@ export default function BooksList() {
     }
   };
 
+  const uploadImage = async (file) => {
+    const formData = new FormData();
+    formData.append("image", file);
+    const res = await fetch(
+      `https://api.imgbb.com/1/upload?key=${process.env.NEXT_PUBLIC_IMAGE_UPLOAD_KEY}`,
+      {
+        method: "POST",
+        body: formData,
+      }
+    );
+    if (res.ok) {
+      const data = await res.json();
+      return data.data.display_url; // Return the URL of the uploaded image
+    } else {
+      await Swal.fire({
+        title: "Error!",
+        text: "Image upload failed.",
+        icon: "error",
+      });
+      return null;
+    }
+  };
   const updateBook = async (bookData) => {
-    setIsUpdating(true);
+    setIsUpdating(true); // Set loading state immediately
+
     const previousBook = books.find((book) => book._id === bookData._id);
     setBooks((prevBooks) =>
       prevBooks.map((book) =>
@@ -98,10 +154,9 @@ export default function BooksList() {
     if (imageFile) {
       const uploadedImageUrl = await uploadImage(imageFile);
       if (uploadedImageUrl) {
-        bookData.image = uploadedImageUrl;
+        bookData.image = uploadedImageUrl; // Set the uploaded image URL
       }
     }
-
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/api/books/${bookData._id}`,
       {
@@ -115,6 +170,7 @@ export default function BooksList() {
 
     if (res.ok) {
       const updatedBook = await res.json();
+
       await Swal.fire({
         title: "Updated!",
         text: "The book has been updated.",
@@ -128,8 +184,8 @@ export default function BooksList() {
       );
       setIsModalOpen(false);
       setSelectedBook(null);
-      setImageFile(null);
-      setImageUrl("");
+      setImageFile(null); // Reset the image file state
+      setImageUrl(""); // Reset the image URL state
     } else {
       await Swal.fire({
         title: "Error!",
@@ -147,23 +203,33 @@ export default function BooksList() {
 
   const handleEditClick = (book) => {
     setSelectedBook(book);
-    setImageUrl(book.image || "");
+    setImageUrl(book.image || ""); // Set the current image URL
     setIsModalOpen(true);
   };
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setSelectedBook(null);
-    setImageFile(null);
-    setImageUrl("");
+    setImageFile(null); // Reset the image file state
+    setImageUrl(""); // Reset the image URL state
   };
 
-  const handlePageChange = (pageNumber) => {
-    setCurrentPage(pageNumber);
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    const updatedValue = name === "price" ? parseFloat(value) : value;
+
+    setSelectedBook((prev) => ({ ...prev, [name]: updatedValue }));
   };
 
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setImageFile(file);
+      setImageUrl(URL.createObjectURL(file)); // Create a temporary URL for preview
+    }
+  };
   if (isLoading && books.length === 0) {
-    return <Loading />;
+    return <Loading />; // Use your existing loading component
   }
 
   if (books.length === 0) {
@@ -236,20 +302,122 @@ export default function BooksList() {
         </tbody>
       </table>
 
-      {/* Pagination controls */}
-      <div className="mt-4 flex justify-center">
-        {Array.from({ length: totalPages }, (_, index) => (
-          <button
-            key={index}
-            onClick={() => handlePageChange(index + 1)}
-            className={`mx-1 px-3 py-2 border ${
-              currentPage === index + 1 ? "bg-gray-200" : ""
-            }`}
-          >
-            {index + 1}
-          </button>
-        ))}
-      </div>
+      {isLoading && (
+        <div className="text-center mt-4">Loading more books...</div>
+      )}
+
+      {isModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white p-8 rounded shadow-lg max-w-2xl w-full">
+            <h2 className="text-lg font-semibold">Update Book</h2>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                updateBook(selectedBook); // Call updateBook directly
+              }}
+              className="flex"
+            >
+              <div className="flex-1">
+                <div className="mt-4">
+                  <label className="block text-sm">Name</label>
+                  <input
+                    type="text"
+                    name="name"
+                    value={selectedBook?.name || ""}
+                    onChange={handleInputChange}
+                    className="border p-2 w-full"
+                    required
+                  />
+                </div>
+                <div className="mt-4">
+                  <label className="block text-sm">Author</label>
+                  <input
+                    type="text"
+                    name="author"
+                    value={selectedBook?.author || ""}
+                    onChange={handleInputChange}
+                    className="border p-2 w-full"
+                    required
+                  />
+                </div>
+                <div className="mt-4">
+                  <label className="block text-sm">Price</label>
+                  <input
+                    type="number"
+                    name="price"
+                    value={selectedBook?.price || ""}
+                    onChange={handleInputChange}
+                    className="border p-2 w-full"
+                    required
+                    step="0.01"
+                  />
+                </div>
+                <div className="mt-4">
+                  <label className="block text-sm">Category</label>
+                  <input
+                    type="text"
+                    name="category"
+                    value={selectedBook?.category || ""}
+                    onChange={handleInputChange}
+                    className="border p-2 w-full"
+                    required
+                  />
+                </div>
+                <div className="mt-4">
+                  <label className="block text-sm">Description</label>
+                  <textarea
+                    name="description"
+                    value={selectedBook?.description || ""}
+                    onChange={handleInputChange}
+                    className="border p-2 w-full h-32"
+                    required
+                  />
+                </div>
+              </div>
+              {/* New section for image upload on the right side */}
+              <div className="ml-4 w-1/3">
+                <label className="block text-sm">Current Image</label>
+                {imageUrl && (
+                  <Image
+                    src={imageUrl}
+                    alt="Book cover"
+                    width={200}
+                    height={300}
+                    className="mt-2 mb-2"
+                  />
+                )}
+                <label className="block text-sm mt-4">Change Image</label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                  className="border p-2 w-full"
+                />
+              </div>
+            </form>
+            {/* Buttons stay at the bottom of the modal */}
+            <div className="mt-4 flex justify-between">
+              <button
+                type="submit"
+                onClick={(e) => {
+                  e.preventDefault();
+                  updateBook(selectedBook); // Call updateBook directly
+                }}
+                className="bg-[#F65D4E] text-white px-4 py-2 rounded"
+              >
+                {isUpdating ? "Updating..." : "Update Book"}
+              </button>
+              <button
+                type="button"
+                onClick={handleCloseModal}
+                className="bg-gray-300 text-gray-800 px-4 py-2 rounded ml-2"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
