@@ -8,9 +8,12 @@ export async function GET(request, { params }) {
   await connectToDatabase();
 
   try {
-    const individualCart = await Cart.find({email: email});
+    const individualCart = await Cart.find({ email: email });
     if (!individualCart) {
-      return NextResponse.json({ message: " individualCart not found" }, { status: 404 });
+      return NextResponse.json(
+        { message: " individualCart not found" },
+        { status: 404 }
+      );
     }
     // console.log(individualCart);
     return NextResponse.json(individualCart, { status: 200 });
