@@ -22,10 +22,7 @@ export default function BooksList() {
     const fetchBooks = async () => {
       setIsLoading(true);
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/books?start=${
-          (currentPage - 1) * itemsPerPage
-        }&limit=${itemsPerPage}`,
-        { cache: "no-store" }
+        `${process.env.NEXT_PUBLIC_API_URL}/api/books`
       );
 
       if (res.ok) {
