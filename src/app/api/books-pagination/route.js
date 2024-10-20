@@ -16,7 +16,7 @@ export async function GET(req) {
 
     const totalBooks = await Book.countDocuments();
 
-    // const blogs = await Blog.find({});
+    
     return new Response(JSON.stringify({
       success: true,
       data: Books,
@@ -33,7 +33,7 @@ export async function GET(req) {
   
   } catch (error) {
     return new Response(
-      JSON.stringify({ success: false, message: "Unable to fetch blogs" }),
+      JSON.stringify({ success: false, message: "Unable to fetch Books" }),
       {
         status: 500,
       }
