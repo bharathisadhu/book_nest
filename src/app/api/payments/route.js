@@ -40,6 +40,7 @@
 
 import { NextResponse } from "next/server";
 import connectDB from "@/lib/connectDB";
+import { Payment } from "../../../../models/Payment";
 
 let db;
 export async function POST(request) {
@@ -52,4 +53,20 @@ export async function POST(request) {
   console.log("from payments:", result);
 
   return NextResponse.json(result);
+}
+
+export async function GET(request) {
+  db = await connectDB();
+
+  try {
+    // Fetch all books
+    const payment = await Payment.find({});
+    return NextResponse.json(payment);
+  } catch (error) {
+    console.error("Error fetching books:", error);
+    return NextResponse.json(
+      { success: false, message: "Unable to fetch payment" },
+      { status: 500 }
+    );
+  }
 }
