@@ -56,6 +56,7 @@ const nextConfig = {
       "images.unsplash.com",
       "m.media-amazon.com",
       "via.placeholder.com",
+      "sandbox.sslcommerz.com",
       "*",
     ],
   },
