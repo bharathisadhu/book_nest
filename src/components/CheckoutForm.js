@@ -115,7 +115,7 @@ const CheckoutForm = ({ cartBook, setCartBook }) => {
     };
 
     const booksArray = cartBook.map((item) => ({
-      bookId: item._id,
+      bookId: item.BookId,
       bookName: item.name,
       price: item.price,
       cardCount: item.cardCount,
