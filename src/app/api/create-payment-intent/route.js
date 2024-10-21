@@ -14,7 +14,6 @@ export async function POST(req) {
     const data = await req.json();
     const { books } = data;
     // Log request data for debugging
-    console.log("Request data:", data);
     // Calculate the total amount
     const totalAmount = books.reduce((total, book) => {
       return total + book.price * book.cardCount;
@@ -36,8 +35,8 @@ export async function POST(req) {
       payment_method_types: ["card"],
     });
     // Save payment with "pending" status
-  //   const result = await db.collection("payments").insertOne(paymentIntent);
-  // console.log("from payments:", result);
+    //   const result = await db.collection("payments").insertOne(paymentIntent);
+    // console.log("from payments:", result);
 
     return NextResponse.json({
       clientSecret: paymentIntent.client_secret,
