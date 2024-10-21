@@ -10,12 +10,12 @@ import {
   AiOutlineLineChart,
 } from "react-icons/ai";
 import { HiMenuAlt3 } from "react-icons/hi";
-import { FaHome } from "react-icons/fa";
 import Link from "next/link";
 import { IoBookSharp } from "react-icons/io5";
 import { usePathname } from "next/navigation";
 import logo from "../../public/BookNest.png";
 import axios from "axios";
+import Loading from "../app/loading";
 
 const DashboardLayout = ({ children }) => {
   const pathname = usePathname();
@@ -120,9 +120,8 @@ const DashboardLayout = ({ children }) => {
   );
 
   if (loading) {
-    return <p>Loading.......</p>;
+    return <p><Loading /></p>;
   }
-
   return (
     <main className="flex">
       <button

@@ -1,4 +1,5 @@
 
+
 "use client";
 
 import { useEffect, useState } from "react";
@@ -25,26 +26,18 @@ export default function BooksList() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [imageUrl, setImageUrl] = useState(""); // State for the uploaded image URL
   const [imageFile, setImageFile] = useState(null); // State for the image file
-  const itemsPerPage = 10; // Keep this to control the number of books loaded at once
   const [hasMore, setHasMore] = useState(true); // To track if more books are available
-  const [currentStartIndex, setCurrentStartIndex] = useState(0); // Current index for loading books
-
-
-
-
+  
 useEffect(() => {
     
         const fetchData = async () => {
            
             try {
 
-
               const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/books-pagination?page=${page}&limit=${limit}`,{ cache: "no-store" });
-              
-             
-               
                 setBooks(response.data.data);
                 setTotalPages(response.data.totalPages);
+                
             } catch (error) {
                 console.error('Failed to fetch users:', error);
             }

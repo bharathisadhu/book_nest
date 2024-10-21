@@ -126,9 +126,9 @@ export default function BooksCard({ book }) {
     }
 
     try {
-      const response = await axios.post("/api/carts", {
-        _id, // Book ID
+      const response = await axios.post(`/api/carts/${session.user.email}`, {
         name,
+        BookId: book._id, // Updated this from bookId to _id
         description: book.description || "",
         image,
         author: book.author || "",
@@ -137,8 +137,8 @@ export default function BooksCard({ book }) {
         category,
         cardCount,
         email: session?.user?.email, // Ensure this is not undefined
-        cardCount,
       });
+      console.log("Response:", response);
 
       if (response.status === 201) {
         setIsInCart(true);

@@ -272,6 +272,16 @@ const CheckoutForm = ({ cartBook, setCartBook }) => {
     }
   };
 
+  const handlePaymentMethodChange = (method) => {
+    if (method === "cash") {
+      setIsCashOnDelivery(true);
+      setIsStripePayment(false);
+    } else {
+      setIsCashOnDelivery(false);
+      setIsStripePayment(true);
+    }
+  };
+
   return (
     <section className="bg-white py-8 antialiased dark:bg-gray-900 md:py-16">
       <form
@@ -513,82 +523,72 @@ const CheckoutForm = ({ cartBook, setCartBook }) => {
                 </div>
               </div>
             </div>
-            <div class="space-y-2">
-              <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+            <div className="space-y-2">
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
                 Delivery Methods
               </h3>
               <div className="flex flex-col md:flex-row gap-6">
-              <div class="grid grid-cols-1 gap-4 ">
-                <div class="rounded-lg border border-gray-200 bg-gray-50 p-4 ps-4 dark:border-gray-700 dark:bg-gray-800">
-                  <div class="flex items-start">
-                    <div class="flex h-5 items-center">
-                      <input
-                        id="dhl"
-                        aria-describedby="dhl-text"
-                        type="radio"
-                        name="delivery-method"
-                        value=""
-                        class="h-4 w-4 border-gray-300 bg-white text-primary-600 focus:ring-2 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600"
-                        checked={isCashOnDelivery}
-                        onChange={() => setIsCashOnDelivery(!isCashOnDelivery)}
-                      />
-                    </div>
-
-                    <div class="ms-4 text-sm">
-                      <label
-                        for="dhl"
-                        class="font-medium leading-none text-gray-900 dark:text-white"
-                      >
-                        Cash on Delivery
-                      </label>
-                      <p
-                        id="dhl-text"
-                        class="mt-1 text-xs font-normal text-gray-500 dark:text-gray-400"
-                      >
-                        Get it by Tommorow
-                      </p>
+                <div className="grid grid-cols-1 gap-4">
+                  <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 ps-4 dark:border-gray-700 dark:bg-gray-800">
+                    <div className="flex items-start">
+                      <div className="flex h-5 items-center">
+                        <input
+                          id="cash-on-delivery"
+                          type="radio"
+                          name="delivery-method"
+                          value="cash"
+                          className="h-4 w-4 border-gray-300 bg-white text-primary-600 focus:ring-2 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600"
+                          checked={isCashOnDelivery}
+                          onChange={() => handlePaymentMethodChange("cash")}
+                        />
+                      </div>
+                      <div className="ms-4 text-sm">
+                        <label
+                          htmlFor="cash-on-delivery"
+                          className="font-medium leading-none text-gray-900 dark:text-white"
+                        >
+                          Cash on Delivery
+                        </label>
+                        <p className="mt-1 text-xs font-normal text-gray-500 dark:text-gray-400">
+                          Get it by Tomorrow
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              <div class="grid grid-cols-1 gap-4">
-                <div class="rounded-lg border border-gray-200 bg-gray-50 p-4 ps-4 dark:border-gray-700 dark:bg-gray-800">
-                  <div class="flex items-start">
-                    <div class="flex h-5 items-center">
-                      <input
-                        id="dhl1"
-                        aria-describedby="dhl1-text"
-                        type="radio"
-                        name="delivery-method"
-                        value=""
-                        class="h-4 w-4 border-gray-300 bg-white text-primary-600 focus:ring-2 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600"
-                        checked={isStripePayment}
-                        onChange={() => setIsStripePayment(isStripePayment)}
-                      />
-                    </div>
-
-                    <div class="ms-4 text-sm">
-                      <label
-                        for="dhl1"
-                        class="font-medium leading-none text-gray-900 dark:text-white"
-                      >
-                        Payment by Stripe
-                      </label>
-                      <p
-                        id="dhl1-text"
-                        class="mt-1 text-xs font-normal text-gray-500 dark:text-gray-400"
-                      >
-                        Instant Payment
-                      </p>
+                <div className="grid grid-cols-1 gap-4">
+                  <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 ps-4 dark:border-gray-700 dark:bg-gray-800">
+                    <div className="flex items-start">
+                      <div className="flex h-5 items-center">
+                        <input
+                          id="payment-by-stripe"
+                          type="radio"
+                          name="delivery-method"
+                          value="stripe"
+                          className="h-4 w-4 border-gray-300 bg-white text-primary-600 focus:ring-2 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600"
+                          checked={isStripePayment}
+                          onChange={() => handlePaymentMethodChange("stripe")}
+                        />
+                      </div>
+                      <div className="ms-4 text-sm">
+                        <label
+                          htmlFor="payment-by-stripe"
+                          className="font-medium leading-none text-gray-900 dark:text-white"
+                        >
+                          Payment by Stripe
+                        </label>
+                        <p className="mt-1 text-xs font-normal text-gray-500 dark:text-gray-400">
+                          Instant Payment
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
               </div>
             </div>
             <div className="space-y-4">
-              {!isCashOnDelivery && isStripePayment && (
-                <>
+              {isStripePayment && (
+                <div className="space-y-4">
                   <div className="mt-4">
                     <input
                       type="text"
@@ -601,8 +601,9 @@ const CheckoutForm = ({ cartBook, setCartBook }) => {
                     className="p-4 mt-4 border rounded"
                     options={{ hidePostalCode: true }}
                   />
-                </>
+                </div>
               )}
+              {/* Submit Button */}
               <button
                 type="submit"
                 className="mt-4 w-full bg-[#F65D4E] text-white rounded p-2"
