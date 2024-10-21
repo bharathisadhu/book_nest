@@ -1,3 +1,5 @@
+
+
 "use client";
 
 import { useEffect, useState } from "react";
@@ -5,8 +7,18 @@ import { HiPencilAlt, HiOutlineTrash } from "react-icons/hi";
 import Loading from "../app/loading";
 import Swal from "sweetalert2";
 import Image from "next/image";
+import axios from 'axios';
 
 export default function BooksList() {
+ 
+    const [page, setPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
+    const limit = 10; 
+
+    const [loading, setLoading] = useState(false);
+
+
+
   const [books, setBooks] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isUpdating, setIsUpdating] = useState(false);
@@ -14,52 +26,41 @@ export default function BooksList() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [imageUrl, setImageUrl] = useState(""); // State for the uploaded image URL
   const [imageFile, setImageFile] = useState(null); // State for the image file
-  const itemsPerPage = 10; // Keep this to control the number of books loaded at once
   const [hasMore, setHasMore] = useState(true); // To track if more books are available
-  const [currentStartIndex, setCurrentStartIndex] = useState(0); // Current index for loading books
+  
+useEffect(() => {
+    
+        const fetchData = async () => {
+           
+            try {
 
-  useEffect(() => {
-    const fetchBooks = async () => {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/books`, {
-        cache: "no-store",
-      });
+              const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/books-pagination?page=${page}&limit=${limit}`,{ cache: "no-store" });
+                setBooks(response.data.data);
+                setTotalPages(response.data.totalPages);
+                
+            } catch (error) {
+                console.error('Failed to fetch users:', error);
+            }
+            setLoading(false); 
+        };
 
-      if (res.ok) {
-        const data = await res.json();
-        setBooks(Array.isArray(data) ? data : []);
-        setHasMore(data.length > itemsPerPage); // Check if more books are available
-      } else {
-        console.error("Failed to fetch books: ", res.status);
-        setBooks([]);
-      }
+        
+        fetchData();
+    }, [page]); 
 
-      setIsLoading(false);
+
+ const handlePreviousPage = () => {
+        if (page > 1) {
+            setPage(page - 1); 
+        }
     };
 
-    fetchBooks();
-  }, []);
+    const handleNextPage = () => {
+        if (page < totalPages) {
+            setPage(page + 1); 
+        }
+    };
 
-  const loadMoreBooks = async () => {
-    if (!hasMore || isLoading) return;
-
-    setIsLoading(true);
-
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/books?start=${currentStartIndex}&limit=${itemsPerPage}`,
-      {
-        cache: "no-store",
-      }
-    );
-
-    if (res.ok) {
-      const newBooks = await res.json();
-      setBooks((prev) => [...prev, ...newBooks]);
-      setCurrentStartIndex((prev) => prev + itemsPerPage); // Update the start index
-      setHasMore(newBooks.length === itemsPerPage); // Check if more books are available
-    }
-
-    setIsLoading(false);
-  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -302,10 +303,7 @@ export default function BooksList() {
         </tbody>
       </table>
 
-      {isLoading && (
-        <div className="text-center mt-4">Loading more books...</div>
-      )}
-
+     
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
           <div className="bg-white p-8 rounded shadow-lg max-w-2xl w-full">
@@ -418,6 +416,29 @@ export default function BooksList() {
           </div>
         </div>
       )}
+
+
+      <div className="flex justify-between items-center mt-4">
+                <button 
+                    className="btn btn-primary" 
+                    onClick={handlePreviousPage} 
+                    disabled={page === 1}
+                >
+                    Previous
+                </button>
+                <span className="text-lg">
+                    Page {page} of {totalPages}
+                </span>
+                <button 
+                    className="btn btn-primary" 
+                    onClick={handleNextPage} 
+                    disabled={page === totalPages}
+                >
+                    Next
+                </button>
+            </div>
+
+
     </div>
   );
 }
