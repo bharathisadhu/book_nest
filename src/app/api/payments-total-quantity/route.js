@@ -80,7 +80,7 @@ export async function GET(req) {
     const url = new URL(req.url);
     const bookId = url.searchParams.get('blogId');
 
-     // Calculate the total quantity for the specified bookId
+     // Calculate the total quantity for the specified 
       let totalQuantity = 0;
       data.forEach(order => {
         order.books.forEach(book => {
