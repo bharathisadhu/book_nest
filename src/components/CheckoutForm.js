@@ -245,7 +245,7 @@ const CheckoutForm = ({ cartBook, setCartBook }) => {
             date: new Date(),
             books: booksArray,
             totalAmount: total + deliveryCharge - discount,
-            status: "pending",
+            status: "completed",
           };
 
           const response = await axios.post("/api/payments", payment);
