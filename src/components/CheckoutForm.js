@@ -6,6 +6,7 @@ import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import SSLComponent from "./SSLComponent";
 import Image from "next/image";
+import { set } from "mongoose";
 
 const CheckoutForm = ({ cartBook, setCartBook }) => {
   const [isDiscountSectionHidden, setIsDiscountSectionHidden] = useState(false);
@@ -17,7 +18,7 @@ const CheckoutForm = ({ cartBook, setCartBook }) => {
   const [error, setError] = useState("");
   const [isCashOnDelivery, setIsCashOnDelivery] = useState(false);
   const [isStripePayment, setIsStripePayment] = useState(true);
-  const [isSSLPayment, setSSLPayment] = useState(false)
+  const [isSSLPayment, setSSLPayment] = useState(false);
   const stripe = useStripe();
   const elements = useElements();
   const { data: session } = useSession();
@@ -244,7 +245,7 @@ const CheckoutForm = ({ cartBook, setCartBook }) => {
             date: new Date(),
             books: booksArray,
             totalAmount: total + deliveryCharge - discount,
-            status: "pending",
+            status: "completed",
           };
 
           const response = await axios.post("/api/payments", payment);
@@ -275,9 +276,6 @@ const CheckoutForm = ({ cartBook, setCartBook }) => {
     }
   };
 
-
-
-
   const [method, setMethod] = useState([
     {
       name: "VISA",
@@ -303,6 +301,21 @@ const CheckoutForm = ({ cartBook, setCartBook }) => {
     window.open(PayURL, "_blank");
   };
 
+  const handlePaymentMethodChange = (method) => {
+    if (method === "cash") {
+      setIsCashOnDelivery(true);
+      setIsStripePayment(false);
+      setSSLPayment(false);
+    } else if (method === "ssl") {
+      setIsCashOnDelivery(false);
+      setIsStripePayment(false);
+      setSSLPayment(true);
+    } else {
+      setIsCashOnDelivery(false);
+      setIsStripePayment(true);
+      setSSLPayment(false);
+    }
+  };
 
   return (
     <section className="bg-white py-8 antialiased dark:bg-gray-900 md:py-16">
@@ -332,7 +345,7 @@ const CheckoutForm = ({ cartBook, setCartBook }) => {
                       name="your_name"
                       className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
                       value={session?.user.name || ""}
-                      // required
+                      required
                     />
                   </div>
 
@@ -349,7 +362,7 @@ const CheckoutForm = ({ cartBook, setCartBook }) => {
                       name="your_email"
                       className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
                       value={session?.user.email || ""}
-                      // required
+                      required
                     />
                   </div>
 
@@ -366,6 +379,7 @@ const CheckoutForm = ({ cartBook, setCartBook }) => {
                       id="select_country"
                       name="select_country"
                       className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
+                      required
                     >
                       <option selected>Bangladesh</option>
                     </select>
@@ -384,6 +398,7 @@ const CheckoutForm = ({ cartBook, setCartBook }) => {
                       id="select_city"
                       name="select_city"
                       className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
+                      required
                     >
                       <option selected>Chittagong</option>
                       <option value="DK">Dhaka</option>
@@ -401,7 +416,7 @@ const CheckoutForm = ({ cartBook, setCartBook }) => {
                       id="your_Address"
                       name="your_Address"
                       className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
-                      // required
+                      required
                     />
                   </div>
                   <div>
@@ -416,7 +431,7 @@ const CheckoutForm = ({ cartBook, setCartBook }) => {
                       id="postal_code"
                       name="postal_code"
                       className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
-                      // required
+                      required
                     />
                   </div>
                 </div>
@@ -550,110 +565,110 @@ const CheckoutForm = ({ cartBook, setCartBook }) => {
                 Delivery Methods
               </h3>
               <div className="flex flex-col md:flex-row gap-6">
-              <div class="grid grid-cols-1 gap-4 ">
-                <div class="rounded-lg border border-gray-200 bg-gray-50 p-4 ps-4 dark:border-gray-700 dark:bg-gray-800">
-                  <div class="flex items-start">
-                    <div class="flex h-5 items-center">
-                      <input
-                        id="dhl"
-                        aria-describedby="dhl-text"
-                        type="radio"
-                        name="delivery-method"
-                        value=""
-                        class="h-4 w-4 border-gray-300 bg-white text-primary-600 focus:ring-2 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600"
-                        // checked={isCashOnDelivery}
-                        onChange={() => setIsCashOnDelivery(!isCashOnDelivery)}
-                      />
-                    </div>
+                <div class="grid grid-cols-1 gap-4 ">
+                  <div class="rounded-lg border border-gray-200 bg-gray-50 p-4 ps-4 dark:border-gray-700 dark:bg-gray-800">
+                    <div class="flex items-start">
+                      <div class="flex h-5 items-center">
+                        <input
+                          id="dhl"
+                          aria-describedby="dhl-text"
+                          type="radio"
+                          name="delivery-method"
+                          value=""
+                          class="h-4 w-4 border-gray-300 bg-white text-primary-600 focus:ring-2 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600"
+                          checked={isCashOnDelivery}
+                          onChange={() => handlePaymentMethodChange("cash")}
+                        />
+                      </div>
 
-                    <div class="ms-4 text-sm">
-                      <label
-                        for="dhl"
-                        class="font-medium leading-none text-gray-900 dark:text-white"
-                      >
-                        Cash on Delivery
-                      </label>
-                      <p
-                        id="dhl-text"
-                        class="mt-1 text-xs font-normal text-gray-500 dark:text-gray-400"
-                      >
-                        Get it by Tommorow
-                      </p>
+                      <div class="ms-4 text-sm">
+                        <label
+                          for="dhl"
+                          class="font-medium leading-none text-gray-900 dark:text-white"
+                        >
+                          Cash on Delivery
+                        </label>
+                        <p
+                          id="dhl-text"
+                          class="mt-1 text-xs font-normal text-gray-500 dark:text-gray-400"
+                        >
+                          Get it by Tommorow
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              {/* ssl commerzz */}
-              <div class="grid grid-cols-1 gap-4 ">
-                <div class="rounded-lg border border-gray-200 bg-gray-50 p-4 ps-4 dark:border-gray-700 dark:bg-gray-800">
-                  <div class="flex items-start">
-                    <div class="flex h-5 items-center">
-                      <input
-                        id="dhl"
-                        aria-describedby="dhl-text"
-                        type="radio"
-                        name="delivery-method"
-                        value=""
-                        class="h-4 w-4 border-gray-300 bg-white text-primary-600 focus:ring-2 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600"
-                        // checked={isCashOnDelivery}
-                        onChange={() => setSSLPayment(!isSSLPayment)}
-                      />
-                    </div>
+                {/* ssl commerzz */}
+                <div class="grid grid-cols-1 gap-4 ">
+                  <div class="rounded-lg border border-gray-200 bg-gray-50 p-4 ps-4 dark:border-gray-700 dark:bg-gray-800">
+                    <div class="flex items-start">
+                      <div class="flex h-5 items-center">
+                        <input
+                          id="dhl"
+                          aria-describedby="dhl-text"
+                          type="radio"
+                          name="delivery-method"
+                          value=""
+                          class="h-4 w-4 border-gray-300 bg-white text-primary-600 focus:ring-2 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600"
+                          checked={isSSLPayment}
+                          onChange={() => handlePaymentMethodChange("ssl")}
+                        />
+                      </div>
 
-                    <div class="ms-4 text-sm">
-                      <label
-                        for="dhl"
-                        class="font-medium leading-none text-gray-900 dark:text-white"
-                      >
-                        Pay Via SSL Commerz
-                      </label>
-                      <p
-                        id="dhl-text"
-                        class="mt-1 text-xs font-normal text-gray-500 dark:text-gray-400"
-                      >
-                        {/* Get it by Tommorow */}
-                      </p>
+                      <div class="ms-4 text-sm">
+                        <label
+                          for="dhl"
+                          class="font-medium leading-none text-gray-900 dark:text-white"
+                        >
+                          Pay Via SSL Commerz
+                        </label>
+                        <p
+                          id="dhl-text"
+                          class="mt-1 text-xs font-normal text-gray-500 dark:text-gray-400"
+                        >
+                          Pay With Local Cards
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              <div class="grid grid-cols-1 gap-4">
-                <div class="rounded-lg border border-gray-200 bg-gray-50 p-4 ps-4 dark:border-gray-700 dark:bg-gray-800">
-                  <div class="flex items-start">
-                    <div class="flex h-5 items-center">
-                      <input
-                        id="dhl1"
-                        aria-describedby="dhl1-text"
-                        type="radio"
-                        name="delivery-method"
-                        value=""
-                        class="h-4 w-4 border-gray-300 bg-white text-primary-600 focus:ring-2 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600"
-                        // checked={isStripePayment}
-                        onChange={() => setIsStripePayment(isStripePayment)}
-                      />
-                    </div>
+                <div class="grid grid-cols-1 gap-4">
+                  <div class="rounded-lg border border-gray-200 bg-gray-50 p-4 ps-4 dark:border-gray-700 dark:bg-gray-800">
+                    <div class="flex items-start">
+                      <div class="flex h-5 items-center">
+                        <input
+                          id="dhl1"
+                          aria-describedby="dhl1-text"
+                          type="radio"
+                          name="delivery-method"
+                          value=""
+                          class="h-4 w-4 border-gray-300 bg-white text-primary-600 focus:ring-2 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600"
+                          checked={isStripePayment}
+                          onChange={() => handlePaymentMethodChange("stripe")}
+                        />
+                      </div>
 
-                    <div class="ms-4 text-sm">
-                      <label
-                        for="dhl1"
-                        class="font-medium leading-none text-gray-900 dark:text-white"
-                      >
-                        Payment by Stripe
-                      </label>
-                      <p
-                        id="dhl1-text"
-                        class="mt-1 text-xs font-normal text-gray-500 dark:text-gray-400"
-                      >
-                        Instant Payment
-                      </p>
+                      <div class="ms-4 text-sm">
+                        <label
+                          for="dhl1"
+                          class="font-medium leading-none text-gray-900 dark:text-white"
+                        >
+                          Payment Via Stripe
+                        </label>
+                        <p
+                          id="dhl1-text"
+                          class="mt-1 text-xs font-normal text-gray-500 dark:text-gray-400"
+                        >
+                          Instant Payment
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
               </div>
             </div>
             <div className="space-y-4">
-              {!isCashOnDelivery && isStripePayment && isSSLPayment && (
+              {!isCashOnDelivery && !isSSLPayment && (
                 <>
                   <div className="mt-4">
                     <input
@@ -669,13 +684,15 @@ const CheckoutForm = ({ cartBook, setCartBook }) => {
                   />
                 </>
               )}
-              <button
-                type="submit"
-                className="mt-4 w-full bg-[#F65D4E] text-white rounded p-2"
-                disabled={!stripe || !elements || loading}
-              >
-                {isCashOnDelivery ? "Place Order" : "Pay Now"}
-              </button>
+              {!isSSLPayment && (
+                <button
+                  type="submit"
+                  className="mt-4 w-full bg-[#F65D4E] text-white rounded p-2"
+                  disabled={!stripe || !elements || loading}
+                >
+                  {isCashOnDelivery && isSSLPayment ? "Place Order" : "Pay Now"}
+                </button>
+              )}
               {error && (
                 <p className="text-[#F65D4E] text-center mt-2">{error}</p>
               )}
@@ -684,60 +701,59 @@ const CheckoutForm = ({ cartBook, setCartBook }) => {
                   Your transaction ID: {transactionId}
                 </p>
               )}
-
-             
             </div>
           </div>
         </div>
-        <div className="py-4">
-          <button
-            onClick={PaymentOption}
-            className="p-2 bg-black rounded-lg text-white w-[22vh]"
-          >
-            Check Out
-          </button>
-        </div>
-
+        {isSSLPayment && (
+          <div className="py-4">
+            <button
+              onClick={PaymentOption}
+              className="mt-4 w-full bg-[#F65D4E] text-white rounded p-2"
+            >
+              Check Out
+            </button>
+          </div>
+        )}
 
         {/* Modal */}
-      {showModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center overflow-auto bg-black bg-opacity-50">
-          <div className="bg-white rounded-lg shadow-lg w-[60vh] p-4">
-            <div className="flex justify-between items-center pb-2">
-              <h2 className="text-xl font-bold">Select Payment Method</h2>
-              <button
-                onClick={() => setShowModal(false)}
-                className="text-gray-600 text-xl"
-              >
-                &times;
-              </button>
-            </div>
-            <section className="flex justify-center items-center py-4 ">
-              <div className="grid grid-cols-6 gap-4 p-4  ">
-                {method.map((item, i) => {
-                  return (
-                    <button
-                      key={item.id}
-                      className=" hover:shadow-xl "
-                      onClick={() => {
-                        PayNow(item["redirectGatewayURL"]);
-                      }}
-                    >
-                      <Image
-                        height={200}
-                        width={200}
-                        className=" w-16 "
-                        src={item["logo"]}
-                        alt="pay"
-                      />
-                    </button>
-                  );
-                })}
+        {showModal && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center overflow-auto bg-black bg-opacity-50">
+            <div className="bg-white rounded-lg shadow-lg w-[60vh] p-4">
+              <div className="flex justify-between items-center pb-2">
+                <h2 className="text-xl font-bold">Select Payment Method</h2>
+                <button
+                  onClick={() => setShowModal(false)}
+                  className="text-gray-600 text-xl"
+                >
+                  &times;
+                </button>
               </div>
-            </section>
+              <section className="flex justify-center items-center py-4 ">
+                <div className="grid grid-cols-6 gap-4 p-4  ">
+                  {method.map((item, i) => {
+                    return (
+                      <button
+                        key={item.id}
+                        className=" hover:shadow-xl "
+                        onClick={() => {
+                          PayNow(item["redirectGatewayURL"]);
+                        }}
+                      >
+                        <Image
+                          height={200}
+                          width={200}
+                          className=" w-16 "
+                          src={item["logo"]}
+                          alt="pay"
+                        />
+                      </button>
+                    );
+                  })}
+                </div>
+              </section>
+            </div>
           </div>
-        </div>
-      )}
+        )}
       </form>
     </section>
   );
