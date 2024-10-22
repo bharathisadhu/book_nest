@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation"; // To get query params
 import BooksCard from "@/components/BooksCard";
+import UpcommingCard from "@/components/UpcommingCard";
 import { GoArrowRight, GoChevronDown } from "react-icons/go";
 import { HiX } from "react-icons/hi"; // for mobile drawer close button
 import Link from "next/link";
@@ -63,6 +64,7 @@ const BooksPage = () => {
 
     fetchData();
   }, [baseUrl]);
+
 
   useEffect(() => {
     let filtered = books;
@@ -325,11 +327,18 @@ const BooksPage = () => {
                 </div>
               </div>
               {/* Books Grid */}
+              
               <div className="col-span-4 lg:col-span-3 grid grid-cols-2 lg:grid-cols-6 md:grid-cols-3 justify-center divide-y divide-x p-2 gap-4">
                 {currentBooks.map((book) => (
                   <BooksCard key={book.id} book={book} />
                 ))}
               </div>
+
+
+              
+
+
+
             </div>
             {/* Pagination */}
             <div className="flex justify-center my-10 lg:ml-96">

@@ -15,9 +15,7 @@ export default function Cart() {
         const res = await axios.get(`/api/carts/${session?.user?.email}`, {
           cache: "no-store",
         });
-        
-        console.log(res);
-        
+
         if (res.status === 200) {
           // In Axios, the response data is already parsed as JSON
           const data = res.data;
@@ -26,19 +24,18 @@ export default function Cart() {
           console.error("Failed to fetch carts: ", res.status);
           setCarts([]);
         }
-        
+
         setIsLoading(false);
-        
       } catch (error) {
         console.error("Error loading carts:", error.message); // Log the error message
         setCarts([]); // Set carts to empty array in case of error
         setIsLoading(false); // Ensure loading state is set to false even in case of error
       }
     };
-  
+
     fetchData();
   }, [session?.user?.email]);
-  
+
   console.log(carts);
   if (isLoading && carts.length === 0) {
     return <Loading />; // Use your existing loading component
@@ -52,7 +49,7 @@ export default function Cart() {
       <table className="min-w-full divide-y divide-gray-200">
         <thead className="bg-gray-100 whitespace-nowrap">
           <tr>
-          <th className="px-4 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
+            <th className="px-4 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
               Book Image
             </th>
             <th className="px-4 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
@@ -77,14 +74,14 @@ export default function Cart() {
             carts.map((cart) => {
               return (
                 <tr key={cart._id}>
-                    <td className="px-4 py-4 text-sm text-gray-800">
-                <Image
-                  src={cart.image}
-                  alt={cart.name}
-                  width={40}
-                  height={60}
-                />
-              </td>
+                  <td className="px-4 py-4 text-sm text-gray-800">
+                    <Image
+                      src={cart.image}
+                      alt={cart.name}
+                      width={40}
+                      height={60}
+                    />
+                  </td>
                   <td className="px-4 py-4 text-sm text-gray-800">
                     {cart?.name}
                   </td>

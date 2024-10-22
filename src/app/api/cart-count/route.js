@@ -10,11 +10,11 @@ export async function GET() {
     const cart = await Cart.find()
     const total = cart.reduce(
         (acc, book) => {
-          acc.totalPrice += book.price * book.quantity;
-          acc.totalQuantity += book.quantity;
+          acc.totalPrice += book.price * book.cardCount;
+          acc.totalcardCount += book.cardCount;
           return acc;
         },
-        { totalPrice: 0, totalQuantity: 0 }
+        { totalPrice: 0, totalcardCount: 0 }
       )
 
 
@@ -23,7 +23,7 @@ export async function GET() {
       return NextResponse.json({
         
         totalPrice: total.totalPrice,    // Total price of all books
-        totalQuantity: total.totalQuantity,  // Total quantity of all books
+        totalcardCount: total.totalcardCount,  // Total cardCount of all books
       });
     
 }

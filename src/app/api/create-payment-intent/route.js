@@ -1,60 +1,52 @@
-// /api/create-payment-intent/route.js
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
 import connectDB from "@/lib/connectDB";
-import Payment from "../../../../models/Payment";
 
+let db;
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
   apiVersion: "2022-11-15",
 });
 
 export async function POST(req) {
-  console.log("Hit payment intent route");
-
   try {
-    await connectDB();
-
+    // db = await connectDB();
     // Parse the request body
     const data = await req.json();
-    console.log("Request Data:", data); // Log the incoming data
-
-    const { books, email, name } = data; // Destructure after logging
-
-    if (!Array.isArray(books)) {
-      throw new Error("Books must be an array");
-    }
-
+    const { books } = data;
+    // Log request data for debugging
     // Calculate the total amount
     const totalAmount = books.reduce((total, book) => {
-      return total + book.price * book.quantity; // Calculate total based on book price and quantity
+      return total + book.price * book.cardCount;
     }, 0);
-
+    // Convert the totalAmount to cents for Stripe
+    const amountInCents = Math.round(totalAmount * 100);
+    // Check if the total amount meets the minimum charge amount
+    if (amountInCents < 50) {
+      // Assuming the minimum is 50 cents (0.50 USD)
+      return NextResponse.json(
+        { error: "The total amount must be at least $0.50 USD" },
+        { status: 400 }
+      );
+    }
+    // Create a payment intent with Stripe
     const paymentIntent = await stripe.paymentIntents.create({
-      amount: Math.round(totalAmount * 100), // Convert to cents
+      amount: amountInCents, // Amount in cents
       currency: "usd",
       payment_method_types: ["card"],
     });
-
     // Save payment with "pending" status
-    const payment = new Payment({
-      email,
-      name,
-      books, // Include books array
-      totalAmount, // Store the total amount
-      transactionId: paymentIntent.id,
-      status: "pending", // Initially "pending"
-      date: new Date(), // Add the current date
-    });
-
-    await payment.save();
+    //   const result = await db.collection("payments").insertOne(paymentIntent);
+    // console.log("from payments:", result);
 
     return NextResponse.json({
       clientSecret: paymentIntent.client_secret,
     });
   } catch (error) {
+    // Log detailed error response for debugging
     console.error("Error creating payment intent:", error);
+
     return NextResponse.json(
-      { error: "Failed to create payment intent" },
+      { error: "Failed to create payment intent", details: error.message },
       { status: 500 }
     );
   }

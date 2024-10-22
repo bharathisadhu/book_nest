@@ -1,3 +1,5 @@
+import React from "react";
+
 const getPayments = async () => {
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/payments`, {
@@ -5,11 +7,11 @@ const getPayments = async () => {
     });
 
     if (!res.ok) {
-      throw new Error("Failed to fetch users");
+      throw new Error("Failed to fetch payments");
     }
 
     const data = await res.json();
-    return Array.isArray(data.users) ? data.users : data || []; // Adjust according to your API response structure
+    return Array.isArray(data) ? data : []; // Adjust according to your API response structure
   } catch (error) {
     console.error("Error loading payments:", error.message); // Log the error message
     return []; // Return an empty array in case of error
@@ -20,12 +22,11 @@ export default async function SalesList() {
   const payments = await getPayments();
 
   if (payments.length === 0) {
-
     return (
       <div className="text-2xl font-bold text-red-500 my-10 text-center">
-        No users found or failed to load users.
+        No payments found or failed to load payments.
       </div>
-    ); // Show a message if no users
+    ); // Show a message if no payments
   }
 
   return (
@@ -34,19 +35,19 @@ export default async function SalesList() {
         <thead className="bg-gray-100 whitespace-nowrap">
           <tr>
             <th className="px-4 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
-              Book Name
+              Name
             </th>
             <th className="px-4 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
               Email
             </th>
             <th className="px-4 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
-              Price
-            </th>
-            <th className="px-4 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
               Date
             </th>
             <th className="px-4 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
-              TransactionId
+              Transaction ID
+            </th>
+            <th className="px-4 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
+              Total Amount
             </th>
           </tr>
         </thead>

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import Image from "next/image";
 import Swal from "sweetalert2";
@@ -8,12 +8,66 @@ import { FaDollarSign } from "react-icons/fa6";
 import { useSession } from "next-auth/react";
 
 export default function BooksCard({ book }) {
-  const { name, image, price, category, ratings, _id, quantity, cardCount } =
-    book;
+  const {
+    name,
+    image,
+    price,
+    category,
+    ratings,
+    _id,
+    publishType,
+    cardCount,
+    quantity,
+  } = book;
+
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [isInCart, setIsInCart] = useState(false);
   const { data: session } = useSession();
-  // console.log(cardCount);
+  const [stock, setStock] = useState(null);
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+
+  // useEffect(() => {
+  //   const fetchTotalcardCount = async () => {
+  //     const response = await fetch(
+  //       `${baseUrl}/api/payments-total-cardCount?blogId=${_id}`
+  //     );
+  //     const data = await response.json();
+  //     const status = cardCount - data > 0 ? "Stock In" : "Stock Out";
+  //     setStock(status);
+  //   };
+
+  //   const checkIfInCart = async () => {
+  //     if (!session?.user?.email) return;
+
+  //     try {
+  //       const response = await axios.get(
+  //         `${baseUrl}/api/carts/${session?.user?.email}`
+  //       );
+  //       const cartItems = response.data.cart || [];
+  //       const foundItem = cartItems.find((item) => item._id === _id);
+  //       setIsInCart(!!foundItem);
+  //     } catch (error) {
+  //       console.error("Error fetching cart items:", error);
+  //     }
+  //   };
+
+  //   fetchTotalcardCount();
+  //   checkIfInCart();
+  // }, [baseUrl, _id, cardCount, session]);
+
+  useEffect(() => {
+    if (!stock) {
+      const fetchTotalQuantity = async () => {
+        const response = await fetch(
+          `${baseUrl}/api/payments-total-quantity?blogId=${_id}`
+        );
+        const data = await response.json();
+        const status = quantity - data > 0 ? "Stock In" : "Stock Out";
+        setStock(status);
+      };
+      fetchTotalQuantity();
+    }
+  }, [stock, baseUrl, _id, quantity]);
 
   const addToBookmark = async () => {
     if (isBookmarked) {
@@ -26,33 +80,18 @@ export default function BooksCard({ book }) {
     }
 
     try {
-      // const response = await axios.post(`/api/wishlist/${_id}`, {
-      //   name,
-      //   description: book.description || "",
-      //   image,
-      //   author: book.author || "",
-      //   price,
-      //   rating: ratings,
-      //   category,
-      // });
-
-      const response = await axios.post(
-        "/api/wishlists",
-        {
-          name,
-          description: book.description || "",
-          image,
-          author: book.author || "",
-          price,
-          rating: ratings,
-          category,
-          quantity,
-          email: session?.user?.email,
-          cardCount,
-        },
-        { email: session?.user?.email } // Pass email in the request body
-      );
-      console.log(response);
+      const response = await axios.post("/api/wishlists", {
+        name,
+        description: book.description || "",
+        image,
+        author: book.author || "",
+        price,
+        rating: ratings,
+        category,
+        cardCount,
+        email: session?.user?.email,
+        cardCount,
+      });
 
       if (response.status === 201) {
         setIsBookmarked(true);
@@ -68,20 +107,11 @@ export default function BooksCard({ book }) {
       console.error("Error adding to bookmark:", error);
       const message =
         error.response?.data?.message || "Failed to add to bookmarks!";
-
-      if (error.response?.status === 409) {
-        Swal.fire({
-          icon: "info",
-          title: "Already Bookmarked",
-          text: message,
-        });
-      } else {
-        Swal.fire({
-          icon: "error",
-          title: "Error",
-          text: message,
-        });
-      }
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: message,
+      });
     }
   };
 
@@ -96,22 +126,19 @@ export default function BooksCard({ book }) {
     }
 
     try {
-      const response = await axios.post(
-        "/api/carts",
-        {
-          name,
-          description: book.description || "",
-          image,
-          author: book.author || "",
-          price,
-          rating: ratings,
-          category,
-          quantity,
-          email: session?.user?.email,
-          cardCount,
-        },
-        { email: session?.user?.email } // Pass email in the request body
-      );
+      const response = await axios.post(`/api/carts/${session.user.email}`, {
+        name,
+        BookId: book._id, // Updated this from bookId to _id
+        description: book.description || "",
+        image,
+        author: book.author || "",
+        price,
+        rating: ratings,
+        category,
+        cardCount,
+        email: session?.user?.email, // Ensure this is not undefined
+      });
+      console.log("Response:", response);
 
       if (response.status === 201) {
         setIsInCart(true);
@@ -146,7 +173,7 @@ export default function BooksCard({ book }) {
   return (
     <div className="transition h-fit duration-500 w-full font-sans overflow-hidden mx-auto mt-4 pl-4 pt-4">
       {/* Full Height Image */}
-      <div className="w-full  h-60 md:h-80 lg:h-52 relative group">
+      <div className="w-full h-60 md:h-80 lg:h-52 relative group">
         <Image
           src={image}
           alt={name}
@@ -154,7 +181,7 @@ export default function BooksCard({ book }) {
           objectFit="cover"
           className="rounded-2xl"
         />
-        {/* Bookmark Icon on the left side */}
+        {/* Bookmark and Cart Icons */}
         <div>
           <button
             onClick={addToBookmark}
@@ -199,6 +226,15 @@ export default function BooksCard({ book }) {
             {price.toFixed(2)}
           </span>
         </h3>
+        {/* <h2 className="flex gap-2">
+          <span>{stock}</span>
+          <span>{publishType === "released" ? "" : "upcoming"}</span>
+        </h2> */}
+        <h2 className="flex gap-2">
+          <span className="text-base md:text-base text-gray-800 font-semibold line-clamp-2 hover:text-[#F65D4E] text-center uppercase">
+            {publishType === "released" ? <>{stock}</> : "upcoming"}
+          </span>
+        </h2>
       </div>
     </div>
   );

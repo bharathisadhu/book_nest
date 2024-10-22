@@ -3,7 +3,7 @@ import { useState,useEffect } from 'react';
 
 const OrderCount = () => {
   const [totalPrice, setTotalPrice] = useState(0);
-  const [totalQuantity, setTotalQuantity] = useState(0);
+  const [totalcardCount, setTotalcardCount] = useState(0);
   
  
 
@@ -18,7 +18,7 @@ const OrderCount = () => {
       const data = await response.json();
       
       setTotalPrice(data.totalPrice);
-      setTotalQuantity(data.totalQuantity);
+      setTotalcardCount(data.totalcardCount);
           };
     fetchBook();
   }, [baseUrl]);
@@ -35,7 +35,7 @@ const OrderCount = () => {
   
   
   <div className="flex gap-10 ml-10 pt-[20px] pb-[5px] font-bold uppercase"><p>Total Price</p><p>{parseFloat(totalPrice).toFixed(2)}$</p></div>
-  <div className="flex gap-10 ml-10 pb-[20px] font-bold uppercase"><p>Total Quantity</p><p>{totalQuantity}</p></div>
+  <div className="flex gap-10 ml-10 pb-[20px] font-bold uppercase"><p>Total cardCount</p><p>{totalcardCount}</p></div>
       
       
 
