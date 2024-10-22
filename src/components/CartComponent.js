@@ -67,14 +67,14 @@ export default function CartComponent({ cartBook, setCartBook }) {
             cartBook.map((item) => (
               <div
                 key={item._id}
-                className="flex items-center space-x-4 border-b pb-4"
+                className="flex items-center space-x-4 border-b py-2"
               >
                 <Image
                   src={item.image}
                   alt={item.name}
-                  width={80}
-                  height={120}
-                  className="object-cover"
+                  width={1000}
+                  height={1000}
+                  className="object-cover w-20 h-28"
                 />
                 <div className="flex-grow">
                   <h2 className="font-semibold">{item.name}</h2>
