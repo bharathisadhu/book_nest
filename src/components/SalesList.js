@@ -58,7 +58,7 @@ export default async function SalesList() {
                 <td className="px-4 py-4 text-sm text-gray-800">{pay?.name}</td>
                 <td className="px-4 py-4 text-sm text-gray-800">{pay.email}</td>
                 <td className="px-4 py-4 text-sm text-gray-800">
-                  {parseFloat(pay.price).toFixed(2)} $
+                  {pay.date}
                 </td>
                 <td className="px-4 py-4 text-sm text-gray-800">{pay.date}</td>
 
