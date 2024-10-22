@@ -5,38 +5,57 @@ import { HiPencilAlt } from "react-icons/hi";
 import Swal from "sweetalert2";
 import Loading from "../app/loading";
 import Image from "next/image";
+import axios from 'axios';
+
 
 export default function UsersList() {
   const [users, setUsers] = useState([]); // State to hold users
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const limit = 5;
+
+
   const [isLoading, setIsLoading] = useState(true); // Loading state
   const [isUpdating, setIsUpdating] = useState(false); // Updating state
   const [selectedUser, setSelectedUser] = useState(null); // Selected user for update
   const [isModalOpen, setIsModalOpen] = useState(false); // Modal visibility
   const [selectedImage, setSelectedImage] = useState(null); // Store the image file
-  // Function to fetch users from the API
-  const fetchUsers = async () => {
-    try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/users`, {
-        cache: "no-store",
-      });
 
-      if (res.ok) {
-        const data = await res.json();
-        setUsers(Array.isArray(data) ? data : []); // Use data directly as it's already an array
-      } else {
-        setUsers([]);
-      }
-    } catch (error) {
-      setUsers([]);
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
-  useEffect(() => {
-    // Fetch users initially
-    fetchUsers();
-  }, []);
+useEffect(() => {
+    
+        const fetchData = async () => {
+           
+            try {
+
+                const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/users-pagination?page=${page}&limit=${limit}`,{ cache: "no-store" });
+                setUsers(response.data.data);
+                setTotalPages(response.data.totalPages);
+            } catch (error) {
+                console.error('Failed to fetch users:', error);
+            }
+            setIsLoading(false); 
+        };
+
+        
+        fetchData();
+    }, [page,limit]); 
+
+
+   const handlePreviousPage = () => {
+        if (page > 1) {
+            setPage(page - 1); 
+        }
+    };
+
+    const handleNextPage = () => {
+        if (page < totalPages) {
+            setPage(page + 1); 
+        }
+    };
+
+
+
 
   const handleEditClick = (user) => {
     setSelectedUser(user);
@@ -205,6 +224,26 @@ export default function UsersList() {
             ))}
           </tbody>
         </table>
+        <div className="flex justify-between items-center mt-4">
+                <button 
+                    className="btn btn-primary" 
+                    onClick={handlePreviousPage} 
+                    disabled={page === 1}
+                >
+                    Previous
+                </button>
+                <span className="text-lg">
+                    Page {page} of {totalPages}
+                </span>
+                <button 
+                    className="btn btn-primary" 
+                    onClick={handleNextPage} 
+                    disabled={page === totalPages}
+                >
+                    Next
+                </button>
+            </div>
+
       </div>
 
       {/* Update Modal */}

@@ -1,4 +1,7 @@
+
 import { NextResponse } from "next/server";
+
+
 export async function POST() {
   try {
     const tran_id = Math.floor(100000 + Math.random() * 900000).toString();
@@ -14,14 +17,14 @@ export async function POST() {
     formData.append("tran_id", `${tran_id}`);
     formData.append(
       "success_url",
-      `http://localhost:3000/api/success?id=${tran_id}`
+      `${process.env.NEXT_PUBLIC_API_URL}/api/success?id=${tran_id}`
     );
-    formData.append("fail_url", `http://localhost:3000/api/fail?id=${tran_id}`);
+    formData.append("fail_url", `${process.env.NEXT_PUBLIC_API_URL}/api/fail?id=${tran_id}`);
     formData.append(
       "cancel_url",
-      `http://localhost:3000/api/cancel?id=${tran_id}`
+      `${process.env.NEXT_PUBLIC_API_URL}/api/cancel?id=${tran_id}`
     );
-    formData.append("ipn_url", `http://localhost:3000/api/ipn?id=${tran_id}`);
+    formData.append("ipn_url", `${process.env.NEXT_PUBLIC_API_URL}/api/ipn?id=${tran_id}`);
     //
     formData.append("cus_name", "Siratul Islam");
     formData.append("cus_email", "islamsiratul@gmail.com");
