@@ -1,6 +1,5 @@
 "use client";
 import { useState, useEffect } from "react";
-import BarCharts from "./BarCharts"; // Adjust the path based on your folder structure
 import { FaMoneyBillWave } from "react-icons/fa";
 
 const SaleCount = () => {
@@ -9,16 +8,20 @@ const SaleCount = () => {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
   useEffect(() => {
-    const fetchBook = async () => {
+    const fetchPayments = async () => {
       try {
-        const response = await fetch(`${baseUrl}/api/payments-price`);
+        const response = await fetch(`${baseUrl}/api/payments`);
         const data = await response.json();
-        setTotalPrice(data.totalPrice || 0); // Set to 0 if null or undefined
+
+        // Calculate the total amount from the payment data
+        const total = data.reduce((acc, payment) => acc + payment.totalAmount, 0);
+        setTotalPrice(total); // Set the calculated total price
       } catch (error) {
         console.error("Error fetching payment data:", error);
       }
     };
-    fetchBook();
+
+    fetchPayments();
   }, [baseUrl]);
 
   return (
@@ -34,6 +37,7 @@ const SaleCount = () => {
 };
 
 export default SaleCount;
+
 
 
 
