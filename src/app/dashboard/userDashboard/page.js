@@ -1,9 +1,9 @@
 import DashboardLayout from "@/components/DashboardLayout";
-import UserCount from "@/components/mainDashBord/UserCount";
-import BookCount from "@/components/mainDashBord/BooKCountPrice";
+import UserCount from "@/components/mainDashBoard/UserCount";
+import BookCount from "@/components/mainDashBoard/BooKCountPrice";
 import Head from "next/head";
-import SaleCount from "@/components/mainDashBord/SaleCount";
-import BlogCount from "@/components/mainDashBord/BlogCount";
+import SaleCount from "@/components/mainDashBoard/SaleCount";
+import BlogCount from "@/components/mainDashBoard/BlogCount";
 
 const UserDashboard = () => {
   return (
