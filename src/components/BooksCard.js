@@ -55,19 +55,19 @@ export default function BooksCard({ book }) {
   //   checkIfInCart();
   // }, [baseUrl, _id, cardCount, session]);
 
-  useEffect(() => {
-    if (!stock) {
-      const fetchTotalQuantity = async () => {
-        const response = await fetch(
-          `${baseUrl}/api/payments-total-quantity?blogId=${_id}`
-        );
-        const data = await response.json();
-        const status = quantity - data > 0 ? "Stock In" : "Stock Out";
-        setStock(status);
-      };
-      fetchTotalQuantity();
-    }
-  }, [stock, baseUrl, _id, quantity]);
+  //useEffect(() => {
+    //if (!stock) {
+   //   const fetchTotalQuantity = async () => {
+     //   const response = await fetch(
+    //      `${baseUrl}/api/payments-total-quantity?blogId=${_id}`
+      //  );
+     //   const data = await response.json();
+     //   const status = quantity - data > 0 ? "Stock In" : "Stock Out";
+       // setStock(status);
+    //  };
+    //  fetchTotalQuantity();
+    //}
+  //}, [stock, baseUrl, _id, quantity]); /}
 
   const addToBookmark = async () => {
     if (isBookmarked) {
