@@ -47,7 +47,7 @@ const SubscriptionPage = () => {
         <title>BookNest | Subscription</title>
       </Head>
       <Navbar />
-      <div className="container mx-auto p-6">
+      <div className="container mx-auto p-6 mt-[75px] lg:mt-[120px]">
         <div>
           <h2 className="text-3xl font-bold text-center mt-12 sm:text-5xl">
             Pricing

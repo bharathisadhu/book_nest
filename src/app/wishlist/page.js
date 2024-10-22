@@ -2,6 +2,7 @@
 
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
+import Banner from "@/components/share/banner";
 import PrivateRoute from "@/services/PrivateRoute";
 import axios from "axios";
 import { useSession } from "next-auth/react";
@@ -80,6 +81,7 @@ const Page = () => {
         <title>BookNest | Wishlist</title>
       </Head>
       <Navbar />
+      <Banner title={"Your Wishlist"} linkName={"Home"}></Banner>
       <div className="mb-3">
         <div className="font-sans bg-white max-w-6xl mx-auto p-4">
           <h2 className="text-3xl font-bold text-gray-800">

@@ -8,6 +8,7 @@ import RelatedBooks from "@/components/RelatedBooks";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import { useSession } from "next-auth/react";
+import Banner from "@/components/share/banner";
 
 export default function BookDetails({ params }) {
   const [activeTab, setActiveTab] = useState("description");
@@ -176,6 +177,7 @@ export default function BookDetails({ params }) {
   return (
     <>
       <Navbar />
+      <Banner title={"Books Details"} linkName={"Home"} ></Banner>
       <div className="font-sans">
         <div className="container mx-auto p-4 lg:max-w-6xl max-w-2xl max-lg:mx-auto">
           <div className="grid items-start grid-cols-1 lg:grid-cols-2 gap-8 max-lg:gap-16">

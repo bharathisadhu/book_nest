@@ -6,7 +6,7 @@ import { IoIosArrowForward } from "react-icons/io";
 
 const Banner = () => {
   return (
-    <div className="hero lg:h-[700px]">
+    <div className="hero lg:h-[700px] mt-[75px] lg:mt-[120px]">
       <div className="hero-overlay bg-[#00453E] rounded-b-2xl border-2"></div>
       <div className="carousel w-full ">
         <div id="slide1" className="carousel-item relative w-full border-5">

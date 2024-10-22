@@ -42,10 +42,11 @@ export default function CartPage() {
         <title>BookNest | Cart</title>
       </Head>
       <Navbar />
-      <main className="container mx-auto px-4 py-8">
+      
         <Banner title="Shopping Cart" linkName="Home" />
 
         {/* Loader inside the cart section */}
+        <main className="container mx-auto px-4 py-8">
         {loading ? (
           <div className="flex items-center justify-center h-32">
             <div className="relative">

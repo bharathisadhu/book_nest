@@ -16,6 +16,7 @@ import { usePathname } from "next/navigation";
 import logo from "../../public/BookNest.png";
 import axios from "axios";
 import Loading from "../app/loading";
+import { FaHome } from "react-icons/fa";
 
 const DashboardLayout = ({ children }) => {
   const pathname = usePathname();
@@ -26,13 +27,14 @@ const DashboardLayout = ({ children }) => {
   const baseURL = process.env.NEXT_PUBLIC_API_URL;
 
   const fetchAdminStatus = useCallback(async () => {
-    setLoading(true);
     if (session) {
+      setLoading(true)
       try {
         const response = await axios.get(
           `${baseURL}/api/user/${session?.user?.email}`
         );
         setIsAdmin(response?.data?.role === "admin");
+        setLoading(true)
       } catch (error) {
         console.error("Error fetching admin status:", error);
         setIsAdmin(null);
@@ -79,6 +81,11 @@ const DashboardLayout = ({ children }) => {
         icon: <AiOutlineLineChart className="text-xl" />,
         href: "/dashboard/sales",
       },
+      {
+        name: "Back to Home",
+        icon: <FaHome className="text-xl" />,
+        href: "/",
+      },
     ],
     []
   );
@@ -110,6 +117,11 @@ const DashboardLayout = ({ children }) => {
         icon: <AiOutlineLineChart className="text-xl" />,
         href: "/dashboard/wishlists",
       },
+      {
+        name: "Back to Home",
+        icon: <FaHome className="text-xl" />,
+        href: "/",
+      },
     ],
     []
   );
@@ -119,9 +131,7 @@ const DashboardLayout = ({ children }) => {
     [isAdmin, adminMenuItems, nonAdminMenuItems]
   );
 
-  if (loading) {
-    return <p><Loading /></p>;
-  }
+
   return (
     <main className="flex">
       <button
