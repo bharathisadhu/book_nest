@@ -257,6 +257,7 @@ const Navbar = () => {
               </>
             )}
           </button>
+    
         </div>
         {/* Sidebar Content */}
         {isOpen && (

@@ -1,12 +1,31 @@
+import dynamic from "next/dynamic";
 import DashboardLayout from "@/components/DashboardLayout";
-import UserCount from "@/components/mainDashBord/UserCount";
-import BookCount from "@/components/mainDashBord/BooKCountPrice";
 import Head from "next/head";
-import SaleCount from "@/components/mainDashBord/SaleCount";
-import BlogCount from "@/components/mainDashBord/BlogCount";
-import BarCharts from "@/components/mainDashBord/BarCharts";
-import ProfitChart from "@/components/mainDashBord/ProfitChart";
-import UsedDevice from "@/components/mainDashBord/UsedDevice";
+
+const UserCount = dynamic(() => import("@/components/mainDashBord/UserCount"), {
+  ssr: false,
+});
+const BookCount = dynamic(
+  () => import("@/components/mainDashBord/BooKCountPrice"),
+  { ssr: false }
+);
+const SaleCount = dynamic(() => import("@/components/mainDashBord/SaleCount"), {
+  ssr: false,
+});
+const BlogCount = dynamic(() => import("@/components/mainDashBord/BlogCount"), {
+  ssr: false,
+});
+const BarCharts = dynamic(() => import("@/components/mainDashBord/BarCharts"), {
+  ssr: false,
+});
+const ProfitChart = dynamic(
+  () => import("@/components/mainDashBord/ProfitChart"),
+  { ssr: false }
+);
+const UsedDevice = dynamic(
+  () => import("@/components/mainDashBord/UsedDevice"),
+  { ssr: false }
+);
 
 const AdminDashboard = () => {
   return (
