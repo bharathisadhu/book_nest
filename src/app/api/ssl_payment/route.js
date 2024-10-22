@@ -8,8 +8,8 @@ export async function POST() {
     const init_url = "https://sandbox.sslcommerz.com/gwprocess/v3/api.php";
 
     const formData = new FormData();
-    formData.append("store_id", "growt670dff341c48a");
-    formData.append("store_passwd", "growt670dff341c48a@ssl");
+    formData.append("store_id", `${process.env.SSL_STORE_ID}`);
+    formData.append("store_passwd", `${process.env.SSL_STORE_PASSWORD}`);
     //
     formData.append("total_amount", "180");
     formData.append("currency", "BDT");
