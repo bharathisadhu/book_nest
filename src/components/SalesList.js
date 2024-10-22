@@ -55,7 +55,7 @@ export default async function SalesList() {
 
 
   if (payments.length === 0) {
-    return <div>No blogs found or failed to load payments.</div>; 
+    return <div>No payments found or failed to load payments.</div>; 
   }
 
 
@@ -100,7 +100,7 @@ export default async function SalesList() {
             payments.map((pay) => (
               <tr key={pay._id}>
                 <td className="px-4 py-4 text-sm text-gray-800">{pay?.name}</td>
-                <td className="px-4 py-4 text-sm text-gray-800">{pay.email}</td>
+                <td className="px-4 py-4 text-sm text-gray-800">{pay?.email}</td>
                 <td className="px-4 py-4 text-sm text-gray-800">
                   {new Date(pay.date).toLocaleDateString("en-GB")}
                 </td>
