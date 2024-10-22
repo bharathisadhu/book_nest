@@ -20,7 +20,7 @@ export default function AboutUs() {
         <title>BookNest | About Us</title>
       </Head>
       <Navbar />
-      <div className="my-10 py-20 px-2 md:px-20 bg-gray-200 flex justify-between items-center">
+      <div className="mt-[75px] lg:mt-[120px] my-10 py-20 px-2 md:px-20 bg-gray-200 flex justify-between items-center">
         <h1 className="lg:text-6xl md:text-4xl text-xl font-bold">About Us</h1>
         <div className="flex justify-center items-center gap-2">
           <Link legacyBehavior href="/">

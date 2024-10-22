@@ -1,5 +1,3 @@
-
-
 "use client";
 
 import { useEffect, useState } from "react";
@@ -7,17 +5,14 @@ import { HiPencilAlt, HiOutlineTrash } from "react-icons/hi";
 import Loading from "../app/loading";
 import Swal from "sweetalert2";
 import Image from "next/image";
-import axios from 'axios';
+import axios from "axios";
 
 export default function BooksList() {
- 
-    const [page, setPage] = useState(1);
-    const [totalPages, setTotalPages] = useState(1);
-    const limit = 10; 
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const limit = 10;
 
-    const [loading, setLoading] = useState(false);
-
-
+  const [loading, setLoading] = useState(false);
 
   const [books, setBooks] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -27,40 +22,36 @@ export default function BooksList() {
   const [imageUrl, setImageUrl] = useState(""); // State for the uploaded image URL
   const [imageFile, setImageFile] = useState(null); // State for the image file
   const [hasMore, setHasMore] = useState(true); // To track if more books are available
-  
-useEffect(() => {
-    
-        const fetchData = async () => {
-           
-            try {
 
-              const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/books-pagination?page=${page}&limit=${limit}`,{ cache: "no-store" });
-                setBooks(response.data.data);
-                setTotalPages(response.data.totalPages);
-                
-            } catch (error) {
-                console.error('Failed to fetch users:', error);
-            }
-            setLoading(false); 
-        };
-
-        
-        fetchData();
-    }, [page]); 
-
-
- const handlePreviousPage = () => {
-        if (page > 1) {
-            setPage(page - 1); 
-        }
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/books-pagination?page=${page}&limit=${limit}`,
+          { cache: "no-store" }
+        );
+        setBooks(response.data.data);
+        setTotalPages(response.data.totalPages);
+      } catch (error) {
+        console.error("Failed to fetch users:", error);
+      }
+      setLoading(false);
     };
 
-    const handleNextPage = () => {
-        if (page < totalPages) {
-            setPage(page + 1); 
-        }
-    };
+    fetchData();
+  }, [page]);
 
+  const handlePreviousPage = () => {
+    if (page > 1) {
+      setPage(page - 1);
+    }
+  };
+
+  const handleNextPage = () => {
+    if (page < totalPages) {
+      setPage(page + 1);
+    }
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -303,7 +294,6 @@ useEffect(() => {
         </tbody>
       </table>
 
-     
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
           <div className="bg-white p-8 rounded shadow-lg max-w-2xl w-full">
@@ -417,28 +407,25 @@ useEffect(() => {
         </div>
       )}
 
-
       <div className="flex justify-between items-center mt-4">
-                <button 
-                    className="btn btn-primary" 
-                    onClick={handlePreviousPage} 
-                    disabled={page === 1}
-                >
-                    Previous
-                </button>
-                <span className="text-lg">
-                    Page {page} of {totalPages}
-                </span>
-                <button 
-                    className="btn btn-primary" 
-                    onClick={handleNextPage} 
-                    disabled={page === totalPages}
-                >
-                    Next
-                </button>
-            </div>
-
-
+        <button
+          className="btn btn-primary"
+          onClick={handlePreviousPage}
+          disabled={page === 1}
+        >
+          Previous
+        </button>
+        <span className="text-lg">
+          Page {page} of {totalPages}
+        </span>
+        <button
+          className="btn btn-primary"
+          onClick={handleNextPage}
+          disabled={page === totalPages}
+        >
+          Next
+        </button>
+      </div>
     </div>
   );
 }
