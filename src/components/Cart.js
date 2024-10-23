@@ -24,8 +24,7 @@ export default function Cart() {
 
 
                 const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/payments-pagination/${session?.user?.email}?page=${page}&limit=${limit}`,{ cache: "no-store" });
-               
-console.log("---------",response.data.data)
+
                setCarts(response.data.data);
                setTotalPages(response.data.totalPages);
             } catch (error) {
@@ -104,7 +103,7 @@ console.log("---------",response.data.data)
                     {cart?.transactionId}
                   </td>
                   <td className="px-4 py-4 text-sm text-gray-800">
-                    ${cart?.totalAmount}  //.toFixed(2)
+                    ${cart?.totalAmount.toFixed(2)}  
                                      </td>
                   <td className="px-4 py-4 text-sm text-gray-800">
                     {cart?.status}
@@ -128,7 +127,7 @@ console.log("---------",response.data.data)
       </table>
       <div className="flex justify-between items-center mt-4">
                 <button 
-                    className="btn btn-primary" 
+                    className="btn rounded-3xl bg-[#F65D4E] text-white px-8" 
                     onClick={handlePreviousPage} 
                     disabled={page === 1}
                 >
@@ -138,7 +137,7 @@ console.log("---------",response.data.data)
                     Page {page} of {totalPages}
                 </span>
                 <button 
-                    className="btn btn-primary" 
+                    className="btn rounded-3xl bg-[#F65D4E] text-white px-8" 
                     onClick={handleNextPage} 
                     disabled={page === totalPages}
                 >
