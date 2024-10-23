@@ -177,6 +177,12 @@ const Navbar = () => {
                         </button>
                       </Link>
                     )}
+                    <Link href="">
+                        <button className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-100">
+                          Chat
+                        </button>
+                      </Link>
+                    
                     <button
                       onClick={() => signOut()}
                       className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-100"
@@ -236,55 +242,6 @@ const Navbar = () => {
               // <IoCloseOutline className="w-7 h-7" />
               <></>
             ) : (
-
-              cartCount > 0 && (
-                <span className="absolute top-1 right-2 bg-[#F65D4E] text-white rounded-full px-1 text-xs transform translate-x-1 -translate-y-1">
-                  {cartCount}
-                </span>
-              )
-            )}
-          </Link>
-          {!session?.user ? (
-            <Link href="/login">
-              <button className="btn btn-ghost text-xl">
-                <MdAccountCircle className="text-2xl" />
-              </button>
-            </Link>
-          ) : (
-            <div className="relative ml-4">
-              <button className="text-xl" onClick={toggleDropdown}>
-                {session.user.image || session.user.photo ? (
-                  <Image
-                    src={session.user.image || session.user.photo}
-                    alt="User Image"
-                    width={40}
-                    height={40}
-                    className="rounded-full"
-                  />
-                ) : (
-                  <MdAccountCircle className="text-2xl" />
-                )}
-              </button>
-              {isDropdownOpen && (
-                <div className="absolute right-0 mt-2 py-2 w-48 bg-white border rounded-md shadow-xl z-20">
-                  <Link href="/dashboard">
-                    <button className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-100">
-                      Dashboard
-                    </button>
-                  </Link>
-
-                  <Link href="/chat">
-                    <button className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-100">
-                      Chat
-                    </button>
-                  </Link>
-
-                  <button
-                    onClick={() => signOut()}
-                    className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-100"
-                  >
-                    Logout
-
               <>
                 {session?.user ? (
                   <button className="text-xl" onClick={toggleDropdown}>
@@ -299,7 +256,6 @@ const Navbar = () => {
                     ) : (
                       <MdAccountCircle className="text-3xl cursor-pointer fill-[#333] hover:fill-[#F65D4E] inline-block" />
                     )}
-
                   </button>
                 ) : (
                   <RxHamburgerMenu className="w-10 h-10" />
