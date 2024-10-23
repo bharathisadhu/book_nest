@@ -44,7 +44,7 @@ export default function Chatbox() {
   return (
     <>
       <Navbar />
-      <h1 className="text-xl font-bold md:text-5xl text-center mt-5">
+      <h1 className="text-xl font-bold md:text-5xl text-center lg:mt-52 md:mt-48 mt-32">
         Chat with Agent
       </h1>
       <h1 className="text-3xl font-bold md:text-5xl flex justify-center items-center mb-5">
