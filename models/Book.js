@@ -79,6 +79,8 @@ const BookSchema = new mongoose.Schema({
   ratings: { type: Number },
   author: { type: String },
   category: { type: String },
+  quantity: { type: Number },
+  publishType: { type: String },
   cardCount: { type: Number },
 });
 
