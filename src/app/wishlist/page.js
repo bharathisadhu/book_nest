@@ -11,18 +11,23 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { CiStar } from "react-icons/ci";
 import Swal from "sweetalert2";
+import Loading from "../../app/loading";
 
 const Page = () => {
   const [wishListBook, setWishListBook] = useState({ wishList: [] });
   const { data: session } = useSession();
+  const [loading, setLoading] = useState(true); // Correct state declaration
 
   useEffect(() => {
+    setLoading(true); // Set loading to true before fetching data
     const fetchWishlist = async () => {
       try {
         const response = await axios.get(
           `/api/wishlists/${session?.user?.email}`
         );
+
         setWishListBook(response.data);
+        setLoading(false); // Set loading to false after data is fetched
       } catch (error) {
         console.error("Error fetching wishlist:", error);
         Swal.fire({
@@ -30,10 +35,13 @@ const Page = () => {
           title: "Error",
           text: "Failed to load wishlist!",
         });
+        setLoading(false); // Ensure loading is set to false in case of error
       }
     };
 
-    fetchWishlist();
+    if (session?.user?.email) {
+      fetchWishlist();
+    }
   }, [session?.user?.email]);
 
   const handleRemove = async (id) => {
@@ -53,9 +61,7 @@ const Page = () => {
         await axios.delete(`/api/wishlist?id=${id}`);
 
         // Remove the item from the local state
-        const updatedWishList = wishListBook.filter(
-          (item) => item._id !== id
-        );
+        const updatedWishList = wishListBook.filter((item) => item._id !== id);
         setWishListBook({ wishList: updatedWishList });
 
         // Show success message
@@ -74,6 +80,10 @@ const Page = () => {
       }
     }
   };
+
+  if (loading) {
+    return <Loading />; // Display a loading message while fetching data
+  }
 
   return (
     <>

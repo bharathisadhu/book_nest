@@ -36,3 +36,9 @@ export async function POST(req) {
     );
   }
 }
+
+export async function DELETE(request) {
+  const id = request.nextUrl.searchParams.get("id");
+  await Book.findByIdAndDelete(id);
+  return NextResponse.json({ message: "Book deleted" }, { status: 200 });
+}

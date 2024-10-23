@@ -64,7 +64,7 @@ export default function SalesList() {
               Name
             </th>
             <th className="px-4 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
-              Email
+              Email Id
             </th>
             <th className="px-4 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
               Date
