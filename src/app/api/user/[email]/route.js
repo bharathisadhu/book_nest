@@ -25,8 +25,6 @@ export async function PUT(request, { params }) {
   const sanitizedEmail = email.trim().toLowerCase();
   const { name, image } = await request.json(); // Get the updated name and image from the request body
 
-  console.log("Updating user:", { name, image }); // Log the update data
-
   await connectToDatabase();
 
   try {

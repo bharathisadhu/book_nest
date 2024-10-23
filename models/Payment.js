@@ -13,6 +13,7 @@ const PaymentSchema = new mongoose.Schema({
       bookName: { type: String },
       price: { type: Number },
       cardCount: { type: Number },
+      // quantity: { type: Number }
     },
   ],
   totalAmount: { type: Number },

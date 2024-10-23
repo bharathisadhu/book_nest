@@ -9,40 +9,45 @@ export default function Wishlist() {
   const { data: session } = useSession();
   const [wishlists, setWishlists] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const limit = 10;
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get(`/api/wishlists/${session?.user?.email}`, {
-          cache: "no-store",
-        });
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/wishlists/${session?.user?.email}?page=${page}&limit=${limit}`,
+          { cache: "no-store" }
+        );
 
-        if (res.status === 200) {
-          // In Axios, the response data is already parsed as JSON
-          const data = res.data;
-          setWishlists(data);
-        } else {
-          console.error("Failed to fetch wishlists: ", res.status);
-          setWishlists([]);
-        }
-
-        setIsLoading(false);
+        setWishlists(response.data.data);
+        setTotalPages(response.data.totalPages);
       } catch (error) {
-        console.error("Error loading wishlists:", error.message); // Log the error message
-        setWishlists([]); // Set wishlists to empty array in case of error
-        setIsLoading(false); // Ensure loading state is set to false even in case of error
+        console.error("Failed to fetch users:", error);
       }
+      setIsLoading(false);
     };
 
     fetchData();
-  }, [session?.user?.email]);
+  }, [session?.user?.email, page, limit]);
+
+  const handlePreviousPage = () => {
+    if (page > 1) {
+      setPage(page - 1);
+    }
+  };
+
+  const handleNextPage = () => {
+    if (page < totalPages) {
+      setPage(page + 1);
+    }
+  };
 
   if (isLoading && wishlists.length === 0) {
     return <Loading />; // Use your existing loading component
   }
 
-  if (wishlists.length === 0) {
-    return <div>No cart found or failed to load cart.</div>;
-  }
   return (
     <div className="font-sans lg:max-h-[580px] overflow-x-auto overflow-y-auto">
       <table className="min-w-full divide-y divide-gray-200">
@@ -107,6 +112,25 @@ export default function Wishlist() {
             })}
         </tbody>
       </table>
+      <div className="flex justify-between items-center mt-4">
+        <button
+          className="btn btn-primary"
+          onClick={handlePreviousPage}
+          disabled={page === 1}
+        >
+          Previous
+        </button>
+        <span className="text-lg">
+          Page {page} of {totalPages}
+        </span>
+        <button
+          className="btn btn-primary"
+          onClick={handleNextPage}
+          disabled={page === totalPages}
+        >
+          Next
+        </button>
+      </div>
     </div>
   );
 }

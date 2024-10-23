@@ -8,6 +8,7 @@ import RelatedBooks from "@/components/RelatedBooks";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import { useSession } from "next-auth/react";
+import Banner from "@/components/share/banner";
 
 export default function BookDetails({ params }) {
   const [activeTab, setActiveTab] = useState("description");
@@ -35,18 +36,18 @@ export default function BookDetails({ params }) {
     fetchBooks();
   }, [baseUrl, params.details]);
 
-  useEffect(() => {
-    const fetchTotalQuantity = async () => {
-      if (!bookDetails) return;
-      const response = await fetch(
-        `${baseUrl}/api/payments-total-quantity?blogId=${bookDetails._id}`
-      );
-      const data = await response.json();
-      const status = bookDetails.quantity - data > 0 ? "Stock In" : "Stock Out";
-      setStock(status);
-    };
-    fetchTotalQuantity();
-  }, [baseUrl, bookDetails]);
+ useEffect(() => {
+   const fetchTotalQuantity = async () => {
+     if (!bookDetails) return;
+     const response = await fetch(
+       `${baseUrl}/api/payments-total-quantity?bookId=${bookDetails._id}`
+     );
+     const data = await response.json();
+     const status = bookDetails.quantity - data > 0 ? "Stock In" : "Stock Out";
+     setStock(status);
+   };
+   fetchTotalQuantity();
+ }, [baseUrl, bookDetails]);
 
   if (!bookDetails) {
     return <p className="text-3xl">Loading book details...</p>;
@@ -130,9 +131,9 @@ export default function BookDetails({ params }) {
     }
 
     try {
-      const response = await axios.post("/api/carts", {
-        _id, // Book ID
+      const response = await axios.post(`/api/carts/${session.user.email}`, {
         name,
+        BookId: bookDetails._id, // Updated this from bookId to _id
         description: bookDetails.description || "",
         image,
         author: bookDetails.author || "",
@@ -165,9 +166,9 @@ export default function BookDetails({ params }) {
         });
       } else {
         Swal.fire({
-          icon: "info",
-          title: "Already in Cart",
-          text: `${name} is already in your cart!`,
+          icon: "error",
+          title: "Error",
+          text: message,
         });
       }
     }
@@ -176,6 +177,7 @@ export default function BookDetails({ params }) {
   return (
     <>
       <Navbar />
+      <Banner title={"Books Details"} linkName={"Home"}></Banner>
       <div className="font-sans">
         <div className="container mx-auto p-4 lg:max-w-6xl max-w-2xl max-lg:mx-auto">
           <div className="grid items-start grid-cols-1 lg:grid-cols-2 gap-8 max-lg:gap-16">

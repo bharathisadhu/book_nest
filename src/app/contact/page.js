@@ -14,7 +14,7 @@ const ContactPage = () => {
         <title>BookNest | Contact</title>
       </Head>
       <Navbar />
-      <div className="flex flex-col lg:flex-row items-center justify-center lg:justify-between p-2 bg-[#F0F0F0] py-10">
+      <div className="mt-[75px] lg:mt-[120px] flex flex-col lg:flex-row items-center justify-center lg:justify-between p-2 bg-[#F0F0F0] py-10">
         <h2 className="lg:py-10 lg:ml-10 font-extrabold text-5xl">CONTACT</h2>
         <h3 className="lg:py-10 lg:mr-10 mt-3 flex justify-center items-center gap-2">
           <Link href="/">HOME</Link>
