@@ -27,8 +27,10 @@ const CheckoutForm = ({ cartBook, setCartBook }) => {
   const subtotal = Array.isArray(cartBook)
     ? cartBook.reduce((sum, item) => sum + item.price * item.cardCount, 0)
     : 0;
-    cartBook.map(c => {console.log(c.BookId);})
-    console.log(cartBook);
+  cartBook.map((c) => {
+    console.log(c.BookId);
+  });
+  console.log(cartBook);
 
   const tax = subtotal * 0.1; // Assuming 10% tax
   const deliveryCharge = isCashOnDelivery ? 10 : 0; // Add $10 if Cash on Delivery
