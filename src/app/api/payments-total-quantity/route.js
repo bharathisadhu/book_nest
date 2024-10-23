@@ -4,7 +4,7 @@ import connectDB from "@/lib/connectDB"; // Adjust import to your actual file
 export async function GET(req) {
   try {
     // Connect to the database
-
+    const db = await connectDB();
     // Get the query parameters
     const url = new URL(req.url);
     const bookId = url.searchParams.get("bookId"); // Corrected the parameter name to `bookId`
