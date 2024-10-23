@@ -4,7 +4,6 @@ import connectDB from "@/lib/connectDB"; // Adjust import to your actual file
 export async function GET(req) {
   try {
     // Connect to the database
-    const db = await connectDB();
 
     // Get the query parameters
     const url = new URL(req.url);
@@ -39,6 +38,7 @@ export async function GET(req) {
 
     // Return the total quantity as a JSON response
     return NextResponse.json(totalQuantity);
+
   } catch (error) {
     console.error("Error fetching total quantity:", error);
     return NextResponse.json(

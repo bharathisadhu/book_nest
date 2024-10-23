@@ -1,7 +1,9 @@
-import connectToDatabase from "@/lib/mongodb";
-import { WishList } from "../../../../../models/Book";
 import { NextResponse } from "next/server";
+import { Payment } from '../../../../../models/Payment';
 
+import connectToDatabase from "@/lib/mongodb";
+
+// Handle GET requests
 export async function GET(request, { params }) {
   const { email } = params;
 
@@ -13,36 +15,29 @@ export async function GET(request, { params }) {
     const limit = parseInt(searchParams.get("limit") || "10", 10);
     const skip = (page - 1) * limit;
 
-    const wishlists = await WishList.find({ email: email })
-      .skip(skip)
-      .limit(limit);
-      
-      const totalWishList = await WishList.countDocuments({ email: email });
+    const payments = await Payment.find({ email: email });
+    
 
-    if (!wishlists) {
+    const totalPayment = await Payment.countDocuments({ email: email });
+
+
+    if (!totalPayment) {
       return NextResponse.json(
-        { message: " individualCart not found" },
+        { message: "Payment not found" },
         { status: 404 }
       );
     }
-
-    return new Response(JSON.stringify({
+    return NextResponse.json({
       success: true,
-      data:wishlists,
+      data:payments,
       email: email,
-      total: totalWishList,
-      page,
-      totalPages: Math.ceil(totalWishList / limit),
       
-    }), {
+      page,
+      total:totalPayment,
+      totalPages: Math.ceil(totalPayment / limit),
+    }, {
       status: 200,
     });
-
-
-
-    // return NextResponse.json(individualWishList, { status: 200 });
-
-
   } catch (error) {
     console.error("Error fetching user:", error);
     return NextResponse.json({ message: "Server error" }, { status: 500 });
