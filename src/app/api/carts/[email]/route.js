@@ -7,7 +7,6 @@ import connectToDatabase from "@/lib/mongodb";
 let db;
 
 // Handle POST requests
-// Handle POST requests
 export async function POST(request) {
   db = await connectDB();
 

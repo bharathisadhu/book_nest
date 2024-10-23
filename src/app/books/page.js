@@ -64,9 +64,8 @@ const BooksPage = () => {
     };
 
     fetchData();
-  }, [currentPage, sort, baseUrl]);
+  }, [baseUrl]);
 
-  // Apply filters after fetching data
   useEffect(() => {
     const filtered = books.filter((book) => {
       const inCategory = selectedCategories.length
@@ -253,6 +252,7 @@ const BooksPage = () => {
                   </div>
                 </div>
               </div>
+              {/* Books Grid */}
 
               <div className="col-span-4 lg:col-span-3 grid grid-cols-2 lg:grid-cols-6 md:grid-cols-3 justify-center divide-y divide-x p-2 gap-4">
                 {filteredBooks

@@ -43,7 +43,6 @@ export default function CartPage() {
         <title>BookNest | Cart</title>
       </Head>
       <PrivateRoute>
-        {" "}
         <Navbar />
         <Banner title="Shopping Cart" linkName="Home" />
         {/* Loader inside the cart section */}

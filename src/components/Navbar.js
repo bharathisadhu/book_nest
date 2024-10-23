@@ -176,6 +176,12 @@ const Navbar = () => {
                         </button>
                       </Link>
                     )}
+                    <Link href="/chat">
+                        <button className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-100">
+                          Chat
+                        </button>
+                      </Link>
+                    
                     <button
                       onClick={() => signOut()}
                       className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-100"
