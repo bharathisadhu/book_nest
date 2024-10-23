@@ -8,27 +8,39 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { io } from "socket.io-client";
 
-// Uncomment and set up your Socket.IO connection when ready
-// const socket = io("http://localhost:3000", {
-//   path: "/api/chat", // Ensure this matches the server-side setup
-// });
+// Set up the Socket.IO connection
+const socket = io("http://localhost:4000", {
+  path: "/api/chat", // Make sure this matches the server-side configuration
+  transports: ["websocket"], // Use websocket transport
+});
 
 export default function Chatbox() {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
 
-  // Uncomment the following useEffect to handle socket events if using Socket.IO
-  /*
   useEffect(() => {
+    // Listen for the "receiveMessage" event from the server
     socket.on("receiveMessage", (message) => {
       setMessages((prevMessages) => [...prevMessages, message]);
     });
 
+    // Listen for the "connect" event to confirm a successful connection
+    socket.on("connect", () => {
+      console.log("Connected to the server");
+    });
+
+    // Listen for the "disconnect" event
+    socket.on("disconnect", () => {
+      console.log("Disconnected from the server");
+    });
+
+    // Cleanup on component unmount
     return () => {
       socket.off("receiveMessage");
+      socket.off("connect");
+      socket.off("disconnect");
     };
   }, []);
-  */
 
   const handleSendMessage = () => {
     if (newMessage.trim()) {
@@ -36,8 +48,9 @@ export default function Chatbox() {
       const message = { text: newMessage, sender: "You" };
       setMessages((prevMessages) => [...prevMessages, message]);
       setNewMessage(""); // Clear the input field
-      // Uncomment to send the message through socket
-      // socket.emit("sendMessage", message);
+
+      // Emit the "sendMessage" event to the server
+      socket.emit("sendMessage", message);
     }
   };
 
