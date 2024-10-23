@@ -46,11 +46,12 @@ export default function Chatbox() {
     if (newMessage.trim()) {
       // Create the message object
       const message = { text: newMessage, sender: "You" };
-      setMessages((prevMessages) => [...prevMessages, message]);
-      setNewMessage(""); // Clear the input field
 
       // Emit the "sendMessage" event to the server
       socket.emit("sendMessage", message);
+
+      // Clear the input field
+      setNewMessage("");
     }
   };
 
