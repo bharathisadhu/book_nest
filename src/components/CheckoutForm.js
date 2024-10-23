@@ -127,7 +127,7 @@ const CheckoutForm = ({ cartBook, setCartBook }) => {
       quantity: item.cardCount,
     }));
 
-    const totalAmount = (total + deliveryCharge - discount).toFixed(2);
+    const totalAmount = total + deliveryCharge - discount.toFixed(2);
 
     if (isCashOnDelivery) {
       const payment = {

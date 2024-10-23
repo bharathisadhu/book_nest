@@ -10,7 +10,7 @@ import logo from "../../public/BookNest.png"; // Ensure the image is in the publ
 
 const Footer = () => {
   return (
-    <div className="">
+    <div className="mt-10">
       <footer className="footer bg-[#282828] text-base-content py-10 lg:px-24">
         <aside className="text-white flex flex-col justify-center md:justify-start items-center md:items-start mx-auto">
           <p>
