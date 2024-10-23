@@ -93,7 +93,8 @@ export default function SalesList() {
                   {pay.transactionId}
                 </td>
                 <td className="px-4 py-4 text-sm text-gray-800 text-start">
-                  ${pay.totalAmount.toFixed(2)}
+                ${typeof pay?.totalAmount === 'number' ? pay.totalAmount.toFixed(4) : '0.0000'}
+
                 </td>
                 <td className="px-4 py-4 text-sm text-gray-800">{pay.status}</td>
               </tr>
