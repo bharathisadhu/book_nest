@@ -27,6 +27,7 @@ const DashboardLayout = ({ children }) => {
   const baseURL = process.env.NEXT_PUBLIC_API_URL;
 
   const fetchAdminStatus = useCallback(async () => {
+    setLoading(true)
     if (session) {
       setLoading(true)
       try {
