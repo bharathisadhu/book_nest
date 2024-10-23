@@ -6,6 +6,7 @@ import { FaHeart, FaShoppingCart, FaStar } from "react-icons/fa";
 import Link from "next/link";
 import { FaDollarSign } from "react-icons/fa6";
 import { useSession } from "next-auth/react";
+import { debounce } from "lodash"; // Import lodash debounce
 
 export default function BooksCard({ book }) {
   const {
@@ -24,49 +25,21 @@ export default function BooksCard({ book }) {
   const [isInCart, setIsInCart] = useState(false);
   const { data: session } = useSession();
   const [stock, setStock] = useState(null);
+  const [totalQuantitiesCache, setTotalQuantitiesCache] = useState({});
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
-  // useEffect(() => {
-  //   const fetchTotalcardCount = async () => {
-  //     const response = await fetch(
-  //       `${baseUrl}/api/payments-total-cardCount?blogId=${_id}`
-  //     );
-  //     const data = await response.json();
-  //     const status = cardCount - data > 0 ? "Stock In" : "Stock Out";
-  //     setStock(status);
-  //   };
-
-  //   const checkIfInCart = async () => {
-  //     if (!session?.user?.email) return;
-
-  //     try {
-  //       const response = await axios.get(
-  //         `${baseUrl}/api/carts/${session?.user?.email}`
-  //       );
-  //       const cartItems = response.data.cart || [];
-  //       const foundItem = cartItems.find((item) => item._id === _id);
-  //       setIsInCart(!!foundItem);
-  //     } catch (error) {
-  //       console.error("Error fetching cart items:", error);
-  //     }
-  //   };
-
-  //   fetchTotalcardCount();
-  //   checkIfInCart();
-  // }, [baseUrl, _id, cardCount, session]);
-
   //useEffect(() => {
-    //if (!stock) {
-   //   const fetchTotalQuantity = async () => {
-     //   const response = await fetch(
-    //      `${baseUrl}/api/payments-total-quantity?blogId=${_id}`
-      //  );
-     //   const data = await response.json();
-     //   const status = quantity - data > 0 ? "Stock In" : "Stock Out";
-       // setStock(status);
-    //  };
-    //  fetchTotalQuantity();
-    //}
+  //if (!stock) {
+  //   const fetchTotalQuantity = async () => {
+  //   const response = await fetch(
+  //      `${baseUrl}/api/payments-total-quantity?blogId=${_id}`
+  //  );
+  //   const data = await response.json();
+  //   const status = quantity - data > 0 ? "Stock In" : "Stock Out";
+  // setStock(status);
+  //  };
+  //  fetchTotalQuantity();
+  //}
   //}, [stock, baseUrl, _id, quantity]); /}
 
   const addToBookmark = async () => {
@@ -80,18 +53,22 @@ export default function BooksCard({ book }) {
     }
 
     try {
-      const response = await axios.post("/api/wishlists", {
-        name,
-        description: book.description || "",
-        image,
-        author: book.author || "",
-        price,
-        rating: ratings,
-        category,
-        cardCount,
-        email: session?.user?.email,
-        cardCount,
-      });
+      const response = await axios.post(
+        `/api/wishlists/${session.user.email}`,
+        {
+          name,
+          BookId: book._id,
+          description: book.description || "",
+          image,
+          author: book.author || "",
+          price,
+          rating: ratings,
+          category,
+          cardCount,
+          email: session?.user?.email,
+          cardCount,
+        }
+      );
 
       if (response.status === 201) {
         setIsBookmarked(true);
@@ -138,7 +115,6 @@ export default function BooksCard({ book }) {
         cardCount,
         email: session?.user?.email, // Ensure this is not undefined
       });
-      console.log("Response:", response);
 
       if (response.status === 201) {
         setIsInCart(true);
@@ -226,10 +202,6 @@ export default function BooksCard({ book }) {
             {price.toFixed(2)}
           </span>
         </h3>
-        {/* <h2 className="flex gap-2">
-          <span>{stock}</span>
-          <span>{publishType === "released" ? "" : "upcoming"}</span>
-        </h2> */}
         <h2 className="flex gap-2">
           <span className="text-base md:text-base text-gray-800 font-semibold line-clamp-2 hover:text-[#F65D4E] text-center uppercase">
             {publishType === "released" ? <>{stock}</> : "upcoming"}

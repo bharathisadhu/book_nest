@@ -79,7 +79,7 @@ const BookSchema = new mongoose.Schema({
   ratings: { type: Number },
   author: { type: String },
   category: { type: String },
-  cardCount: { type: Number },
+  quantity: { type: Number },
 });
 
 const BlogSchema = new mongoose.Schema({

@@ -1,8 +1,8 @@
-
 import { NextResponse } from "next/server";
 
-
-export async function POST() {
+export async function POST({ req }) {
+  const body = await req.json();
+  console.log(body);
   try {
     const tran_id = Math.floor(100000 + Math.random() * 900000).toString();
     const init_url = "https://sandbox.sslcommerz.com/gwprocess/v3/api.php";
@@ -19,13 +19,19 @@ export async function POST() {
       "success_url",
       `${process.env.NEXT_PUBLIC_API_URL}/api/success?id=${tran_id}`
     );
-    formData.append("fail_url", `${process.env.NEXT_PUBLIC_API_URL}/api/fail?id=${tran_id}`);
+    formData.append(
+      "fail_url",
+      `${process.env.NEXT_PUBLIC_API_URL}/api/fail?id=${tran_id}`
+    );
     formData.append(
       "cancel_url",
       `${process.env.NEXT_PUBLIC_API_URL}/api/cancel?id=${tran_id}`
     );
-    formData.append("ipn_url", `${process.env.NEXT_PUBLIC_API_URL}/api/ipn?id=${tran_id}`);
-    //
+    formData.append(
+      "ipn_url",
+      `${process.env.NEXT_PUBLIC_API_URL}/api/ipn?id=${tran_id}`
+    );
+
     formData.append("cus_name", "Siratul Islam");
     formData.append("cus_email", "islamsiratul@gmail.com");
     formData.append("cus_add1", "Mipur 1 Dhaka 1216");

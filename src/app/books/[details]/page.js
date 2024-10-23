@@ -36,18 +36,18 @@ export default function BookDetails({ params }) {
     fetchBooks();
   }, [baseUrl, params.details]);
 
- // useEffect(() => {
- //   const fetchTotalQuantity = async () => {
-   //   if (!bookDetails) return;
+  // useEffect(() => {
+  //   const fetchTotalQuantity = async () => {
+  //   if (!bookDetails) return;
   //    const response = await fetch(
-     //   `${baseUrl}/api/payments-total-quantity?blogId=${bookDetails._id}`
-//      );
+  //   `${baseUrl}/api/payments-total-quantity?blogId=${bookDetails._id}`
+  //      );
   //    const data = await response.json();
   //    const status = bookDetails.quantity - data > 0 ? "Stock In" : "Stock Out";
-//      setStock(status);
+  //      setStock(status);
   //  };
- //   fetchTotalQuantity();
-//  }, [baseUrl, bookDetails]);
+  //   fetchTotalQuantity();
+  //  }, [baseUrl, bookDetails]);
 
   if (!bookDetails) {
     return <p className="text-3xl">Loading book details...</p>;

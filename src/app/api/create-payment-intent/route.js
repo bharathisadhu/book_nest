@@ -16,7 +16,7 @@ export async function POST(req) {
     // Log request data for debugging
     // Calculate the total amount
     const totalAmount = books.reduce((total, book) => {
-      return total + book.price * book.cardCount;
+      return total + book.price * book.quantity;
     }, 0);
     // Convert the totalAmount to cents for Stripe
     const amountInCents = Math.round(totalAmount * 100);

@@ -7,13 +7,11 @@ import connectToDatabase from "@/lib/mongodb";
 let db;
 
 // Handle POST requests
-// Handle POST requests
 export async function POST(request) {
   db = await connectDB();
 
   const newCartItem = await request.json();
   const { BookId, email, name } = newCartItem;
-  console.log("New cart item data:", newCartItem);
 
   // Check if the book is already in the cart for the given user (email and BookId)
   const existingItem = await db.collection("carts").findOne({
