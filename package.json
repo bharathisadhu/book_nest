@@ -23,6 +23,7 @@
     "d3-scale": "^4.0.2",
     "d3-scale-chromatic": "^3.1.0",
     "dotenv": "^16.4.5",
+    "express": "^4.21.1",
     "jsonwebtoken": "^9.0.2",
     "jsvectormap": "^1.6.0",
     "lodash": "^4.17.21",
