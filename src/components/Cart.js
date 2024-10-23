@@ -104,7 +104,7 @@ console.log("---------",response.data.data)
                     {cart?.transactionId}
                   </td>
                   <td className="px-4 py-4 text-sm text-gray-800">
-                    ${cart?.totalAmount.toFixed(2)}
+                    ${cart?.totalAmount}  //.toFixed(2)
                                      </td>
                   <td className="px-4 py-4 text-sm text-gray-800">
                     {cart?.status}

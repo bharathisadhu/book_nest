@@ -71,7 +71,8 @@ export default async function SalesList() {
   }
 
   return (
-    <div className="font-sans lg:max-h-screen overflow-x-auto overflow-y-auto">
+    <div className="font-sans lg:max-h-screen overflow-x-auto overflow-y-auto border-3">
+
       <table className=" divide-y divide-gray-200">
         <thead className="bg-gray-100 whitespace-nowrap">
           <tr>
@@ -107,7 +108,9 @@ export default async function SalesList() {
                 <td className="px-4 py-4 text-sm text-gray-800"> {pay.transactionId}</td>
 
                 <td className="px-4 py-4 text-sm text-gray-800 text-right">
-                  ${pay.totalAmount.toFixed(2)}
+                  $
+                  {typeof pay.totalAmount === 'number' ? pay.totalAmount.toFixed(2) :
+         pay.totalAmount}
                 </td>
                 <td className="px-4 py-4 text-sm text-gray-800">
                   {pay.status}
@@ -116,9 +119,10 @@ export default async function SalesList() {
             ))}
         </tbody>
       </table>
+      
       <div className="flex justify-between items-center mt-4">
                 <button 
-                    className="btn btn-primary" 
+                    className="btn rounded-3xl bg-[#F65D4E] text-white px-8"
                     onClick={handlePreviousPage} 
                     disabled={page === 1}
                 >
@@ -128,13 +132,14 @@ export default async function SalesList() {
                     Page {page} of {totalPages}
                 </span>
                 <button 
-                    className="btn btn-primary" 
+                     className="btn rounded-3xl bg-[#F65D4E] text-white px-8"
                     onClick={handleNextPage} 
                     disabled={page === totalPages}
                 >
                     Next
                 </button>
             </div>
+
     </div>
   );
 }
