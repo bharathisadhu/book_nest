@@ -273,7 +273,7 @@ export default function BooksList() {
               </td>
               <td className="px-4 py-4 text-sm text-gray-800">{book.author}</td>
               <td className="px-4 py-4 text-sm text-gray-800">
-                ${book.price.toFixed(2)}
+              ${typeof pay?.totalAmount === 'number' ? pay.totalAmount.toFixed(4) : '0.0000'}
               </td>
               <td className="px-4 py-4 text-sm text-gray-800">
                 {book.ratings}
