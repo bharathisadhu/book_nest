@@ -4,9 +4,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
-import SSLComponent from "./SSLComponent";
 import Image from "next/image";
-import { set } from "mongoose";
 
 const CheckoutForm = ({ cartBook, setCartBook }) => {
   const [isDiscountSectionHidden, setIsDiscountSectionHidden] = useState(false);
