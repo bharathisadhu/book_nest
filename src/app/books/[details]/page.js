@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-async-client-component */
 "use client";
 import axios from "axios";
 import Image from "next/image";
@@ -8,6 +7,8 @@ import Swal from "sweetalert2";
 import RelatedBooks from "@/components/RelatedBooks";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
+import { useSession } from "next-auth/react";
+import Banner from "@/components/share/banner";
 
 export default function BookDetails({ params }) {
   const [activeTab, setActiveTab] = useState("description");
@@ -15,6 +16,7 @@ export default function BookDetails({ params }) {
   const [isInCart, setIsInCart] = useState(false);
   const [listOfBooks, setListOfBooks] = useState([]);
   const [bookDetails, setBookDetails] = useState(null);
+  const { data: session } = useSession();
   const [stock, setStock] = useState(null);
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
@@ -23,7 +25,7 @@ export default function BookDetails({ params }) {
       try {
         const response = await axios.get(`${baseUrl}/api/books`);
         setListOfBooks(response.data);
-        const bookId = params.details; 
+        const bookId = params.details;
         const foundBook = response.data.find((book) => book._id === bookId);
         setBookDetails(foundBook);
       } catch (error) {
@@ -34,16 +36,18 @@ export default function BookDetails({ params }) {
     fetchBooks();
   }, [baseUrl, params.details]);
 
-  useEffect(() => {
-    const fetchTotalQuantity = async () => {
-      if (!bookDetails) return;
-      const response = await fetch(`${baseUrl}/api/payments-total-quantity?blogId=${bookDetails._id}`);
-      const data = await response.json();
-      const status = (bookDetails.quantity - data) > 0 ? "Stock In" : "Stock Out";
-      setStock(status);
-    };
-    fetchTotalQuantity();
-  }, [baseUrl, bookDetails]);
+ useEffect(() => {
+   const fetchTotalQuantity = async () => {
+     if (!bookDetails) return;
+     const response = await fetch(
+       `${baseUrl}/api/payments-total-quantity?bookId=${bookDetails._id}`
+     );
+     const data = await response.json();
+     const status = bookDetails.quantity - data > 0 ? "Stock In" : "Stock Out";
+     setStock(status);
+   };
+   fetchTotalQuantity();
+ }, [baseUrl, bookDetails]);
 
   if (!bookDetails) {
     return <p className="text-3xl">Loading book details...</p>;
@@ -59,6 +63,7 @@ export default function BookDetails({ params }) {
     ratings,
     category,
     publishType,
+    cardCount,
   } = bookDetails;
 
   const addToWishlist = async () => {
@@ -72,7 +77,7 @@ export default function BookDetails({ params }) {
     }
 
     try {
-      const response = await axios.post(`/api/wishlist/${_id}`, {
+      const response = await axios.post("/api/wishlists", {
         name,
         description: bookDetails.description || "",
         image,
@@ -80,6 +85,8 @@ export default function BookDetails({ params }) {
         price,
         rating: ratings,
         category,
+        cardCount,
+        email: session?.user?.email,
       });
 
       if (response.status === 201) {
@@ -124,15 +131,17 @@ export default function BookDetails({ params }) {
     }
 
     try {
-      const response = await axios.post("/api/carts", {
+      const response = await axios.post(`/api/carts/${session.user.email}`, {
         name,
+        BookId: bookDetails._id, // Updated this from bookId to _id
         description: bookDetails.description || "",
         image,
         author: bookDetails.author || "",
         price,
         rating: ratings,
         category,
-        quantity: bookDetails.quantity,
+        cardCount,
+        email: session?.user?.email, // Ensure this is not undefined
       });
 
       if (response.status === 201) {
@@ -168,8 +177,9 @@ export default function BookDetails({ params }) {
   return (
     <>
       <Navbar />
+      <Banner title={"Books Details"} linkName={"Home"}></Banner>
       <div className="font-sans">
-        <div className="p-4 lg:max-w-6xl max-w-2xl max-lg:mx-auto">
+        <div className="container mx-auto p-4 lg:max-w-6xl max-w-2xl max-lg:mx-auto">
           <div className="grid items-start grid-cols-1 lg:grid-cols-2 gap-8 max-lg:gap-16">
             <div className="w-full lg:sticky top-0 text-center">
               <div className="lg:h-[560px]">
@@ -198,8 +208,7 @@ export default function BookDetails({ params }) {
                     {name} | {category}
                   </h2>
                   <p className="text-sm text-gray-500 mt-2 font-bold">
-                    Author:{" "}
-                    <span className="text-red-600">{author}</span>
+                    Author: <span className="text-red-600">{author}</span>
                   </p>
                 </div>
 
@@ -218,35 +227,46 @@ export default function BookDetails({ params }) {
 
               <div className="flex flex-wrap gap-4 items-start">
                 <div>
-                  <p className="text-gray-800 text-4xl font-bold">
-                    ${price}
-                  </p>
+                  <p className="text-gray-800 text-4xl font-bold">${price}</p>
                 </div>
 
-
-                {stock === "Stock Out" ? <></> :  <div className="flex flex-wrap gap-4">
-
-             {publishType === "released" ? <><button onClick={addToCart} className="min-w-[200px] px-4 py-3 bg-gray-800 hover:bg-gray-900 text-white text-sm font-semibold rounded-md">
-              
-
-              Add to cart
-
-              </button>
-              <button onClick={addToWishlist} className="min-w-[200px] px-4 py-2.5 border border-gray-800 bg-transparent hover:bg-gray-50 text-gray-800 text-sm font-semibold rounded-md">Add to wishlist
-              </button></> : 
-              <>
-              <button onClick={addToCart} className="min-w-[200px] px-4 py-3 bg-gray-800 hover:bg-gray-900 text-white text-sm font-semibold rounded-md">
-              
-
-              {publishType === "released" ? <span className="bg-gray-800 hover:bg-gray-900 text-white">Add to cart</span> : <span className="bg-gray-800 hover:bg-gray-900 text-[red] uppercase">Pre-Order</span>}
-
-              </button>
-
-              </>}
-
-            </div>}
-
-
+                {stock === "Stock Out" ? (
+                  <></>
+                ) : (
+                  <div className="flex flex-wrap gap-4">
+                    {publishType === "released" ? (
+                      <>
+                        <button
+                          onClick={addToCart}
+                          className="min-w-[200px] px-4 py-3 bg-[#F65D4E] hover:bg-orange-500 text-white text-sm font-semibold rounded-md"
+                        >
+                          Add to cart
+                        </button>
+                        <button
+                          onClick={addToWishlist}
+                          className="min-w-[200px] px-4 py-2.5 border border-gray-800 bg-transparent hover:bg-[#F65D4E] hover:text-white text-gray-800 text-sm font-semibold rounded-md"
+                        >
+                          Add to wishlist
+                        </button>
+                      </>
+                    ) : (
+                      <>
+                        <button
+                          onClick={addToCart}
+                          className="min-w-[200px] px-4 py-3 bg-[#F65D4E] hover:bg-orange-500 text-white text-sm font-semibold rounded-md"
+                        >
+                          {publishType === "released" ? (
+                            <span className=" text-white">Add to cart</span>
+                          ) : (
+                            <span className=" text-white uppercase">
+                              Pre-Order
+                            </span>
+                          )}
+                        </button>
+                      </>
+                    )}
+                  </div>
+                )}
               </div>
 
               <hr className="my-8" />
@@ -295,16 +315,20 @@ export default function BookDetails({ params }) {
                       </p>
                       <ul className="space-y-3 list-disc mt-6 pl-4 text-sm text-gray-500">
                         <li>
-                          A gray t-shirt is a wardrobe essential because it is so versatile.
+                          A gray t-shirt is a wardrobe essential because it is
+                          so versatile.
                         </li>
                         <li>
-                          Available in a wide range of sizes, from extra small to extra large, and even in tall and petite sizes.
+                          Available in a wide range of sizes, from extra small
+                          to extra large, and even in tall and petite sizes.
                         </li>
                         <li>
-                          This is easy to care for. They can usually be machine-washed and dried on low heat.
+                          This is easy to care for. They can usually be
+                          machine-washed and dried on low heat.
                         </li>
                         <li>
-                          You can add your own designs, paintings, or embroidery to make it your own.
+                          You can add your own designs, paintings, or embroidery
+                          to make it your own.
                         </li>
                       </ul>
                     </>
@@ -313,7 +337,9 @@ export default function BookDetails({ params }) {
                       <h3 className="text-xl font-bold text-gray-800">
                         Product Reviews
                       </h3>
-                      <p className="text-sm text-gray-500 mt-4">No reviews yet.</p>
+                      <p className="text-sm text-gray-500 mt-4">
+                        No reviews yet.
+                      </p>
                     </div>
                   )}
                 </div>

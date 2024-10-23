@@ -9,7 +9,7 @@ import { FaDollarSign } from "react-icons/fa6";
 import { Span } from "next/dist/trace";
 
 export default function UpcommingCard({ book }) {
-  const { name, image, price, category, ratings, _id, quantity,publishType } = book;
+  const { name, image, price, category, ratings, _id, cardCount,publishType } = book;
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [isInCart, setIsInCart] = useState(false);
 
@@ -84,7 +84,7 @@ export default function UpcommingCard({ book }) {
         price,
         rating: ratings,
         category,
-        quantity,
+        cardCount,
       });
 
       if (response.status === 201) {

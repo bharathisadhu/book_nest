@@ -5,19 +5,25 @@ import { useEffect, useState } from "react";
 import { FaDollarSign, FaHeart, FaShoppingCart, FaStar } from "react-icons/fa";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { useSession } from "next-auth/react";
+import Loader from "@/app/loading";
 
 export default function PopularBooks() {
   const [popularBooks, setPopularBooks] = useState([]);
   const [bookmarkedBooks, setBookmarkedBooks] = useState({});
   const [cartBooks, setCartBooks] = useState({});
+  const [loading, setLoading] = useState(true);
+  const { data: session } = useSession();
 
   const baseURL = process.env.NEXT_PUBLIC_API_URL;
 
   useEffect(() => {
+    setLoading(true);
     fetch(`${baseURL}/api/books`)
       .then((response) => response.json())
       .then((data) => {
         setPopularBooks(data);
+        setLoading(false); // Set loading to false once data is fetched
       });
   }, [baseURL]);
 
@@ -54,22 +60,11 @@ export default function PopularBooks() {
       }
     } catch (error) {
       console.error("Error adding to bookmark:", error);
-      const message =
-        error.response?.data?.message || "Failed to add to bookmarks!";
-
-      if (error.response?.status === 409) {
-        Swal.fire({
-          icon: "info",
-          title: "Already Bookmarked",
-          text: message,
-        });
-      } else {
-        Swal.fire({
-          icon: "error",
-          title: "Error",
-          text: message,
-        });
-      }
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Failed to add to bookmarks!",
+      });
     }
   };
 
@@ -84,16 +79,18 @@ export default function PopularBooks() {
     }
 
     try {
-      // const response = await axios.post("/api/carts", {
-      //   name: book.name,
-      //   description: book.description || "",
-      //   image: book.image,
-      //   author: book.author || "",
-      //   price: book.price,
-      //   rating: book.ratings,
-      //   category: book.category,
-      //   quantity: 1, // Default quantity value, you can update it as needed
-      // });
+      const response = await axios.post(`/api/carts/${session?.user?.email}`, {
+        name: book.name,
+        BookId: book._id,
+        description: book.description || "",
+        image: book.image,
+        author: book.author || "",
+        price: book.price,
+        rating: book.ratings,
+        category: book.category,
+        cardCount: book.cardCount,
+        email: session?.user?.email, // Ensure this is not undefined
+      });
 
       if (response.status === 201) {
         setCartBooks((prev) => ({ ...prev, [book._id]: true }));
@@ -107,23 +104,17 @@ export default function PopularBooks() {
       }
     } catch (error) {
       console.error("Error adding to cart:", error);
-      const message = error.response?.data?.message || "Failed to add to cart!";
-
-      if (error.response?.status === 409) {
-        Swal.fire({
-          icon: "info",
-          title: "Already in Cart",
-          text: message,
-        });
-      } else {
-        Swal.fire({
-          icon: "error",
-          title: "Error",
-          text: message,
-        });
-      }
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Failed to add to cart!",
+      });
     }
   };
+
+  if (loading) {
+    return <Loader></Loader>; // Display a loading message
+  }
 
   return (
     <div className="my-4 md:my-8 lg:mt-28 lg:mb-20 container mx-auto">
@@ -148,15 +139,13 @@ export default function PopularBooks() {
               <div className="transition h-fit duration-500 w-full font-sans overflow-hidden mx-auto mt-4 px-4 pt-4">
                 {/* Full Height Image */}
                 <div className="relative group">
-                  <Link href={`/books/${book._id}`}>
-                    <Image
-                      src={book.image}
-                      alt={book.name}
-                      width={500}
-                      height={500}
-                      className="w-56 h-80 object-cover rounded-xl mb-3 transition-transform hover:scale-105"
-                    />
-                  </Link>
+                  <Image
+                    src={book.image}
+                    alt={book.name}
+                    width={500}
+                    height={500}
+                    className="w-56 h-80 object-cover rounded-xl mb-3 transition-transform hover:scale-105"
+                  />
                   {/* Bookmark and Cart Icons */}
                   <div>
                     <button
@@ -183,13 +172,14 @@ export default function PopularBooks() {
                   <p className="text-sm text-gray-600 mb-1 font-medium">
                     {book.category}
                   </p>
-                  <h2
-                    title={book.name}
-                    className="text-lg md:text-xl text-gray-800 font-bold line-clamp-2 hover:text-[#F65D4E]"
-                  >
-                    {book.name.slice(0, 15)}...
-                  </h2>
-
+                  <Link href={`/books/${book._id}`}>
+                    <h2
+                      title={book.name}
+                      className="text-lg md:text-xl text-gray-800 font-bold line-clamp-2 hover:text-[#F65D4E]"
+                    >
+                      {book.name.slice(0, 15)}...
+                    </h2>
+                  </Link>
                   <div className="flex items-center mt-2">
                     <p className="text-gray-800 font-semibold flex items-center">
                       Ratings: {book.ratings}

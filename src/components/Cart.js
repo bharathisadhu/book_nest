@@ -9,37 +9,51 @@ export default function Cart() {
   const { data: session } = useSession();
   const [carts, setCarts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+  const limit = 10;
+
+
+
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await axios.get(`/api/carts/${session?.user?.email}`, {
-          cache: "no-store",
-        });
+    
+        const fetchData = async () => {
+           
+            try {
+
+
+                const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/payments-pagination/${session?.user?.email}?page=${page}&limit=${limit}`,{ cache: "no-store" });
+               
+console.log("---------",response.data.data)
+               setCarts(response.data.data);
+               setTotalPages(response.data.totalPages);
+            } catch (error) {
+                console.error('Failed to fetch users:', error);
+            }
+            setIsLoading(false); 
+        };
+
         
-        console.log(res);
-        
-        if (res.status === 200) {
-          // In Axios, the response data is already parsed as JSON
-          const data = res.data;
-          setCarts(data);
-        } else {
-          console.error("Failed to fetch carts: ", res.status);
-          setCarts([]);
+        fetchData();
+    }, [session?.user?.email,page,limit]); 
+
+
+
+   const handlePreviousPage = () => {
+        if (page > 1) {
+            setPage(page - 1); 
         }
-        
-        setIsLoading(false);
-        
-      } catch (error) {
-        console.error("Error loading carts:", error.message); // Log the error message
-        setCarts([]); // Set carts to empty array in case of error
-        setIsLoading(false); // Ensure loading state is set to false even in case of error
-      }
     };
-  
-    fetchData();
-  }, [session?.user?.email]);
-  
-  console.log(carts);
+
+    const handleNextPage = () => {
+        if (page < totalPages) {
+            setPage(page + 1); 
+        }
+    };
+
+
+
   if (isLoading && carts.length === 0) {
     return <Loading />; // Use your existing loading component
   }
@@ -47,28 +61,30 @@ export default function Cart() {
   if (carts.length === 0) {
     return <div>No cart found or failed to load cart.</div>;
   }
+
   return (
     <div className="font-sans lg:max-h-[580px] overflow-x-auto overflow-y-auto">
       <table className="min-w-full divide-y divide-gray-200">
         <thead className="bg-gray-100 whitespace-nowrap">
           <tr>
-          <th className="px-4 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
-              Book Image
+            
+            <th className="px-4 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
+              Shipping addres
             </th>
             <th className="px-4 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
-              Book Name
+              Email
             </th>
             <th className="px-4 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
-              Category
-            </th>
-            <th className="px-4 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
-              Author
+              Payment status
             </th>
             <th className="px-4 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
               Price
             </th>
             <th className="px-4 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
-              Ratings
+              status
+            </th>
+            <th className="px-4 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
+              date
             </th>
           </tr>
         </thead>
@@ -77,29 +93,28 @@ export default function Cart() {
             carts.map((cart) => {
               return (
                 <tr key={cart._id}>
-                    <td className="px-4 py-4 text-sm text-gray-800">
-                <Image
-                  src={cart.image}
-                  alt={cart.name}
-                  width={40}
-                  height={60}
-                />
-              </td>
+                  
                   <td className="px-4 py-4 text-sm text-gray-800">
-                    {cart?.name}
+                    {cart?.name},{cart?.address},{cart?.city},{cart?.country},
                   </td>
                   <td className="px-4 py-4 text-sm text-gray-800">
-                    {cart?.category}
+                    {cart?.email}
                   </td>
                   <td className="px-4 py-4 text-sm text-gray-800">
-                    {cart.author}
+                    {cart?.transactionId}
                   </td>
                   <td className="px-4 py-4 text-sm text-gray-800">
-                    ${cart.price.toFixed(2)} {/* Formatting price */}
-                  </td>
+                    ${cart?.totalAmount.toFixed(2)}
+                                     </td>
                   <td className="px-4 py-4 text-sm text-gray-800">
-                    {cart.rating}
+                    {cart?.status}
                   </td>
+
+                  <td className="px-4 py-4 text-sm text-gray-800">
+                  
+                    {new Date(cart?.date).toLocaleDateString("en-GB")}
+                  </td>
+                 
                   {/* <td className="flex px-4 py-4 text-sm text-gray-800">
                       <Link href={`/dashboard/editbooks/${book._id}`}>
                         <HiPencilAlt size={24} />
@@ -111,6 +126,25 @@ export default function Cart() {
             })}
         </tbody>
       </table>
+      <div className="flex justify-between items-center mt-4">
+                <button 
+                    className="btn btn-primary" 
+                    onClick={handlePreviousPage} 
+                    disabled={page === 1}
+                >
+                    Previous
+                </button>
+                <span className="text-lg">
+                    Page {page} of {totalPages}
+                </span>
+                <button 
+                    className="btn btn-primary" 
+                    onClick={handleNextPage} 
+                    disabled={page === totalPages}
+                >
+                    Next
+                </button>
+            </div>
     </div>
   );
 }

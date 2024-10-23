@@ -25,8 +25,6 @@ const SubscriptionPage = () => {
       body: JSON.stringify({ email, plan }), // Include email in the request body
     });
 
-    console.log("API Response:", response); // Log the raw response for debugging
-
     // Check if the response is OK
     if (!response.ok) {
       alert("Failed to create checkout session. Please try again later.");
@@ -34,7 +32,6 @@ const SubscriptionPage = () => {
     }
 
     const data = await response.json();
-    console.log("Parsed Data:", data); // Log the parsed data
 
     if (data.url) {
       // Redirect to the Stripe checkout URL
@@ -50,7 +47,7 @@ const SubscriptionPage = () => {
         <title>BookNest | Subscription</title>
       </Head>
       <Navbar />
-      <div className="container mx-auto p-6">
+      <div className="container mx-auto p-6 mt-[75px] lg:mt-[120px]">
         <div>
           <h2 className="text-3xl font-bold text-center mt-12 sm:text-5xl">
             Pricing

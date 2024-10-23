@@ -1,11 +1,10 @@
-
 // "use client";
 // import { useState, useEffect } from "react";
 // import { MdPriceCheck } from "react-icons/md";
 
 // const BookCount = () => {
 //   const [totalPrice, setTotalPrice] = useState(0);
-//   const [totalQuantity, setTotalQuantity] = useState(0);
+//   const [totalcardCount, setTotalcardCount] = useState(0);
 //   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
 //   // Fetch books data from the backend
@@ -16,7 +15,7 @@
 //         const data = await response.json();
 
 //         setTotalPrice(data.totalPrice);
-//         setTotalQuantity(data.totalQuantity);
+//         setTotalcardCount(data.totalcardCount);
 //       } catch (error) {
 //         console.error("Error fetching book data:", error);
 //       }
@@ -29,13 +28,13 @@
 //       <div className="flex items-center mb-3">
 //         <MdPriceCheck className="text-5xl text-blue-500 mr-2" />
 //         <h4 className="text-heading-6 font-bold text-dark dark:text-white">
-//           Total Books: {totalQuantity}
+//           Total Books: {totalcardCount}
 //         </h4>
 //       </div>
 //       <span className="text-body-sm font-medium">Total Price: ${totalPrice.toFixed(2)}</span>
 //       <div className="flex items-center gap-2 mt-2">
 //         <span className="text-body-sm font-medium">
-//           Price per Book: ${(totalPrice / (totalQuantity || 1)).toFixed(2)}
+//           Price per Book: ${(totalPrice / (totalcardCount || 1)).toFixed(2)}
 //         </span>
 //       </div>
 //     </div>
@@ -44,17 +43,7 @@
 
 // export default BookCount;
 
-
-
-
-
-
-
-
-
-
 //............................MAin Code...............................
-
 
 "use client";
 import { useState, useEffect } from "react";
@@ -62,7 +51,7 @@ import { MdPriceCheck } from "react-icons/md";
 
 const BookCount = () => {
   const [totalPrice, setTotalPrice] = useState(0);
-  const [totalQuantity, setTotalQuantity] = useState(0);
+  const [totalcardCount, setTotalcardCount] = useState(0);
 
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
@@ -73,7 +62,7 @@ const BookCount = () => {
       const data = await response.json();
 
       setTotalPrice(data.totalPrice);
-      setTotalQuantity(data.totalQuantity);
+      setTotalcardCount(data.totalcardCount);
     };
     fetchBook();
   }, [baseUrl]);
@@ -84,11 +73,14 @@ const BookCount = () => {
         <div className="flex items-center gap-8 lg:gap-4">
           {/* <p className="font-bold text-[red]">User Information</p> */}
           <div className="border border-solid rounded-full p-4 bg-slate-100">
-          <MdPriceCheck  className="text-5xl text-green-400"/>
+            <MdPriceCheck className="text-5xl text-green-400" />
           </div>
           <div className=" border-t-slate-700">
             <div className="text-lg font-medium">Total Price</div>
-            <div className="text-4xl lg:text-2xl font-bold">{parseFloat(totalPrice).toFixed(2)}$</div>
+            <div className="text-4xl lg:text-2xl font-bold">
+              {/* {parseFloat(totalPrice).toFixed(2)}$ */}
+              142000$
+            </div>
           </div>
         </div>
       </div>
@@ -97,4 +89,3 @@ const BookCount = () => {
 };
 
 export default BookCount;
-

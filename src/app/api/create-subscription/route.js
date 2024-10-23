@@ -32,8 +32,6 @@ export async function POST(request) {
       cancel_url: `${request.headers.get("origin")}/cancel`,
     });
 
-    console.log("Stripe session created:", session);
-
     // Connect to the database
     const db = await connectDB(); // Make sure to await the DB connection
 
@@ -41,7 +39,7 @@ export async function POST(request) {
     if (plan === "pro") {
       const userUpdateResult = await Users.updateOne(
         { email: email },
-        { $set: { subscriptionPlan: "pro" } }
+        { $set: { subscriptionPlan: "Pro" } }
       );
 
       // Check if the user was found and updated
@@ -54,9 +52,6 @@ export async function POST(request) {
 
     // Fetch the updated user subscription status
     const user = await Users.findOne({ email });
-
-    // Log the user data for verification
-    console.log("User retrieved:", user);
 
     // Return the session URL and the user's subscription status
     return NextResponse.json({
