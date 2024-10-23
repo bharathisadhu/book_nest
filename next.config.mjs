@@ -60,6 +60,7 @@ const nextConfig = {
       "media.istockphoto.com",
       "www.solidbackgrounds.com",
       "t4.ftcdn.net",
+      "tenor.com",
       "*",
     ],
   },

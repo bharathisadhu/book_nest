@@ -80,6 +80,8 @@ const BookSchema = new mongoose.Schema({
   author: { type: String },
   category: { type: String },
   quantity: { type: Number },
+  publishType: { type: String },
+  cardCount: { type: Number },
 });
 
 const BlogSchema = new mongoose.Schema({

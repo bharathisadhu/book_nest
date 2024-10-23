@@ -8,7 +8,6 @@ import Swal from "sweetalert2";
 
 export default function UserProfile() {
   const { data: session, status, update } = useSession(); // Include update method from useSession
-  console.log(session);
   const [user, setUser] = useState(null);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");

@@ -34,9 +34,6 @@ export async function POST(req) {
       currency: "usd",
       payment_method_types: ["card"],
     });
-    // Save payment with "pending" status
-    //   const result = await db.collection("payments").insertOne(paymentIntent);
-    // console.log("from payments:", result);
 
     return NextResponse.json({
       clientSecret: paymentIntent.client_secret,

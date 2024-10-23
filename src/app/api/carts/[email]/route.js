@@ -31,7 +31,6 @@ export async function POST(request) {
     ...newCartItem,
     BookId: new ObjectId(BookId),
   });
-  console.log("Cart item inserted:", result);
 
   // Return the inserted cart item in the response
   return NextResponse.json(
@@ -54,6 +53,10 @@ export async function GET(request, { params }) {
         { status: 404 }
       );
     }
+
+    
+
+
     // console.log(individualCart);
     return NextResponse.json(individualCart, { status: 200 });
   } catch (error) {

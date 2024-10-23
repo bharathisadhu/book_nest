@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import Image from "next/image";
 import Swal from "sweetalert2";
@@ -28,19 +28,49 @@ export default function BooksCard({ book }) {
   const [totalQuantitiesCache, setTotalQuantitiesCache] = useState({});
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
-  //useEffect(() => {
-  //if (!stock) {
-  //   const fetchTotalQuantity = async () => {
-  //   const response = await fetch(
-  //      `${baseUrl}/api/payments-total-quantity?blogId=${_id}`
-  //  );
+  // const fetchTotalCardCount = useCallback(async () => {
+  //   const response = await fetch(`${baseUrl}/api/payments-total-quantity?bookId=${_id}`);
   //   const data = await response.json();
-  //   const status = quantity - data > 0 ? "Stock In" : "Stock Out";
-  // setStock(status);
-  //  };
-  //  fetchTotalQuantity();
-  //}
-  //}, [stock, baseUrl, _id, quantity]); /}
+  //   const status = cardCount - data > 0 ? "Stock In" : "Stock Out";
+  //   setStock(status);
+  // }, [baseUrl, _id, cardCount]);
+
+  // Callback to check if the item is in the cart
+  // const checkIfInCart = useCallback(async () => {
+  //   if (!session?.user?.email) return;
+
+  //   try {
+  //     const response = await axios.get(`${baseUrl}/api/carts/${session.user.email}`);
+  //     const cartItems = response.data.cart || [];
+  //     const foundItem = cartItems.find((item) => item._id === _id);
+  //     setIsInCart(!!foundItem);
+  //   } catch (error) {
+  //     console.error("Error fetching cart items:", error);
+  //   }
+  // }, [baseUrl, session, _id]);
+
+  // // Effect to fetch data
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     await Promise.all([fetchTotalCardCount(), checkIfInCart()]);
+  //   };
+
+  //   fetchData();
+  // }, [fetchTotalCardCount, checkIfInCart]);
+
+  // useEffect(() => {
+  //   if (!stock) {
+  //     const fetchTotalQuantity = async () => {
+  //       const response = await fetch(
+  //         `${baseUrl}/api/payments-total-quantity?bookId=${_id}`
+  //       );
+  //       const data = await response.json();
+  //       const status = quantity - data > 0 ? "Stock In" : "Stock Out";
+  //       setStock(status);
+  //     };
+  //     fetchTotalQuantity();
+  //   }
+  // }, [stock, baseUrl, _id, quantity]);
 
   const addToBookmark = async () => {
     if (isBookmarked) {
@@ -53,22 +83,17 @@ export default function BooksCard({ book }) {
     }
 
     try {
-      const response = await axios.post(
-        `/api/wishlists/${session.user.email}`,
-        {
-          name,
-          BookId: book._id,
-          description: book.description || "",
-          image,
-          author: book.author || "",
-          price,
-          rating: ratings,
-          category,
-          cardCount,
-          email: session?.user?.email,
-          cardCount,
-        }
-      );
+      const response = await axios.post("/api/wishlists", {
+        name,
+        description: book.description || "",
+        image,
+        author: book.author || "",
+        price,
+        rating: ratings,
+        category,
+        cardCount,
+        email: session?.user?.email,
+      });
 
       if (response.status === 201) {
         setIsBookmarked(true);
@@ -204,7 +229,7 @@ export default function BooksCard({ book }) {
         </h3>
         <h2 className="flex gap-2">
           <span className="text-base md:text-base text-gray-800 font-semibold line-clamp-2 hover:text-[#F65D4E] text-center uppercase">
-            {publishType === "released" ? <>{stock}</> : "upcoming"}
+            {publishType === "released" ? stock : "upcoming"}
           </span>
         </h2>
       </div>
