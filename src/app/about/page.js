@@ -12,6 +12,7 @@ import Monsur from "../../../public/Monsur.jpeg";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Head from "next/head";
+import Banner from "@/components/share/banner";
 
 export default function AboutUs() {
   return (
@@ -20,18 +21,7 @@ export default function AboutUs() {
         <title>BookNest | About Us</title>
       </Head>
       <Navbar />
-      <div className="mt-[75px] lg:mt-[120px] my-10 py-20 px-2 md:px-20 bg-gray-200 flex justify-between items-center">
-        <h1 className="lg:text-6xl md:text-4xl text-xl font-bold">About Us</h1>
-        <div className="flex justify-center items-center gap-2">
-          <Link legacyBehavior href="/">
-            <a>Home</a>
-          </Link>
-          <p>
-            <GoArrowRight />
-          </p>
-          <p className="text-orange-500">About Us</p>
-        </div>
-      </div>
+      <Banner title="About Us" linkName="Home" />
 
       <div className="lg:my-20 md:my-10 my-5 p-2 container mx-auto">
         <div className="flex justify-center items-center">

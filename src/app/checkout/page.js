@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import Swal from "sweetalert2";
 import axios from "axios";
+import PrivateRoute from "@/services/PrivateRoute";
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY);
 
@@ -43,18 +44,20 @@ export default function CheckoutPage() {
 
   return (
     <>
-      <Navbar />
-      <div>
-        <Banner linkName={"Home"} title={"Checkout"} />
-        {loading ? (
-          <Loading />
-        ) : (
-          <Elements stripe={stripePromise}>
-            <CheckoutForm cartBook={cartBook} setCartBook={setCartBook} />
-          </Elements>
-        )}
-      </div>
-      <Footer />
+      <PrivateRoute>
+        <Navbar />
+        <div>
+          <Banner linkName={"Home"} title={"Checkout"} />
+          {loading ? (
+            <Loading />
+          ) : (
+            <Elements stripe={stripePromise}>
+              <CheckoutForm cartBook={cartBook} setCartBook={setCartBook} />
+            </Elements>
+          )}
+        </div>
+        <Footer />
+      </PrivateRoute>
     </>
   );
 }
