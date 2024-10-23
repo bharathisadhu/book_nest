@@ -63,165 +63,170 @@ export default function BooksList() {
       }
     };
 
-        window.addEventListener("scroll", handleScroll);
-        return () => {
-            window.removeEventListener("scroll", handleScroll);
-        };
-    }, [hasMore, isLoading]);
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [hasMore, isLoading]);
 
-    const removeBook = async (id) => {
-        const bookToDelete = books.find((book) => book._id === id);
-        setBooks((prevBooks) => prevBooks.filter((book) => book._id !== id));
+  const removeBook = async (id) => {
+    const bookToDelete = books.find((book) => book._id === id);
+    setBooks((prevBooks) => prevBooks.filter((book) => book._id !== id));
 
-        const { isConfirmed } = await Swal.fire({
-            title: "Are you sure?",
-            text: "You won't be able to revert this!",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Yes, delete it!",
+    const { isConfirmed } = await Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    });
+
+    if (isConfirmed) {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/books/${id}`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      if (!res.ok) {
+        await Swal.fire({
+          title: "Error!",
+          text: "There was an error deleting the book.",
+          icon: "error",
         });
-
-        if (isConfirmed) {
-            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/books/${id}`, { method: "DELETE" });
-
-            if (!res.ok) {
-                await Swal.fire({
-                    title: "Error!",
-                    text: "There was an error deleting the book.",
-                    icon: "error",
-                });
-                setBooks((prevBooks) => [...prevBooks, bookToDelete]);
-            } else {
-                await Swal.fire({
-                    title: "Deleted!",
-                    text: "The book has been deleted.",
-                    icon: "success",
-                });
-            }
-        } else {
-            setBooks((prevBooks) => [...prevBooks, bookToDelete]);
-        }
-    };
-
-    const uploadImage = async (file) => {
-        const formData = new FormData();
-        formData.append("image", file);
-        const res = await fetch(`https://api.imgbb.com/1/upload?key=${process.env.NEXT_PUBLIC_IMAGE_UPLOAD_KEY}`, {
-            method: "POST",
-            body: formData,
+        setBooks((prevBooks) => [...prevBooks, bookToDelete]);
+      } else {
+        await Swal.fire({
+          title: "Deleted!",
+          text: "The book has been deleted.",
+          icon: "success",
         });
-        if (res.ok) {
-            const data = await res.json();
-            return data.data.display_url; 
-        } else {
-            await Swal.fire({
-                title: "Error!",
-                text: "Image upload failed.",
-                icon: "error",
-            });
-            return null;
-        }
-    };
-
-    const updateBook = async (bookData) => {
-        setIsUpdating(true); 
-
-        const previousBook = books.find((book) => book._id === bookData._id);
-        setBooks((prevBooks) =>
-            prevBooks.map((book) =>
-                book._id === bookData._id ? { ...book, ...bookData } : book
-            )
-        );
-
-        if (imageFile) {
-            const uploadedImageUrl = await uploadImage(imageFile);
-            if (uploadedImageUrl) {
-                bookData.image = uploadedImageUrl; 
-            }
-        }
-        const res = await fetch(
-            `${process.env.NEXT_PUBLIC_API_URL}/api/books/${bookData._id}`,
-            {
-                method: "PUT",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(bookData),
-            }
-        );
-
-        if (res.ok) {
-            const updatedBook = await res.json();
-
-            await Swal.fire({
-                title: "Updated!",
-                text: "The book has been updated.",
-                icon: "success",
-            });
-
-            setBooks((prevBooks) =>
-                prevBooks.map((book) =>
-                    book._id === updatedBook._id ? updatedBook : book
-                )
-            );
-            setIsModalOpen(false);
-            setSelectedBook(null);
-            setImageFile(null); 
-            setImageUrl(""); 
-        } else {
-            await Swal.fire({
-                title: "Error!",
-                text: "There was an error updating the book.",
-                icon: "error",
-            });
-            setBooks((prevBooks) =>
-                prevBooks.map((book) =>
-                    book._id === previousBook._id ? previousBook : book
-                )
-            );
-        }
-        setIsUpdating(false);
-    };
-
-    const handleEditClick = (book) => {
-        setSelectedBook(book);
-        setImageUrl(book.image || ""); 
-        setIsModalOpen(true);
-    };
-
-    const handleCloseModal = () => {
-        setIsModalOpen(false);
-        setSelectedBook(null);
-        setImageFile(null); 
-        setImageUrl(""); 
-    };
-
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        const updatedValue = name === "price" ? parseFloat(value) : value;
-
-        setSelectedBook((prev) => ({ ...prev, [name]: updatedValue }));
-    };
-
-    const handleImageChange = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            setImageFile(file);
-            setImageUrl(URL.createObjectURL(file)); 
-        }
-    };
-
-
-
-    if (isLoading && books.length === 0) {
-        return <Loading />; 
+      }
+    } else {
+      setBooks((prevBooks) => [...prevBooks, bookToDelete]);
     }
+  };
 
-    if (books.length === 0) {
-        return <div>No books found or failed to load books.</div>;
+  const uploadImage = async (file) => {
+    const formData = new FormData();
+    formData.append("image", file);
+    const res = await fetch(
+      `https://api.imgbb.com/1/upload?key=${process.env.NEXT_PUBLIC_IMAGE_UPLOAD_KEY}`,
+      {
+        method: "POST",
+        body: formData,
+      }
+    );
+    if (res.ok) {
+      const data = await res.json();
+      return data.data.display_url; // Return the URL of the uploaded image
+    } else {
+      await Swal.fire({
+        title: "Error!",
+        text: "Image upload failed.",
+        icon: "error",
+      });
+      return null;
     }
+  };
+  const updateBook = async (bookData) => {
+    setIsUpdating(true); // Set loading state immediately
+
+    const previousBook = books.find((book) => book._id === bookData._id);
+    setBooks((prevBooks) =>
+      prevBooks.map((book) =>
+        book._id === bookData._id ? { ...book, ...bookData } : book
+      )
+    );
+
+    if (imageFile) {
+      const uploadedImageUrl = await uploadImage(imageFile);
+      if (uploadedImageUrl) {
+        bookData.image = uploadedImageUrl; // Set the uploaded image URL
+      }
+    }
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/books/${bookData._id}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(bookData),
+      }
+    );
+
+    if (res.ok) {
+      const updatedBook = await res.json();
+
+      await Swal.fire({
+        title: "Updated!",
+        text: "The book has been updated.",
+        icon: "success",
+      });
+
+      setBooks((prevBooks) =>
+        prevBooks.map((book) =>
+          book._id === updatedBook._id ? updatedBook : book
+        )
+      );
+      setIsModalOpen(false);
+      setSelectedBook(null);
+      setImageFile(null); // Reset the image file state
+      setImageUrl(""); // Reset the image URL state
+    } else {
+      await Swal.fire({
+        title: "Error!",
+        text: "There was an error updating the book.",
+        icon: "error",
+      });
+      setBooks((prevBooks) =>
+        prevBooks.map((book) =>
+          book._id === previousBook._id ? previousBook : book
+        )
+      );
+    }
+    setIsUpdating(false);
+  };
+
+  const handleEditClick = (book) => {
+    setSelectedBook(book);
+    setImageUrl(book.image || ""); // Set the current image URL
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedBook(null);
+    setImageFile(null); // Reset the image file state
+    setImageUrl(""); // Reset the image URL state
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    const updatedValue = name === "price" ? parseFloat(value) : value;
+
+    setSelectedBook((prev) => ({ ...prev, [name]: updatedValue }));
+  };
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setImageFile(file);
+      setImageUrl(URL.createObjectURL(file)); // Create a temporary URL for preview
+    }
+  };
+  if (isLoading && books.length === 0) {
+    return <Loading />; // Use your existing loading component
+  }
+
+  if (books.length === 0) {
+    return <div>No books found or failed to load books.</div>;
+  }
 
   return (
     <div className="font-sans lg:max-h-screen overflow-x-auto overflow-y-auto">
