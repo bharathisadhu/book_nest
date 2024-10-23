@@ -38,7 +38,6 @@ export async function GET(req) {
 
     // Return the total quantity as a JSON response
     return NextResponse.json(totalQuantity);
-
   } catch (error) {
     console.error("Error fetching total quantity:", error);
     return NextResponse.json(
