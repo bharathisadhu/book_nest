@@ -6,6 +6,7 @@ import { FaHeart, FaShoppingCart, FaStar } from "react-icons/fa";
 import Link from "next/link";
 import { FaDollarSign } from "react-icons/fa6";
 import { useSession } from "next-auth/react";
+import { debounce } from "lodash"; // Import lodash debounce
 
 export default function BooksCard({ book }) {
   const {
@@ -24,6 +25,7 @@ export default function BooksCard({ book }) {
   const [isInCart, setIsInCart] = useState(false);
   const { data: session } = useSession();
   const [stock, setStock] = useState(null);
+  const [totalQuantitiesCache, setTotalQuantitiesCache] = useState({});
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
   // const fetchTotalCardCount = useCallback(async () => {
@@ -54,7 +56,7 @@ export default function BooksCard({ book }) {
   //   };
 
   //   fetchData();
-  // }, [fetchTotalCardCount, checkIfInCart]); 
+  // }, [fetchTotalCardCount, checkIfInCart]);
 
   useEffect(() => {
     if (!stock) {

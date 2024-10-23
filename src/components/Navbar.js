@@ -87,7 +87,6 @@ const Navbar = () => {
     fetchAdminStatus();
   }, [fetchAdminStatus]);
 
-
   return (
     <nav className="fixed top-0 left-0 right-0 w-full shadow-md bg-white font-[sans-serif] tracking-wide z-50 ">
       <section className="flex items-center flex-wrap lg:justify-center gap-4 py-3 sm:px-10 px-4 border-gray-200 border-b min-h-[75px]">
@@ -132,7 +131,7 @@ const Navbar = () => {
               )}
             </span>
           </Link>
-          <Link href="/cart">
+          <Link href="/checkout">
             <span className="relative">
               <FaShoppingCart className="text-[27px] text-black cursor-pointer fill-[#333] hover:fill-[#F65D4E] inline-block" />
               {cartCount > 0 && (
@@ -177,6 +176,12 @@ const Navbar = () => {
                         </button>
                       </Link>
                     )}
+                    <Link href="/chat">
+                        <button className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-100">
+                          Chat
+                        </button>
+                      </Link>
+                    
                     <button
                       onClick={() => signOut()}
                       className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-100"
@@ -196,7 +201,6 @@ const Navbar = () => {
           id="collapseMenu"
           className="max-lg:hidden lg:!block max-lg:before:fixed max-lg:before:bg-black max-lg:before:opacity-40 max-lg:before:inset-0 max-lg:before:z-50"
         >
-
           <ul className="lg:flex lg:gap-x-10 max-lg:space-y-3 max-lg:fixed max-lg:bg-white max-lg:w-2/3 max-lg:min-w-[300px] max-lg:top-0 max-lg:left-0 max-lg:p-4 max-lg:h-full max-lg:shadow-md max-lg:overflow-auto z-50">
             <li className="max-lg:border-b max-lg:pb-4 px-3 lg:hidden">
               <Link href="javascript:void(0)">
@@ -257,7 +261,6 @@ const Navbar = () => {
               </>
             )}
           </button>
-    
         </div>
         {/* Sidebar Content */}
         {isOpen && (
@@ -320,7 +323,7 @@ const Navbar = () => {
               </ul>
               <ul className="menu flex flex-col text-lg font-bold space-y-4">
                 <Link
-                  href="/cart"
+                  href="/checkout"
                   onClick={toggleSidebar}
                   className={`${
                     pathname === "/cart" ? " text-[#F65D4E]" : ""
