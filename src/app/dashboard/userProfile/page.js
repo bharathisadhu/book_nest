@@ -1,5 +1,5 @@
 import DashboardLayout from "@/components/DashboardLayout";
-import UserProfile from "@/components/mainDashBord/UserProfile";
+import UserProfile from "@/components/mainDashBoard/UserProfile";
 export default function page() {
   return (
     <DashboardLayout>

@@ -13,7 +13,7 @@ import Head from "next/head";
 
 export default function Home() {
   return (
-    <>
+    <main>
       <Head>
         <title>BookNest | Home</title>
       </Head>
@@ -28,6 +28,6 @@ export default function Home() {
       <Blogs />
       <Analytics />
       <Footer />
-    </>
+    </main>
   );
 }

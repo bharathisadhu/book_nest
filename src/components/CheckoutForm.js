@@ -69,7 +69,7 @@ const CheckoutForm = ({ cartBook, setCartBook }) => {
       try {
         if (total > 0 && !isCashOnDelivery) {
           const booksArray = cartBook.map((item) => ({
-            bookId: item._id,
+            bookId: item.BookId,
             bookName: item.name,
             price: item.price,
             cardCount: item.cardCount,
@@ -117,14 +117,11 @@ const CheckoutForm = ({ cartBook, setCartBook }) => {
     };
 
     const booksArray = cartBook.map((item) => ({
-      bookId: item._id,
+      bookId: item.BookId,
       bookName: item.name,
       price: item.price,
       cardCount: item.cardCount,
     }));
-
-    console.log("Customer Details:", customerDetails);
-    console.log("Books Array:", booksArray);
 
     if (isCashOnDelivery) {
       // Cash on Delivery logic
@@ -142,11 +139,8 @@ const CheckoutForm = ({ cartBook, setCartBook }) => {
         status: "pending",
       };
 
-      console.log("Payment (Cash on Delivery):", payment);
-
       try {
         const response = await axios.post("/api/payments", payment);
-        console.log(response.data);
         Swal.fire({
           position: "center",
           icon: "success",
@@ -247,7 +241,6 @@ const CheckoutForm = ({ cartBook, setCartBook }) => {
           };
 
           const response = await axios.post("/api/payments", payment);
-          console.log(response.data);
 
           Swal.fire({
             position: "center",
@@ -290,7 +283,6 @@ const CheckoutForm = ({ cartBook, setCartBook }) => {
   const PaymentOption = async () => {
     let res = await fetch("/api/ssl_payment", { method: "POST" });
     let JSON = await res.json();
-    console.log(JSON["data"]["desc"]);
     setMethod(JSON["data"]["desc"]);
     setShowModal(true); // Show the modal after fetching the data
   };
@@ -558,37 +550,37 @@ const CheckoutForm = ({ cartBook, setCartBook }) => {
                 </div>
               </div>
             </div>
-            <div class="space-y-2">
-              <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+            <div className="space-y-2">
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
                 Delivery Methods
               </h3>
               <div className="flex flex-col md:flex-row gap-6">
-                <div class="grid grid-cols-1 gap-4 ">
-                  <div class="rounded-lg border border-gray-200 bg-gray-50 p-4 ps-4 dark:border-gray-700 dark:bg-gray-800">
-                    <div class="flex items-start">
-                      <div class="flex h-5 items-center">
+                <div className="grid grid-cols-1 gap-4 ">
+                  <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 ps-4 dark:border-gray-700 dark:bg-gray-800">
+                    <div className="flex items-start">
+                      <div className="flex h-5 items-center">
                         <input
                           id="dhl"
                           aria-describedby="dhl-text"
                           type="radio"
                           name="delivery-method"
                           value=""
-                          class="h-4 w-4 border-gray-300 bg-white text-primary-600 focus:ring-2 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600"
+                          className="h-4 w-4 border-gray-300 bg-white text-primary-600 focus:ring-2 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600"
                           checked={isCashOnDelivery}
                           onChange={() => handlePaymentMethodChange("cash")}
                         />
                       </div>
 
-                      <div class="ms-4 text-sm">
+                      <div className="ms-4 text-sm">
                         <label
                           for="dhl"
-                          class="font-medium leading-none text-gray-900 dark:text-white"
+                          className="font-medium leading-none text-gray-900 dark:text-white"
                         >
                           Cash on Delivery
                         </label>
                         <p
                           id="dhl-text"
-                          class="mt-1 text-xs font-normal text-gray-500 dark:text-gray-400"
+                          className="mt-1 text-xs font-normal text-gray-500 dark:text-gray-400"
                         >
                           Get it by Tommorow
                         </p>
@@ -597,32 +589,32 @@ const CheckoutForm = ({ cartBook, setCartBook }) => {
                   </div>
                 </div>
                 {/* ssl commerzz */}
-                <div class="grid grid-cols-1 gap-4 ">
-                  <div class="rounded-lg border border-gray-200 bg-gray-50 p-4 ps-4 dark:border-gray-700 dark:bg-gray-800">
-                    <div class="flex items-start">
-                      <div class="flex h-5 items-center">
+                <div className="grid grid-cols-1 gap-4 ">
+                  <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 ps-4 dark:border-gray-700 dark:bg-gray-800">
+                    <div className="flex items-start">
+                      <div className="flex h-5 items-center">
                         <input
                           id="dhl"
                           aria-describedby="dhl-text"
                           type="radio"
                           name="delivery-method"
                           value=""
-                          class="h-4 w-4 border-gray-300 bg-white text-primary-600 focus:ring-2 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600"
+                          className="h-4 w-4 border-gray-300 bg-white text-primary-600 focus:ring-2 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600"
                           checked={isSSLPayment}
                           onChange={() => handlePaymentMethodChange("ssl")}
                         />
                       </div>
 
-                      <div class="ms-4 text-sm">
+                      <div className="ms-4 text-sm">
                         <label
                           for="dhl"
-                          class="font-medium leading-none text-gray-900 dark:text-white"
+                          className="font-medium leading-none text-gray-900 dark:text-white"
                         >
                           Pay Via SSL Commerz
                         </label>
                         <p
                           id="dhl-text"
-                          class="mt-1 text-xs font-normal text-gray-500 dark:text-gray-400"
+                          className="mt-1 text-xs font-normal text-gray-500 dark:text-gray-400"
                         >
                           Pay With Local Cards
                         </p>
@@ -630,32 +622,32 @@ const CheckoutForm = ({ cartBook, setCartBook }) => {
                     </div>
                   </div>
                 </div>
-                <div class="grid grid-cols-1 gap-4">
-                  <div class="rounded-lg border border-gray-200 bg-gray-50 p-4 ps-4 dark:border-gray-700 dark:bg-gray-800">
-                    <div class="flex items-start">
-                      <div class="flex h-5 items-center">
+                <div className="grid grid-cols-1 gap-4">
+                  <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 ps-4 dark:border-gray-700 dark:bg-gray-800">
+                    <div className="flex items-start">
+                      <div className="flex h-5 items-center">
                         <input
                           id="dhl1"
                           aria-describedby="dhl1-text"
                           type="radio"
                           name="delivery-method"
                           value=""
-                          class="h-4 w-4 border-gray-300 bg-white text-primary-600 focus:ring-2 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600"
+                          className="h-4 w-4 border-gray-300 bg-white text-primary-600 focus:ring-2 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600"
                           checked={isStripePayment}
                           onChange={() => handlePaymentMethodChange("stripe")}
                         />
                       </div>
 
-                      <div class="ms-4 text-sm">
+                      <div className="ms-4 text-sm">
                         <label
                           for="dhl1"
-                          class="font-medium leading-none text-gray-900 dark:text-white"
+                          className="font-medium leading-none text-gray-900 dark:text-white"
                         >
                           Payment Via Stripe
                         </label>
                         <p
                           id="dhl1-text"
-                          class="mt-1 text-xs font-normal text-gray-500 dark:text-gray-400"
+                          className="mt-1 text-xs font-normal text-gray-500 dark:text-gray-400"
                         >
                           Instant Payment
                         </p>

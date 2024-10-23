@@ -7,22 +7,33 @@ import "swiper/css";
 import { Autoplay, Navigation } from "swiper/modules";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import Loader from "@/app/loading";
 
 const Category = () => {
   const [category, setCategory] = useState([]);
+  const [loading, setLoading] = useState(true)
   const router = useRouter();
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
   useEffect(() => {
+    setLoading(true)
     fetch(`${baseUrl}/api/books`)
       .then((response) => response.json())
-      .then((data) => setCategory(data));
+      .then((data) => {
+        setCategory(data)
+        setLoading(false)
+      });
   }, [baseUrl]);
 
   // Handle navigation to books page with selected category
   const handleCategoryClick = (categoryName) => {
     router.push(`/books?category=${encodeURIComponent(categoryName)}`);
   };
+
+  if(loading){
+    return <Loader></Loader>
+  }
+
 
   return (
     <div className="container mx-auto my-4 md:my-8 lg:mt-20 lg:mb-24 relative">
@@ -62,7 +73,7 @@ const Category = () => {
               ></div>
               <Image
                 src={cat.image}
-                className="lg:w-[110px] lg:h-[170px] w-14 h-18 relative z-20 transform transition-transform duration-300 lg:group-hover:-translate-y-10 group-hover:-translate-y-4 rounded-sm"
+                className="lg:w-[110px] lg:h-[170px] w-14 h-18 relative z-20 transform transition-transform duration-300 lg:group-hover:-translate-y-10 group-hover:-translate-y-4 rounded-sm "
                 alt={cat.name}
                 width={200}
                 height={200}

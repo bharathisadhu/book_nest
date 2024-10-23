@@ -1,5 +1,6 @@
 
 
+
 // "use client";
 
 // import { useEffect, useState } from "react";
@@ -451,9 +452,10 @@ import { HiPencilAlt, HiOutlineTrash } from "react-icons/hi";
 import Loading from "../app/loading";
 import Swal from "sweetalert2";
 import Image from "next/image";
-import axios from 'axios';
+import axios from "axios";
 
 export default function BooksList() {
+
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const limit = 10; 
@@ -563,6 +565,52 @@ export default function BooksList() {
     const updateBook = async (bookData) => {
         setIsUpdating(true); 
 
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const limit = 10;
+
+  const [loading, setLoading] = useState(false);
+
+  const [books, setBooks] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isUpdating, setIsUpdating] = useState(false);
+  const [selectedBook, setSelectedBook] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [imageUrl, setImageUrl] = useState(""); // State for the uploaded image URL
+  const [imageFile, setImageFile] = useState(null); // State for the image file
+  const [hasMore, setHasMore] = useState(true); // To track if more books are available
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/books-pagination?page=${page}&limit=${limit}`,
+          { cache: "no-store" }
+        );
+        setBooks(response.data.data);
+        setTotalPages(response.data.totalPages);
+      } catch (error) {
+        console.error("Failed to fetch users:", error);
+      }
+      setLoading(false);
+    };
+
+    fetchData();
+  }, [page]);
+
+  const handlePreviousPage = () => {
+    if (page > 1) {
+      setPage(page - 1);
+    }
+  };
+
+  const handleNextPage = () => {
+    if (page < totalPages) {
+      setPage(page + 1);
+    }
+  };
+
+
         const previousBook = books.find((book) => book._id === bookData._id);
         setBooks((prevBooks) =>
             prevBooks.map((book) =>
@@ -668,6 +716,7 @@ export default function BooksList() {
         return <div>No books found or failed to load books.</div>;
     }
 
+
     return (
         <div className="font-sans lg:max-h-screen overflow-x-auto overflow-y-auto">
             <table className="min-w-full divide-y divide-gray-200">
@@ -751,6 +800,41 @@ export default function BooksList() {
                             <button type="button" onClick={handleCloseModal} className="bg-gray-300 text-gray-800 px-4 py-2 rounded ml-2">Cancel</button>
                         </div>
                     </div>
+
+      {isModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white p-8 rounded shadow-lg max-w-2xl w-full">
+            <h2 className="text-lg font-semibold">Update Book</h2>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                updateBook(selectedBook); // Call updateBook directly
+              }}
+              className="flex"
+            >
+              <div className="flex-1">
+                <div className="mt-4">
+                  <label className="block text-sm">Name</label>
+                  <input
+                    type="text"
+                    name="name"
+                    value={selectedBook?.name || ""}
+                    onChange={handleInputChange}
+                    className="border p-2 w-full"
+                    required
+                  />
+                </div>
+                <div className="mt-4">
+                  <label className="block text-sm">Author</label>
+                  <input
+                    type="text"
+                    name="author"
+                    value={selectedBook?.author || ""}
+                    onChange={handleInputChange}
+                    className="border p-2 w-full"
+                    required
+                  />
+
                 </div>
             )}
 
@@ -765,4 +849,27 @@ export default function BooksList() {
             </div>
         </div>
     );
+
+      <div className="flex justify-between items-center mt-4">
+        <button
+          className="btn btn-primary"
+          onClick={handlePreviousPage}
+          disabled={page === 1}
+        >
+          Previous
+        </button>
+        <span className="text-lg">
+          Page {page} of {totalPages}
+        </span>
+        <button
+          className="btn btn-primary"
+          onClick={handleNextPage}
+          disabled={page === totalPages}
+        >
+          Next
+        </button>
+      </div>
+    </div>
+  );
+
 }
