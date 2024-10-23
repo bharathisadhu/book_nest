@@ -54,6 +54,11 @@ export async function GET(request, { params }) {
         { status: 404 }
       );
     }
+
+    
+
+
+    // console.log(individualCart);
     return NextResponse.json(individualCart, { status: 200 });
   } catch (error) {
     console.error("Error fetching user:", error);
