@@ -35,29 +35,6 @@
 
 // export default SaleCount;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 //.............................Main Code...............................
 
 "use client";
@@ -74,13 +51,11 @@ const SaleCount = () => {
     const fetchBook = async () => {
       const response = await fetch(`${baseUrl}/api/payments-price`);
       const data = await response.json();
-      // console.log(data);
 
       setTotalPrice(data.totalAmount);
     };
     fetchBook();
   }, [baseUrl]);
-  // console.log(totalAmount);
 
   return (
     <>

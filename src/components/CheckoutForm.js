@@ -71,7 +71,7 @@ const CheckoutForm = ({ cartBook, setCartBook }) => {
       try {
         if (total > 0 && !isCashOnDelivery) {
           const booksArray = cartBook.map((item) => ({
-            bookId: item._id,
+            bookId: item.BookId,
             bookName: item.name,
             price: item.price,
             cardCount: item.cardCount,
@@ -119,14 +119,11 @@ const CheckoutForm = ({ cartBook, setCartBook }) => {
     };
 
     const booksArray = cartBook.map((item) => ({
-      bookId: item._id,
+      bookId: item.BookId,
       bookName: item.name,
       price: item.price,
       cardCount: item.cardCount,
     }));
-
-    console.log("Customer Details:", customerDetails);
-    console.log("Books Array:", booksArray);
 
     if (isCashOnDelivery) {
       // Cash on Delivery logic
@@ -144,11 +141,8 @@ const CheckoutForm = ({ cartBook, setCartBook }) => {
         status: "pending",
       };
 
-      console.log("Payment (Cash on Delivery):", payment);
-
       try {
         const response = await axios.post("/api/payments", payment);
-        console.log(response.data);
         Swal.fire({
           position: "center",
           icon: "success",
@@ -249,7 +243,6 @@ const CheckoutForm = ({ cartBook, setCartBook }) => {
           };
 
           const response = await axios.post("/api/payments", payment);
-          console.log(response.data);
 
           Swal.fire({
             position: "center",
@@ -292,7 +285,6 @@ const CheckoutForm = ({ cartBook, setCartBook }) => {
   const PaymentOption = async () => {
     let res = await fetch("/api/ssl_payment", { method: "POST" });
     let JSON = await res.json();
-    console.log(JSON["data"]["desc"]);
     setMethod(JSON["data"]["desc"]);
     setShowModal(true); // Show the modal after fetching the data
   };

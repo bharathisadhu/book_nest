@@ -13,57 +13,41 @@ export default function Wishlist() {
   const [totalPages, setTotalPages] = useState(1);
   const limit = 10;
 
-
-
- console.log("kkdd--",wishlists)
-
-
-
   useEffect(() => {
-    
-        const fetchData = async () => {
-           
-            try {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/wishlists/${session?.user?.email}?page=${page}&limit=${limit}`,
+          { cache: "no-store" }
+        );
 
+        setWishlists(response.data.data);
+        setTotalPages(response.data.totalPages);
+      } catch (error) {
+        console.error("Failed to fetch users:", error);
+      }
+      setIsLoading(false);
+    };
 
-                const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/wishlists/${session?.user?.email}?page=${page}&limit=${limit}`,{ cache: "no-store" });
-               
-
-                setWishlists(response.data.data);
-                setTotalPages(response.data.totalPages);
-            } catch (error) {
-                console.error('Failed to fetch users:', error);
-            }
-            setIsLoading(false); 
-        };
-
-        
-        fetchData();
-    }, [session?.user?.email,page,limit]); 
-
-
+    fetchData();
+  }, [session?.user?.email, page, limit]);
 
   const handlePreviousPage = () => {
-        if (page > 1) {
-            setPage(page - 1); 
-        }
-    };
+    if (page > 1) {
+      setPage(page - 1);
+    }
+  };
 
-    const handleNextPage = () => {
-        if (page < totalPages) {
-            setPage(page + 1); 
-        }
-    };
-
-
-
-
+  const handleNextPage = () => {
+    if (page < totalPages) {
+      setPage(page + 1);
+    }
+  };
 
   if (isLoading && wishlists.length === 0) {
     return <Loading />; // Use your existing loading component
   }
 
- 
   return (
     <div className="font-sans lg:max-h-[580px] overflow-x-auto overflow-y-auto">
       <table className="min-w-full divide-y divide-gray-200">
@@ -129,24 +113,24 @@ export default function Wishlist() {
         </tbody>
       </table>
       <div className="flex justify-between items-center mt-4">
-                <button 
-                    className="btn btn-primary" 
-                    onClick={handlePreviousPage} 
-                    disabled={page === 1}
-                >
-                    Previous
-                </button>
-                <span className="text-lg">
-                    Page {page} of {totalPages}
-                </span>
-                <button 
-                    className="btn btn-primary" 
-                    onClick={handleNextPage} 
-                    disabled={page === totalPages}
-                >
-                    Next
-                </button>
-            </div>
+        <button
+          className="btn btn-primary"
+          onClick={handlePreviousPage}
+          disabled={page === 1}
+        >
+          Previous
+        </button>
+        <span className="text-lg">
+          Page {page} of {totalPages}
+        </span>
+        <button
+          className="btn btn-primary"
+          onClick={handleNextPage}
+          disabled={page === totalPages}
+        >
+          Next
+        </button>
+      </div>
     </div>
   );
 }

@@ -13,7 +13,6 @@ export async function POST(request) {
 
   const newCartItem = await request.json();
   const { BookId, email, name } = newCartItem;
-  console.log("New cart item data:", newCartItem);
 
   // Check if the book is already in the cart for the given user (email and BookId)
   const existingItem = await db.collection("carts").findOne({
@@ -33,7 +32,6 @@ export async function POST(request) {
     ...newCartItem,
     BookId: new ObjectId(BookId),
   });
-  console.log("Cart item inserted:", result);
 
   // Return the inserted cart item in the response
   return NextResponse.json(
