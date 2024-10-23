@@ -36,7 +36,6 @@ export default function Cart() {
     fetchData();
   }, [session?.user?.email]);
 
-  console.log(carts);
   if (isLoading && carts.length === 0) {
     return <Loading />; // Use your existing loading component
   }

@@ -27,10 +27,6 @@ const CheckoutForm = ({ cartBook, setCartBook }) => {
   const subtotal = Array.isArray(cartBook)
     ? cartBook.reduce((sum, item) => sum + item.price * item.cardCount, 0)
     : 0;
-  cartBook.map((c) => {
-    console.log(c.BookId);
-  });
-  console.log(cartBook);
 
   const tax = subtotal * 0.1; // Assuming 10% tax
   const deliveryCharge = isCashOnDelivery ? 10 : 0; // Add $10 if Cash on Delivery
@@ -129,9 +125,6 @@ const CheckoutForm = ({ cartBook, setCartBook }) => {
       cardCount: item.cardCount,
     }));
 
-    console.log("Customer Details:", customerDetails);
-    console.log("Books Array:", booksArray);
-
     if (isCashOnDelivery) {
       // Cash on Delivery logic
       const payment = {
@@ -148,11 +141,8 @@ const CheckoutForm = ({ cartBook, setCartBook }) => {
         status: "pending",
       };
 
-      console.log("Payment (Cash on Delivery):", payment);
-
       try {
         const response = await axios.post("/api/payments", payment);
-        console.log(response.data);
         Swal.fire({
           position: "center",
           icon: "success",
@@ -253,7 +243,6 @@ const CheckoutForm = ({ cartBook, setCartBook }) => {
           };
 
           const response = await axios.post("/api/payments", payment);
-          console.log(response.data);
 
           Swal.fire({
             position: "center",
@@ -296,7 +285,6 @@ const CheckoutForm = ({ cartBook, setCartBook }) => {
   const PaymentOption = async () => {
     let res = await fetch("/api/ssl_payment", { method: "POST" });
     let JSON = await res.json();
-    console.log(JSON["data"]["desc"]);
     setMethod(JSON["data"]["desc"]);
     setShowModal(true); // Show the modal after fetching the data
   };
