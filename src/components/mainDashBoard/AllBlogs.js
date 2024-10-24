@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Image from "next/image";
+import { HiPencilAlt } from "react-icons/hi";
 
 export default function BlogList() {
   const [blogs, setBlogs] = useState([]);
@@ -10,6 +11,10 @@ export default function BlogList() {
 
   const [loading, setLoading] = useState(false);
   const limit = 10; // Number of rows per page
+
+
+  const [selectedBlog, setSelectedBlog] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -29,6 +34,12 @@ export default function BlogList() {
 
     fetchData();
   }, [page]);
+
+
+  const handleEditClick = (book) => {
+    
+    setIsModalOpen(true);
+  };
 
   const handlePreviousPage = () => {
     if (page > 1) {
@@ -87,6 +98,15 @@ export default function BlogList() {
                 {blog?.category}
               </td>
               <td className="px-4 py-4 text-sm text-gray-800">{blog?.date}</td>
+
+              <td className="flex px-4 py-4 text-sm text-gray-800">
+                <button onClick={() => handleEditClick(book)}>
+                  <HiPencilAlt size={24} />
+                </button>
+               
+                  <HiOutlineTrash size={24} />
+                </button>
+              </td>
             </tr>
           ))}
         </tbody>
