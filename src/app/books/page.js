@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import BooksCard from "@/components/BooksCard";
 import { GoArrowRight, GoChevronDown } from "react-icons/go";
 import Link from "next/link";
@@ -24,6 +24,9 @@ const BooksPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
   const itemsPerPage = 12;
+  const router = useRouter(); // Initialize the router
+
+  const { search } = router.query; // Extract search query
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
   const searchParams = useSearchParams();
@@ -64,7 +67,7 @@ const BooksPage = () => {
     };
 
     fetchData();
-  }, [baseUrl]);
+  }, [baseUrl, currentPage, sort]);
 
   useEffect(() => {
     const filtered = books.filter((book) => {
@@ -125,6 +128,21 @@ const BooksPage = () => {
   const totalPages = Math.ceil(filteredBooks.length / itemsPerPage);
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+
+  useEffect(() => {
+    if (search) {
+      const lowerSearch = search.toLowerCase();
+      const filtered = books.filter(
+        (book) =>
+          book.name.toLowerCase().includes(lowerSearch) ||
+          book.category.toLowerCase().includes(lowerSearch) ||
+          book.author.toLowerCase().includes(lowerSearch)
+      );
+      setFilteredBooks(filtered);
+    } else {
+      setFilteredBooks(books); // Reset to original books if no search term
+    }
+  }, [search, books]);
 
   return (
     <>

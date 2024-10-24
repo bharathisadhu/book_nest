@@ -28,13 +28,13 @@ const DashboardLayout = ({ children }) => {
 
   const fetchAdminStatus = useCallback(async () => {
     if (session) {
-      setLoading(true)
+      setLoading(true);
       try {
         const response = await axios.get(
           `${baseURL}/api/user/${session?.user?.email}`
         );
         setIsAdmin(response?.data?.role === "admin");
-        setLoading(true)
+        setLoading(true);
       } catch (error) {
         console.error("Error fetching admin status:", error);
         setIsAdmin(null);
@@ -131,9 +131,8 @@ const DashboardLayout = ({ children }) => {
     [isAdmin, adminMenuItems, nonAdminMenuItems]
   );
 
-
   return (
-    <main className="flex">
+    <main className="flex lg:max-h-screen">
       <button
         className="lg:hidden p-2 text-white bg-gradient-to-r from-[#F65D4E99] to-[#F65D4E] fixed z-50 w-full flex items-center justify-between"
         onClick={toggleSidebar}

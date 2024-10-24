@@ -23,6 +23,7 @@ const Navbar = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isAdmin, setIsAdmin] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
   const baseURL = process.env.NEXT_PUBLIC_API_URL;
   useEffect(() => {
     const fetchCounts = async () => {
@@ -55,6 +56,13 @@ const Navbar = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
 
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (searchTerm) {
+      // Redirect to books page with search query
+      router.push(`/books?search=${encodeURIComponent(searchTerm)}`);
+    }
+  };
   const navlinks = [
     { label: "Home", link: "/" },
     { label: "Books", link: "/books" },
@@ -104,10 +112,13 @@ const Navbar = () => {
           <div className="bg-gray-100 flex px-4 py-3 rounded-3xl max-lg:hidden">
             <input
               type="text"
-              placeholder="Search book..."
               className="outline-none bg-transparent text-sm w-80"
+              placeholder="Search books, categories, authors..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
             />
-            <button className="-mr-6">
+            <button className="-mr-6" type="submit" onClick={handleSearch}>
+              {/* Trigger search on button click */}
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 192.904 192.904"
@@ -177,11 +188,11 @@ const Navbar = () => {
                       </Link>
                     )}
                     <Link href="/chat">
-                        <button className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-100">
-                          Chat
-                        </button>
-                      </Link>
-                    
+                      <button className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-100">
+                        Chat
+                      </button>
+                    </Link>
+
                     <button
                       onClick={() => signOut()}
                       className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-100"
@@ -326,10 +337,10 @@ const Navbar = () => {
                   href="/checkout"
                   onClick={toggleSidebar}
                   className={`${
-                    pathname === "/cart" ? " text-[#F65D4E]" : ""
+                    pathname === "/checkout" ? " text-[#F65D4E]" : ""
                   } flex justify-between items-center border-b pb-4`}
                 >
-                  <li>Cart</li>
+                  <li>Checkout</li>
                   <div>
                     <IoIosArrowForward className="text-xl font-bold" />
                   </div>
