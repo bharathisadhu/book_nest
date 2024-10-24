@@ -36,10 +36,11 @@ const Analytics = () => {
     });
   }
   let totalBooksSold = 0;
-
-  soldBooks.forEach((order) => {
-    totalBooksSold += order.books.length;
-  });
+ {
+    soldBooks.forEach((order) => {
+      totalBooksSold += order.books.length;
+    });
+  }
 
   console.log(`Total Books Sold: ${totalBooksSold}`);
 
