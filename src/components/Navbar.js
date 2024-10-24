@@ -18,6 +18,7 @@ const Navbar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const { data: session } = useSession();
   const pathname = usePathname();
+  const [userProfile, setUserProfile] = useState(null)
   const [wishlistCount, setWishlistCount] = useState(0);
   const [cartCount, setCartCount] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -65,11 +66,11 @@ const Navbar = () => {
 
   const fetchAdminStatus = useCallback(async () => {
     if (session) {
-      setLoading(true);
       try {
         const response = await axios.get(
           `${baseURL}/api/user/${session?.user?.email}`
         );
+        setUserProfile(response?.data)
         setIsAdmin(response?.data?.role === "admin");
         setLoading(true);
       } catch (error) {
@@ -150,9 +151,9 @@ const Navbar = () => {
             ) : (
               <div className="relative ml-4">
                 <button className="text-xl" onClick={toggleDropdown}>
-                  {session.user.image || session.user.photo ? (
+                  { userProfile?.image || userProfile?.photo ? (
                     <Image
-                      src={session.user.image || session.user.photo}
+                      src={userProfile?.image || userProfile?.photo}
                       alt="User Image"
                       width={40}
                       height={40}
@@ -242,11 +243,11 @@ const Navbar = () => {
               <></>
             ) : (
               <>
-                {session?.user ? (
+                {userProfile?.image || userProfile?.photo ? (
                   <button className="text-xl" onClick={toggleDropdown}>
                     {session.user.image || session.user.photo ? (
                       <Image
-                        src={session.user.image || session.user.photo}
+                        src={userProfile?.image || userProfile?.photo}
                         alt="User Image"
                         width={40}
                         height={40}

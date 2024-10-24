@@ -1,15 +1,40 @@
-"use client"
+"use client";
+import axios from "axios";
+import { CloudLightning } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { MdAccountCircle } from "react-icons/md";
 
 export default function DashboardNavbar() {
-    const [isProfileOpen, setIsProfileOpen] = useState(true)
-    const {data: session } = useSession()
-    return (
-        <header className="lg:flex flex-grow items-center justify-between px-4 py-4 shadow-2 md:px-6 2xl:px-11 hidden bg-white shadow-xl">
+  const [isProfileOpen, setIsProfileOpen] = useState(true);
+  const { data: session } = useSession();
+  const [userProfile, setUserProfile] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  const fetchUser = useCallback(async () => {
+    if (session) {
+      try {
+        const response = await axios.get(`/api/user/${session?.user?.email}`);
+        setUserProfile(response?.data);
+        setLoading(true);
+      } catch (error) {
+        console.error("Error fetching admin status:", error);
+        // setUserProfile(null);
+      } finally {
+        setLoading(false);
+      }
+    } else {
+      setLoading(false);
+    }
+  }, [session]);
+
+  useEffect(() => {
+    fetchUser();
+  }, [fetchUser]);
+  return (
+    <header className="lg:flex flex-grow items-center justify-between px-4 py-4 shadow-2 md:px-6 2xl:px-11 hidden bg-white shadow-xl">
       <div className="flex items-center gap-2 sm:gap-4 lg:hidden">
         <button variant="outline" size="icon" className="lg:hidden">
           <span className="sr-only">Toggle sidebar</span>
@@ -95,20 +120,23 @@ export default function DashboardNavbar() {
           >
             <span className="hidden text-right lg:block">
               <span className="block text-sm font-semibold text-black">
-              {session?.user?.name || "User Name"}
+                {userProfile?.name || "User Name"}
               </span>
-              <span className="block text-xs font-medium">{session?.user?.email || "User Email"}</span>
+              <span className="block text-xs font-medium">
+                {userProfile?.email || "User Email"}
+              </span>
             </span>
-            {session?.user ? (
-            <Image
-                        src={session?.user?.image || session?.user?.photo}
-                        alt="User Image"
-                        width={40}
-                        height={40}
-                        className="rounded-full"
-                      />) :(
-                        <MdAccountCircle className="text-4xl cursor-pointer fill-[#333] hover:fill-[#F65D4E] inline-block" />
-                      )}
+            {userProfile?.image || userProfile?.photo ? (
+              <Image
+                src={userProfile?.image || userProfile?.photo}
+                alt="User Image"
+                width={40}
+                height={40}
+                className="rounded-full"
+              />
+            ) : (
+              <MdAccountCircle className="text-4xl cursor-pointer fill-[#333] hover:fill-[#F65D4E] inline-block" />
+            )}
           </Link>
 
           {/* Dropdown menu */}
@@ -120,5 +148,5 @@ export default function DashboardNavbar() {
         </div>
       </div>
     </header>
-    )
+  );
 }
