@@ -132,7 +132,7 @@ export default function DashboardNavbar() {
                 alt="User Image"
                 width={40}
                 height={40}
-                className="rounded-full"
+                className="rounded-full h-12 w-12 object-cover"
               />
             ) : (
               <MdAccountCircle className="text-4xl cursor-pointer fill-[#333] hover:fill-[#F65D4E] inline-block" />

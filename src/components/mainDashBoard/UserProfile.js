@@ -386,6 +386,7 @@ import axios from "axios";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
 import Swal from "sweetalert2";
+import Loader from "@/app/loading";
 
 export default function UserProfile() {
   const { data: session, status, update } = useSession();
@@ -414,7 +415,6 @@ export default function UserProfile() {
           console.error("Error fetching user:", error);
         }
       };
-
       fetchUser();
     }
   }, [session, status]);
@@ -478,13 +478,13 @@ export default function UserProfile() {
     fileInputRef.current.click();
   };
 
-  if (status === "loading") return <p>Loading session...</p>;
+  if (status === "loading") return <Loader></Loader>;
   if (!session) return <p>Please log in to view your profile.</p>;
 
   return (
-    <main className="border lg:px-20 py-1 mx-auto ">
+    <main className="border lg:px-40 py-1 mx-auto ">
       <div className="overflow-hidden">
-        <div className="relative z-20 h-40 md:h-60">
+        <div className="relative z-20 h-40 md:h-80">
           <Image
             src={image || "/placeholder.svg?height=160&width=160"}
             alt="profile cover"
@@ -507,15 +507,11 @@ export default function UserProfile() {
               <span onClick={handleImageClick}>Edit Cover</span>
             </label>
           </div> */}
-          {loading && (
-            <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 rounded-full">
-              <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-white"></div>
-            </div>
-          )}
+          {loading && <Loader></Loader>}
         </div>
         <div className="px-4 pb-6 text-center lg:pb-8 xl:pb-11.5">
           <div className="relative z-30 mx-auto -mt-22 h-30 w-full max-w-30 rounded-full bg-background p-1 lg:backdrop-blur sm:h-44 sm:max-w-44 sm:p-3">
-            <div className="relative drop-shadow-2 ">
+            <div className="relative drop-shadow-2">
               <Image
                 width={1000}
                 height={1000}
@@ -538,15 +534,16 @@ export default function UserProfile() {
               )}
             </div>
           </div>
-          <div className="mt-4">
+          <div className="mt-4 text-start md:w-1/3 lg:w-[30%] mx-auto">
             {/* <h3 className="mb-1.5 text-2xl font-semibold text-foreground">{name}</h3> */}
 
             <form
-              className="items-center text-[#202142] w-[85%] md:w-1/3 lg:w-1/4 mx-auto flex justify-center"
+              className="items-center text-[#202142] w-full mx-auto flex justify-center"
               onSubmit={handleSubmit}
             >
               <div className="flex flex-col items-center w-full mb-2 space-x-0 space-y-2 sm:flex-row sm:space-x-4 sm:space-y-0 sm:mb-6">
                 <div className="w-full">
+                  <label className="mb-8 font-semibold">User Name:</label>
                   <input
                     type="text"
                     id="first_name"
@@ -558,7 +555,7 @@ export default function UserProfile() {
                   />
                 </div>
               </div>
-              <div className="border -mt-2 md:-mt-6">
+              <div className="">
                 <button
                   type="submit"
                   className="text-white bg-indigo-700 hover:bg-indigo-800 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-r-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
@@ -568,8 +565,14 @@ export default function UserProfile() {
               </div>
             </form>
 
-            <p className="font-medium text-muted-foreground">{role}</p>
-            <div className="mx-auto mb-5.5 mt-4.5 grid max-w-94 grid-cols-3 rounded-md border py-2.5 shadow-1">
+            <p className="font-medium text-muted-foreground mb-2 -mt-2">
+              <span className="font-semibold mr-2">Email:</span>
+              {email}
+            </p>
+            <p className="font-medium text-muted-foreground">
+              <span className="font-semibold mr-2">Role:</span> {role}
+            </p>
+            {/* <div className="mx-auto mb-5.5 mt-4.5 grid max-w-94 grid-cols-3 rounded-md border py-2.5 shadow-1">
               <div className="flex flex-col items-center justify-center gap-1 border-r px-4">
                 <span className="font-semibold text-foreground">259</span>
                 <span className="text-sm text-muted-foreground">Posts</span>
@@ -582,20 +585,9 @@ export default function UserProfile() {
                 <span className="font-semibold text-foreground">2K</span>
                 <span className="text-sm text-muted-foreground">Following</span>
               </div>
-            </div>
+            </div> */}
 
-            <div className="mx-auto max-w-180">
-              <h4 className="font-medium text-foreground">About Me</h4>
-              <p className="mt-4.5 text-sm font-normal text-muted-foreground">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                Pellentesque posuere fermentum urna, eu condimentum mauris
-                tempus ut. Donec fermentum blandit aliquet. Etiam dictum dapibus
-                ultricies. Sed vel aliquet libero. Nunc a augue fermentum,
-                pharetra ligula sed, aliquam lacus.
-              </p>
-            </div>
-
-            <div className="mt-6.5">
+            {/* <div className="mt-6.5">
               <h4 className="mb-3.5 font-medium text-foreground">
                 Follow me on
               </h4>
@@ -689,7 +681,7 @@ export default function UserProfile() {
                   </svg>
                 </a>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
