@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import connectDB from "@/lib/connectDB";
+import { ObjectId } from "mongodb";
 
 let db;
 
@@ -35,7 +36,7 @@ export async function PUT(request, { params }) {
   // Update the book in the database
   const result = await db
     .collection("books")
-    .updateOne({ _id: id }, { $set: updatedBook });
+    .updateOne({ _id: new ObjectId(id) }, { $set: updatedBook });
 
   if (result.matchedCount === 0) {
     return NextResponse.json({ message: "Book not found" }, { status: 404 });
@@ -49,9 +50,11 @@ export async function DELETE(request, { params }) {
   const { id } = params;
   db = await connectDB();
 
-  // Delete the book from the database
-  const result = await db.collection("books").deleteOne({ _id: id });
 
+  // Delete the book from the database
+  const result = await db.collection("books").deleteOne({ _id: new ObjectId(id) });
+
+console.log("didarul-----------",result);
   if (result.deletedCount === 0) {
     return NextResponse.json({ message: "Book not found" }, { status: 404 });
   }
