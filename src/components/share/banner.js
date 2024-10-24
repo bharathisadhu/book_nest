@@ -5,7 +5,7 @@ import { GoArrowRight } from "react-icons/go";
 
 const Banner = ({ title, linkName }) => {
   return (
-    <div className="bg-branding relative mt-[75px] lg:mt-[120px] flex flex-col lg:flex-row items-center justify-center lg:justify-between p-2 py-10 rounded-xl overflow-hidden">
+    <div className="bg-branding relative mt-[75px] my-5 lg:mt-[120px] flex flex-col lg:flex-row items-center justify-center lg:justify-between p-2 py-10 rounded-xl overflow-hidden">
       {/* Gradient Overlay */}
       <div className="absolute inset-0 bg-gradient-to-r from-[#eb6f64] to-gray-900 opacity-50"></div>
 
