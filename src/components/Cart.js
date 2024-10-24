@@ -22,7 +22,7 @@ export default function Cart() {
           { cache: "no-store" }
         );
 
-        console.log("---------", response);
+        console.log("---------", response?.data?.data);
         // setCarts(response);
         setTotalPages(response.data.totalPages);
       } catch (error) {
