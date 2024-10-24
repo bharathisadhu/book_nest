@@ -13,15 +13,35 @@ export default function BooksList() {
   const limit = 10;
 
   const [loading, setLoading] = useState(false);
-
   const [books, setBooks] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isUpdating, setIsUpdating] = useState(false);
   const [selectedBook, setSelectedBook] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [imageUrl, setImageUrl] = useState(""); // State for the uploaded image URL
-  const [imageFile, setImageFile] = useState(null); // State for the image file
-  const [hasMore, setHasMore] = useState(true); // To track if more books are available
+  const [isAddBookModalOpen, setIsAddBookModalOpen] = useState(false);
+  const [imageUrl, setImageUrl] = useState("");
+  const [imageFile, setImageFile] = useState(null);
+
+  // Add Book State
+  const [title, setTitle] = useState("");
+  const [author, setAuthor] = useState("");
+  const [description, setDescription] = useState("");
+  const [price, setPrice] = useState("");
+  const [cardCount, setCardCount] = useState("");
+  const [category, setCategory] = useState("");
+  const [ratings, setRatings] = useState("");
+  const [publishType, setPublishType] = useState("upcoming");
+  const [error, setError] = useState("");
+  const [isLoadingAdd, setIsLoadingAdd] = useState(false);
+
+  // Disable background scrolling when modal is open
+  useEffect(() => {
+    if (isAddBookModalOpen || isModalOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+  }, [isAddBookModalOpen, isModalOpen]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -33,7 +53,7 @@ export default function BooksList() {
         setBooks(response.data.data);
         setTotalPages(response.data.totalPages);
       } catch (error) {
-        console.error("Failed to fetch users:", error);
+        console.error("Failed to fetch books:", error);
       }
       setLoading(false);
     };
@@ -52,23 +72,6 @@ export default function BooksList() {
       setPage(page + 1);
     }
   };
-
-  // useEffect(() => {
-  //   const handleScroll = () => {
-  //     const bottom =
-  //       window.innerHeight + window.scrollY >=
-  //       document.documentElement.scrollHeight - 100; // Adjust threshold as needed
-  //     if (bottom) {
-  //       loadMoreBooks();
-  //     }
-  //   };
-
-  //   window.addEventListener("scroll", handleScroll);
-  //   return () => {
-  //     window.removeEventListener("scroll", handleScroll);
-  //   };
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [hasMore, isLoading]);
 
   const removeBook = async (id) => {
     const bookToDelete = books.find((book) => book._id === id);
@@ -230,10 +233,106 @@ export default function BooksList() {
     return <div>No books found or failed to load books.</div>;
   }
 
+  const handleAddBookInputChange = (e) => {
+    const { name, value } = e.target;
+    switch (name) {
+      case "title":
+        setTitle(value);
+        break;
+      case "author":
+        setAuthor(value);
+        break;
+      case "description":
+        setDescription(value);
+        break;
+      case "price":
+        setPrice(value);
+        break;
+      case "cardCount":
+        setCardCount(value);
+        break;
+      case "category":
+        setCategory(value);
+        break;
+      case "ratings":
+        setRatings(value);
+        break;
+      case "publishType":
+        setPublishType(value);
+        break;
+      default:
+        break;
+    }
+  };
+
+  const handleAddBookSubmit = async (e) => {
+    e.preventDefault();
+    setIsLoadingAdd(true);
+
+    try {
+      const formData = new FormData();
+      formData.append("image", imageFile);
+
+      const imgbbResponse = await axios.post(
+        `https://api.imgbb.com/1/upload?key=${process.env.NEXT_PUBLIC_IMAGE_UPLOAD_KEY}`,
+        formData
+      );
+
+      const imageUrl = imgbbResponse.data.data.url;
+
+      const bookData = {
+        name: title,
+        author,
+        description,
+        category,
+        image: imageUrl,
+        price: parseFloat(price),
+        ratings: parseFloat(ratings),
+        cardCount: parseInt(cardCount, 10),
+        publishType,
+      };
+
+      const response = await axios.post("/api/books", bookData);
+
+      // Update the book list
+      setBooks((prevBooks) => [...prevBooks, response.data]);
+
+      // Show SweetAlert confirmation
+      Swal.fire({
+        icon: "success",
+        title: "Book Added!",
+        text: `${bookData.name} has been added successfully!`,
+        showConfirmButton: true,
+        confirmButtonText: "OK",
+      });
+
+      setIsAddBookModalOpen(false); // Close the modal
+    } catch (error) {
+      console.error("Error adding book:", error);
+      setError("Failed to add the book. Please try again.");
+    } finally {
+      setIsLoadingAdd(false);
+    }
+  };
+
+  if (isLoading && books.length === 0) {
+    return <Loading />;
+  }
+
+  if (books.length === 0) {
+    return <div>No books found or failed to load books.</div>;
+  }
+
   return (
     <div className="font-sans lg:max-h-screen overflow-x-auto overflow-y-auto">
-   
-
+      <div className="mb-4">
+        <button
+          onClick={() => setIsAddBookModalOpen(true)} // Open Add Book modal
+          className="bg-orange-600 text-white py-2 px-4 rounded hover:bg-orange-700"
+        >
+          Add New Book
+        </button>
+      </div>
 
       <table className="min-w-full divide-y divide-gray-200">
         <thead className="bg-gray-100 whitespace-nowrap">
@@ -277,9 +376,7 @@ export default function BooksList() {
                 {book?.category}
               </td>
               <td className="px-4 py-4 text-sm text-gray-800">{book.author}</td>
-              <td className="px-4 py-4 text-sm text-gray-800">
-                ${book.price.toFixed(2)}
-              </td>
+              <td className="px-4 py-4 text-sm text-gray-800">${book.price}</td>
               <td className="px-4 py-4 text-sm text-gray-800">
                 {book.ratings}
               </td>
@@ -306,7 +403,7 @@ export default function BooksList() {
             <form
               onSubmit={(e) => {
                 e.preventDefault();
-                updateBook(selectedBook); // Call updateBook directly
+                updateBook(selectedBook);
               }}
               className="flex"
             >
@@ -367,7 +464,6 @@ export default function BooksList() {
                   />
                 </div>
               </div>
-              {/* New section for image upload on the right side */}
               <div className="ml-4 w-1/3">
                 <label className="block text-sm">Current Image</label>
                 {imageUrl && (
@@ -388,13 +484,12 @@ export default function BooksList() {
                 />
               </div>
             </form>
-            {/* Buttons stay at the bottom of the modal */}
             <div className="mt-4 flex justify-between">
               <button
                 type="submit"
                 onClick={(e) => {
                   e.preventDefault();
-                  updateBook(selectedBook); // Call updateBook directly
+                  updateBook(selectedBook);
                 }}
                 className="bg-[#F65D4E] text-white px-4 py-2 rounded"
               >
@@ -412,6 +507,170 @@ export default function BooksList() {
         </div>
       )}
 
+      {isAddBookModalOpen && (
+        <div className="fixed inset-0 p-4 flex justify-center items-center z-[1000] bg-black bg-opacity-50">
+          <div className="w-full max-w-lg bg-white shadow-lg rounded-lg p-8 relative">
+            <div className="flex items-center justify-between">
+              <h3 className="text-[#F65D4E] text-xl font-bold">Add New Book</h3>
+              <button
+                onClick={() => setIsAddBookModalOpen(false)}
+                className="text-gray-400 hover:text-red-500"
+              >
+                &times;
+              </button>
+            </div>
+
+            <form onSubmit={handleAddBookSubmit} className="space-y-4 mt-8">
+              <div className="flex gap-4">
+                <div>
+                  <div>
+                    <label className="text-gray-800 text-sm mb-2 block">
+                      Name of the product
+                    </label>
+                    <input
+                      type="text"
+                      name="title"
+                      placeholder="Enter product name"
+                      value={title}
+                      onChange={handleAddBookInputChange}
+                      className="px-4 py-3 bg-gray-100 w-full text-gray-800 text-sm border-none focus:outline-blue-600 focus:bg-transparent rounded-lg"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="text-gray-800 text-sm mb-2 block">
+                      Descriptions
+                    </label>
+                    <textarea
+                      name="description"
+                      placeholder="Write about the product"
+                      value={description}
+                      onChange={handleAddBookInputChange}
+                      className="px-4 py-3 bg-gray-100 w-full text-gray-800 text-sm border-none focus:outline-blue-600 focus:bg-transparent rounded-lg"
+                      rows="3"
+                      required
+                    ></textarea>
+                  </div>
+
+                  <div className="flex gap-2">
+                    <div>
+                      <label className="text-gray-800 text-sm mb-2 block">
+                        Quantity
+                      </label>
+                      <input
+                        type="number"
+                        name="cardCount"
+                        placeholder="Enter quantity"
+                        value={cardCount}
+                        onChange={handleAddBookInputChange}
+                        className="px-4 py-3 bg-gray-100 w-full text-gray-800 text-sm border-none focus:outline-blue-600 focus:bg-transparent rounded-lg"
+                        required
+                      />
+                    </div>
+
+                    <div>
+                      <label className="text-gray-800 text-sm mb-2 block">
+                        Selling price
+                      </label>
+                      <input
+                        type="number"
+                        name="price"
+                        placeholder="Enter price"
+                        value={price}
+                        onChange={handleAddBookInputChange}
+                        className="px-4 py-3 bg-gray-100 w-full text-gray-800 text-sm border-none focus:outline-blue-600 focus:bg-transparent rounded-lg"
+                        required
+                        step="0.01"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="text-gray-800 text-sm mb-2 block">
+                      Category
+                    </label>
+                    <input
+                      type="text"
+                      name="category"
+                      placeholder="Enter product category"
+                      value={category}
+                      onChange={handleAddBookInputChange}
+                      className="px-4 py-3 bg-gray-100 w-full text-gray-800 text-sm border-none focus:outline-blue-600 focus:bg-transparent rounded-lg"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="text-gray-800 text-sm mb-2 block">
+                      Ratings
+                    </label>
+                    <input
+                      type="text"
+                      name="ratings"
+                      placeholder="Enter product Rating"
+                      value={ratings}
+                      onChange={handleAddBookInputChange}
+                      className="px-4 py-3 bg-gray-100 w-full text-gray-800 text-sm border-none focus:outline-blue-600 focus:bg-transparent rounded-lg"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div className=" flex-wrap">
+                  <div>
+                    <label className="text-gray-800 text-sm mb-2 block">
+                      Author
+                    </label>
+                    <input
+                      type="text"
+                      name="author"
+                      placeholder="Enter Author name"
+                      value={author}
+                      onChange={handleAddBookInputChange}
+                      className="px-4 py-3 bg-gray-100 w-full text-gray-800 text-sm border-none focus:outline-blue-600 focus:bg-transparent rounded-lg"
+                      required
+                    />
+                  </div>
+                  <label className="block text-sm">Upload Image</label>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                    className="border p-2 w-48"
+                  />
+                  {imageUrl && (
+                    <div className="mt-2">
+                      <Image
+                        src={imageUrl}
+                        alt="Book cover preview"
+                        width={200}
+                        height={300}
+                        className="mt-2"
+                      />
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              <div className="flex justify-end gap-4 mt-8">
+                <button
+                  type="button"
+                  onClick={() => setIsAddBookModalOpen(false)} // Close modal
+                  className="px-6 py-3 rounded-lg text-gray-800 text-sm border-none outline-none tracking-wide bg-gray-200 hover:bg-gray-300"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-6 py-3 rounded-lg text-white text-sm border-none outline-none tracking-wide bg-blue-600 hover:bg-blue-700"
+                  disabled={isLoadingAdd}
+                >
+                  {isLoadingAdd ? "Adding..." : "Submit"}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
       <div className="flex justify-between items-center mt-4">
         <button
           className="btn rounded-3xl bg-[#F65D4E] text-white px-8"

@@ -133,7 +133,7 @@ const DashboardLayout = ({ children }) => {
   );
 
   return (
-    <main className="flex font-poppins">
+    <main className="flex lg:max-h-screen">
       <button
         className="lg:hidden p-2 text-white bg-gradient-to-r from-[#F65D4E99] to-[#F65D4E] fixed z-50 w-full flex items-center justify-between"
         onClick={toggleSidebar}

@@ -9,7 +9,11 @@ export async function GET(request, { params }) {
 
   db = await connectDB();
 
-  const book = await db.collection("books").findOne({ _id: id });
+  const book = await db.collection("books").findOne({ _id: new ObjectId(id) }); // Convert id to ObjectId
+  if (!book) {
+    return NextResponse.json({ message: "Book not found" }, { status: 404 });
+  }
+
   return NextResponse.json(book);
 }
 
@@ -33,10 +37,13 @@ export async function PUT(request, { params }) {
   db = await connectDB();
   const updatedBook = await request.json();
 
+  // Remove the _id field from updatedBook if it exists
+  const { _id, ...updateData } = updatedBook;
+
   // Update the book in the database
   const result = await db
     .collection("books")
-    .updateOne({ _id: new ObjectId(id) }, { $set: updatedBook });
+    .updateOne({ _id: new ObjectId(id) }, { $set: updateData });
 
   if (result.matchedCount === 0) {
     return NextResponse.json({ message: "Book not found" }, { status: 404 });
@@ -52,7 +59,9 @@ export async function DELETE(request, { params }) {
 
 
   // Delete the book from the database
-  const result = await db.collection("books").deleteOne({ _id: new ObjectId(id) });
+  const result = await db
+    .collection("books")
+    .deleteOne({ _id: new ObjectId(id) }); // Convert id to ObjectId
 
 console.log("didarul-----------",result);
   if (result.deletedCount === 0) {
