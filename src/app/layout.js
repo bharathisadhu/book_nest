@@ -24,7 +24,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" data-theme="cupcake">
-      <body className="font-roboto">
+      <body className="font-poppins">
         <AuthProvider>
           <div>{children}</div>
         </AuthProvider>

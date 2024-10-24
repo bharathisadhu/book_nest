@@ -342,6 +342,39 @@ const CheckoutForm = ({ cartBook, setCartBook }) => {
     }
   };
 
+  const handleRemove = async (id) => {
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    });
+
+    if (result.isConfirmed) {
+      try {
+        await axios.delete(`/api/cart?id=${id}`);
+        const updatedCart = cartBook.filter((item) => item._id !== id);
+        setCartBook(updatedCart);
+
+        Swal.fire({
+          title: "Deleted!",
+          text: "Your item has been removed from the cart.",
+          icon: "success",
+        });
+      } catch (error) {
+        console.error("Error removing item from cart:", error);
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: "Failed to remove item from cart!",
+        });
+      }
+    }
+  };
+
   return (
     <section className="bg-white py-8 antialiased dark:bg-gray-800 md:py-16">
       <form

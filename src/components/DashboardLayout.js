@@ -17,6 +17,7 @@ import logo from "../../public/BookNest.png";
 import axios from "axios";
 import Loading from "../app/loading";
 import { FaHome } from "react-icons/fa";
+import DashboardNavbar from "./DashboardNavbar";
 
 const DashboardLayout = ({ children }) => {
   const pathname = usePathname();
@@ -154,7 +155,8 @@ const DashboardLayout = ({ children }) => {
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
         } lg:relative lg:translate-x-0`}
       >
-        <div className="flex flex-col items-center px-4">
+        {/* for mobile and tablet */}
+        <div className="flex flex-col items-center px-4 mt-14 lg:hidden">
           <Image
             height={200}
             width={200}
@@ -170,7 +172,18 @@ const DashboardLayout = ({ children }) => {
           </div>
         </div>
 
-        <ul className="mt-4">
+        {/* for desktop */}
+        <div className="lg:flex flex-col items-center px-4 mt-14 hidden">
+          <Image
+            height={1000}
+            width={1000}
+            src={logo}
+            className="w-[200px]"
+            alt="logo"
+          />
+        </div>
+
+        <ul className="">
           {menuItems.map((item) => (
             <li key={item.name}>
               <Link
@@ -203,11 +216,12 @@ const DashboardLayout = ({ children }) => {
       </nav>
 
       <main
-        className={`flex-grow lg:p-6 transition-all duration-300 overflow-hidden ${
+        className={`flex-grow transition-all duration-300 overflow-hidden ${
           isSidebarOpen ? "modal-toggle" : ""
-        } lg:ml-16 mt-20 lg:mt-0`}
+        } `}
       >
-        {children}
+        <DashboardNavbar></DashboardNavbar>
+        <main className="lg:ml-16 lg:mr-10 mt-20 lg:mt-10">{children}</main>
       </main>
     </main>
   );

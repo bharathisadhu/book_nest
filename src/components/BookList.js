@@ -48,11 +48,34 @@ export default function BooksList() {
     fetchData();
   }, [page]);
 
-  const handlePageChange = (pageNumber) => {
-    setPage(pageNumber);
+  const handlePreviousPage = () => {
+    if (page > 1) {
+      setPage(page - 1);
+    }
   };
 
-  const pageNumbers = [...Array(totalPages).keys()].map((num) => num + 1);
+  const handleNextPage = () => {
+    if (page < totalPages) {
+      setPage(page + 1);
+    }
+  };
+
+  // useEffect(() => {
+  //   const handleScroll = () => {
+  //     const bottom =
+  //       window.innerHeight + window.scrollY >=
+  //       document.documentElement.scrollHeight - 100; // Adjust threshold as needed
+  //     if (bottom) {
+  //       loadMoreBooks();
+  //     }
+  //   };
+
+  //   window.addEventListener("scroll", handleScroll);
+  //   return () => {
+  //     window.removeEventListener("scroll", handleScroll);
+  //   };
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [hasMore, isLoading]);
 
   const removeBook = async (id) => {
     const bookToDelete = books.find((book) => book._id === id);
