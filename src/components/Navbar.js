@@ -88,7 +88,7 @@ const Navbar = () => {
   }, [fetchAdminStatus]);
 
   return (
-    <main className="fixed top-0 mb-10 left-0 right-0 w-full shadow-md bg-white  font-[sans-serif] tracking-wide z-50 ">
+    <main className="fixed top-0 mb-10 left-0 right-0 w-full shadow-md bg-white tracking-wide z-50 font-poppins">
       <nav className=" container mx-auto">
       <section className="flex items-center flex-wrap lg:justify-center gap-4 py-3 sm:px-10 border-gray-200 border-b min-h-[75px] container mx-auto relative">
         <Link href="/" className="left-0 absolute z-30">
