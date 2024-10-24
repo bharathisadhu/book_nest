@@ -88,15 +88,16 @@ const Navbar = () => {
   }, [fetchAdminStatus]);
 
   return (
-    <nav className="fixed top-0 mb-10 left-0 right-0 w-full shadow-md bg-white font-[sans-serif] tracking-wide z-50 ">
-      <section className="flex items-center flex-wrap lg:justify-center gap-4 py-3 sm:px-10 px-4 border-gray-200 border-b min-h-[75px]">
-        <Link href="/" className="lg:left-10 -left-4 absolute z-30">
+    <main className="fixed top-0 mb-10 left-0 right-0 w-full shadow-md bg-white  font-[sans-serif] tracking-wide z-50 ">
+      <nav className=" container mx-auto">
+      <section className="flex items-center flex-wrap lg:justify-center gap-4 py-3 sm:px-10 border-gray-200 border-b min-h-[75px] container mx-auto relative">
+        <Link href="/" className="left-0 absolute z-30">
           <Image
             width={1000}
             height={1000}
             src={logo}
             alt="logo"
-            className="md:w-[170px] w-36"
+            className="md:w-[170px] w-32 -ml-4"
           />
         </Link>
 
@@ -120,7 +121,7 @@ const Navbar = () => {
           </div>
         </div>
 
-        <div className="lg:absolute lg:right-10 lg:flex items-center ml-auto space-x-8 hidden">
+        <div className="lg:absolute lg:right-0 lg:flex items-center gap-8 hidden">
           <Link href="/wishlist">
             <span className="relative">
               <FaHeart className="text-[27px] text-black cursor-pointer fill-[#333] hover:fill-[#F65D4E] inline-block" />
@@ -232,9 +233,9 @@ const Navbar = () => {
 
         {/* Sidebar */}
       </div>
-      <div className="flex flex-wrap justify-end items-center absolute w-full top-2 -pl-8">
+      <div className="flex flex-wrap justify-end items-center absolute w-full top-4">
         {/* Mobile Menu Toggle */}
-        <div className="flex ml-2 lg:hidden">
+        <div className="flex lg:hidden md:mr-4">
           <button onClick={toggleSidebar}>
             {isOpen ? (
               // <IoCloseOutline className="w-7 h-7" />
@@ -265,7 +266,7 @@ const Navbar = () => {
         {/* Sidebar Content */}
         {isOpen && (
           <div className="inset-0 bg-gray-800 bg-opacity-50">
-            <div className="right-0 top-0 h-screen bg-white shadow-xl z-50 p-5 transition-transform border -mt-2">
+            <div className="right-0 top-0 h-screen bg-white shadow-xl z-50 p-5 transition-transform -mt-2">
               <button
                 className="btn btn-ghost text-xl mb-5 ml-36"
                 onClick={toggleSidebar}
@@ -372,6 +373,7 @@ const Navbar = () => {
         )}
       </div>
     </nav>
+    </main>
   );
 };
 
