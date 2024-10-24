@@ -53,22 +53,22 @@ export default function BooksList() {
     }
   };
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const bottom =
-        window.innerHeight + window.scrollY >=
-        document.documentElement.scrollHeight - 100; // Adjust threshold as needed
-      if (bottom) {
-        loadMoreBooks();
-      }
-    };
+  // useEffect(() => {
+  //   const handleScroll = () => {
+  //     const bottom =
+  //       window.innerHeight + window.scrollY >=
+  //       document.documentElement.scrollHeight - 100; // Adjust threshold as needed
+  //     if (bottom) {
+  //       loadMoreBooks();
+  //     }
+  //   };
 
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [hasMore, isLoading]);
+  //   window.addEventListener("scroll", handleScroll);
+  //   return () => {
+  //     window.removeEventListener("scroll", handleScroll);
+  //   };
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [hasMore, isLoading]);
 
   const removeBook = async (id) => {
     const bookToDelete = books.find((book) => book._id === id);
