@@ -37,10 +37,13 @@ export async function PUT(request, { params }) {
   db = await connectDB();
   const updatedBook = await request.json();
 
+  // Remove the _id field from updatedBook if it exists
+  const { _id, ...updateData } = updatedBook;
+
   // Update the book in the database
   const result = await db
     .collection("books")
-    .updateOne({ _id: new ObjectId(id) }, { $set: updatedBook });
+    .updateOne({ _id: new ObjectId(id) }, { $set: updateData });
 
   if (result.matchedCount === 0) {
     return NextResponse.json({ message: "Book not found" }, { status: 404 });

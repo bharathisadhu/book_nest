@@ -26,7 +26,7 @@ const BooksPage = () => {
   const itemsPerPage = 12;
   const router = useRouter(); // Initialize the router
 
-  const { search } = router.query; // Extract search query
+  // const { search } = router.query; // Extract search query
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
   const searchParams = useSearchParams();
@@ -129,20 +129,20 @@ const BooksPage = () => {
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
 
-  useEffect(() => {
-    if (search) {
-      const lowerSearch = search.toLowerCase();
-      const filtered = books.filter(
-        (book) =>
-          book.name.toLowerCase().includes(lowerSearch) ||
-          book.category.toLowerCase().includes(lowerSearch) ||
-          book.author.toLowerCase().includes(lowerSearch)
-      );
-      setFilteredBooks(filtered);
-    } else {
-      setFilteredBooks(books); // Reset to original books if no search term
-    }
-  }, [search, books]);
+  // useEffect(() => {
+  //   if (search) {
+  //     const lowerSearch = search.toLowerCase();
+  //     const filtered = books.filter(
+  //       (book) =>
+  //         book.name.toLowerCase().includes(lowerSearch) ||
+  //         book.category.toLowerCase().includes(lowerSearch) ||
+  //         book.author.toLowerCase().includes(lowerSearch)
+  //     );
+  //     setFilteredBooks(filtered);
+  //   } else {
+  //     setFilteredBooks(books); // Reset to original books if no search term
+  //   }
+  // }, [search, books]);
 
   return (
     <>

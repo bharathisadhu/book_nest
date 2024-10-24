@@ -1,237 +1,656 @@
-import { useState, useEffect, useCallback } from "react";
-import axios from "axios";
-import Image from "next/image";
+"use client";
+
+import { useEffect, useState } from "react";
+import { HiPencilAlt, HiOutlineTrash } from "react-icons/hi";
+import Loading from "../app/loading";
 import Swal from "sweetalert2";
-import { FaHeart, FaShoppingCart, FaStar } from "react-icons/fa";
-import Link from "next/link";
-import { FaDollarSign } from "react-icons/fa6";
-import { useSession } from "next-auth/react";
-import { debounce } from "lodash"; // Import lodash debounce
+import Image from "next/image";
+import axios from "axios";
 
-export default function BooksCard({ book }) {
-  const {
-    name,
-    image,
-    price,
-    category,
-    ratings,
-    _id,
-    publishType,
-    cardCount,
-    quantity,
-  } = book;
+export default function BooksList() {
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const limit = 10;
 
-  const [isBookmarked, setIsBookmarked] = useState(false);
-  const [isInCart, setIsInCart] = useState(false);
-  const { data: session } = useSession();
-  const [stock, setStock] = useState(null);
-  const [totalQuantitiesCache, setTotalQuantitiesCache] = useState({});
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+  const [loading, setLoading] = useState(false);
+  const [books, setBooks] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isUpdating, setIsUpdating] = useState(false);
+  const [selectedBook, setSelectedBook] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isAddBookModalOpen, setIsAddBookModalOpen] = useState(false);
+  const [imageUrl, setImageUrl] = useState("");
+  const [imageFile, setImageFile] = useState(null);
 
-  // const fetchTotalCardCount = useCallback(async () => {
-  //   const response = await fetch(`${baseUrl}/api/payments-total-quantity?bookId=${_id}`);
-  //   const data = await response.json();
-  //   const status = cardCount - data > 0 ? "Stock In" : "Stock Out";
-  //   setStock(status);
-  // }, [baseUrl, _id, cardCount]);
+  // Add Book State
+  const [title, setTitle] = useState("");
+  const [author, setAuthor] = useState("");
+  const [description, setDescription] = useState("");
+  const [price, setPrice] = useState("");
+  const [cardCount, setCardCount] = useState("");
+  const [category, setCategory] = useState("");
+  const [ratings, setRatings] = useState("");
+  const [publishType, setPublishType] = useState("upcoming");
+  const [error, setError] = useState("");
+  const [isLoadingAdd, setIsLoadingAdd] = useState(false);
 
-  // Callback to check if the item is in the cart
-  // const checkIfInCart = useCallback(async () => {
-  //   if (!session?.user?.email) return;
-
-  //   try {
-  //     const response = await axios.get(`${baseUrl}/api/carts/${session.user.email}`);
-  //     const cartItems = response.data.cart || [];
-  //     const foundItem = cartItems.find((item) => item._id === _id);
-  //     setIsInCart(!!foundItem);
-  //   } catch (error) {
-  //     console.error("Error fetching cart items:", error);
-  //   }
-  // }, [baseUrl, session, _id]);
-
-  // // Effect to fetch data
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     await Promise.all([fetchTotalCardCount(), checkIfInCart()]);
-  //   };
-
-  //   fetchData();
-  // }, [fetchTotalCardCount, checkIfInCart]);
-
-  // useEffect(() => {
-  //   if (!stock) {
-  //     const fetchTotalQuantity = async () => {
-  //       const response = await fetch(
-  //         `${baseUrl}/api/payments-total-quantity?bookId=${_id}`
-  //       );
-  //       const data = await response.json();
-  //       const status = quantity - data > 0 ? "Stock In" : "Stock Out";
-  //       setStock(status);
-  //     };
-  //     fetchTotalQuantity();
-  //   }
-  // }, [stock, baseUrl, _id, quantity]);
-
-  const addToBookmark = async () => {
-    if (isBookmarked) {
-      Swal.fire({
-        icon: "info",
-        title: "Already Bookmarked",
-        text: `${name} is already in your bookmarks!`,
-      });
-      return;
-    }
-
-    try {
-      const response = await axios.post("/api/wishlists", {
-        name,
-        description: book.description || "",
-        image,
-        author: book.author || "",
-        price,
-        rating: ratings,
-        category,
-        cardCount,
-        email: session?.user?.email,
-      });
-
-      if (response.status === 201) {
-        setIsBookmarked(true);
-        Swal.fire({
-          position: "top-end",
-          icon: "success",
-          title: `${name} added to bookmarks!`,
-          showConfirmButton: false,
-          timer: 1500,
-        });
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/books-pagination?page=${page}&limit=${limit}`,
+          { cache: "no-store" }
+        );
+        setBooks(response.data.data);
+        setTotalPages(response.data.totalPages);
+      } catch (error) {
+        console.error("Failed to fetch books:", error);
       }
-    } catch (error) {
-      console.error("Error adding to bookmark:", error);
-      const message =
-        error.response?.data?.message || "Failed to add to bookmarks!";
-      Swal.fire({
-        icon: "error",
-        title: "Error",
-        text: message,
-      });
+      setLoading(false);
+    };
+
+    fetchData();
+  }, [page]);
+
+  const handlePreviousPage = () => {
+    if (page > 1) {
+      setPage(page - 1);
     }
   };
 
-  const addToCart = async () => {
-    if (isInCart) {
-      Swal.fire({
-        icon: "info",
-        title: "Already in Cart",
-        text: `${name} is already in your cart!`,
-      });
-      return;
+  const handleNextPage = () => {
+    if (page < totalPages) {
+      setPage(page + 1);
     }
+  };
 
-    try {
-      const response = await axios.post(`/api/carts/${session.user.email}`, {
-        name,
-        BookId: book._id, // Updated this from bookId to _id
-        description: book.description || "",
-        image,
-        author: book.author || "",
-        price,
-        rating: ratings,
-        category,
-        cardCount,
-        email: session?.user?.email, // Ensure this is not undefined
-      });
+  const removeBook = async (id) => {
+    const bookToDelete = books.find((book) => book._id === id);
+    setBooks((prevBooks) => prevBooks.filter((book) => book._id !== id));
 
-      if (response.status === 201) {
-        setIsInCart(true);
-        Swal.fire({
-          position: "top-end",
-          icon: "success",
-          title: `${name} added to cart!`,
-          showConfirmButton: false,
-          timer: 1500,
-        });
-      }
-    } catch (error) {
-      console.error("Error adding to cart:", error);
-      const message = error.response?.data?.message || "Failed to add to cart!";
+    const { isConfirmed } = await Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    });
 
-      if (error.response?.status === 409) {
-        Swal.fire({
-          icon: "info",
-          title: "Already in Cart",
-          text: message,
-        });
-      } else {
-        Swal.fire({
+    if (isConfirmed) {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/books/${id}`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      if (!res.ok) {
+        await Swal.fire({
+          title: "Error!",
+          text: "There was an error deleting the book.",
           icon: "error",
-          title: "Error",
-          text: message,
+        });
+        setBooks((prevBooks) => [...prevBooks, bookToDelete]);
+      } else {
+        await Swal.fire({
+          title: "Deleted!",
+          text: "The book has been deleted.",
+          icon: "success",
         });
       }
+    } else {
+      setBooks((prevBooks) => [...prevBooks, bookToDelete]);
     }
   };
+
+  const updateBook = async (bookData) => {
+    setIsUpdating(true);
+
+    const previousBook = books.find((book) => book._id === bookData._id);
+    setBooks((prevBooks) =>
+      prevBooks.map((book) =>
+        book._id === bookData._id ? { ...book, ...bookData } : book
+      )
+    );
+
+    if (imageFile) {
+      const uploadedImageUrl = await uploadImage(imageFile);
+      if (uploadedImageUrl) {
+        bookData.image = uploadedImageUrl;
+      }
+    }
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/books/${bookData._id}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(bookData),
+      }
+    );
+
+    if (res.ok) {
+      const updatedBook = await res.json();
+
+      await Swal.fire({
+        title: "Updated!",
+        text: "The book has been updated.",
+        icon: "success",
+      });
+
+      setBooks((prevBooks) =>
+        prevBooks.map((book) =>
+          book._id === updatedBook._id ? updatedBook : book
+        )
+      );
+      setIsModalOpen(false);
+      setSelectedBook(null);
+      setImageFile(null);
+      setImageUrl("");
+    } else {
+      await Swal.fire({
+        title: "Error!",
+        text: "There was an error updating the book.",
+        icon: "error",
+      });
+      setBooks((prevBooks) =>
+        prevBooks.map((book) =>
+          book._id === previousBook._id ? previousBook : book
+        )
+      );
+    }
+    setIsUpdating(false);
+  };
+
+  const handleEditClick = (book) => {
+    setSelectedBook(book);
+    setImageUrl(book.image || "");
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedBook(null);
+    setImageFile(null);
+    setImageUrl("");
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    const updatedValue =
+      name === "price" || name === "ratings" ? parseFloat(value) : value;
+
+    setSelectedBook((prev) => ({ ...prev, [name]: updatedValue }));
+  };
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setImageFile(file);
+      setImageUrl(URL.createObjectURL(file));
+    }
+  };
+
+  const handleAddBookInputChange = (e) => {
+    const { name, value } = e.target;
+    switch (name) {
+      case "title":
+        setTitle(value);
+        break;
+      case "author":
+        setAuthor(value);
+        break;
+      case "description":
+        setDescription(value);
+        break;
+      case "price":
+        setPrice(value);
+        break;
+      case "cardCount":
+        setCardCount(value);
+        break;
+      case "category":
+        setCategory(value);
+        break;
+      case "ratings":
+        setRatings(value);
+        break;
+      case "publishType":
+        setPublishType(value);
+        break;
+      default:
+        break;
+    }
+  };
+
+  const handleAddBookSubmit = async (e) => {
+    e.preventDefault();
+    setIsLoadingAdd(true);
+
+    try {
+      const formData = new FormData();
+      formData.append("image", imageFile);
+
+      const imgbbResponse = await axios.post(
+        `https://api.imgbb.com/1/upload?key=${process.env.NEXT_PUBLIC_IMAGE_UPLOAD_KEY}`,
+        formData
+      );
+
+      const imageUrl = imgbbResponse.data.data.url;
+
+      const bookData = {
+        name: title,
+        author,
+        description,
+        category,
+        image: imageUrl,
+        price: parseFloat(price),
+        ratings: parseFloat(ratings),
+        cardCount: parseInt(cardCount, 10),
+        publishType,
+      };
+
+      const response = await axios.post("/api/books", bookData);
+      setBooks((prevBooks) => [...prevBooks, response.data]); // Update the book list
+      setIsAddBookModalOpen(false); // Close the modal
+    } catch (error) {
+      console.error("Error adding book:", error);
+      setError("Failed to add the book. Please try again.");
+    } finally {
+      setIsLoadingAdd(false);
+    }
+  };
+
+  // Disable background scrolling when modal is open
+  useEffect(() => {
+    if (isAddBookModalOpen || isModalOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+  }, [isAddBookModalOpen, isModalOpen]);
+
+  if (isLoading && books.length === 0) {
+    return <Loading />;
+  }
+
+  if (books.length === 0) {
+    return <div>No books found or failed to load books.</div>;
+  }
 
   return (
-    <div className="transition h-fit duration-500 w-full font-sans overflow-hidden mx-auto mt-4 pl-4 pt-4">
-      {/* Full Height Image */}
-      <div className="w-full h-60 md:h-80 lg:h-52 relative group">
-        <Image
-          src={image}
-          alt={name}
-          layout="fill"
-          objectFit="cover"
-          className="rounded-2xl"
-        />
-        {/* Bookmark and Cart Icons */}
-        <div>
-          <button
-            onClick={addToBookmark}
-            className={`cursor-pointer absolute bottom-16 right-2 p-2 rounded-full bg-white shadow-md transition-transform duration-500 opacity-0 group-hover:opacity-100 hover:duration-500 ${
-              isBookmarked ? "text-[#F65D4E]" : ""
-            }`}
-          >
-            <FaHeart className="text-xl" />
-          </button>
-          <button
-            onClick={addToCart}
-            className={`cursor-pointer absolute bottom-5 right-2 p-2 rounded-full bg-white shadow-md transition-transform duration-500 opacity-0 group-hover:opacity-100 hover:duration-500 ${
-              isInCart ? "text-[#F65D4E]" : ""
-            }`}
-          >
-            <FaShoppingCart className="text-xl" />
-          </button>
-        </div>
+    <div className="font-sans lg:max-h-screen overflow-x-auto overflow-y-auto">
+      <div className="mb-4">
+        <button
+          onClick={() => setIsAddBookModalOpen(true)} // Open Add Book modal
+          className="bg-orange-600 text-white py-2 px-4 rounded hover:bg-orange-700"
+        >
+          Add New Book
+        </button>
       </div>
 
-      {/* Book Details */}
-      <div className="pt-3">
-        <p className="text-sm text-gray-600 mb-1 font-medium">{category}</p>
-        <Link
-          href={`/books/${_id}`}
-          title={name}
-          className="text-lg md:text-xl text-gray-800 font-bold line-clamp-2 hover:text-[#F65D4E]"
-        >
-          {name.slice(0, 10)}...
-        </Link>
+      <table className="min-w-full divide-y divide-gray-200">
+        <thead className="bg-gray-100 whitespace-nowrap">
+          <tr>
+            <th className="px-4 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
+              Book Image
+            </th>
+            <th className="px-4 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
+              Book Name
+            </th>
+            <th className="px-4 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
+              Category
+            </th>
+            <th className="px-4 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
+              Author
+            </th>
+            <th className="px-4 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
+              Price
+            </th>
+            <th className="px-4 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
+              Ratings
+            </th>
+            <th className="px-4 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
+              Actions
+            </th>
+          </tr>
+        </thead>
+        <tbody className="bg-white divide-y divide-gray-200 whitespace-nowrap">
+          {books.map((book) => (
+            <tr key={book._id}>
+              <td className="px-4 py-4 text-sm text-gray-800">
+                <Image
+                  src={book.image}
+                  alt={book.name}
+                  width={40}
+                  height={60}
+                />
+              </td>
+              <td className="px-4 py-4 text-sm text-gray-800">{book?.name}</td>
+              <td className="px-4 py-4 text-sm text-gray-800">
+                {book?.category}
+              </td>
+              <td className="px-4 py-4 text-sm text-gray-800">{book.author}</td>
+              <td className="px-4 py-4 text-sm text-gray-800">
+                ${book.price ? book.price.toFixed(2) : "N/A"}
+              </td>
+              <td className="px-4 py-4 text-sm text-gray-800">
+                {book.ratings || "N/A"}
+              </td>
+              <td className="flex px-4 py-4 text-sm text-gray-800">
+                <button onClick={() => handleEditClick(book)}>
+                  <HiPencilAlt size={24} />
+                </button>
+                <button
+                  onClick={() => removeBook(book._id)}
+                  className="text-red-400 ml-2"
+                >
+                  <HiOutlineTrash size={24} />
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
 
-        <div className="flex items-center mt-2">
-          <p className="text-gray-800 font-semibold flex items-center">
-            Ratings: {ratings}{" "}
-            <FaStar className="text-orange-400 ml-1 text-xs md:text-xl" />
-          </p>
+      {isModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white p-8 rounded shadow-lg max-w-2xl w-full">
+            <h2 className="text-lg font-semibold">Update Book</h2>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                updateBook(selectedBook);
+              }}
+              className="flex"
+            >
+              <div className="flex-1">
+                <div className="mt-4">
+                  <label className="block text-sm">Name</label>
+                  <input
+                    type="text"
+                    name="name"
+                    value={selectedBook?.name || ""}
+                    onChange={handleInputChange}
+                    className="border p-2 w-full"
+                    required
+                  />
+                </div>
+                <div className="mt-4">
+                  <label className="block text-sm">Author</label>
+                  <input
+                    type="text"
+                    name="author"
+                    value={selectedBook?.author || ""}
+                    onChange={handleInputChange}
+                    className="border p-2 w-full"
+                    required
+                  />
+                </div>
+                <div className="mt-4">
+                  <label className="block text-sm">Price</label>
+                  <input
+                    type="number"
+                    name="price"
+                    value={selectedBook?.price || ""}
+                    onChange={handleInputChange}
+                    className="border p-2 w-full"
+                    required
+                    step="0.01"
+                  />
+                </div>
+                <div className="mt-4">
+                  <label className="block text-sm">Category</label>
+                  <input
+                    type="text"
+                    name="category"
+                    value={selectedBook?.category || ""}
+                    onChange={handleInputChange}
+                    className="border p-2 w-full"
+                    required
+                  />
+                </div>
+                <div className="mt-4">
+                  <label className="block text-sm">Description</label>
+                  <textarea
+                    name="description"
+                    value={selectedBook?.description || ""}
+                    onChange={handleInputChange}
+                    className="border p-2 w-full h-32"
+                    required
+                  />
+                </div>
+                <div className="mt-4">
+                  <label className="block text-sm">Ratings</label>
+                  <input
+                    type="number"
+                    name="ratings"
+                    value={selectedBook?.ratings || ""}
+                    onChange={handleInputChange}
+                    className="border p-2 w-full"
+                    required
+                    step="0.1"
+                    min="0"
+                    max="5"
+                  />
+                </div>
+              </div>
+              <div className="ml-4 w-1/3">
+                <label className="block text-sm">Current Image</label>
+                {imageUrl && (
+                  <Image
+                    src={imageUrl}
+                    alt="Book cover"
+                    width={200}
+                    height={300}
+                    className="mt-2 mb-2"
+                  />
+                )}
+                <label className="block text-sm mt-4">Change Image</label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                  className="border p-2 w-full"
+                />
+              </div>
+            </form>
+            <div className="mt-4 flex justify-between">
+              <button
+                type="submit"
+                onClick={(e) => {
+                  e.preventDefault();
+                  updateBook(selectedBook);
+                }}
+                className="bg-[#F65D4E] text-white px-4 py-2 rounded"
+              >
+                {isUpdating ? "Updating..." : "Update Book"}
+              </button>
+              <button
+                type="button"
+                onClick={handleCloseModal}
+                className="bg-gray-300 text-gray-800 px-4 py-2 rounded ml-2"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
         </div>
+      )}
 
-        <h3 className="my-2 -ml-1 flex items-center">
-          <FaDollarSign className="text-xl text-[#F65D4E] font-semibold" />
-          <span className="text-xl md:text-2xl text-[#F65D4E] font-semibold -ml-1 -mt-1">
-            {price.toFixed(2)}
-          </span>
-        </h3>
-        <h2 className="flex gap-2">
-          <span className="text-base md:text-base text-gray-800 font-semibold line-clamp-2 hover:text-[#F65D4E] text-center uppercase">
-            {publishType === "released" ? stock : "upcoming"}
-          </span>
-        </h2>
+      {isAddBookModalOpen && (
+        <div className="fixed inset-0 p-4 flex justify-center items-center z-[1000] bg-black bg-opacity-50">
+          <div className="w-full max-w-lg bg-white shadow-lg rounded-lg p-8 relative">
+            <div className="flex items-center justify-between">
+              <h3 className="text-[#F65D4E] text-xl font-bold">Add New Book</h3>
+              <button
+                onClick={() => setIsAddBookModalOpen(false)}
+                className="text-gray-400 hover:text-red-500"
+              >
+                &times;
+              </button>
+            </div>
+
+            <form onSubmit={handleAddBookSubmit} className="space-y-4 mt-8">
+              <div className="flex gap-4">
+                <div>
+                  <div>
+                    <label className="text-gray-800 text-sm mb-2 block">
+                      Name of the product
+                    </label>
+                    <input
+                      type="text"
+                      name="title"
+                      placeholder="Enter product name"
+                      value={title}
+                      onChange={handleAddBookInputChange}
+                      className="px-4 py-3 bg-gray-100 w-full text-gray-800 text-sm border-none focus:outline-blue-600 focus:bg-transparent rounded-lg"
+                      required
+                    />
+                  </div>
+
+                  <div>
+                    <label className="text-gray-800 text-sm mb-2 block">
+                      Descriptions
+                    </label>
+                    <textarea
+                      name="description"
+                      placeholder="Write about the product"
+                      value={description}
+                      onChange={handleAddBookInputChange}
+                      className="px-4 py-3 bg-gray-100 w-full text-gray-800 text-sm border-none focus:outline-blue-600 focus:bg-transparent rounded-lg"
+                      rows="3"
+                      required
+                    ></textarea>
+                  </div>
+
+                  <div>
+                    <label className="text-gray-800 text-sm mb-2 block">
+                      Quantity
+                    </label>
+                    <input
+                      type="number"
+                      name="cardCount"
+                      placeholder="Enter quantity"
+                      value={cardCount}
+                      onChange={handleAddBookInputChange}
+                      className="px-4 py-3 bg-gray-100 w-full text-gray-800 text-sm border-none focus:outline-blue-600 focus:bg-transparent rounded-lg"
+                      required
+                    />
+                  </div>
+
+                  <div>
+                    <label className="text-gray-800 text-sm mb-2 block">
+                      Selling price
+                    </label>
+                    <input
+                      type="number"
+                      name="price"
+                      placeholder="Enter price"
+                      value={price}
+                      onChange={handleAddBookInputChange}
+                      className="px-4 py-3 bg-gray-100 w-full text-gray-800 text-sm border-none focus:outline-blue-600 focus:bg-transparent rounded-lg"
+                      required
+                      step="0.01"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="text-gray-800 text-sm mb-2 block">
+                      Category
+                    </label>
+                    <input
+                      type="text"
+                      name="category"
+                      placeholder="Enter product category"
+                      value={category}
+                      onChange={handleAddBookInputChange}
+                      className="px-4 py-3 bg-gray-100 w-full text-gray-800 text-sm border-none focus:outline-blue-600 focus:bg-transparent rounded-lg"
+                      required
+                    />
+                  </div>
+
+                  <div>
+                    <label className="text-gray-800 text-sm mb-2 block">
+                      Ratings
+                    </label>
+                    <input
+                      type="number"
+                      name="ratings"
+                      placeholder="Enter ratings (0-5)"
+                      value={ratings}
+                      onChange={handleAddBookInputChange}
+                      className="px-4 py-3 bg-gray-100 w-full text-gray-800 text-sm border-none focus:outline-blue-600 focus:bg-transparent rounded-lg"
+                      required
+                      step="0.1"
+                      min="0"
+                      max="5"
+                    />
+                  </div>
+                </div>
+                <div className="mt-4 flex-wrap">
+                  <label className="block text-sm">Upload Image</label>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                    className="border p-2 w-48"
+                  />
+                  {imageUrl && (
+                    <div className="mt-2">
+                      <Image
+                        src={imageUrl}
+                        alt="Book cover preview"
+                        width={200}
+                        height={300}
+                        className="mt-2"
+                      />
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              <div className="flex justify-end gap-4 mt-8">
+                <button
+                  type="button"
+                  onClick={() => setIsAddBookModalOpen(false)} // Close modal
+                  className="px-6 py-3 rounded-lg text-gray-800 text-sm border-none outline-none tracking-wide bg-gray-200 hover:bg-gray-300"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-6 py-3 rounded-lg text-white text-sm border-none outline-none tracking-wide bg-blue-600 hover:bg-blue-700"
+                  disabled={isLoadingAdd}
+                >
+                  {isLoadingAdd ? "Adding..." : "Submit"}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+      <div className="flex justify-between items-center mt-4">
+        <button
+          className="btn btn-primary"
+          onClick={handlePreviousPage}
+          disabled={page === 1}
+        >
+          Previous
+        </button>
+        <span className="text-lg">
+          Page {page} of {totalPages}
+        </span>
+        <button
+          className="btn btn-primary"
+          onClick={handleNextPage}
+          disabled={page === totalPages}
+        >
+          Next
+        </button>
       </div>
     </div>
   );

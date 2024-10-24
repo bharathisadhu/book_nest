@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { HiPencilAlt, HiOutlineTrash, HiPlus } from "react-icons/hi";
+import { HiPencilAlt, HiOutlineTrash } from "react-icons/hi";
 import Loading from "../app/loading";
 import Swal from "sweetalert2";
 import Image from "next/image";
@@ -18,17 +18,30 @@ export default function BooksList() {
   const [isUpdating, setIsUpdating] = useState(false);
   const [selectedBook, setSelectedBook] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isAddBookModalOpen, setIsAddBookModalOpen] = useState(false);
   const [imageUrl, setImageUrl] = useState("");
   const [imageFile, setImageFile] = useState(null);
-  const [newBook, setNewBook] = useState({
-    name: "",
-    author: "",
-    description: "",
-    price: "",
-    category: "",
-    image: null,
-  });
-  const [isAdding, setIsAdding] = useState(false);
+
+  // Add Book State
+  const [title, setTitle] = useState("");
+  const [author, setAuthor] = useState("");
+  const [description, setDescription] = useState("");
+  const [price, setPrice] = useState("");
+  const [cardCount, setCardCount] = useState("");
+  const [category, setCategory] = useState("");
+  const [ratings, setRatings] = useState("");
+  const [publishType, setPublishType] = useState("upcoming");
+  const [error, setError] = useState("");
+  const [isLoadingAdd, setIsLoadingAdd] = useState(false);
+
+  // Disable background scrolling when modal is open
+  useEffect(() => {
+    if (isAddBookModalOpen || isModalOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+  }, [isAddBookModalOpen, isModalOpen]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -40,7 +53,7 @@ export default function BooksList() {
         setBooks(response.data.data);
         setTotalPages(response.data.totalPages);
       } catch (error) {
-        console.error("Failed to fetch users:", error);
+        console.error("Failed to fetch books:", error);
       }
       setLoading(false);
     };
@@ -60,23 +73,6 @@ export default function BooksList() {
     }
   };
 
-  // useEffect(() => {
-  //   const handleScroll = () => {
-  //     const bottom =
-  //       window.innerHeight + window.scrollY >=
-  //       document.documentElement.scrollHeight - 100; // Adjust threshold as needed
-  //     if (bottom) {
-  //       loadMoreBooks();
-  //     }
-  //   };
-
-  //   window.addEventListener("scroll", handleScroll);
-  //   return () => {
-  //     window.removeEventListener("scroll", handleScroll);
-  //   };
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [hasMore, isLoading]);
-
   const removeBook = async (id) => {
     const bookToDelete = books.find((book) => book._id === id);
     setBooks((prevBooks) => prevBooks.filter((book) => book._id !== id));
@@ -92,213 +88,305 @@ export default function BooksList() {
     });
 
     if (isConfirmed) {
-      try {
-        const res = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/books/${id}`,
-          {
-            method: "DELETE",
-          }
-        );
-
-        if (res.ok) {
-          Swal.fire("Deleted!", "Your file has been deleted.", "success");
-        } else {
-          Swal.fire("Error!", "There was an error deleting the book.", "error");
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/books/${id}`,
+        {
+          method: "DELETE",
         }
-      } catch (error) {
-        console.error("Error deleting book:", error);
+      );
+
+      if (!res.ok) {
+        await Swal.fire({
+          title: "Error!",
+          text: "There was an error deleting the book.",
+          icon: "error",
+        });
+        setBooks((prevBooks) => [...prevBooks, bookToDelete]);
+      } else {
+        await Swal.fire({
+          title: "Deleted!",
+          text: "The book has been deleted.",
+          icon: "success",
+        });
       }
     } else {
       setBooks((prevBooks) => [...prevBooks, bookToDelete]);
     }
   };
 
-  const uploadImage = async (imageFile) => {
+  const uploadImage = async (file) => {
     const formData = new FormData();
-    formData.append("image", imageFile);
-
-    const response = await axios.post("YOUR_IMAGE_UPLOAD_API_URL", formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
-
-    return response.data.imageUrl; // Adjust according to your API response
-  };
-
-  const handleUpdateChange = (e) => {
-    const { name, value } = e.target;
-    setSelectedBook((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setImageFile(file);
-    }
-  };
-
-  const updateBook = async (id) => {
-    setIsUpdating(true);
-
-    let updatedImageUrl = imageUrl;
-    if (imageFile) {
-      updatedImageUrl = await uploadImage(imageFile);
-    }
-
-    const updatedBookData = { ...selectedBook, image: updatedImageUrl };
-
+    formData.append("image", file);
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/books/${id}`,
+      `https://api.imgbb.com/1/upload?key=${process.env.NEXT_PUBLIC_IMAGE_UPLOAD_KEY}`,
+      {
+        method: "POST",
+        body: formData,
+      }
+    );
+    if (res.ok) {
+      const data = await res.json();
+      return data.data.display_url; // Return the URL of the uploaded image
+    } else {
+      await Swal.fire({
+        title: "Error!",
+        text: "Image upload failed.",
+        icon: "error",
+      });
+      return null;
+    }
+  };
+  const updateBook = async (bookData) => {
+    setIsUpdating(true); // Set loading state immediately
+
+    const previousBook = books.find((book) => book._id === bookData._id);
+    setBooks((prevBooks) =>
+      prevBooks.map((book) =>
+        book._id === bookData._id ? { ...book, ...bookData } : book
+      )
+    );
+
+    if (imageFile) {
+      const uploadedImageUrl = await uploadImage(imageFile);
+      if (uploadedImageUrl) {
+        bookData.image = uploadedImageUrl; // Set the uploaded image URL
+      }
+    }
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/books/${bookData._id}`,
       {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(updatedBookData),
+        body: JSON.stringify(bookData),
       }
     );
 
     if (res.ok) {
       const updatedBook = await res.json();
-      setBooks((prevBooks) =>
-        prevBooks.map((book) => (book._id === id ? updatedBook : book))
-      );
+
       await Swal.fire({
         title: "Updated!",
         text: "The book has been updated.",
         icon: "success",
       });
+
+      setBooks((prevBooks) =>
+        prevBooks.map((book) =>
+          book._id === updatedBook._id ? updatedBook : book
+        )
+      );
+      setIsModalOpen(false);
+      setSelectedBook(null);
+      setImageFile(null); // Reset the image file state
+      setImageUrl(""); // Reset the image URL state
     } else {
       await Swal.fire({
         title: "Error!",
         text: "There was an error updating the book.",
         icon: "error",
       });
+      setBooks((prevBooks) =>
+        prevBooks.map((book) =>
+          book._id === previousBook._id ? previousBook : book
+        )
+      );
     }
     setIsUpdating(false);
-    handleCloseModal();
+  };
+
+  const handleEditClick = (book) => {
+    setSelectedBook(book);
+    setImageUrl(book.image || ""); // Set the current image URL
+    setIsModalOpen(true);
   };
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setSelectedBook(null);
-    setImageFile(null);
+    setImageFile(null); // Reset the image file state
+    setImageUrl(""); // Reset the image URL state
   };
 
-  const addBook = async () => {
-    setIsAdding(true);
-
-    let imageUrl = "";
-    if (newBook.image) {
-      imageUrl = await uploadImage(newBook.image);
-    }
-
-    const bookData = { ...newBook, image: imageUrl };
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/books`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(bookData),
-    });
-
-    if (res.ok) {
-      const addedBook = await res.json();
-      setBooks((prevBooks) => [...prevBooks, addedBook]);
-      await Swal.fire({
-        title: "Added!",
-        text: "The book has been added.",
-        icon: "success",
-      });
-    } else {
-      await Swal.fire({
-        title: "Error!",
-        text: "There was an error adding the book.",
-        icon: "error",
-      });
-    }
-
-    setIsAdding(false);
-    handleCloseAddModal();
-  };
-
-  const handleCloseAddModal = () => {
-    setIsModalOpen(false);
-    setNewBook({
-      name: "",
-      author: "",
-      description: "",
-      price: "",
-      category: "",
-      image: null,
-    });
-  };
-
-  const handleAddBookChange = (e) => {
+  const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setNewBook((prev) => ({ ...prev, [name]: value }));
+    const updatedValue = name === "price" ? parseFloat(value) : value;
+
+    setSelectedBook((prev) => ({ ...prev, [name]: updatedValue }));
   };
 
-  const handleImageChangeForNewBook = (e) => {
+  const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setNewBook((prev) => ({ ...prev, image: file }));
+      setImageFile(file);
+      setImageUrl(URL.createObjectURL(file)); // Create a temporary URL for preview
+    }
+  };
+  if (isLoading && books.length === 0) {
+    return <Loading />; // Use your existing loading component
+  }
+
+  if (books.length === 0) {
+    return <div>No books found or failed to load books.</div>;
+  }
+
+  const handleAddBookInputChange = (e) => {
+    const { name, value } = e.target;
+    switch (name) {
+      case "title":
+        setTitle(value);
+        break;
+      case "author":
+        setAuthor(value);
+        break;
+      case "description":
+        setDescription(value);
+        break;
+      case "price":
+        setPrice(value);
+        break;
+      case "cardCount":
+        setCardCount(value);
+        break;
+      case "category":
+        setCategory(value);
+        break;
+      case "ratings":
+        setRatings(value);
+        break;
+      case "publishType":
+        setPublishType(value);
+        break;
+      default:
+        break;
     }
   };
 
-  if (isLoading) {
+  const handleAddBookSubmit = async (e) => {
+    e.preventDefault();
+    setIsLoadingAdd(true);
+
+    try {
+      const formData = new FormData();
+      formData.append("image", imageFile);
+
+      const imgbbResponse = await axios.post(
+        `https://api.imgbb.com/1/upload?key=${process.env.NEXT_PUBLIC_IMAGE_UPLOAD_KEY}`,
+        formData
+      );
+
+      const imageUrl = imgbbResponse.data.data.url;
+
+      const bookData = {
+        name: title,
+        author,
+        description,
+        category,
+        image: imageUrl,
+        price: parseFloat(price),
+        ratings: parseFloat(ratings),
+        cardCount: parseInt(cardCount, 10),
+        publishType,
+      };
+
+      const response = await axios.post("/api/books", bookData);
+
+      // Update the book list
+      setBooks((prevBooks) => [...prevBooks, response.data]);
+
+      // Show SweetAlert confirmation
+      Swal.fire({
+        icon: "success",
+        title: "Book Added!",
+        text: `${bookData.name} has been added successfully!`,
+        showConfirmButton: true,
+        confirmButtonText: "OK",
+      });
+
+      setIsAddBookModalOpen(false); // Close the modal
+    } catch (error) {
+      console.error("Error adding book:", error);
+      setError("Failed to add the book. Please try again.");
+    } finally {
+      setIsLoadingAdd(false);
+    }
+  };
+
+  if (isLoading && books.length === 0) {
     return <Loading />;
   }
 
+  if (books.length === 0) {
+    return <div>No books found or failed to load books.</div>;
+  }
+
   return (
-    <div className="overflow-x-auto">
-      <button
-        onClick={() => setIsModalOpen(true)}
-        className="mb-4 bg-[#F65D4E] text-white px-4 py-2 rounded flex items-center"
-      >
-        <HiPlus size={20} className="mr-2" />
-        Add Book
-      </button>
-      <table className="min-w-full">
-        <thead>
-          <tr className="border-b bg-gray-800 text-white">
-            <th className="px-4 py-2">Image</th>
-            <th className="px-4 py-2">Name</th>
-            <th className="px-4 py-2">Author</th>
-            <th className="px-4 py-2">Price</th>
-            <th className="px-4 py-2">Action</th>
+    <div className="font-sans lg:max-h-screen overflow-x-auto overflow-y-auto">
+      <div className="mb-4">
+        <button
+          onClick={() => setIsAddBookModalOpen(true)} // Open Add Book modal
+          className="bg-orange-600 text-white py-2 px-4 rounded hover:bg-orange-700"
+        >
+          Add New Book
+        </button>
+      </div>
+
+      <table className="min-w-full divide-y divide-gray-200">
+        <thead className="bg-gray-100 whitespace-nowrap">
+          <tr>
+            <th className="px-4 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
+              Book Image
+            </th>
+            <th className="px-4 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
+              Book Name
+            </th>
+            <th className="px-4 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
+              Category
+            </th>
+            <th className="px-4 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
+              Author
+            </th>
+            <th className="px-4 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
+              Price
+            </th>
+            <th className="px-4 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
+              Ratings
+            </th>
+            <th className="px-4 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
+              Actions
+            </th>
           </tr>
         </thead>
-        <tbody>
+        <tbody className="bg-white divide-y divide-gray-200 whitespace-nowrap">
           {books.map((book) => (
-            <tr key={book._id} className="border-b">
-              <td className="px-4 py-2">
+            <tr key={book._id}>
+              <td className="px-4 py-4 text-sm text-gray-800">
                 <Image
                   src={book.image}
                   alt={book.name}
-                  width={50}
-                  height={50}
+                  width={40}
+                  height={60}
                 />
               </td>
-              <td className="px-4 py-2">{book.name}</td>
-              <td className="px-4 py-2">{book.author}</td>
-              <td className="px-4 py-2">${book.price}</td>
-              <td className="px-4 py-2">
-                <button
-                  onClick={() => {
-                    setSelectedBook(book);
-                    setIsModalOpen(true);
-                  }}
-                  className="mr-2 text-blue-600"
-                >
-                  <HiPencilAlt />
+              <td className="px-4 py-4 text-sm text-gray-800">{book?.name}</td>
+              <td className="px-4 py-4 text-sm text-gray-800">
+                {book?.category}
+              </td>
+              <td className="px-4 py-4 text-sm text-gray-800">{book.author}</td>
+              <td className="px-4 py-4 text-sm text-gray-800">${book.price}</td>
+              <td className="px-4 py-4 text-sm text-gray-800">
+                {book.ratings}
+              </td>
+              <td className="flex px-4 py-4 text-sm text-gray-800">
+                <button onClick={() => handleEditClick(book)}>
+                  <HiPencilAlt size={24} />
                 </button>
                 <button
                   onClick={() => removeBook(book._id)}
-                  className="text-red-600"
+                  className="text-red-400 ml-2"
                 >
-                  <HiOutlineTrash />
+                  <HiOutlineTrash size={24} />
                 </button>
               </td>
             </tr>
@@ -306,22 +394,6 @@ export default function BooksList() {
         </tbody>
       </table>
 
-      {/* Pagination */}
-      <div className="flex justify-center mt-4">
-        {pageNumbers.map((number) => (
-          <button
-            key={number}
-            onClick={() => handlePageChange(number)}
-            className={`mx-1 px-4 py-2 border rounded ${
-              number === page ? "bg-[#F65D4E] text-white" : "bg-white"
-            }`}
-          >
-            {number}
-          </button>
-        ))}
-      </div>
-
-      {/* Update Book Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
           <div className="bg-white p-8 rounded shadow-lg max-w-2xl w-full">
@@ -329,7 +401,7 @@ export default function BooksList() {
             <form
               onSubmit={(e) => {
                 e.preventDefault();
-                updateBook(selectedBook._id);
+                updateBook(selectedBook);
               }}
               className="flex"
             >
@@ -339,8 +411,8 @@ export default function BooksList() {
                   <input
                     type="text"
                     name="name"
-                    value={selectedBook.name}
-                    onChange={handleUpdateChange}
+                    value={selectedBook?.name || ""}
+                    onChange={handleInputChange}
                     className="border p-2 w-full"
                     required
                   />
@@ -350,8 +422,8 @@ export default function BooksList() {
                   <input
                     type="text"
                     name="author"
-                    value={selectedBook.author}
-                    onChange={handleUpdateChange}
+                    value={selectedBook?.author || ""}
+                    onChange={handleInputChange}
                     className="border p-2 w-full"
                     required
                   />
@@ -361,26 +433,47 @@ export default function BooksList() {
                   <input
                     type="number"
                     name="price"
-                    value={selectedBook.price}
-                    onChange={handleUpdateChange}
+                    value={selectedBook?.price || ""}
+                    onChange={handleInputChange}
                     className="border p-2 w-full"
                     required
                     step="0.01"
                   />
                 </div>
                 <div className="mt-4">
+                  <label className="block text-sm">Category</label>
+                  <input
+                    type="text"
+                    name="category"
+                    value={selectedBook?.category || ""}
+                    onChange={handleInputChange}
+                    className="border p-2 w-full"
+                    required
+                  />
+                </div>
+                <div className="mt-4">
                   <label className="block text-sm">Description</label>
                   <textarea
                     name="description"
-                    value={selectedBook.description}
-                    onChange={handleUpdateChange}
+                    value={selectedBook?.description || ""}
+                    onChange={handleInputChange}
                     className="border p-2 w-full h-32"
                     required
                   />
                 </div>
               </div>
               <div className="ml-4 w-1/3">
-                <label className="block text-sm">Change Image</label>
+                <label className="block text-sm">Current Image</label>
+                {imageUrl && (
+                  <Image
+                    src={imageUrl}
+                    alt="Book cover"
+                    width={200}
+                    height={300}
+                    className="mt-2 mb-2"
+                  />
+                )}
+                <label className="block text-sm mt-4">Change Image</label>
                 <input
                   type="file"
                   accept="image/*"
@@ -394,18 +487,16 @@ export default function BooksList() {
                 type="submit"
                 onClick={(e) => {
                   e.preventDefault();
-                  updateBook(selectedBook._id);
+                  updateBook(selectedBook);
                 }}
-                className={`bg-[#F65D4E] text-white px-4 py-2 rounded ${
-                  isUpdating ? "opacity-50 cursor-not-allowed" : ""
-                }`}
-                disabled={isUpdating}
+                className="bg-[#F65D4E] text-white px-4 py-2 rounded"
               >
-                {isUpdating ? "Updating..." : "Update"}
+                {isUpdating ? "Updating..." : "Update Book"}
               </button>
               <button
+                type="button"
                 onClick={handleCloseModal}
-                className="bg-gray-300 px-4 py-2 rounded"
+                className="bg-gray-300 text-gray-800 px-4 py-2 rounded ml-2"
               >
                 Cancel
               </button>
@@ -414,93 +505,189 @@ export default function BooksList() {
         </div>
       )}
 
-      {/* Add Book Modal */}
-      {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white p-8 rounded shadow-lg max-w-2xl w-full">
-            <h2 className="text-lg font-semibold">Add New Book</h2>
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                addBook();
-              }}
-            >
-              <div className="mt-4">
-                <label className="block text-sm">Name</label>
-                <input
-                  type="text"
-                  name="name"
-                  value={newBook.name}
-                  onChange={handleAddBookChange}
-                  className="border p-2 w-full"
-                  required
-                />
+      {isAddBookModalOpen && (
+        <div className="fixed inset-0 p-4 flex justify-center items-center z-[1000] bg-black bg-opacity-50">
+          <div className="w-full max-w-lg bg-white shadow-lg rounded-lg p-8 relative">
+            <div className="flex items-center justify-between">
+              <h3 className="text-[#F65D4E] text-xl font-bold">Add New Book</h3>
+              <button
+                onClick={() => setIsAddBookModalOpen(false)}
+                className="text-gray-400 hover:text-red-500"
+              >
+                &times;
+              </button>
+            </div>
+
+            <form onSubmit={handleAddBookSubmit} className="space-y-4 mt-8">
+              <div className="flex gap-4">
+                <div>
+                  <div>
+                    <label className="text-gray-800 text-sm mb-2 block">
+                      Name of the product
+                    </label>
+                    <input
+                      type="text"
+                      name="title"
+                      placeholder="Enter product name"
+                      value={title}
+                      onChange={handleAddBookInputChange}
+                      className="px-4 py-3 bg-gray-100 w-full text-gray-800 text-sm border-none focus:outline-blue-600 focus:bg-transparent rounded-lg"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="text-gray-800 text-sm mb-2 block">
+                      Descriptions
+                    </label>
+                    <textarea
+                      name="description"
+                      placeholder="Write about the product"
+                      value={description}
+                      onChange={handleAddBookInputChange}
+                      className="px-4 py-3 bg-gray-100 w-full text-gray-800 text-sm border-none focus:outline-blue-600 focus:bg-transparent rounded-lg"
+                      rows="3"
+                      required
+                    ></textarea>
+                  </div>
+
+                  <div className="flex gap-2">
+                    <div>
+                      <label className="text-gray-800 text-sm mb-2 block">
+                        Quantity
+                      </label>
+                      <input
+                        type="number"
+                        name="cardCount"
+                        placeholder="Enter quantity"
+                        value={cardCount}
+                        onChange={handleAddBookInputChange}
+                        className="px-4 py-3 bg-gray-100 w-full text-gray-800 text-sm border-none focus:outline-blue-600 focus:bg-transparent rounded-lg"
+                        required
+                      />
+                    </div>
+
+                    <div>
+                      <label className="text-gray-800 text-sm mb-2 block">
+                        Selling price
+                      </label>
+                      <input
+                        type="number"
+                        name="price"
+                        placeholder="Enter price"
+                        value={price}
+                        onChange={handleAddBookInputChange}
+                        className="px-4 py-3 bg-gray-100 w-full text-gray-800 text-sm border-none focus:outline-blue-600 focus:bg-transparent rounded-lg"
+                        required
+                        step="0.01"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="text-gray-800 text-sm mb-2 block">
+                      Category
+                    </label>
+                    <input
+                      type="text"
+                      name="category"
+                      placeholder="Enter product category"
+                      value={category}
+                      onChange={handleAddBookInputChange}
+                      className="px-4 py-3 bg-gray-100 w-full text-gray-800 text-sm border-none focus:outline-blue-600 focus:bg-transparent rounded-lg"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="text-gray-800 text-sm mb-2 block">
+                      Ratings
+                    </label>
+                    <input
+                      type="text"
+                      name="ratings"
+                      placeholder="Enter product Rating"
+                      value={ratings}
+                      onChange={handleAddBookInputChange}
+                      className="px-4 py-3 bg-gray-100 w-full text-gray-800 text-sm border-none focus:outline-blue-600 focus:bg-transparent rounded-lg"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div className=" flex-wrap">
+                  <div>
+                    <label className="text-gray-800 text-sm mb-2 block">
+                      Author
+                    </label>
+                    <input
+                      type="text"
+                      name="author"
+                      placeholder="Enter Author name"
+                      value={author}
+                      onChange={handleAddBookInputChange}
+                      className="px-4 py-3 bg-gray-100 w-full text-gray-800 text-sm border-none focus:outline-blue-600 focus:bg-transparent rounded-lg"
+                      required
+                    />
+                  </div>
+                  <label className="block text-sm">Upload Image</label>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                    className="border p-2 w-48"
+                  />
+                  {imageUrl && (
+                    <div className="mt-2">
+                      <Image
+                        src={imageUrl}
+                        alt="Book cover preview"
+                        width={200}
+                        height={300}
+                        className="mt-2"
+                      />
+                    </div>
+                  )}
+                </div>
               </div>
-              <div className="mt-4">
-                <label className="block text-sm">Author</label>
-                <input
-                  type="text"
-                  name="author"
-                  value={newBook.author}
-                  onChange={handleAddBookChange}
-                  className="border p-2 w-full"
-                  required
-                />
-              </div>
-              <div className="mt-4">
-                <label className="block text-sm">Price</label>
-                <input
-                  type="number"
-                  name="price"
-                  value={newBook.price}
-                  onChange={handleAddBookChange}
-                  className="border p-2 w-full"
-                  required
-                  step="0.01"
-                />
-              </div>
-              <div className="mt-4">
-                <label className="block text-sm">Description</label>
-                <textarea
-                  name="description"
-                  value={newBook.description}
-                  onChange={handleAddBookChange}
-                  className="border p-2 w-full h-32"
-                  required
-                />
-              </div>
-              <div className="mt-4">
-                <label className="block text-sm">Upload Image</label>
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleImageChangeForNewBook}
-                  className="border p-2 w-full"
-                  required
-                />
-              </div>
-              <div className="mt-4 flex justify-between">
-                <button
-                  type="submit"
-                  className={`bg-[#F65D4E] text-white px-4 py-2 rounded ${
-                    isAdding ? "opacity-50 cursor-not-allowed" : ""
-                  }`}
-                  disabled={isAdding}
-                >
-                  {isAdding ? "Adding..." : "Add Book"}
-                </button>
+
+              <div className="flex justify-end gap-4 mt-8">
                 <button
                   type="button"
-                  onClick={handleCloseAddModal}
-                  className="bg-gray-300 px-4 py-2 rounded"
+                  onClick={() => setIsAddBookModalOpen(false)} // Close modal
+                  className="px-6 py-3 rounded-lg text-gray-800 text-sm border-none outline-none tracking-wide bg-gray-200 hover:bg-gray-300"
                 >
                   Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-6 py-3 rounded-lg text-white text-sm border-none outline-none tracking-wide bg-blue-600 hover:bg-blue-700"
+                  disabled={isLoadingAdd}
+                >
+                  {isLoadingAdd ? "Adding..." : "Submit"}
                 </button>
               </div>
             </form>
           </div>
         </div>
       )}
+      <div className="flex justify-between items-center mt-4">
+        <button
+          className="btn btn-primary"
+          onClick={handlePreviousPage}
+          disabled={page === 1}
+        >
+          Previous
+        </button>
+        <span className="text-lg">
+          Page {page} of {totalPages}
+        </span>
+        <button
+          className="btn btn-primary"
+          onClick={handleNextPage}
+          disabled={page === totalPages}
+        >
+          Next
+        </button>
+      </div>
     </div>
   );
 }

@@ -1,5 +1,5 @@
-import connectDB from "../../../utils/connectDB";
-import Book from "../../../models/Book"; // Adjust the path to your Book model accordingly
+import connectDB from "@/lib/connectDB";
+import { Book } from "../../../../models/Book";
 
 // Connect to the database
 await connectDB();
