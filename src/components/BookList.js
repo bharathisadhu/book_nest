@@ -199,6 +199,8 @@ export default function BooksList() {
     setIsModalOpen(true);
   };
 
+
+
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setSelectedBook(null);
@@ -231,6 +233,8 @@ export default function BooksList() {
   return (
     <div className="font-sans lg:max-h-screen overflow-x-auto overflow-y-auto">
    
+
+
       <table className="min-w-full divide-y divide-gray-200">
         <thead className="bg-gray-100 whitespace-nowrap">
           <tr>
