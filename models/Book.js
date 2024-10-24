@@ -115,7 +115,6 @@ const CartsSchema = new mongoose.Schema({
   rating: { type: Number },
   category: { type: String },
   cardCount: { type: Number },
-  cardCount: { type: Number },
 });
 
 const PaymentSchema = new mongoose.Schema({

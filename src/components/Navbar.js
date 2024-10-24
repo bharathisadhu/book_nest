@@ -88,7 +88,7 @@ const Navbar = () => {
   }, [fetchAdminStatus]);
 
   return (
-    <nav className="fixed top-0 left-0 right-0 w-full shadow-md bg-white font-[sans-serif] tracking-wide z-50 ">
+    <nav className="fixed top-0 mb-10 left-0 right-0 w-full shadow-md bg-white font-[sans-serif] tracking-wide z-50 ">
       <section className="flex items-center flex-wrap lg:justify-center gap-4 py-3 sm:px-10 px-4 border-gray-200 border-b min-h-[75px]">
         <Link href="/" className="lg:left-10 -left-4 absolute z-30">
           <Image
