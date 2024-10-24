@@ -379,78 +379,77 @@
 //   );
 // }
 
+"use client";
 
-'use client'
-
-import { useState, useEffect, useRef } from "react"
-import axios from "axios"
-import Image from "next/image"
-import { useSession } from "next-auth/react"
-import Swal from "sweetalert2"
+import { useState, useEffect, useRef } from "react";
+import axios from "axios";
+import Image from "next/image";
+import { useSession } from "next-auth/react";
+import Swal from "sweetalert2";
 
 export default function UserProfile() {
-  const { data: session, status, update } = useSession()
-  const [user, setUser] = useState(null)
-  const [name, setName] = useState("")
-  const [email, setEmail] = useState("")
-  const [role, setRole] = useState("")
-  const [image, setImage] = useState("")
-  const [loading, setLoading] = useState(false)
-  const fileInputRef = useRef(null)
+  const { data: session, status, update } = useSession();
+  const [user, setUser] = useState(null);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [role, setRole] = useState("");
+  const [image, setImage] = useState("");
+  const [loading, setLoading] = useState(false);
+  const fileInputRef = useRef(null);
 
   useEffect(() => {
-    if (status === "loading") return
+    if (status === "loading") return;
 
     if (session?.user?.email) {
       const fetchUser = async () => {
         try {
-          const response = await axios.get(`/api/user/${session.user.email}`)
-          const userData = response.data
-          setUser(userData)
-          setName(userData.name || "")
-          setEmail(userData.email || "")
-          setImage(userData.image || "")
-          setRole(userData.role || "")
+          const response = await axios.get(`/api/user/${session.user.email}`);
+          const userData = response.data;
+          setUser(userData);
+          setName(userData.name || "");
+          setEmail(userData.email || "");
+          setImage(userData.image || "");
+          setRole(userData.role || "");
         } catch (error) {
-          console.error("Error fetching user:", error)
+          console.error("Error fetching user:", error);
         }
-      }
+      };
 
-      fetchUser()
+      fetchUser();
     }
-  }, [session, status])
+  }, [session, status]);
 
   const handlePhotoUpload = async (event) => {
-    const file = event.target.files[0]
-    const formData = new FormData()
-    formData.append("image", file)
+    const file = event.target.files[0];
+    const formData = new FormData();
+    formData.append("image", file);
 
     try {
-      setLoading(true)
+      setLoading(true);
       const imgbbResponse = await axios.post(
         `https://api.imgbb.com/1/upload?key=${process.env.NEXT_PUBLIC_IMAGE_UPLOAD_KEY}`,
         formData
-      )
-      setImage(imgbbResponse.data.data.url)
-      setLoading(false)
+      );
+      setImage(imgbbResponse.data.data.url);
+      setLoading(false);
 
       // Update the user's image on the server
-      await handleSubmit(null, imgbbResponse.data.data.url)
+      await handleSubmit(null, imgbbResponse.data.data.url);
     } catch (error) {
-      console.error("Error uploading image:", error)
-      setLoading(false)
+      console.error("Error uploading image:", error);
+      setLoading(false);
     }
-  }
+  };
 
   const handleSubmit = async (event, newImage = null) => {
-    if (event) event.preventDefault()
+    if (event) event.preventDefault();
 
     try {
       // Update user on the server
       const response = await axios.put(`/api/user/${session.user.email}`, {
         name,
         image: newImage || image,
-      })
+      });
 
       // If the update is successful, update the session
       if (response.status === 200) {
@@ -462,28 +461,28 @@ export default function UserProfile() {
             name: name,
             image: newImage || image,
           },
-        })
+        });
 
         Swal.fire({
           icon: "success",
           title: "User Updated",
           text: "The user has been successfully updated.",
-        })
+        });
       }
     } catch (error) {
-      console.error("Error updating profile:", error)
+      console.error("Error updating profile:", error);
     }
-  }
+  };
 
   const handleImageClick = () => {
-    fileInputRef.current.click()
-  }
+    fileInputRef.current.click();
+  };
 
-  if (status === "loading") return <p>Loading session...</p>
-  if (!session) return <p>Please log in to view your profile.</p>
+  if (status === "loading") return <p>Loading session...</p>;
+  if (!session) return <p>Please log in to view your profile.</p>;
 
   return (
-    <main className=" py-1 mx-auto ">
+    <main className="border lg:px-20 py-1 mx-auto ">
       <div className="overflow-hidden">
         <div className="relative z-20 h-40 md:h-60">
           <Image
@@ -491,7 +490,7 @@ export default function UserProfile() {
             alt="profile cover"
             width={1000}
             height={1000}
-            className="object-cover w-full h-96"
+            className="object-cover w-full h-64 md:h-[350px] lg:h-96"
           />
           {/* <div className="absolute bottom-4 right-4">
             <label
@@ -509,20 +508,20 @@ export default function UserProfile() {
             </label>
           </div> */}
           {loading && (
-                <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 rounded-full">
-                  <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-white"></div>
-                </div>
-              )}
+            <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 rounded-full">
+              <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-white"></div>
+            </div>
+          )}
         </div>
         <div className="px-4 pb-6 text-center lg:pb-8 xl:pb-11.5">
-          <div className="relative z-30 mx-auto -mt-22 h-30 w-full max-w-30 rounded-full bg-background p-1 backdrop-blur sm:h-44 sm:max-w-44 sm:p-3">
-            <div className="relative drop-shadow-2">
+          <div className="relative z-30 mx-auto -mt-22 h-30 w-full max-w-30 rounded-full bg-background p-1 lg:backdrop-blur sm:h-44 sm:max-w-44 sm:p-3">
+            <div className="relative drop-shadow-2 ">
               <Image
                 width={1000}
                 height={1000}
                 src={image || "/placeholder.svg?height=160&width=160"}
                 alt="profile"
-                className="w-40 h-40 rounded-full object-cover cursor-pointer"
+                className="w-40 h-40 rounded-full object-cover cursor-pointer mx-auto"
                 onClick={handleImageClick}
               />
               <input
@@ -540,7 +539,35 @@ export default function UserProfile() {
             </div>
           </div>
           <div className="mt-4">
-            <h3 className="mb-1.5 text-2xl font-semibold text-foreground">{name}</h3>
+            {/* <h3 className="mb-1.5 text-2xl font-semibold text-foreground">{name}</h3> */}
+
+            <form
+              className="items-center text-[#202142] w-[85%] md:w-1/3 lg:w-1/4 mx-auto flex justify-center"
+              onSubmit={handleSubmit}
+            >
+              <div className="flex flex-col items-center w-full mb-2 space-x-0 space-y-2 sm:flex-row sm:space-x-4 sm:space-y-0 sm:mb-6">
+                <div className="w-full">
+                  <input
+                    type="text"
+                    id="first_name"
+                    className=" text-black font-medium  text-sm rounded-l-lg focus:[#F65D4E]  focus:border-indigo-500 block w-full p-2.5"
+                    placeholder="Your first name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    required
+                  />
+                </div>
+              </div>
+              <div className="border -mt-2 md:-mt-6">
+                <button
+                  type="submit"
+                  className="text-white bg-indigo-700 hover:bg-indigo-800 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-r-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
+                >
+                  Save
+                </button>
+              </div>
+            </form>
+
             <p className="font-medium text-muted-foreground">{role}</p>
             <div className="mx-auto mb-5.5 mt-4.5 grid max-w-94 grid-cols-3 rounded-md border py-2.5 shadow-1">
               <div className="flex flex-col items-center justify-center gap-1 border-r px-4">
@@ -569,7 +596,9 @@ export default function UserProfile() {
             </div>
 
             <div className="mt-6.5">
-              <h4 className="mb-3.5 font-medium text-foreground">Follow me on</h4>
+              <h4 className="mb-3.5 font-medium text-foreground">
+                Follow me on
+              </h4>
               <div className="flex items-center justify-center gap-3.5">
                 <a
                   href="#"
@@ -665,5 +694,5 @@ export default function UserProfile() {
         </div>
       </div>
     </main>
-  )
+  );
 }

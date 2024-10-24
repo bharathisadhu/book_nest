@@ -104,14 +104,9 @@ const DashboardLayout = ({ children }) => {
         href: "/dashboard/userProfile",
       },
       {
-        name: "Analytics",
-        icon: <IoBookSharp className="text-xl" />,
-        href: "/dashboard/analytics",
-      },
-      {
-        name: "Cart",
+        name: "Payment History",
         icon: <AiOutlineFileText className="text-xl" />,
-        href: "/dashboard/cart",
+        href: "/dashboard/paymentHistory",
       }, // Corrected URL
       {
         name: "Wishlist",
