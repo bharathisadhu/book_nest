@@ -101,8 +101,7 @@ const Banner = () => {
               height={1000}
               src={slide.image}
               alt={`Banner ${idx + 1}`}
-              objectFit="cover"
-              className="brightness-90 w-full h-[270px] md:h-[470px] lg:h-[750px]"
+              className="brightness-90 w-full h-[270px] md:h-[470px] lg:h-[750px] object-cover"
               priority={true} // This ensures the image is preloaded for performance
             />
             <div className="absolute container mx-auto inset-0 flex items-center px-8 md:px-16 lg:px-0">

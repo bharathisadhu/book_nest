@@ -68,7 +68,7 @@ const Category = () => {
       >
         {category.length > 0 ? (
           category.map((cat) => (
-            <SwiperSlide key={cat.image}>
+            <SwiperSlide key={cat._id}>
               <div
                 className="relative flex flex-col items-center transition-transform cursor-pointer group mt-10"
                 onClick={() => handleCategoryClick(cat.category)}
