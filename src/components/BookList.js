@@ -322,7 +322,7 @@ export default function BooksList() {
   }
 
   return (
-    <div className="font-sans lg:max-h-screen overflow-x-auto overflow-y-auto">
+    <div className="font-sans ">
       <div className="mb-4">
         <button
           onClick={() => setIsAddBookModalOpen(true)} // Open Add Book modal
@@ -559,7 +559,7 @@ export default function BooksList() {
                         type="number"
                         name="cardCount"
                         placeholder="Enter quantity"
-                        value={cardCount}
+                        value={quantity}
                         onChange={handleAddBookInputChange}
                         className="px-4 py-3 bg-gray-100 w-full text-gray-800 text-sm border-none focus:outline-blue-600 focus:bg-transparent rounded-lg"
                         required
