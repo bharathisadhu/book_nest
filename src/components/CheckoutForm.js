@@ -94,6 +94,21 @@ const CheckoutForm = ({ cartBook, setCartBook }) => {
     }
   }, [cartBook, session, discount, total, isCashOnDelivery]);
 
+  const clearCartFromAPI = async () => {
+    try {
+      await axios.delete(`/api/carts/${session.user.email}`, {
+        data: { email: session?.user?.email }, // Send the user's email to delete their cart
+      });
+    } catch (error) {
+      console.error("Error clearing cart from API:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Failed to clear the cart from the server.",
+      });
+    }
+  };
+
   const countryCodeMap = {
     Bangladesh: "BD",
     "United States": "US",
@@ -126,7 +141,7 @@ const CheckoutForm = ({ cartBook, setCartBook }) => {
       quantity: item.cardCount,
     }));
 
-    const totalAmount = total + deliveryCharge - discount.toFixed(2);
+    const totalAmount = total + deliveryCharge - discount;
 
     if (isCashOnDelivery) {
       const payment = {
@@ -146,6 +161,8 @@ const CheckoutForm = ({ cartBook, setCartBook }) => {
       try {
         const response = await axios.post("/api/payments", payment);
         console.log(response.data);
+        setCartBook([]); // Clear the cart after successful payment
+        await clearCartFromAPI(); // Clear the cart from the API
         Swal.fire({
           position: "center",
           icon: "success",
@@ -256,6 +273,7 @@ const CheckoutForm = ({ cartBook, setCartBook }) => {
 
           const response = await axios.post("/api/payments", payment);
           setCartBook([]); // Clear the cart after successful payment
+          await clearCartFromAPI(); // Clear the cart from the API
           Swal.fire({
             position: "center",
             icon: "success",
@@ -300,7 +318,6 @@ const CheckoutForm = ({ cartBook, setCartBook }) => {
       )
     );
   };
-
   const [method, setMethod] = useState([
     {
       name: "VISA",
@@ -383,11 +400,9 @@ const CheckoutForm = ({ cartBook, setCartBook }) => {
       >
         <div className="mt-6 sm:mt-8 lg:flex lg:items-start lg:gap-12 xl:gap-16">
           <div className="min-w-0 flex-1 space-y-8">
-            <div className="flex flex-col lg:flex-row gap-4 w-full">
+            <div className="flex flex-col lg:flex-row gap-4 w-full min-h-min">
               <div className="space-y-4 w-full">
-                {/* Set this div to full width */}
-                <div className="md:col-span-2 space-y-4">
-                  {/* Cart items display */}
+                <div className="md:col-span-2 space-y-4 ">
                   <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
                     Cart Information
                   </h2>
@@ -452,437 +467,415 @@ const CheckoutForm = ({ cartBook, setCartBook }) => {
                         </div>
                       ))
                     ) : (
-                      <p className="text-gray-500">Your cart is empty.</p>
+                      <div className="text-center text-gray-500">
+                        Your cart is empty. Please add items to your cart.
+                      </div>
                     )}
                   </div>
                 </div>
               </div>
 
-              <div className="flow-root w-full">
-                {" "}
-                {/* Set this div to full width */}
-                <h2 className="text-xl font-semibold text-gray-900 mb-4 dark:text-white">
-                  Payment Information
-                </h2>
-                {/* <div className="border-t-2 border-gray-300 w-full md:w-[60%] lg:w-[65%] mt-4"></div> */}
-                <div className="-my-3 divide-y divide-gray-200 dark:divide-gray-800">
-                  <dl className="flex items-center justify-between gap-4 py-3">
-                    <dt className="text-base font-normal text-gray-500 dark:text-gray-400">
-                      Subtotal
-                    </dt>
-                    <dd className="text-base font-medium text-green-500">
-                      ${subtotal.toFixed(2)}
-                    </dd>
-                  </dl>
-
-                  <dl className="flex items-center justify-between gap-4 py-3">
-                    <dt className="text-base font-normal text-gray-500 dark:text-gray-400">
-                      Tax
-                    </dt>
-                    <dd className="text-base font-medium text-gray-900 dark:text-white">
-                      ${tax.toFixed(2)}
-                    </dd>
-                  </dl>
-
-                  <dl className="flex items-center justify-between gap-4 py-3">
-                    {discount > 0 && (
-                      <>
+              {cartBook.length > 0 && (
+                <>
+                  <div className="flow-root w-full">
+                    <h2 className="text-xl font-semibold text-gray-900 mb-4 dark:text-white">
+                      Payment Information
+                    </h2>
+                    <div className="-my-3 divide-y divide-gray-200 dark:divide-gray-800">
+                      <dl className="flex items-center justify-between gap-4 py-3">
                         <dt className="text-base font-normal text-gray-500 dark:text-gray-400">
-                          Discount
+                          Subtotal
                         </dt>
                         <dd className="text-base font-medium text-green-500">
-                          -${discount.toFixed(2)}
+                          ${subtotal.toFixed(2)}
                         </dd>
-                      </>
-                    )}
-                    {/* Coupon Section */}
-                    {!isDiscountSectionHidden && (
-                      <div
-                        id="discountSection"
-                        className="relative w-full rounded-lg flex h-12 justify-center items-center"
-                      >
-                        <input
-                          value={couponInput}
-                          onChange={(e) => setCouponInput(e.target.value)}
-                          id="couponInput"
-                          className="peer w-full rounded-l-lg border border-[#F65D4E] bg-transparent px-4 py-2 focus:outline-none"
-                          name="coupon"
-                          type="text"
-                          placeholder="Coupon Code"
-                        />
-                        <label
-                          className="absolute -top-2 left-2 rounded-md bg-[#F65D4E] px-2 text-xs text-sky-100 duration-300 "
-                          htmlFor="navigate_ui_input_33"
-                        >
-                          Have a coupon code
-                        </label>
-                        {/* button */}
-                        <div>
-                          <button
-                            onClick={handleCouponApply}
-                            className="py-2 px-6 h-[42px] bg-[#F65D4E] hover:bg-red-600 duration-300 text-white flex items-center justify-center overflow-hidden hover:overflow-visible relative group rounded-r-lg"
-                          >
-                            <svg
-                              viewBox="0 0 1024 1024"
-                              className="icon rotate-45 group-hover:duration-700 absolute w-12 -translate-x-full translate-y-full scale-0 group-hover:scale-100 group-hover:translate-x-8 group-hover:-translate-y-8 duration-150"
-                              version="1.1"
-                              xmlns="http://www.w3.org/2000/svg"
-                              fill="#000000"
-                            >
-                              <g strokeWidth="0"></g>
-                              <g
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                              ></g>
-                              <g>
-                                <path
-                                  d="M244.5 662l268.1-446.4 268 446.4z"
-                                  fill="#9ED5E4"
-                                ></path>
-                                <path
-                                  d="M780.6 676.2H244.5c-5.3 0-10.2-2.7-12.8-7.1s-2.6-9.8 0-14.3l268.1-446.3c2.6-4.4 7.5-7.1 12.8-7.1 5.3 0 10.2 2.7 12.8 7.1l268.1 446.3c2.6 4.4 2.6 9.8 0 14.3-2.7 4.4-7.6 7.1-12.9 7.1z m-510.5-28.5H755L512.6 244.2 270.1 647.7z"
-                                  fill="#154B8B"
-                                ></path>
-                                <path
-                                  d="M512.6 23s129 131.7 129 352.4-129 376-129 376-129-155.3-129-376S512.6 23 512.6 23z"
-                                  fill="#F7F9F9"
-                                ></path>
-                                <path
-                                  d="M512.6 765.7c-4.5 0-8.8-2-11.6-5.4-1.4-1.6-33.7-40.9-66.4-108.1-30.1-61.9-65.9-160.2-65.9-276.8 0-116.9 36-208.8 66.1-265.4 32.8-61.6 65.5-95.3 66.9-96.7 2.8-2.9 6.7-4.5 10.8-4.5 4.1 0 8 1.6 10.8 4.5 1.4 1.4 34.1 35.1 66.9 96.7 30.1 56.6 66.1 148.5 66.1 265.4 0 116.6-35.8 214.9-65.9 276.8-32.7 67.2-65 106.5-66.4 108.1-2.8 3.4-7.1 5.4-11.6 5.4z"
-                                  fill="#F65D4E"
-                                ></path>
-                              </g>
-                            </svg>
-                            <span className="relative">Apply</span>
-                          </button>
-                        </div>
-                      </div>
-                    )}
-                  </dl>
-                  <dl className="flex items-center justify-between gap-4 py-3">
-                    {isCashOnDelivery && (
-                      <>
+                      </dl>
+
+                      <dl className="flex items-center justify-between gap-4 py-3">
                         <dt className="text-base font-normal text-gray-500 dark:text-gray-400">
-                          Delivery Charge
+                          Tax
                         </dt>
                         <dd className="text-base font-medium text-gray-900 dark:text-white">
-                          $10.00
+                          ${tax.toFixed(2)}
                         </dd>
-                      </>
-                    )}
-                  </dl>
-                  <dl className="flex items-center justify-between gap-4 py-3">
-                    <dt className="text-base font-normal text-gray-500 dark:text-gray-400">
-                      Total
-                    </dt>
-                    <dd className="text-base font-medium text-gray-900 dark:text-white">
-                      ${total.toFixed(2)}
-                    </dd>
-                  </dl>
-                </div>
-                <h2 className="text-xl my-4 font-semibold text-gray-900 dark:text-white">
-                  Delivery Details
-                </h2>
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                  <div>
-                    <label
-                      htmlFor="your_name"
-                      className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-                    >
-                      Your Name
-                    </label>
-                    <input
-                      type="text"
-                      id="your_name"
-                      name="your_name"
-                      className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
-                      value={session?.user.name || ""}
-                      required
-                    />
-                  </div>
+                      </dl>
 
-                  <div>
-                    <label
-                      htmlFor="your_email"
-                      className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-                    >
-                      Your Email
-                    </label>
-                    <input
-                      type="email"
-                      id="your_email"
-                      name="your_email"
-                      className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
-                      value={session?.user.email || ""}
-                      required
-                    />
-                  </div>
-
-                  <div>
-                    <div className="mb-2 flex items-center gap-2">
-                      <label
-                        htmlFor="select-country"
-                        className="block text-sm font-medium text-gray-900 dark:text-white"
-                      >
-                        Country*
-                      </label>
-                    </div>
-                    <select
-                      id="select_country"
-                      name="select_country"
-                      className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
-                      required
-                    >
-                      <option selected>Bangladesh</option>
-                    </select>
-                  </div>
-
-                  <div>
-                    <div className="mb-2 flex items-center gap-2">
-                      <label
-                        htmlFor="select_city"
-                        className="block text-sm font-medium text-gray-900 dark:text-white"
-                      >
-                        City*
-                      </label>
-                    </div>
-                    <select
-                      id="select_city"
-                      name="select_city"
-                      className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
-                      required
-                    >
-                      <option selected>Chittagong</option>
-                      <option value="DK">Dhaka</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label
-                      htmlFor="your_address"
-                      className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-                    >
-                      Address
-                    </label>
-                    <input
-                      type="text"
-                      id="your_Address"
-                      name="your_Address"
-                      className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
-                      required
-                    />
-                  </div>
-                  <div>
-                    <label
-                      htmlFor="postal_code"
-                      className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-                    >
-                      Postal Code
-                    </label>
-                    <input
-                      type="number"
-                      id="postal_code"
-                      name="postal_code"
-                      className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
-                      required
-                    />
-                  </div>
-                </div>
-                <div class="space-y-2">
-                  <h3 class="text-xl font-semibold text-gray-900 my-4 dark:text-white">
-                    Delivery Methods
-                  </h3>
-                  <div className="flex flex-col md:flex-row gap-6">
-                    <div class="grid grid-cols-1 gap-4 ">
-                      <div class="rounded-lg border border-gray-200 bg-gray-50 p-4 ps-4 dark:border-gray-700 dark:bg-gray-800">
-                        <div class="flex items-start">
-                          <div class="flex h-5 items-center">
+                      <dl className="flex items-center justify-between gap-4 py-3">
+                        {discount > 0 && (
+                          <>
+                            <dt className="text-base font-normal text-gray-500 dark:text-gray-400">
+                              Discount
+                            </dt>
+                            <dd className="text-base font-medium text-green-500">
+                              -${discount.toFixed(2)}
+                            </dd>
+                          </>
+                        )}
+                        {!isDiscountSectionHidden && (
+                          <div
+                            id="discountSection"
+                            className="relative w-full rounded-lg flex h-12 justify-center items-center"
+                          >
                             <input
-                              id="dhl"
-                              aria-describedby="dhl-text"
-                              type="radio"
-                              name="delivery-method"
-                              value=""
-                              class="h-4 w-4 border-gray-300 bg-white text-primary-600 focus:ring-2 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600"
-                              checked={isCashOnDelivery}
-                              onChange={() => handlePaymentMethodChange("cash")}
+                              value={couponInput}
+                              onChange={(e) => setCouponInput(e.target.value)}
+                              id="couponInput"
+                              className="peer w-full rounded-l-lg border border-[#F65D4E] bg-transparent px-4 py-2 focus:outline-none"
+                              name="coupon"
+                              type="text"
+                              placeholder="Coupon Code"
                             />
-                          </div>
-
-                          <div class="ms-4 text-sm">
                             <label
-                              for="dhl"
-                              class="font-medium leading-none text-gray-900 dark:text-white"
+                              className="absolute -top-2 left-2 rounded-md bg-[#F65D4E] px-2 text-xs text-sky-100 duration-300 "
+                              htmlFor="navigate_ui_input_33"
                             >
-                              Cash on Delivery
+                              Have a coupon code
                             </label>
-                            <p
-                              id="dhl-text"
-                              class="mt-1 text-xs font-normal text-gray-500 dark:text-gray-400"
-                            >
-                              Get it by Tommorow
-                            </p>
+                            <div>
+                              <button
+                                onClick={handleCouponApply}
+                                className="py-2 px-6 h-[42px] bg-[#F65D4E] hover:bg-red-600 duration-300 text-white flex items-center justify-center overflow-hidden hover:overflow-visible relative group rounded-r-lg"
+                              >
+                                <span className="relative">Apply</span>
+                              </button>
+                            </div>
                           </div>
-                        </div>
-                      </div>
+                        )}
+                      </dl>
+                      <dl className="flex items-center justify-between gap-4 py-3">
+                        {isCashOnDelivery && (
+                          <>
+                            <dt className="text-base font-normal text-gray-500 dark:text-gray-400">
+                              Delivery Charge
+                            </dt>
+                            <dd className="text-base font-medium text-gray-900 dark:text-white">
+                              $10.00
+                            </dd>
+                          </>
+                        )}
+                      </dl>
+                      <dl className="flex items-center justify-between gap-4 py-3">
+                        <dt className="text-base font-normal text-gray-500 dark:text-gray-400">
+                          Total
+                        </dt>
+                        <dd className="text-base font-medium text-gray-900 dark:text-white">
+                          ${total.toFixed(2)}
+                        </dd>
+                      </dl>
                     </div>
-                    {/* ssl commerzz */}
-                    <div class="grid grid-cols-1 gap-4 ">
-                      <div class="rounded-lg border border-gray-200 bg-gray-50 p-4 ps-4 dark:border-gray-700 dark:bg-gray-800">
-                        <div class="flex items-start">
-                          <div class="flex h-5 items-center">
-                            <input
-                              id="dhl"
-                              aria-describedby="dhl-text"
-                              type="radio"
-                              name="delivery-method"
-                              value=""
-                              class="h-4 w-4 border-gray-300 bg-white text-primary-600 focus:ring-2 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600"
-                              checked={isSSLPayment}
-                              onChange={() => handlePaymentMethodChange("ssl")}
-                            />
-                          </div>
-
-                          <div class="ms-4 text-sm">
-                            <label
-                              for="dhl"
-                              class="font-medium leading-none text-gray-900 dark:text-white"
-                            >
-                              Pay Via SSL Commerz
-                            </label>
-                            <p
-                              id="dhl-text"
-                              class="mt-1 text-xs font-normal text-gray-500 dark:text-gray-400"
-                            >
-                              Pay With Local Bank
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="grid grid-cols-1 gap-4">
-                      <div class="rounded-lg border border-gray-200 bg-gray-50 p-4 ps-4 dark:border-gray-700 dark:bg-gray-800">
-                        <div class="flex items-start">
-                          <div class="flex h-5 items-center">
-                            <input
-                              id="dhl1"
-                              aria-describedby="dhl1-text"
-                              type="radio"
-                              name="delivery-method"
-                              value=""
-                              class="h-4 w-4 border-gray-300 bg-white text-primary-600 focus:ring-2 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600"
-                              checked={isStripePayment}
-                              onChange={() =>
-                                handlePaymentMethodChange("stripe")
-                              }
-                            />
-                          </div>
-
-                          <div class="ms-4 text-sm">
-                            <label
-                              for="dhl1"
-                              class="font-medium leading-none text-gray-900 dark:text-white"
-                            >
-                              Payment Via Stripe
-                            </label>
-                            <p
-                              id="dhl1-text"
-                              class="mt-1 text-xs font-normal text-gray-500 dark:text-gray-400"
-                            >
-                              Instant Payment
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="space-y-4">
-                  {!isCashOnDelivery && !isSSLPayment && (
-                    <>
-                      <div className="mt-4">
+                    <h2 className="text-xl my-4 font-semibold text-gray-900 dark:text-white">
+                      Delivery Details
+                    </h2>
+                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                      <div>
+                        <label
+                          htmlFor="your_name"
+                          className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                        >
+                          Your Name
+                        </label>
                         <input
                           type="text"
-                          placeholder="Cardholder's Name"
-                          className="px-4 py-3.5 bg-white dark:bg-gray-800 dark:text-white text-gray-800 w-full text-sm border rounded-md focus:border-purple-500 focus:bg-transparent outline-none"
-                          // required
+                          id="your_name"
+                          name="your_name"
+                          className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
+                          value={session?.user.name || ""}
+                          required
                         />
                       </div>
-                      <CardElement
-                        className="p-4 mt-4 border dark:text-white rounded"
-                        options={{ hidePostalCode: true }}
-                      />
-                    </>
-                  )}
-                  {!isSSLPayment && (
-                    <button
-                      type="submit"
-                      className="mt-4 w-full bg-[#F65D4E] text-white rounded p-2"
-                      disabled={!stripe || !elements || loading}
-                    >
-                      {isCashOnDelivery ? "Place Order" : "Pay Now"}
-                    </button>
-                  )}
-                  {isSSLPayment && (
-                    <div className="py-4">
-                      <button
-                        onClick={PaymentOption}
-                        className="mt-4 w-full bg-[#F65D4E] text-white rounded p-2"
-                      >
-                        Checkout
-                      </button>
-                    </div>
-                  )}
-                  {error && (
-                    <p className="text-[#F65D4E] text-center mt-2">{error}</p>
-                  )}
-                  {transactionId && (
-                    <p className="text-green-600">
-                      Your transaction ID: {transactionId}
-                    </p>
-                  )}
-                </div>
-              </div>
-            </div>
 
-            {/* Modal */}
-            {showModal && (
-              <div className="fixed inset-0 z-50 flex items-center justify-center overflow-auto bg-black bg-opacity-50">
-                <div className="bg-white rounded-lg shadow-lg w-[60vh] p-4">
-                  <div className="flex justify-between items-center pb-2">
-                    <h2 className="text-xl font-bold">Select Payment Method</h2>
-                    <button
-                      onClick={() => setShowModal(false)}
-                      className="text-gray-600 text-xl"
-                    >
-                      &times;
-                    </button>
-                  </div>
-                  <section className="flex justify-center items-center py-4 ">
-                    <div className="grid grid-cols-6 gap-4 p-4  ">
-                      {method.map((item, i) => {
-                        return (
-                          <button
-                            key={item.id}
-                            className=" hover:shadow-xl "
-                            onClick={() => {
-                              PayNow(item["redirectGatewayURL"]);
-                            }}
+                      <div>
+                        <label
+                          htmlFor="your_email"
+                          className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                        >
+                          Your Email
+                        </label>
+                        <input
+                          type="email"
+                          id="your_email"
+                          name="your_email"
+                          className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
+                          value={session?.user.email || ""}
+                          required
+                        />
+                      </div>
+
+                      <div>
+                        <div className="mb-2 flex items-center gap-2">
+                          <label
+                            htmlFor="select-country"
+                            className="block text-sm font-medium text-gray-900 dark:text-white"
                           >
-                            <Image
-                              height={200}
-                              width={200}
-                              className=" w-16 "
-                              src={item["logo"]}
-                              alt="pay"
-                            />
-                          </button>
-                        );
-                      })}
+                            Country*
+                          </label>
+                        </div>
+                        <select
+                          id="select_country"
+                          name="select_country"
+                          className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
+                          required
+                        >
+                          <option selected>Bangladesh</option>
+                        </select>
+                      </div>
+
+                      <div>
+                        <div className="mb-2 flex items-center gap-2">
+                          <label
+                            htmlFor="select_city"
+                            className="block text-sm font-medium text-gray-900 dark:text-white"
+                          >
+                            City*
+                          </label>
+                        </div>
+                        <select
+                          id="select_city"
+                          name="select_city"
+                          className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
+                          required
+                        >
+                          <option selected>Chittagong</option>
+                          <option value="DK">Dhaka</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label
+                          htmlFor="your_address"
+                          className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                        >
+                          Address
+                        </label>
+                        <input
+                          type="text"
+                          id="your_Address"
+                          name="your_Address"
+                          className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
+                          required
+                        />
+                      </div>
+                      <div>
+                        <label
+                          htmlFor="postal_code"
+                          className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                        >
+                          Postal Code
+                        </label>
+                        <input
+                          type="number"
+                          id="postal_code"
+                          name="postal_code"
+                          className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
+                          required
+                        />
+                      </div>
                     </div>
-                  </section>
-                </div>
-              </div>
-            )}
+                    <div className="space-y-2">
+                      <h3 className="text-xl font-semibold text-gray-900 my-4 dark:text-white">
+                        Delivery Methods
+                      </h3>
+                      <div className="flex flex-col md:flex-row gap-6">
+                        <div className="grid grid-cols-1 gap-4 ">
+                          <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 ps-4 dark:border-gray-700 dark:bg-gray-800">
+                            <div className="flex items-start">
+                              <div className="flex h-5 items-center">
+                                <input
+                                  id="dhl"
+                                  aria-describedby="dhl-text"
+                                  type="radio"
+                                  name="delivery-method"
+                                  value=""
+                                  className="h-4 w-4 border-gray-300 bg-white text-primary-600 focus:ring-2 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600"
+                                  checked={isCashOnDelivery}
+                                  onChange={() =>
+                                    handlePaymentMethodChange("cash")
+                                  }
+                                />
+                              </div>
+
+                              <div className="ms-4 text-sm">
+                                <label
+                                  htmlFor="dhl"
+                                  className="font-medium leading-none text-gray-900 dark:text-white"
+                                >
+                                  Cash on Delivery
+                                </label>
+                                <p
+                                  id="dhl-text"
+                                  className="mt-1 text-xs font-normal text-gray-500 dark:text-gray-400"
+                                >
+                                  Get it by Tomorrow
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        {/* ssl commerzz */}
+                        <div class="grid grid-cols-1 gap-4 ">
+                          <div class="rounded-lg border border-gray-200 bg-gray-50 p-4 ps-4 dark:border-gray-700 dark:bg-gray-800">
+                            <div class="flex items-start">
+                              <div class="flex h-5 items-center">
+                                <input
+                                  id="dhl"
+                                  aria-describedby="dhl-text"
+                                  type="radio"
+                                  name="delivery-method"
+                                  value=""
+                                  class="h-4 w-4 border-gray-300 bg-white text-primary-600 focus:ring-2 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600"
+                                  checked={isSSLPayment}
+                                  onChange={() =>
+                                    handlePaymentMethodChange("ssl")
+                                  }
+                                />
+                              </div>
+
+                              <div class="ms-4 text-sm">
+                                <label
+                                  for="dhl"
+                                  class="font-medium leading-none text-gray-900 dark:text-white"
+                                >
+                                  Pay Via SSL Commerz
+                                </label>
+                                <p
+                                  id="dhl-text"
+                                  class="mt-1 text-xs font-normal text-gray-500 dark:text-gray-400"
+                                >
+                                  Pay With Local Bank
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="grid grid-cols-1 gap-4">
+                          <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 ps-4 dark:border-gray-700 dark:bg-gray-800">
+                            <div className="flex items-start">
+                              <div className="flex h-5 items-center">
+                                <input
+                                  id="stripe"
+                                  aria-describedby="stripe-text"
+                                  type="radio"
+                                  name="delivery-method"
+                                  value=""
+                                  className="h-4 w-4 border-gray-300 bg-white text-primary-600 focus:ring-2 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600"
+                                  checked={isStripePayment}
+                                  onChange={() =>
+                                    handlePaymentMethodChange("stripe")
+                                  }
+                                />
+                              </div>
+
+                              <div className="ms-4 text-sm">
+                                <label
+                                  htmlFor="stripe"
+                                  className="font-medium leading-none text-gray-900 dark:text-white"
+                                >
+                                  Payment Via Stripe
+                                </label>
+                                <p
+                                  id="stripe-text"
+                                  className="mt-1 text-xs font-normal text-gray-500 dark:text-gray-400"
+                                >
+                                  Instant Payment
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="space-y-4">
+                      {!isCashOnDelivery && !isSSLPayment && (
+                        <>
+                          <div className="mt-4">
+                            <input
+                              type="text"
+                              placeholder="Cardholder's Name"
+                              className="px-4 py-3.5 bg-white dark:bg-gray-800 dark:text-white text-gray-800 w-full text-sm border rounded-md focus:border-purple-500 focus:bg-transparent outline-none"
+                              required
+                            />
+                          </div>
+                          <CardElement
+                            className="p-4 mt-4 border dark:text-white rounded"
+                            options={{ hidePostalCode: true }}
+                          />
+                        </>
+                      )}
+                      {!isSSLPayment && (
+                        <button
+                          type="submit"
+                          className="mt-4 w-full bg-[#F65D4E] text-white rounded p-2"
+                          disabled={!stripe || !elements || loading}
+                        >
+                          {isCashOnDelivery ? "Place Order" : "Pay Now"}
+                        </button>
+                      )}
+                      {isSSLPayment && (
+                        <div className="py-4">
+                          <button
+                            onClick={PaymentOption}
+                            className="mt-4 w-full bg-[#F65D4E] text-white rounded p-2"
+                          >
+                            Checkout
+                          </button>
+                        </div>
+                      )}
+                      {/* Modal */}
+                      {showModal && (
+                        <div className="fixed inset-0 z-50 flex items-center justify-center overflow-auto bg-black bg-opacity-50">
+                          <div className="bg-white rounded-lg shadow-lg w-[60vh] p-4">
+                            <div className="flex justify-between items-center pb-2">
+                              <h2 className="text-xl font-bold">
+                                Select Payment Method
+                              </h2>
+                              <button
+                                onClick={() => setShowModal(false)}
+                                className="text-gray-600 text-xl"
+                              >
+                                &times;
+                              </button>
+                            </div>
+                            <section className="flex justify-center items-center py-4 ">
+                              <div className="grid grid-cols-6 gap-4 p-4  ">
+                                {method.map((item, i) => {
+                                  return (
+                                    <button
+                                      key={item.id}
+                                      className=" hover:shadow-xl "
+                                      onClick={() => {
+                                        PayNow(item["redirectGatewayURL"]);
+                                      }}
+                                    >
+                                      <Image
+                                        height={200}
+                                        width={200}
+                                        className=" w-16 "
+                                        src={item["logo"]}
+                                        alt="pay"
+                                      />
+                                    </button>
+                                  );
+                                })}
+                              </div>
+                            </section>
+                          </div>
+                        </div>
+                      )}
+                      {error && (
+                        <p className="text-[#F65D4E] text-center mt-2">
+                          {error}
+                        </p>
+                      )}
+                      {transactionId && (
+                        <p className="text-green-600">
+                          Your transaction ID: {transactionId}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                </>
+              )}
+            </div>
           </div>
         </div>
       </form>

@@ -119,7 +119,6 @@ const BarCharts = () => {
       },
     },
   };
-
   return (
     <div className="col-span-12 rounded-[10px] bg-white px-7.5 pb-6 pt-7.5 shadow-1 dark:bg-gray-dark dark:shadow-card xl:col-span-7 p-5">
       <div className="mb-3.5 flex flex-col gap-2.5 sm:flex-row sm:items-center sm:justify-between">
@@ -147,20 +146,19 @@ const BarCharts = () => {
         </div>
       </div>
 
-      <div className="flex flex-col gap-2 text-center xsm:flex-row xsm:gap-0">
+      <div className="flex flex-col gap-2 text-center xsm:flex-row xsm:gap-0 text-black">
         <div className="border-stroke dark:border-dark-3 xsm:w-1/2 xsm:border-r">
           <p className="font-medium">Received Amount</p>
-          <h4 className="mt-1 text-xl font-bold text-dark dark:text-white">
+          <h4 className="mt-1 text-xl font-bold text-dark dark:text-white text-black">
             $
             {totalSalesData
               .reduce((acc, val) => acc + val, 0)
-              .toFixed(2)
               .toLocaleString() || "0.00"}
           </h4>
         </div>
         <div className="xsm:w-1/2">
           <p className="font-medium">Due Amount</p>
-          <h4 className="mt-1 text-xl font-bold text-dark dark:text-white">
+          <h4 className="mt-1 text-xl font-bold text-dark dark:text-white text-black">
             ${totalDueAmount.toLocaleString() || "0.00"}
           </h4>
         </div>

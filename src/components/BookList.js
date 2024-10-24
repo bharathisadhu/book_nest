@@ -27,8 +27,9 @@ export default function BooksList() {
   const [author, setAuthor] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
-  const [cardCount, setCardCount] = useState("");
+  const [cardCount, setCardCount] = useState(1);
   const [category, setCategory] = useState("");
+  const [quantity, setQuantity] = useState(""); // Add this line
   const [ratings, setRatings] = useState("");
   const [publishType, setPublishType] = useState("upcoming");
   const [error, setError] = useState("");
@@ -248,6 +249,9 @@ export default function BooksList() {
         break;
       case "cardCount":
         setCardCount(value);
+        break;
+      case "quantity": // Add this case
+        setQuantity(value); // Update the quantity state
         break;
       case "category":
         setCategory(value);
@@ -557,7 +561,7 @@ export default function BooksList() {
                       </label>
                       <input
                         type="number"
-                        name="cardCount"
+                        name="quantity"
                         placeholder="Enter quantity"
                         value={quantity}
                         onChange={handleAddBookInputChange}

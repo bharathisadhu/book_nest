@@ -54,13 +54,27 @@ export async function GET(request, { params }) {
       );
     }
 
-    
-
-
     // console.log(individualCart);
     return NextResponse.json(individualCart, { status: 200 });
   } catch (error) {
     console.error("Error fetching user:", error);
     return NextResponse.json({ message: "Server error" }, { status: 500 });
+  }
+}
+
+export async function DELETE(request) {
+  db = await connectDB();
+  const { email } = await request.json();
+
+  try {
+    // Delete cart items associated with the user's email
+    const result = await db.collection("carts").deleteMany({ email });
+    return NextResponse.json(result);
+  } catch (error) {
+    console.error("Error deleting cart items:", error);
+    return NextResponse.json(
+      { success: false, message: "Unable to delete cart items" },
+      { status: 500 }
+    );
   }
 }
