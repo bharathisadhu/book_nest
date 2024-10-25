@@ -76,15 +76,16 @@ export default function BookDetails({ params }) {
     if (isBookmarked) {
       Swal.fire({
         icon: "info",
-        title: "Already Bookmarked",
-        text: `${name} is already in your bookmarks!`,
+        title: "Already in Cart",
+        text: `${name} is already in your cart!`,
       });
       return;
     }
 
     try {
-      const response = await axios.post("/api/wishlists", {
+      const response = await axios.post(`/api/wishlists/${session?.user?.email}`, {
         name,
+        BookId: bookDetails._id, // Updated this from bookId to _id
         description: bookDetails.description || "",
         image,
         author: bookDetails.author || "",
@@ -92,7 +93,7 @@ export default function BookDetails({ params }) {
         rating: ratings,
         category,
         cardCount,
-        email: session?.user?.email,
+        email: session?.user?.email, // Ensure this is not undefined
       });
 
       if (response.status === 201) {
@@ -100,20 +101,19 @@ export default function BookDetails({ params }) {
         Swal.fire({
           position: "top-end",
           icon: "success",
-          title: `${name} added to bookmarks!`,
+          title: `${name} added to wishlists!`,
           showConfirmButton: false,
           timer: 1500,
         });
       }
     } catch (error) {
-      console.error("Error adding to bookmark:", error);
-      const message =
-        error.response?.data?.message || "Failed to add to bookmarks!";
+      console.error("Error adding to wishlists:", error);
+      const message = error.response?.data?.message || "Failed to add to wishlists!";
 
       if (error.response?.status === 409) {
         Swal.fire({
           icon: "info",
-          title: "Already Bookmarked",
+          title: "Already in wishlists",
           text: message,
         });
       } else {
@@ -137,7 +137,7 @@ export default function BookDetails({ params }) {
     }
 
     try {
-      const response = await axios.post(`/api/carts/${session.user.email}`, {
+      const response = await axios.post(`/api/carts/${session?.user?.email}`, {
         name,
         BookId: bookDetails._id, // Updated this from bookId to _id
         description: bookDetails.description || "",

@@ -149,19 +149,19 @@ const BarCharts = () => {
       <div className="flex flex-col gap-2 text-center xsm:flex-row xsm:gap-0 text-black">
         <div className="border-stroke dark:border-dark-3 xsm:w-1/2 xsm:border-r">
           <p className="font-medium">Received Amount</p>
-          <h4 className="mt-1 text-xl font-bold text-dark dark:text-white text-black">
+          <h4 className="mt-1 text-xl font-bold text-dark text-black">
             $
             {totalSalesData
               .reduce((acc, val) => acc + val, 0)
               .toLocaleString() || "0.00"}
           </h4>
         </div>
-        <div className="xsm:w-1/2">
+        {/* <div className="xsm:w-1/2">
           <p className="font-medium">Due Amount</p>
           <h4 className="mt-1 text-xl font-bold text-dark dark:text-white text-black">
             ${totalDueAmount.toLocaleString() || "0.00"}
           </h4>
-        </div>
+        </div> */}
       </div>
     </div>
   );
