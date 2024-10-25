@@ -489,7 +489,7 @@ export default function BooksList() {
                 type="submit"
                 onClick={(e) => {
                   e.preventDefault();
-                  updateBook(selectedBook);
+                  updateBook(selectedBlog);
                 }}
                 className="bg-[#F65D4E] text-white px-4 py-2 rounded"
               >
