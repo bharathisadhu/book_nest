@@ -177,7 +177,7 @@ const handleImageChange = (e) => {
   }
 
   return (
-    <div className="font-sans lg:max-h-screen overflow-x-auto overflow-y-auto">
+    <div className="font-sans ">
       <table className="min-w-full divide-y divide-gray-200">
         <thead className="bg-gray-100 whitespace-nowrap">
           <tr>

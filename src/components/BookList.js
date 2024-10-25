@@ -27,8 +27,9 @@ export default function BooksList() {
   const [author, setAuthor] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
-  const [cardCount, setCardCount] = useState("");
+  const [cardCount, setCardCount] = useState(1);
   const [category, setCategory] = useState("");
+  const [quantity, setQuantity] = useState(""); // Add this line
   const [ratings, setRatings] = useState("");
   const [publishType, setPublishType] = useState("upcoming");
   const [error, setError] = useState("");
@@ -251,6 +252,9 @@ export default function BooksList() {
       case "cardCount":
         setCardCount(value);
         break;
+      case "quantity": // Add this case
+        setQuantity(value); // Update the quantity state
+        break;
       case "category":
         setCategory(value);
         break;
@@ -324,7 +328,7 @@ export default function BooksList() {
   }
 
   return (
-    <div className="font-sans lg:max-h-screen overflow-x-auto overflow-y-auto">
+    <div className="font-sans ">
       <div className="mb-4">
         <button
           onClick={() => setIsAddBookModalOpen(true)} // Open Add Book modal
@@ -559,9 +563,9 @@ export default function BooksList() {
                       </label>
                       <input
                         type="number"
-                        name="cardCount"
+                        name="quantity"
                         placeholder="Enter quantity"
-                        value={cardCount}
+                        value={quantity}
                         onChange={handleAddBookInputChange}
                         className="px-4 py-3 bg-gray-100 w-full text-gray-800 text-sm border-none focus:outline-blue-600 focus:bg-transparent rounded-lg"
                         required

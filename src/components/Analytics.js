@@ -18,6 +18,7 @@ const Analytics = () => {
         setLoading(false);
       });
   }, []);
+
   useEffect(() => {
     setLoading(true);
     fetch("/api/books")
