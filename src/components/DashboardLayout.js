@@ -96,13 +96,13 @@ const DashboardLayout = ({ children }) => {
       {
         name: "Dashboard",
         icon: <AiOutlineDashboard className="text-xl" />,
-        href: "/dashboard/userDashboard",
-      },
-      {
-        name: "Profile",
-        icon: <AiOutlineUser className="text-xl" />,
         href: "/dashboard/userProfile",
       },
+      // {
+      //   name: "Profile",
+      //   icon: <AiOutlineUser className="text-xl" />,
+      //   href: "/dashboard/userProfile",
+      // },
       {
         name: "Payment History",
         icon: <AiOutlineFileText className="text-xl" />,
@@ -158,7 +158,7 @@ const DashboardLayout = ({ children }) => {
         className={`text-black bg-white w-full lg:w-80 lg:min-h-screen py-6 font-[sans-serif] overflow-auto fixed z-10 transition-transform duration-300 transform shadow-xl ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
         } lg:relative lg:translate-x-0`}
-        style={{ height: "100vh", position: "sticky", top: 0 }} // Make sidebar sticky
+        // style={{ height: "100vh", position: "sticky", top: 0 }} // Make sidebar sticky
       >
         {/* for mobile and tablet */}
         <div className="flex flex-col items-center px-4 mt-14 lg:hidden">
