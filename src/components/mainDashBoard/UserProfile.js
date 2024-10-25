@@ -482,7 +482,7 @@ export default function UserProfile() {
   if (!session) return <p>Please log in to view your profile.</p>;
 
   return (
-    <main className="border lg:px-40 py-1 mx-auto ">
+    <main className=" lg:px-40 py-1 mx-auto ">
       <div className="overflow-hidden">
         <div className="relative z-20 h-40 md:h-80">
           <Image

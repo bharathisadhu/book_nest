@@ -183,7 +183,7 @@ const Navbar = () => {
                         </button>
                       </Link>
                     ) : (
-                      <Link href="/dashboard/userDashboard">
+                      <Link href="/dashboard/userProfile">
                         <button className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-100">
                           Dashboard
                         </button>

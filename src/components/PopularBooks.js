@@ -10,8 +10,8 @@ import Loader from "@/app/loading";
 
 export default function PopularBooks() {
   const [popularBooks, setPopularBooks] = useState([]);
-  const [bookmarkedBooks, setBookmarkedBooks] = useState({});
-  const [cartBooks, setCartBooks] = useState({});
+  const [bookmarkedBooks, setBookmarkedBooks] = useState(false);
+  const [cartBooks, setCartBooks] = useState(false);
   const [loading, setLoading] = useState(true);
   const { data: session } = useSession();
 
@@ -27,54 +27,76 @@ export default function PopularBooks() {
       });
   }, [baseURL]);
 
-  const addToBookmark = async () => {
-    if (isBookmarked) {
+  const {
+    _id,
+    name,
+    description,
+    image,
+    author,
+    price,
+    ratings,
+    category,
+    publishType,
+    cardCount,
+  } = popularBooks;
+
+  const addToBookmark = async ({book}) => {
+    if (bookmarkedBooks) {
       Swal.fire({
         icon: "info",
-        title: "Already Bookmarked",
-        text: `${name} is already in your bookmarks!`,
+        title: "Already in Cart",
+        text: `${name} is already in your cart!`,
       });
       return;
     }
+    console.log(book);
 
     try {
-      const response = await axios.post("/api/wishlists", {
+      const response = await axios.post(`/api/wishlists/${session?.user?.email}`, {
         name,
-        description: book.description || "",
+        BookId: book?._id, // Updated this from bookId to _id
+        description: book?.description || "",
         image,
-        author: book.author || "",
+        author: book?.author || "",
         price,
         rating: ratings,
         category,
         cardCount,
-        email: session?.user?.email,
-        cardCount,
+        email: session?.user?.email, // Ensure this is not undefined
       });
 
       if (response.status === 201) {
-        setIsBookmarked(true);
+        setBookmarkedBooks(true);
         Swal.fire({
           position: "top-end",
           icon: "success",
-          title: `${name} added to bookmarks!`,
+          title: `${name} added to wishlists!`,
           showConfirmButton: false,
           timer: 1500,
         });
       }
     } catch (error) {
-      console.error("Error adding to bookmark:", error);
-      const message =
-        error.response?.data?.message || "Failed to add to bookmarks!";
-      Swal.fire({
-        icon: "error",
-        title: "Error",
-        text: message,
-      });
+      console.error("Error adding to wishlists:", error);
+      const message = error.response?.data?.message || "Failed to add to wishlists!";
+
+      if (error.response?.status === 409) {
+        Swal.fire({
+          icon: "info",
+          title: "Already in wishlists",
+          text: message,
+        });
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: message,
+        });
+      }
     }
   };
 
   const addToCart = async () => {
-    if (isInCart) {
+    if (cartBooks) {
       Swal.fire({
         icon: "info",
         title: "Already in Cart",
@@ -84,43 +106,55 @@ export default function PopularBooks() {
     }
 
     try {
-      const response = await axios.post(`/api/carts/${session.user.email}`, {
-        name,
-        BookId: book._id, // Updated this from bookId to _id
-        description: book.description || "",
-        image,
-        author: book.author || "",
-        price,
-        rating: ratings,
-        category,
-        cardCount,
+      const response = await axios.post(`/api/carts/${session?.user?.email}`, {
+        name: popularBooks.name,
+        BookId: popularBooks._id, // Updated this from bookId to _id
+        description: popularBooks.description || "",
+        image: popularBooks.image,
+        author: popularBooks.author || "",
+        price: popularBooks.price,
+        rating: popularBooks.ratings,
+        category: popularBooks.category,
+        cardCount: popularBooks.cardCount,
         email: session?.user?.email, // Ensure this is not undefined
       });
-      console.log("Response:", response);
 
       if (response.status === 201) {
-        setIsInCart(true);
+        setCartBooks(true);
         Swal.fire({
           position: "top-end",
           icon: "success",
-          title: `${name} added to cart!`,
+          title: `${popularBooks.name} added to cart!`,
           showConfirmButton: false,
           timer: 1500,
         });
       }
     } catch (error) {
       console.error("Error adding to cart:", error);
-      Swal.fire({
-        icon: "error",
-        title: "Error",
-        text: "Failed to add to cart!",
-      });
+      const message = error.response?.data?.message || "Failed to add to cart!";
+
+      if (error.response?.status === 409) {
+        Swal.fire({
+          icon: "info",
+          title: "Already in Cart",
+          text: message,
+        });
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: message,
+        });
+      }
     }
   };
 
   if (loading) {
     return <Loader></Loader>; // Display a loading message
   }
+
+  console.log(cartBooks);
+  console.log(popularBooks);
 
   return (
     <div className="my-4 md:my-8 lg:mt-28 lg:mb-20 container mx-auto">
@@ -153,9 +187,9 @@ export default function PopularBooks() {
                     className="w-56 h-80 object-cover rounded-xl mb-3 transition-transform hover:scale-105"
                   />
                   {/* Bookmark and Cart Icons */}
-                  <div>
+                  {/* <div>
                     <button
-                      onClick={() => addToBookmark(book)}
+                      onClick={() => addToBookmark(book._id)}
                       className={`cursor-pointer absolute bottom-16 right-2 p-2 rounded-full bg-white shadow-md transition-transform duration-500 opacity-0 group-hover:opacity-100 hover:duration-500 ${
                         bookmarkedBooks[book._id] ? "text-[#F65D4E]" : ""
                       }`}
@@ -163,14 +197,14 @@ export default function PopularBooks() {
                       <FaHeart className="text-xl" />
                     </button>
                     <button
-                      onClick={() => addToCart(book)}
+                      onClick={() => addToCart()}
                       className={`cursor-pointer absolute bottom-5 right-2 p-2 rounded-full bg-white shadow-md transition-transform duration-500 opacity-0 group-hover:opacity-100 hover:duration-500 ${
                         cartBooks[book._id] ? "text-[#F65D4E]" : ""
                       }`}
                     >
                       <FaShoppingCart className="text-xl" />
                     </button>
-                  </div>
+                  </div> */}
                 </div>
 
                 {/* Book Details */}

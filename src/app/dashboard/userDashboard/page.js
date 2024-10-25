@@ -12,12 +12,13 @@ const UserDashboard = () => {
         <title>BookNest | User Dashboard</title>
       </Head>
       <DashboardLayout>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <h3>Welcome to Azad vai</h3>
+        {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <UserCount className=" col-span-1" />
           <BookCount className=" col-span-1" />
           <SaleCount className=" col-span-1" />
           <BlogCount className=" col-span-1" />
-        </div>
+        </div> */}
         {/* Add more specific content here */}
       </DashboardLayout>
     </>
