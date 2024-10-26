@@ -58,33 +58,34 @@ export default function BooksCard({ book }) {
   //   fetchData();
   // }, [fetchTotalCardCount, checkIfInCart]);
 
-  // useEffect(() => {
-  //   if (!stock) {
-  //     const fetchTotalQuantity = async () => {
-  //       const response = await fetch(
-  //         `${baseUrl}/api/payments-total-quantity?bookId=${_id}`
-  //       );
-  //       const data = await response.json();
-  //       const status = quantity - data > 0 ? "Stock In" : "Stock Out";
-  //       setStock(status);
-  //     };
-  //     fetchTotalQuantity();
-  //   }
-  // }, [stock, baseUrl, _id, quantity]);
+  useEffect(() => {
+    if (!stock) {
+      const fetchTotalQuantity = async () => {
+        const response = await fetch(
+          `${baseUrl}/api/payments-total-quantity?bookId=${_id}`
+        );
+        const data = await response.json();
+        const status = quantity - data > 0 ? "Stock In" : "Stock Out";
+        setStock(status);
+      };
+      fetchTotalQuantity();
+    }
+  }, [stock, baseUrl, _id, quantity]);
 
   const addToBookmark = async () => {
-    if (isBookmarked) {
+    if (isInCart) {
       Swal.fire({
         icon: "info",
-        title: "Already Bookmarked",
-        text: `${name} is already in your bookmarks!`,
+        title: "Already in wishlists",
+        text: `${name} is already in your wishlists!`,
       });
       return;
     }
 
     try {
-      const response = await axios.post("/api/wishlists", {
+      const response = await axios.post(`/api/wishlists/${session?.user?.email}`, {
         name,
+        BookId: book._id, // Updated this from bookId to _id
         description: book.description || "",
         image,
         author: book.author || "",
@@ -92,7 +93,7 @@ export default function BooksCard({ book }) {
         rating: ratings,
         category,
         cardCount,
-        email: session?.user?.email,
+        email: session?.user?.email, // Ensure this is not undefined
       });
 
       if (response.status === 201) {
@@ -100,20 +101,28 @@ export default function BooksCard({ book }) {
         Swal.fire({
           position: "top-end",
           icon: "success",
-          title: `${name} added to bookmarks!`,
+          title: `${name} added to wishlist!`,
           showConfirmButton: false,
           timer: 1500,
         });
       }
     } catch (error) {
-      console.error("Error adding to bookmark:", error);
-      const message =
-        error.response?.data?.message || "Failed to add to bookmarks!";
-      Swal.fire({
-        icon: "error",
-        title: "Error",
-        text: message,
-      });
+      console.error("Error adding to wishlists:", error);
+      const message = error.response?.data?.message || "Failed to add to wishlists!";
+
+      if (error.response?.status === 409) {
+        Swal.fire({
+          icon: "info",
+          title: "Already in wishlists",
+          text: message,
+        });
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: message,
+        });
+      }
     }
   };
 
@@ -128,7 +137,7 @@ export default function BooksCard({ book }) {
     }
 
     try {
-      const response = await axios.post(`/api/carts/${session.user.email}`, {
+      const response = await axios.post(`/api/carts/${session?.user?.email}`, {
         name,
         BookId: book._id, // Updated this from bookId to _id
         description: book.description || "",

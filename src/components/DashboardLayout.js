@@ -96,23 +96,18 @@ const DashboardLayout = ({ children }) => {
       {
         name: "Dashboard",
         icon: <AiOutlineDashboard className="text-xl" />,
-        href: "/dashboard/userDashboard",
-      },
-      {
-        name: "Profile",
-        icon: <AiOutlineUser className="text-xl" />,
         href: "/dashboard/userProfile",
       },
+      // {
+      //   name: "Profile",
+      //   icon: <AiOutlineUser className="text-xl" />,
+      //   href: "/dashboard/userProfile",
+      // },
       {
-        name: "Analytics",
-        icon: <IoBookSharp className="text-xl" />,
-        href: "/dashboard/analytics",
-      },
-      {
-        name: "Cart",
+        name: "Payment History",
         icon: <AiOutlineFileText className="text-xl" />,
-        href: "/dashboard/cart",
-      },
+        href: "/dashboard/paymentHistory",
+      }, // Corrected URL
       {
         name: "Wishlist",
         icon: <AiOutlineLineChart className="text-xl" />,
@@ -163,21 +158,21 @@ const DashboardLayout = ({ children }) => {
         className={`text-black bg-white w-full lg:w-80 lg:min-h-screen py-6 font-[sans-serif] overflow-auto fixed z-10 transition-transform duration-300 transform shadow-xl ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
         } lg:relative lg:translate-x-0`}
-        style={{ height: "100vh", position: "sticky", top: 0 }} // Make sidebar sticky
+        // style={{ height: "100vh", position: "sticky", top: 0 }} // Make sidebar sticky
       >
         {/* for mobile and tablet */}
         <div className="flex flex-col items-center px-4 mt-14 lg:hidden">
           <Image
             height={200}
             width={200}
-            src={session?.user.image || "https://i.ibb.co/XWyS1WL/d.jpg"}
+            src={session?.user?.image || "https://i.ibb.co/XWyS1WL/d.jpg"}
             className="w-12 h-12 rounded-full border-2 border-white"
             alt="Profile"
           />
           <div className="mt-2 text-center">
-            <p className="text-sm mt-2">{session?.user.name || "User Name"}</p>
+            <p className="text-sm mt-2">{session?.user?.name || "User Name"}</p>
             <p className="text-xs mt-0.5">
-              {session?.user.email || "User Email"}
+              {session?.user?.email || "User Email"}
             </p>
           </div>
         </div>
@@ -229,7 +224,7 @@ const DashboardLayout = ({ children }) => {
         className={`flex-grow transition-all duration-300 overflow-y-auto lg:overflow-hidden`} // Make main content scrollable
       >
         <DashboardNavbar />
-        <div className="lg:ml-16 lg:mr-10 mt-20 lg:mt-10">{children}</div>
+        <div className="lg:ml-16 lg:mr-10 mt-20 lg:mt-28">{children}</div>
       </main>
     </main>
   );
