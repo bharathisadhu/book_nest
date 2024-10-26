@@ -137,3 +137,8 @@ button:disabled .default {
   display: none;
 }
 
+/* Disable background scrolling when the modal is open */
+body.modalOpen {
+  overflow: hidden;
+}
+
