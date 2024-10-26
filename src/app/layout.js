@@ -36,9 +36,9 @@ export default function RootLayout({ children }) {
       <body className="font-poppins">
         <AuthProvider>
           <div>
-            <Navbar />
+            {/* <Navbar /> */}
             {children}
-            <Footer />
+            {/* <Footer /> */}
             <button
               onClick={toggleChat}
               className="fixed bottom-6 right-6 p-4 bg-blue-500 text-white rounded-full shadow-lg z-30 hover:bg-blue-600 transition duration-300"

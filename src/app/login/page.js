@@ -329,7 +329,7 @@ export default function Login() {
                 <hr className="flex-1" />
               </div>
               {/* Sign in with Google */}
-              <div className="flex items-center justify-center gap-10">
+              <div className="flex flex-col md:flex-row items-center justify-center gap-10">
                 <div
                   onClick={() => handleSocialLogin("google")}
                   className="flex h-[50px] gap-2 items-center overflow-hidden rounded-full shadow-md duration-300 hover:scale-95 hover:shadow hover:cursor-pointer"
