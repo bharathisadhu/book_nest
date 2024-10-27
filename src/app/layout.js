@@ -40,7 +40,7 @@ export default function RootLayout({ children }) {
             {/* <Footer /> */}
             <button
               onClick={toggleChat}
-              className="fixed bottom-6 right-6 p-4 bg-[#F65D4E] text-white rounded-full shadow-lg z-30 hover:bg-blue-600 transition duration-300"
+              className="fixed bottom-6 right-6 p-4 bg-[#F65D4E] text-white rounded-full shadow-lg z-30 hover:bg-orange-500 transition duration-300"
               aria-label="Support"
             >
               <MdSupportAgent size={40} />
@@ -48,7 +48,7 @@ export default function RootLayout({ children }) {
             {/* Chat Modal */}
             {isChatOpen && (
               <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-                <div className="bg-white p-6 rounded-lg max-w-md w-full relative">
+                <div className="bg-white p-6 rounded-lg max-w-md lg:max-w-xl xl:max-w-3xl w-full relative border border-red-200">
                   <button
                     onClick={toggleChat}
                     className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"

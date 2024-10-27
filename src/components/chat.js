@@ -108,13 +108,13 @@ export default function Chat() {
 
   return (
     <>
-      <h1 className="text-xl font-bold md:text-5xl text-center lg:mt-5 md:mt-5 mt-5">
+      <h1 className="text-xl font-bold md:text-4xl text-center lg:mt-5 md:mt-5 mt-5 text-[#F65D4E]">
         Chat with Agent
       </h1>
-      <h1 className="text-3xl font-bold md:text-5xl flex justify-center items-center mb-5">
+      <h1 className="text-3xl font-bold md:text-5xl flex justify-center items-center mb-5 text-[#F65D4E]">
         <MdSupportAgent />
       </h1>
-      <div className="flex flex-col h-[80vh] w-[75vw] sm:h-[40vh] sm:w-[40vw] md:h-[70vh] md:w-[40vw] lg:h-[70vh] lg:w-[25vw] mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
+      <div className="flex flex-col h-[80vh] w-[75vw] sm:h-[40vh] sm:w-[40vw] md:h-[70vh] md:w-[40vw] lg:h-[70vh] lg:w-[45vw] xl:w-[25vw] mx-auto bg-white shadow-lg rounded-lg overflow-hidden border">
         <div className="flex flex-col flex-grow p-4 overflow-auto">
           {messages.map((msg, index) => (
             <div
@@ -123,7 +123,7 @@ export default function Chat() {
                 msg.sender === session.user.name
                   ? "bg-[#F65D4E] text-white self-end"
                   : agents.includes(msg.sender)
-                  ? "bg-green-200 text-gray-800 self-start"
+                  ? "bg-orange-500 text-gray-800 self-start"
                   : "bg-gray-200 text-gray-800 self-start"
               }`}
             >
