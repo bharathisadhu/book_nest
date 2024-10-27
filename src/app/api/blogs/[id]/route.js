@@ -54,3 +54,22 @@ export async function PUT(request, { params }) {
   return NextResponse.json({ message: "Book updated successfully" });
 }
 
+export async function DELETE(request, { params }) {
+  const { id } = params;
+  db = await connectDB();
+
+  // Delete the book from the database
+  const result = await db
+    .collection("blogs")
+    .deleteOne({ _id: new ObjectId(id) }); // Convert id to ObjectId
+
+console.log("didarul-----------",result);
+  if (result.deletedCount === 0) {
+    return NextResponse.json({ message: "blogs not found" }, { status: 404 });
+  }
+
+  return NextResponse.json({ message: "blogs deleted successfully" });
+}
+
+
+
