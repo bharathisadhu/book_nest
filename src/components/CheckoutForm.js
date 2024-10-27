@@ -393,20 +393,17 @@ const CheckoutForm = ({ cartBook, setCartBook }) => {
   };
 
   return (
-    <section className="bg-white py-8 antialiased dark:bg-gray-800 md:py-16">
-      <form
-        onSubmit={handleSubmit}
-        className="mx-auto max-w-screen-xl px-4 2xl:px-0"
-      >
-        <div className="mt-6 sm:mt-8 lg:flex lg:items-start lg:gap-12 xl:gap-16">
+    <section className="font-poppins py-8 antialiased md:py-16">
+      <form onSubmit={handleSubmit} className="mx-auto container px-4 2xl:px-0">
+        <div className="mt-6 sm:mt-8 lg:flex lg:items-start lg:gap-12 xl:gap-16 shadow-xl p-4 rounded-lg">
           <div className="min-w-0 flex-1 space-y-8">
-            <div className="flex flex-col lg:flex-row gap-4 w-full min-h-min">
+            <div className="flex flex-col lg:flex-row gap-4 md:gap-6 lg:gap-10 w-full min-h-min">
               <div className="space-y-4 w-full">
                 <div className="md:col-span-2 space-y-4 ">
-                  <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+                  <h2 className="text-xl font-semibold text-gray-900">
                     Cart Information
                   </h2>
-                  <div className="max-h-[400px] md:max-h-[820px] overflow-y-auto p-4 text-black border-4 dark:text-white">
+                  <div className="max-h-[400px] md:max-h-[820px] overflow-y-auto p-4 text-black border-4">
                     {cartBook?.length > 0 ? (
                       cartBook.map((item) => (
                         <div
@@ -478,24 +475,24 @@ const CheckoutForm = ({ cartBook, setCartBook }) => {
               {cartBook.length > 0 && (
                 <>
                   <div className="flow-root w-full">
-                    <h2 className="text-xl font-semibold text-gray-900 mb-4 dark:text-white">
+                    <h2 className="text-xl font-semibold text-gray-900 mb-4">
                       Payment Information
                     </h2>
-                    <div className="-my-3 divide-y divide-gray-200 dark:divide-gray-800">
+                    <div className="-my-3 divide-y divide-gray-200">
                       <dl className="flex items-center justify-between gap-4 py-3">
-                        <dt className="text-base font-normal text-gray-500 dark:text-gray-400">
+                        <dt className="text-base font-normal text-gray-500">
                           Subtotal
                         </dt>
-                        <dd className="text-base font-medium text-green-500">
+                        <dd className="text-base font-medium text-[#F65D4E]">
                           ${subtotal.toFixed(2)}
                         </dd>
                       </dl>
 
                       <dl className="flex items-center justify-between gap-4 py-3">
-                        <dt className="text-base font-normal text-gray-500 dark:text-gray-400">
+                        <dt className="text-base font-normal text-gray-500">
                           Tax
                         </dt>
-                        <dd className="text-base font-medium text-gray-900 dark:text-white">
+                        <dd className="text-base font-medium text-gray-900">
                           ${tax.toFixed(2)}
                         </dd>
                       </dl>
@@ -503,7 +500,7 @@ const CheckoutForm = ({ cartBook, setCartBook }) => {
                       <dl className="flex items-center justify-between gap-4 py-3">
                         {discount > 0 && (
                           <>
-                            <dt className="text-base font-normal text-gray-500 dark:text-gray-400">
+                            <dt className="text-base font-normal text-gray-500">
                               Discount
                             </dt>
                             <dd className="text-base font-medium text-green-500">
@@ -545,32 +542,32 @@ const CheckoutForm = ({ cartBook, setCartBook }) => {
                       <dl className="flex items-center justify-between gap-4 py-3">
                         {isCashOnDelivery && (
                           <>
-                            <dt className="text-base font-normal text-gray-500 dark:text-gray-400">
+                            <dt className="text-base font-normal text-gray-500">
                               Delivery Charge
                             </dt>
-                            <dd className="text-base font-medium text-gray-900 dark:text-white">
+                            <dd className="text-base font-medium text-gray-900">
                               $10.00
                             </dd>
                           </>
                         )}
                       </dl>
                       <dl className="flex items-center justify-between gap-4 py-3">
-                        <dt className="text-base font-normal text-gray-500 dark:text-gray-400">
+                        <dt className="text-base font-normal text-gray-500">
                           Total
                         </dt>
-                        <dd className="text-base font-medium text-gray-900 dark:text-white">
+                        <dd className="text-base font-medium text-gray-900">
                           ${total.toFixed(2)}
                         </dd>
                       </dl>
                     </div>
-                    <h2 className="text-xl my-4 font-semibold text-gray-900 dark:text-white">
+                    <h2 className="text-xl my-4 font-semibold text-gray-900">
                       Delivery Details
                     </h2>
                     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                       <div>
                         <label
                           htmlFor="your_name"
-                          className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                          className="mb-2 block text-sm font-medium text-gray-900"
                         >
                           Your Name
                         </label>
@@ -578,7 +575,7 @@ const CheckoutForm = ({ cartBook, setCartBook }) => {
                           type="text"
                           id="your_name"
                           name="your_name"
-                          className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
+                          className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500"
                           value={session?.user.name || ""}
                           required
                         />
@@ -587,7 +584,7 @@ const CheckoutForm = ({ cartBook, setCartBook }) => {
                       <div>
                         <label
                           htmlFor="your_email"
-                          className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                          className="mb-2 block text-sm font-medium text-gray-900"
                         >
                           Your Email
                         </label>
@@ -595,7 +592,7 @@ const CheckoutForm = ({ cartBook, setCartBook }) => {
                           type="email"
                           id="your_email"
                           name="your_email"
-                          className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
+                          className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500"
                           value={session?.user.email || ""}
                           required
                         />
@@ -605,7 +602,7 @@ const CheckoutForm = ({ cartBook, setCartBook }) => {
                         <div className="mb-2 flex items-center gap-2">
                           <label
                             htmlFor="select-country"
-                            className="block text-sm font-medium text-gray-900 dark:text-white"
+                            className="block text-sm font-medium text-gray-900"
                           >
                             Country*
                           </label>
@@ -613,7 +610,7 @@ const CheckoutForm = ({ cartBook, setCartBook }) => {
                         <select
                           id="select_country"
                           name="select_country"
-                          className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
+                          className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500"
                           required
                         >
                           <option selected>Bangladesh</option>
@@ -624,7 +621,7 @@ const CheckoutForm = ({ cartBook, setCartBook }) => {
                         <div className="mb-2 flex items-center gap-2">
                           <label
                             htmlFor="select_city"
-                            className="block text-sm font-medium text-gray-900 dark:text-white"
+                            className="block text-sm font-medium text-gray-900"
                           >
                             City*
                           </label>
@@ -632,7 +629,7 @@ const CheckoutForm = ({ cartBook, setCartBook }) => {
                         <select
                           id="select_city"
                           name="select_city"
-                          className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
+                          className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500"
                           required
                         >
                           <option selected>Chittagong</option>
@@ -642,7 +639,7 @@ const CheckoutForm = ({ cartBook, setCartBook }) => {
                       <div>
                         <label
                           htmlFor="your_address"
-                          className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                          className="mb-2 block text-sm font-medium text-gray-900"
                         >
                           Address
                         </label>
@@ -650,14 +647,14 @@ const CheckoutForm = ({ cartBook, setCartBook }) => {
                           type="text"
                           id="your_Address"
                           name="your_Address"
-                          className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
+                          className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500"
                           required
                         />
                       </div>
                       <div>
                         <label
                           htmlFor="postal_code"
-                          className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                          className="mb-2 block text-sm font-medium text-gray-900e"
                         >
                           Postal Code
                         </label>
@@ -665,18 +662,18 @@ const CheckoutForm = ({ cartBook, setCartBook }) => {
                           type="number"
                           id="postal_code"
                           name="postal_code"
-                          className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
+                          className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500"
                           required
                         />
                       </div>
                     </div>
                     <div className="space-y-2">
-                      <h3 className="text-xl font-semibold text-gray-900 my-4 dark:text-white">
+                      <h3 className="text-xl font-semibold text-gray-900 my-4">
                         Delivery Methods
                       </h3>
                       <div className="flex flex-col md:flex-row gap-6">
                         <div className="grid grid-cols-1 gap-4 ">
-                          <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 ps-4 dark:border-gray-700 dark:bg-gray-800">
+                          <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 ps-4">
                             <div className="flex items-start">
                               <div className="flex h-5 items-center">
                                 <input
@@ -685,7 +682,7 @@ const CheckoutForm = ({ cartBook, setCartBook }) => {
                                   type="radio"
                                   name="delivery-method"
                                   value=""
-                                  className="h-4 w-4 border-gray-300 bg-white text-primary-600 focus:ring-2 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600"
+                                  className="h-4 w-4 border-gray-300 bg-white text-primary-600 focus:ring-2 focus:ring-primary-600"
                                   checked={isCashOnDelivery}
                                   onChange={() =>
                                     handlePaymentMethodChange("cash")
@@ -696,13 +693,13 @@ const CheckoutForm = ({ cartBook, setCartBook }) => {
                               <div className="ms-4 text-sm">
                                 <label
                                   htmlFor="dhl"
-                                  className="font-medium leading-none text-gray-900 dark:text-white"
+                                  className="font-medium leading-none text-gray-900"
                                 >
                                   Cash on Delivery
                                 </label>
                                 <p
                                   id="dhl-text"
-                                  className="mt-1 text-xs font-normal text-gray-500 dark:text-gray-400"
+                                  className="mt-1 text-xs font-normal text-gray-500"
                                 >
                                   Get it by Tomorrow
                                 </p>
@@ -712,7 +709,7 @@ const CheckoutForm = ({ cartBook, setCartBook }) => {
                         </div>
                         {/* ssl commerzz */}
                         <div class="grid grid-cols-1 gap-4 ">
-                          <div class="rounded-lg border border-gray-200 bg-gray-50 p-4 ps-4 dark:border-gray-700 dark:bg-gray-800">
+                          <div class="rounded-lg border border-gray-200 bg-gray-50 p-4 ps-4">
                             <div class="flex items-start">
                               <div class="flex h-5 items-center">
                                 <input
@@ -721,7 +718,7 @@ const CheckoutForm = ({ cartBook, setCartBook }) => {
                                   type="radio"
                                   name="delivery-method"
                                   value=""
-                                  class="h-4 w-4 border-gray-300 bg-white text-primary-600 focus:ring-2 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600"
+                                  class="h-4 w-4 border-gray-300 bg-white text-primary-600 focus:ring-2 focus:ring-primary-600"
                                   checked={isSSLPayment}
                                   onChange={() =>
                                     handlePaymentMethodChange("ssl")
@@ -732,13 +729,13 @@ const CheckoutForm = ({ cartBook, setCartBook }) => {
                               <div class="ms-4 text-sm">
                                 <label
                                   for="dhl"
-                                  class="font-medium leading-none text-gray-900 dark:text-white"
+                                  class="font-medium leading-none text-gray-900"
                                 >
                                   Pay Via SSL Commerz
                                 </label>
                                 <p
                                   id="dhl-text"
-                                  class="mt-1 text-xs font-normal text-gray-500 dark:text-gray-400"
+                                  class="mt-1 text-xs font-normal text-gray-500"
                                 >
                                   Pay With Local Bank
                                 </p>
@@ -748,7 +745,7 @@ const CheckoutForm = ({ cartBook, setCartBook }) => {
                         </div>
 
                         <div className="grid grid-cols-1 gap-4">
-                          <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 ps-4 dark:border-gray-700 dark:bg-gray-800">
+                          <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 ps-4">
                             <div className="flex items-start">
                               <div className="flex h-5 items-center">
                                 <input
@@ -757,7 +754,7 @@ const CheckoutForm = ({ cartBook, setCartBook }) => {
                                   type="radio"
                                   name="delivery-method"
                                   value=""
-                                  className="h-4 w-4 border-gray-300 bg-white text-primary-600 focus:ring-2 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600"
+                                  className="h-4 w-4 border-gray-300 bg-white text-primary-600 focus:ring-2 focus:ring-primary-600"
                                   checked={isStripePayment}
                                   onChange={() =>
                                     handlePaymentMethodChange("stripe")
@@ -768,13 +765,13 @@ const CheckoutForm = ({ cartBook, setCartBook }) => {
                               <div className="ms-4 text-sm">
                                 <label
                                   htmlFor="stripe"
-                                  className="font-medium leading-none text-gray-900 dark:text-white"
+                                  className="font-medium leading-none text-gray-900"
                                 >
                                   Payment Via Stripe
                                 </label>
                                 <p
                                   id="stripe-text"
-                                  className="mt-1 text-xs font-normal text-gray-500 dark:text-gray-400"
+                                  className="mt-1 text-xs font-normal text-gray-500"
                                 >
                                   Instant Payment
                                 </p>
@@ -791,12 +788,12 @@ const CheckoutForm = ({ cartBook, setCartBook }) => {
                             <input
                               type="text"
                               placeholder="Cardholder's Name"
-                              className="px-4 py-3.5 bg-white dark:bg-gray-800 dark:text-white text-gray-800 w-full text-sm border rounded-md focus:border-purple-500 focus:bg-transparent outline-none"
+                              className="px-4 py-3.5 bg-white text-gray-800 w-full text-sm border rounded-md focus:border-purple-500 focus:bg-transparent outline-none"
                               required
                             />
                           </div>
                           <CardElement
-                            className="p-4 mt-4 border dark:text-white rounded"
+                            className="p-4 mt-4 border rounded"
                             options={{ hidePostalCode: true }}
                           />
                         </>

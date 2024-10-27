@@ -11,23 +11,18 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { CiStar } from "react-icons/ci";
 import Swal from "sweetalert2";
-import Loading from "../../app/loading";
 
 const Page = () => {
   const [wishListBook, setWishListBook] = useState({ wishList: [] });
   const { data: session } = useSession();
-  const [loading, setLoading] = useState(true); // Correct state declaration
 
   useEffect(() => {
-    setLoading(true); // Set loading to true before fetching data
     const fetchWishlist = async () => {
       try {
         const response = await axios.get(
           `/api/wishlists/${session?.user?.email}`
         );
-
         setWishListBook(response?.data?.data);
-        setLoading(false); // Set loading to false after data is fetched
       } catch (error) {
         console.error("Error fetching wishlist:", error);
         Swal.fire({
@@ -35,7 +30,6 @@ const Page = () => {
           title: "Error",
           text: "Failed to load wishlist!",
         });
-        setLoading(false); // Ensure loading is set to false in case of error
       }
     };
 
@@ -77,12 +71,6 @@ const Page = () => {
     }
   };
 
-  if (loading) {
-    return <Loading />; // Display a loading message while fetching data
-  }
-
-  console.log(wishListBook);
-
   return (
     <>
       <Head>
@@ -94,7 +82,7 @@ const Page = () => {
         <div className="mb-3">
           <div className="font-sans bg-white max-w-6xl mx-auto p-4">
             <h2 className="text-3xl font-bold text-gray-800">
-              Your Wishlist ({wishListBook?.data?.length})
+              Your Wishlist ({wishListBook?.length})
             </h2>
             <div className="overflow-x-auto">
               <table className="mt-12 w-full border-collapse divide-y">
