@@ -247,23 +247,19 @@ const BooksPage = () => {
                     </button>
                   )}
                 </div>
-
                 <div className="mb-6">
                   <h4 className="font-bold mb-2">Price Range</h4>
                   <input
                     type="range"
-                    min={0}
-                    max={20}
+                    min="0"
+                    max="20"
                     value={priceRange[1]}
-                    onChange={(e) =>
-                      setPriceRange([0, parseFloat(e.target.value)])
-                    }
-                    className="w-full"
+                    onChange={(e) => setPriceRange([0, e.target.value])}
+                    className="w-full range-slider"
                   />
-                  <div className="flex justify-between">
-                    <span>$0</span>
-                    <span>${priceRange[1]}</span>
-                  </div>
+                  <p className="mb-10">
+                    Price Range: ${priceRange[0]} - ${priceRange[1]}
+                  </p>
                 </div>
               </div>
 
@@ -370,7 +366,7 @@ const BooksPage = () => {
             )}
 
             {/* Pagination */}
-            <div className="flex justify-center mt-8">
+            <div className="flex justify-center lg:ml-96 mt-8">
               {Array.from({ length: totalPages }, (_, index) => (
                 <button
                   key={index}
