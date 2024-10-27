@@ -48,7 +48,7 @@ export default function RootLayout({ children }) {
             {/* Chat Modal */}
             {isChatOpen && (
               <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-                <div className="bg-white p-6 rounded-lg max-w-md lg:max-w-xl xl:max-w-3xl w-full relative border border-red-200">
+                <div className="bg-white p-6 rounded-lg w-full md:w-[90%] lg:w-1/3 relative border border-red-200">
                   <button
                     onClick={toggleChat}
                     className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"

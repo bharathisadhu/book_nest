@@ -24,7 +24,7 @@ export default function Chat() {
 
   useEffect(() => {
     if (session) {
-      socket.emit("register", session.user.name);
+      socket.emit("register", session?.user?.name);
       socket.emit("load-messages");
 
       socket.on("registered", (username) => {
@@ -98,7 +98,7 @@ export default function Chat() {
         </h2>
         <button
           onClick={() => signIn()}
-          className="p-2 bg-blue-500 text-white rounded-lg"
+          className="p-2 bg-[#F65D4E] text-white rounded-lg"
         >
           Log In / Register
         </button>
@@ -114,22 +114,24 @@ export default function Chat() {
       <h1 className="text-3xl font-bold md:text-5xl flex justify-center items-center mb-5 text-[#F65D4E]">
         <MdSupportAgent />
       </h1>
-      <div className="flex flex-col h-[80vh] w-[75vw] sm:h-[40vh] sm:w-[40vw] md:h-[70vh] md:w-[40vw] lg:h-[70vh] lg:w-[45vw] xl:w-[25vw] mx-auto bg-white shadow-lg rounded-lg overflow-hidden border">
+      <div className="flex flex-col h-[80vh] w-[99%] md:w-[95%] mx-auto bg-white shadow-lg rounded-lg overflow-hidden border">
+      {/* <div className="flex flex-col h-[80vh] w-[75vw] sm:h-[40vh] sm:w-[40vw] md:h-[70vh] md:w-[40vw] lg:h-[70vh] lg:w-[45vw] xl:w-[25vw] mx-auto bg-white shadow-lg rounded-lg overflow-hidden border"> */}
         <div className="flex flex-col flex-grow p-4 overflow-auto">
           {messages.map((msg, index) => (
             <div
               key={index}
               className={`mb-2 p-2 rounded-lg ${
-                msg.sender === session.user.name
+                msg.sender === session?.user?.name 
                   ? "bg-[#F65D4E] text-white self-end"
                   : agents.includes(msg.sender)
-                  ? "bg-orange-500 text-gray-800 self-start"
+                  ? "bg-orange-500 text-white self-start"
                   : "bg-gray-200 text-gray-800 self-start"
               }`}
             >
               <strong>
                 {msg.sender}
-                {agents.includes(msg.sender) && " : (agent)"}
+                {agents.includes(msg.sender) && " (agent) "}
+                {" : "}
               </strong>
               {msg.text}
             </div>
@@ -137,18 +139,18 @@ export default function Chat() {
           <div ref={messagesEndRef} />
         </div>
         <div className="flex flex-col p-4 border-t border-gray-200">
-          {session.user.name && (
+          {session?.user?.name && (
             <select
               value={selectedRecipient}
               onChange={(e) => setSelectedRecipient(e.target.value)}
               className="mb-2 p-2 border border-gray-300 rounded focus:outline-none"
             >
               <option value="">
-                Send to {agents.includes(session.user.name) ? "User" : "Agent"}
+                Send to {agents.includes(session?.user?.name) ? "User" : "Agent"}
               </option>
-              {agents.includes(session.user.name)
+              {agents.includes(session?.user?.name)
                 ? activeUsers
-                    .filter((user) => user !== session.user.name)
+                    .filter((user) => user !== session?.user?.name)
                     .map((user) => (
                       <option key={user} value={user}>
                         {user}
