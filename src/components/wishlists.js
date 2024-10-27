@@ -50,6 +50,7 @@ export default function Wishlist() {
 
   return (
     <div className="font-sans lg:max-h-[580px] overflow-x-auto overflow-y-auto">
+      
       <table className="min-w-full divide-y divide-gray-200">
         <thead className="bg-gray-100 whitespace-nowrap">
           <tr>

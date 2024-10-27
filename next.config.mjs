@@ -61,6 +61,7 @@ const nextConfig = {
       "www.solidbackgrounds.com",
       "t4.ftcdn.net",
       "tenor.com",
+      "source.unsplash.com",
       "*",
     ],
   },
