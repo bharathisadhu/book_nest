@@ -1,5 +1,4 @@
 "use client";
-import localFont from "next/font/local";
 import "./globals.css";
 import AuthProvider from "@/services/AuthProvider";
 import Navbar from "@/components/Navbar";
@@ -41,7 +40,7 @@ export default function RootLayout({ children }) {
             <Footer />
             <button
               onClick={toggleChat}
-              className="fixed bottom-6 right-6 p-4 bg-blue-500 text-white rounded-full shadow-lg z-30 hover:bg-blue-600 transition duration-300"
+              className="fixed bottom-6 right-6 p-4 bg-[#F65D4E] text-white rounded-full shadow-lg z-30 hover:bg-blue-600 transition duration-300"
               aria-label="Support"
             >
               <MdSupportAgent size={40} />
