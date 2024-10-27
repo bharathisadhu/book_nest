@@ -7,14 +7,23 @@ module.exports = {
   ],
   theme: {
     extend: {
+      // backgroundImage: {
+      //   Community:
+      //     "url('https://demo2.pavothemes.com/bookory/wp-content/uploads/2022/11/h6_bg1.jpg')",
+      //   branding:
+      //     "url('https://collegeinfogeek.com/wp-content/uploads/2018/11/Essential-Books.jpg')",
+      //   userProfileBG:
+      //     "url('https://i.ibb.co.com/7X60NZ2/user-Profile-BG.png')",
+      // },
+
       backgroundImage: {
         Community:
           "url('https://demo2.pavothemes.com/bookory/wp-content/uploads/2022/11/h6_bg1.jpg')",
         branding:
           "url('https://collegeinfogeek.com/wp-content/uploads/2018/11/Essential-Books.jpg')",
-        userProfileBG:
-          "url('https://i.ibb.co.com/7X60NZ2/user-Profile-BG.png')",
+        userProfileBG: "url('https://i.ibb.co/7X60NZ2/user-Profile-BG.png')",
       },
+
       fontFamily: {
         poppins: "Poppins, sans-serif", // Adds a new `font-display` class
         roboto: "Roboto, sans-serif",
