@@ -89,29 +89,6 @@ export default function DashboardNavbar() {
               <MdAccountCircle className="text-4xl cursor-pointer fill-[#333] hover:fill-[#F65D4E] inline-block" />
             )}
           </Link>
-
-          {/* Dropdown menu */}
-          {isProfileOpen && (
-            <div className="absolute right-0 mt-4 w-56 rounded-md border bg-white shadow-lg">
-              <ul className="py-2">
-                <li>
-                  <Link href="/profile" className="block px-4 py-2 text-sm text-black hover:bg-gray-100">
-                    Profile
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/settings" className="block px-4 py-2 text-sm text-black hover:bg-gray-100">
-                    Settings
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/api/auth/signout" className="block px-4 py-2 text-sm text-black hover:bg-gray-100">
-                    Sign Out
-                  </Link>
-                </li>
-              </ul>
-            </div>
-          )}
         </div>
       </div>
     </header>
