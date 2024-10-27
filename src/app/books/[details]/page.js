@@ -25,11 +25,12 @@ export default function BookDetails({ params }) {
   useEffect(() => {
     const fetchBooks = async () => {
       try {
-        const response = await axios.get(`${baseUrl}/api/books`);
-        setListOfBooks(response.data);
+        const response = await axios.get(`/api/books`);
+        setListOfBooks(response?.data);
         const bookId = params.details;
-        const foundBook = response.data.find((book) => book._id === bookId);
+        const foundBook = response?.data?.find((book) => book._id === bookId);
         setBookDetails(foundBook);
+        console.log(foundBook);
       } catch (error) {
         console.error("Error fetching book details:", error.message);
       }
@@ -60,17 +61,16 @@ export default function BookDetails({ params }) {
   // }
 
   const {
-    _id,
-    name,
-    description,
-    image,
-    author,
-    price,
-    ratings,
-    category,
-    publishType,
-    cardCount,
-  } = bookDetails;
+    name = "",
+    description = "",
+    image = "",
+    author = "",
+    price = "",
+    ratings = 0,
+    category = "",
+    publishType = "",
+    cardCount = 0,
+  } = bookDetails || {}; // Add fallback values
 
   const addToWishlist = async () => {
     if (isBookmarked) {
@@ -179,6 +179,8 @@ export default function BookDetails({ params }) {
       }
     }
   };
+
+  console.log(bookDetails);
 
   return (
     <>

@@ -36,7 +36,7 @@ const BooksPage = () => {
       try {
         setIsLoading(true);
         const response = await fetch(
-          `${baseUrl}/api/books?page=${currentPage}&limit=${itemsPerPage}&sort=${
+          `/api/books?page=${currentPage}&limit=${itemsPerPage}&sort=${
             sort || ""
           }`
         );
