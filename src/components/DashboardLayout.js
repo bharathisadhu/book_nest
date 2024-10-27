@@ -18,6 +18,7 @@ import axios from "axios";
 import Loading from "../app/loading"; // Import your Loading component
 import { FaHome } from "react-icons/fa";
 import DashboardNavbar from "./DashboardNavbar";
+import PrivateRoute from "@/services/PrivateRoute";
 
 const DashboardLayout = ({ children }) => {
   const pathname = usePathname();
@@ -137,7 +138,8 @@ const DashboardLayout = ({ children }) => {
   }
 
   return (
-    <main className="flex">
+    <PrivateRoute>
+      <main className="flex">
       <button
         className="lg:hidden p-2 text-white bg-gradient-to-r from-[#F65D4E99] to-[#F65D4E] fixed z-50 w-full flex items-center justify-between"
         onClick={toggleSidebar}
@@ -227,6 +229,7 @@ const DashboardLayout = ({ children }) => {
         <div className="lg:ml-16 lg:mr-10 mt-20 lg:mt-28">{children}</div>
       </main>
     </main>
+    </PrivateRoute>
   );
 };
 
