@@ -45,7 +45,7 @@ const Footer = () => {
             </h2>
             <a className="text-white">Monday – Friday: 9:00-20:00</a>
             <a className="text-white">Saturday: 11:00 – 15:00</a>
-            <h2 className="md:text-xl text-white">contact@example.com</h2>
+            <h2 className="md:text-xl text-white">booknest21@gmail.com</h2>
           </nav>
           {/* services nav */}
           <nav className="flex flex-col space-y-2 items-end md:items-start">
