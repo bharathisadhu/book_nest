@@ -301,8 +301,8 @@ const Navbar = () => {
               </ul>
 
               <ul className="menu flex flex-col text-lg font-bold space-y-4">
-                <Link
-                  href="/dashboard"
+                {isAdmin ? <Link
+                  href="/dashboard/adminDashboard"
                   onClick={toggleSidebar}
                   className={`${
                     pathname === "/dashboard" ? " text-[#F65D4E]" : ""
@@ -313,6 +313,20 @@ const Navbar = () => {
                     <IoIosArrowForward className="text-xl font-bold" />
                   </div>
                 </Link>
+                 :
+                  <Link
+                  href="/dashboard/userProfile"
+                  onClick={toggleSidebar}
+                  className={`${
+                    pathname === "/dashboard" ? " text-[#F65D4E]" : ""
+                  } flex justify-between items-center border-b pb-4`}
+                >
+                  <li>Dashboard</li>
+                  <div>
+                    <IoIosArrowForward className="text-xl font-bold" />
+                  </div>
+                </Link> }
+                
               </ul>
               <ul className="menu flex flex-col text-lg font-bold space-y-4">
                 <Link
