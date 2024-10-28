@@ -419,27 +419,27 @@
 //     }
 //   }, [session, status]);
 
-//   const handlePhotoUpload = async (event) => {
-//     const file = event.target.files[0];
-//     const formData = new FormData();
-//     formData.append("image", file);
+// const handlePhotoUpload = async (event) => {
+//   const file = event.target.files[0];
+//   const formData = new FormData();
+//   formData.append("image", file);
 
-//     try {
-//       setLoading(true);
-//       const imgbbResponse = await axios.post(
-//         `https://api.imgbb.com/1/upload?key=${process.env.NEXT_PUBLIC_IMAGE_UPLOAD_KEY}`,
-//         formData
-//       );
-//       setImage(imgbbResponse.data.data.url);
-//       setLoading(false);
+//   try {
+//     setLoading(true);
+//     const imgbbResponse = await axios.post(
+//       `https://api.imgbb.com/1/upload?key=${process.env.NEXT_PUBLIC_IMAGE_UPLOAD_KEY}`,
+//       formData
+//     );
+//     setImage(imgbbResponse.data.data.url);
+//     setLoading(false);
 
-//       // Update the user's image on the server
-//       await handleSubmit(null, imgbbResponse.data.data.url);
-//     } catch (error) {
-//       console.error("Error uploading image:", error);
-//       setLoading(false);
-//     }
-//   };
+//     // Update the user's image on the server
+//     await handleSubmit(null, imgbbResponse.data.data.url);
+//   } catch (error) {
+//     console.error("Error uploading image:", error);
+//     setLoading(false);
+//   }
+// };
 
 //   const handleSubmit = async (event, newImage = null) => {
 //     if (event) event.preventDefault();
@@ -474,9 +474,9 @@
 //     }
 //   };
 
-//   const handleImageClick = () => {
-//     fileInputRef.current.click();
-//   };
+// const handleImageClick = () => {
+//   fileInputRef.current.click();
+// };
 
 //   if (status === "loading") return <Loader></Loader>;
 //   if (!session) return <p>Please log in to view your profile.</p>;
@@ -511,28 +511,28 @@
 //         </div>
 //         <div className="px-4 pb-6 text-center lg:pb-8 xl:pb-11.5">
 //           <div className="relative z-30 mx-auto -mt-22 h-30 w-full max-w-30 rounded-full bg-background p-1 lg:backdrop-blur sm:h-44 sm:max-w-44 sm:p-3">
-//             <div className="relative drop-shadow-2">
-//               <Image
-//                 width={1000}
-//                 height={1000}
-//                 src={image || "/placeholder.svg?height=160&width=160"}
-//                 alt="profile"
-//                 className="w-40 h-40 rounded-full object-cover cursor-pointer mx-auto"
-//                 onClick={handleImageClick}
-//               />
-//               <input
-//                 type="file"
-//                 ref={fileInputRef}
-//                 className="hidden"
-//                 onChange={handlePhotoUpload}
-//                 accept="image/*"
-//               />
-//               {loading && (
-//                 <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 rounded-full">
-//                   <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-white"></div>
-//                 </div>
-//               )}
-//             </div>
+// <div className="relative drop-shadow-2">
+//   <Image
+//     width={1000}
+//     height={1000}
+//     src={image || "/placeholder.svg?height=160&width=160"}
+//     alt="profile"
+//     className="w-40 h-40 rounded-full object-cover cursor-pointer mx-auto"
+//     onClick={handleImageClick}
+//   />
+//   <input
+//     type="file"
+//     ref={fileInputRef}
+//     className="hidden"
+//     onChange={handlePhotoUpload}
+//     accept="image/*"
+//   />
+//   {loading && (
+//     <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 rounded-full">
+//       <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-white"></div>
+//     </div>
+//   )}
+// </div>
 //           </div>
 //           <div className="mt-4 text-start md:w-1/3 lg:w-[30%] mx-auto">
 //             {/* <h3 className="mb-1.5 text-2xl font-semibold text-foreground">{name}</h3> */}
@@ -689,64 +689,124 @@
 //   );
 // }
 
+"use client";
 
-
-
-
-'use client'
-
-import { useState, useEffect } from "react"
-import Image from "next/image"
-import Link from "next/link"
-import { useSession } from "next-auth/react"
-import { HiPencilAlt } from "react-icons/hi"
-import axios from "axios"
-import Swal from "sweetalert2"
+import { useState, useEffect, useRef } from "react";
+import { useSession } from "next-auth/react";
+import { HiPencilAlt } from "react-icons/hi";
+import axios from "axios";
+import Swal from "sweetalert2";
+import Image from "next/image";
+import Link from "next/link";
 
 export default function Component() {
-  const { data: session } = useSession()
-  const [user, setUsers] = useState(null)
-  const [isOpen, setIsOpen] = useState(false)
+  const { data: session } = useSession();
+  const [user, setUsers] = useState(null);
+  const [isOpen, setIsOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [image, setImage] = useState("");
+  const fileInputRef = useRef(null);
+  const [showName, setShowName] = useState({});
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    occupation: '',
-    location: '',
-    bio: '',
-    image: ''
-  })
+    name: "",
+    email: "",
+    occupation: "",
+    location: "",
+    bio: "",
+  });
 
   useEffect(() => {
     if (session?.user?.email) {
       fetch(`/api/user/${session?.user?.email}`)
         .then((res) => res.json())
         .then((data) => {
-          setUsers(data)
+          setUsers(data);
           setFormData({
-            name: data.name || '',
-            email: data.email || '',
-            occupation: data.occupation || '',
-            location: data.location || '',
-            bio: data.bio || '',
-            image: data.image || ''
-          })
-        })
+            name: data.name || "",
+            email: data.email || "",
+            occupation: data.occupation || "",
+            location: data.location || "",
+            bio: data.bio || "",
+            image: image || "",
+          });
+        });
     }
-  }, [session?.user?.email])
+  }, [session?.user?.email, image]);
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target
-    setFormData(prev => ({ ...prev, [name]: value }))
-  }
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-  
+  const handlePhotoUpload = async (event) => {
+    const file = event.target.files[0];
+    const formData = new FormData();
+    formData.append("image", file);
+
     try {
-      const response = await axios.patch(`/api/user/${session?.user?.email}`, formData); // Directly pass formData
-  
-      if (response.status === 200) { // Check for 200 on successful update
-        setUsers(true);
+      // setLoading(true);
+      const imgbbResponse = await axios.post(
+        `https://api.imgbb.com/1/upload?key=${process.env.NEXT_PUBLIC_IMAGE_UPLOAD_KEY}`,
+        formData
+      );
+      setImage(imgbbResponse?.data?.data?.url);
+      // setLoading(false);
+
+      // Update the user's image on the server
+      await handleSubmit(null, imgbbResponse.data.data.url);
+    } catch (error) {
+      console.error("Error uploading image:", error);
+      // setLoading(false);
+    }
+  };
+
+  const handleImageClick = () => {
+    fileInputRef.current.click();
+  };
+
+  //   const handlePhotoUpload = async (event) => {
+  //     const file = event.target.files[0];
+
+  //     if (!file) {
+  //         // Handle the case where no file is selected
+  //         console.error("No file selected");
+  //         return;
+  //     }
+
+  //     const formData = new FormData();
+  //     formData.append("image", file);
+
+  //     try {
+  //         setLoading(true);
+  //         const imgbbResponse = await axios.post(
+  //             `https://api.imgbb.com/1/upload?key=${process.env.NEXT_PUBLIC_IMAGE_UPLOAD_KEY}`,
+  //             formData
+  //         );
+
+  //         // Get the image URL from the response
+  //         const uploadedImageUrl = imgbbResponse.data.data.url;
+  //         setImage(uploadedImageUrl); // Update the state with the new image URL
+  //         setLoading(false);
+  //         // Update the user's image on the server
+  //         await handleSubmit(null, uploadedImageUrl);
+  //     } catch (error) {
+  //         console.error("Error uploading image:", error);
+  //         setLoading(false);
+  //         // Optionally set an error message in state to display to the user
+  //     }
+  // };
+
+  const handleSubmit = async () => {
+    try {
+      const response = await axios.patch(
+        `/api/user/${session?.user?.email}`,
+        formData
+      ); // Directly pass formData
+
+      if (response.status === 200) {
+        // Check for 200 on successful update
+        setUsers(response?.data);
+        console.log(response?.data);
         Swal.fire({
           position: "top-end",
           icon: "success",
@@ -757,29 +817,13 @@ export default function Component() {
       }
     } catch (error) {
       console.error("Error updating user:", error);
-      const message = error.response?.data?.message || "Failed to update user!";
-  
-      if (error.response?.status === 409) {
-        Swal.fire({
-          icon: "info",
-          title: "Already in Cart", // Adjust the title if updating user data, e.g., "Update Conflict"
-          text: message,
-        });
-      } else {
-        Swal.fire({
-          icon: "error",
-          title: "Error",
-          text: message,
-        });
-      }
     }
-  
+
     console.log("Form submitted:", formData);
     setIsOpen(false);
   };
-  
 
-  if (!user) return null
+  if (!user) return null;
 
   const socialLinks = [
     {
@@ -794,7 +838,7 @@ export default function Component() {
       name: "GitHub",
       icon: "M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12",
     },
-  ]
+  ];
 
   return (
     <div className="lg:h-[80vh] font-sans flex flex-col justify-center items-center antialiased leading-normal tracking-wider">
@@ -804,7 +848,10 @@ export default function Component() {
           id="profile"
           className="w-full lg:w-3/5 rounded-lg lg:rounded-l-lg lg:rounded-r-none bg-white shadow-2xl opacity-100 mx-6 lg:mx-0 z-30 relative"
         >
-          <div onClick={() => setIsOpen(true)} className="absolute right-2 top-12 cursor-pointer">
+          <div
+            onClick={() => setIsOpen(true)}
+            className="absolute right-2 top-12 cursor-pointer"
+          >
             <HiPencilAlt size={32} />
           </div>
           <div className="px-12 lg:p-12 text-center lg:text-left z-30">
@@ -873,7 +920,7 @@ export default function Component() {
 
         <div className="w-full lg:w-2/5">
           <Image
-            src={user?.image}
+            src={image || user?.image}
             width={500}
             height={500}
             alt="Profile"
@@ -887,15 +934,31 @@ export default function Component() {
           <div className="bg-white p-8 rounded-lg w-full max-w-md">
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-2xl font-bold">Edit profile</h2>
-              <button onClick={() => setIsOpen(false)} className="text-gray-500 hover:text-gray-700">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              <button
+                onClick={() => setIsOpen(false)}
+                className="text-gray-500 hover:text-gray-700"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
                 </svg>
               </button>
             </div>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
-                <label htmlFor="name" className="text-sm font-medium">Name</label>
+                <label htmlFor="name" className="text-sm font-medium">
+                  Name
+                </label>
                 <input
                   id="name"
                   name="name"
@@ -904,8 +967,32 @@ export default function Component() {
                   className="w-full p-2 border rounded"
                 />
               </div>
+
+              {/* <div>
+                <label className="flex w-full max-w-[380px] md:w-[380px]">
+                  <div
+                    onClick={handleImageClick}
+                    className="w-fit whitespace-nowrap bg-amber-500 px-3 py-2 text-white"
+                  >
+                    Choose File
+                  </div>
+                  <div className="flex w-full max-w-[380px] items-center border-b-[2px] border-amber-500 px-2 font-medium text-gray-400">
+                    {image ? image.split("/").pop() : "No File Chosen"}
+                  </div>
+                </label>
+                <input
+                  name="image"
+                  type="text"
+                  ref={fileInputRef}
+                  onChange={handlePhotoUpload}
+                  className="hidden"
+                />
+              </div> */}
+
               <div className="space-y-2">
-                <label htmlFor="email" className="text-sm font-medium">Email</label>
+                <label htmlFor="email" className="text-sm font-medium">
+                  Email
+                </label>
                 <input
                   id="email"
                   name="email"
@@ -916,7 +1003,9 @@ export default function Component() {
                 />
               </div>
               <div className="space-y-2">
-                <label htmlFor="occupation" className="text-sm font-medium">Occupation</label>
+                <label htmlFor="occupation" className="text-sm font-medium">
+                  Occupation
+                </label>
                 <input
                   id="occupation"
                   name="occupation"
@@ -926,7 +1015,9 @@ export default function Component() {
                 />
               </div>
               <div className="space-y-2">
-                <label htmlFor="location" className="text-sm font-medium">Location</label>
+                <label htmlFor="location" className="text-sm font-medium">
+                  Location
+                </label>
                 <input
                   id="location"
                   name="location"
@@ -936,8 +1027,10 @@ export default function Component() {
                 />
               </div>
               <div className="space-y-2">
-                <label htmlFor="bio" className="text-sm font-medium">Bio</label>
-                
+                <label htmlFor="bio" className="text-sm font-medium">
+                  Bio
+                </label>
+
                 <textarea
                   id="bio"
                   name="bio"
@@ -947,11 +1040,16 @@ export default function Component() {
                   className="w-full p-2 border rounded"
                 />
               </div>
-              <button type="submit" className="w-full bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 transition duration-200">Save changes</button>
+              <button
+                type="submit"
+                className="w-full bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 transition duration-200"
+              >
+                Save changes
+              </button>
             </form>
           </div>
         </div>
       )}
     </div>
-  )
+  );
 }
