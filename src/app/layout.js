@@ -5,7 +5,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { MdSupportAgent } from "react-icons/md";
 import { useEffect, useState } from "react";
-import Chat from "@/components/chat";
+import dynamic from "next/dynamic";
 
 const metadata = {
   title: "BookNest",
@@ -13,15 +13,18 @@ const metadata = {
   favicon: "BookNest.png",
 };
 
+// Lazy load Chat component
+const LazyChat = dynamic(() => import("@/components/chat"), {
+  ssr: false,
+});
+
 export default function RootLayout({ children }) {
   const [isChatOpen, setIsChatOpen] = useState(false);
 
-  // Toggle body overflow and modal state
   const toggleChat = () => {
     setIsChatOpen((prev) => !prev);
   };
 
-  // Apply the "modalOpen" class to <body> when the modal is open
   useEffect(() => {
     if (isChatOpen) {
       document.body.classList.add("modalOpen");
@@ -55,7 +58,7 @@ export default function RootLayout({ children }) {
                   >
                     ✕
                   </button>
-                  <Chat />
+                  <LazyChat />
                 </div>
               </div>
             )}
