@@ -32,7 +32,7 @@ export default function DashboardNavbar() {
   }, [fetchUser]);
 
   return (
-    <header className="fixed top-0 left-0 z-50 ml-80 w-[calc(100%-18rem)] bg-white shadow-lg hidden lg:flex flex-col">
+    <header className="fixed top-0 left-0 z-50 ml-80 w-[calc(100%-18rem)] bg-white hidden lg:flex flex-col">
       <div className="flex items-center justify-between px-4 py-4 md:px-6 2xl:px-8 mr-10">
         {/* Search and Logo */}
         <div className="flex items-center gap-4">
