@@ -384,7 +384,7 @@ const DashboardLayout = ({ children }) => {
     <PrivateRoute>
       <main className="flex">
       <button
-        className="lg:hidden p-2 text-white bg-gradient-to-r from-[#F65D4E99] to-[#F65D4E] fixed z-50 w-full flex items-center justify-between"
+        className="lg:hidden p-2 z-60 text-white bg-gradient-to-r from-[#F65D4E99] to-[#F65D4E] fixed z-50 w-full flex items-center justify-between"
         onClick={toggleSidebar}
       >
         <Link href="/" className="normal-case text-3xl">
