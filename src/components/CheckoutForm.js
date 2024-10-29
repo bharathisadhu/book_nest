@@ -160,7 +160,6 @@ const CheckoutForm = ({ cartBook, setCartBook }) => {
 
       try {
         const response = await axios.post("/api/payments", payment);
-        console.log(response.data);
         setCartBook([]); // Clear the cart after successful payment
         await clearCartFromAPI(); // Clear the cart from the API
         Swal.fire({
@@ -334,7 +333,6 @@ const CheckoutForm = ({ cartBook, setCartBook }) => {
   const PaymentOption = async () => {
     let res = await fetch("/api/ssl_payment", { method: "POST" });
     let JSON = await res.json();
-    console.log(JSON["data"]["desc"]);
     setMethod(JSON["data"]["desc"]);
     setShowModal(true); // Show the modal after fetching the data
   };

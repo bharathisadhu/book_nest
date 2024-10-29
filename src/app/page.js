@@ -11,6 +11,12 @@ import Banner from "@/components/Banner";
 import PopularBooks from "@/components/PopularBooks";
 import Head from "next/head";
 
+const metadata = {
+  title: "BookNest | Home",
+  description: "Read for Peace",
+  favicon: "BookNest.png",
+};
+
 export default function Home() {
   return (
     <main>

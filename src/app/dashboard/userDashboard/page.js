@@ -5,6 +5,12 @@ import Head from "next/head";
 import SaleCount from "@/components/mainDashBoard/SaleCount";
 import BlogCount from "@/components/mainDashBoard/BlogCount";
 
+const metadata = {
+  title: "BookNest | User Dashboard",
+  description: "Read for Peace",
+  favicon: "BookNest.png",
+};
+
 const UserDashboard = () => {
   return (
     <>

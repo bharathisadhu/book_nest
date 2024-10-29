@@ -1,40 +1,32 @@
-
 "use client";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Image from "next/image";
-import { HiPencilAlt,HiOutlineTrash } from "react-icons/hi";
+import { HiPencilAlt, HiOutlineTrash } from "react-icons/hi";
 import Swal from "sweetalert2";
 
 export default function BlogList() {
   const [blogs, setBlogs] = useState([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
- const [isUpdating, setIsUpdating] = useState(false);
+  const [isUpdating, setIsUpdating] = useState(false);
   const [loading, setLoading] = useState(false);
   const limit = 10; // Number of rows per page
-
 
   const [selectedBlog, setSelectedBlog] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isAddBookModalOpen, setIsAddBookModalOpen] = useState(false);
   const [imageUrl, setImageUrl] = useState("");
   const [imageFile, setImageFile] = useState(null);
-  
 
-
-
-// Add Book State
-    const [title, setTitle] = useState("");
-    const [author, setAuthor] = useState("");
-    const [category, setCategory] = useState("");
-    const [shortDescription, setShortDescription] = useState("");
-    const [content, setContent] = useState("");
-    const [isLoadingAdd, setIsLoadingAdd] = useState(false);
-    const [error, setError] = useState("");
-  
-
- 
+  // Add Book State
+  const [title, setTitle] = useState("");
+  const [author, setAuthor] = useState("");
+  const [category, setCategory] = useState("");
+  const [shortDescription, setShortDescription] = useState("");
+  const [content, setContent] = useState("");
+  const [isLoadingAdd, setIsLoadingAdd] = useState(false);
+  const [error, setError] = useState("");
 
   // Disable background scrolling when modal is open
   useEffect(() => {
@@ -64,8 +56,7 @@ export default function BlogList() {
     fetchData();
   }, [page]);
 
-
-    const removeBook = async (id) => {
+  const removeBook = async (id) => {
     const bookToDelete = blogs.find((blog) => blog._id === id);
     setBlogs((prevBlogs) => prevBlogs.filter((blog) => blog._id !== id));
 
@@ -122,7 +113,6 @@ export default function BlogList() {
         blogData.image = uploadedImageUrl; // Set the uploaded image URL
       }
     }
-    console.log("-----------",blogData)
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/api/blogs/${blogData._id}`,
       {
@@ -167,16 +157,14 @@ export default function BlogList() {
     setIsUpdating(false);
   };
 
-
-
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     const updatedValue = name === "price" ? parseFloat(value) : value;
 
     setSelectedBlog((prev) => ({ ...prev, [name]: updatedValue }));
   };
-  
-const handleImageChange = (e) => {
+
+  const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
       setImageFile(file);
@@ -184,7 +172,7 @@ const handleImageChange = (e) => {
     }
   };
 
- const uploadImage = async (file) => {
+  const uploadImage = async (file) => {
     const formData = new FormData();
     formData.append("image", file);
     const res = await fetch(
@@ -207,25 +195,20 @@ const handleImageChange = (e) => {
     }
   };
 
-
-
   const handleEditClick = (blog) => {
     setSelectedBlog(blog);
     setImageUrl(blog.image || ""); // Set the current image URL
     setIsModalOpen(true);
   };
 
-   const handleCloseModal = () => {
+  const handleCloseModal = () => {
     setIsModalOpen(false);
     setSelectedBlog(null);
     setImageFile(null); // Reset the image file state
     setImageUrl(""); // Reset the image URL state
   };
 
-
-
   const handleAddBookInputChange = (e) => {
-
     const { name, value } = e.target;
     switch (name) {
       case "title":
@@ -234,7 +217,7 @@ const handleImageChange = (e) => {
       case "author":
         setAuthor(value);
         break;
-        case "category":
+      case "category":
         setCategory(value);
         break;
       case "shortDescription":
@@ -243,7 +226,7 @@ const handleImageChange = (e) => {
       case "content":
         setContent(value);
         break;
-   
+
       default:
         break;
     }
@@ -271,10 +254,7 @@ const handleImageChange = (e) => {
         content,
         category,
         image: imageUrl,
-       
       };
-
-      console.log("-----------",blogData)
 
       const response = await axios.post("/api/blogs", blogData);
 
@@ -297,18 +277,7 @@ const handleImageChange = (e) => {
     } finally {
       setIsLoadingAdd(false);
     }
-
-
-
   };
-
-
-
-
-
-
-
-
 
   const handlePreviousPage = () => {
     if (page > 1) {
@@ -336,7 +305,6 @@ const handleImageChange = (e) => {
           Add New Blog
         </button>
       </div>
-
 
       <table className="min-w-full divide-y divide-gray-200">
         <thead className="bg-gray-100 whitespace-nowrap">
@@ -391,14 +359,13 @@ const handleImageChange = (e) => {
                 >
                   <HiOutlineTrash size={24} />
                 </button>
-               
               </td>
             </tr>
           ))}
         </tbody>
       </table>
 
-     {isModalOpen && (
+      {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
           <div className="bg-white p-8 rounded shadow-lg max-w-2xl w-full">
             <h2 className="text-lg font-semibold">Update Blog</h2>
@@ -432,7 +399,7 @@ const handleImageChange = (e) => {
                     required
                   />
                 </div>
-                
+
                 <div className="mt-4">
                   <label className="block text-sm">Category</label>
                   <input
@@ -454,7 +421,7 @@ const handleImageChange = (e) => {
                     required
                   />
                 </div>
-                 <div className="mt-4">
+                <div className="mt-4">
                   <label className="block text-sm">Content</label>
                   <textarea
                     name="content"
@@ -465,8 +432,8 @@ const handleImageChange = (e) => {
                   />
                 </div>
               </div>
-              
-                  <div className="ml-4 w-1/3">
+
+              <div className="ml-4 w-1/3">
                 <label className="block text-sm">Current Image</label>
                 {imageUrl && (
                   <Image
@@ -485,8 +452,6 @@ const handleImageChange = (e) => {
                   className="border p-2 w-full"
                 />
               </div>
-
-
             </form>
             <div className="mt-4 flex justify-between">
               <button
@@ -511,13 +476,13 @@ const handleImageChange = (e) => {
         </div>
       )}
 
-
-
-     {isAddBookModalOpen && (
+      {isAddBookModalOpen && (
         <div className="fixed inset-0 p-4 flex justify-center items-center z-[1000] bg-black bg-opacity-50">
           <div className="w-full max-w-lg bg-white shadow-lg rounded-lg p-8 relative">
             <div className="flex items-center justify-between">
-              <h3 className="text-[#F65D4E] text-xl font-bold">Add New Blog </h3>
+              <h3 className="text-[#F65D4E] text-xl font-bold">
+                Add New Blog{" "}
+              </h3>
               <button
                 onClick={() => setIsAddBookModalOpen(false)}
                 className="text-gray-400 hover:text-red-500"
@@ -527,7 +492,7 @@ const handleImageChange = (e) => {
             </div>
 
             <form onSubmit={handleAddBookSubmit} className="space-y-4 mt-8">
-             <div className="flex gap-4">
+              <div className="flex gap-4">
                 <div>
                   <div>
                     <label className="text-gray-800 text-sm mb-2 block">
@@ -573,7 +538,6 @@ const handleImageChange = (e) => {
                     ></textarea>
                   </div>
 
-
                   <div>
                     <label className="text-gray-800 text-sm mb-2 block">
                       Content
@@ -588,16 +552,7 @@ const handleImageChange = (e) => {
                       required
                     ></textarea>
                   </div>
-
-                 
-
-                  
-                 
-
-
                 </div>
-
-
 
                 <div className=" flex-wrap">
                   <div>
@@ -678,4 +633,3 @@ const handleImageChange = (e) => {
     </div>
   );
 }
-

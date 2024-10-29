@@ -17,8 +17,6 @@ const Stock = ({ _id, cardCount }) => {
     fetchTotalcardCount();
   }, [baseUrl, _id, cardCount]);
 
-  console.log("dddddddddddddddddd------", stock);
-
   return <>{stock}</>;
 };
 

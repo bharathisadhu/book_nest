@@ -35,6 +35,12 @@ const ProfitChart = dynamic(
   { ssr: false }
 );
 
+const metadata = {
+  title: "BookNest | Admin Dashboard",
+  description: "Read for Peace",
+  favicon: "BookNest.png",
+};
+
 const AdminDashboard = () => {
   return (
     <div className="lg:max-h-screen overflow-x-auto overflow-y-auto">

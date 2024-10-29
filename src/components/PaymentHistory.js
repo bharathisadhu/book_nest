@@ -22,7 +22,6 @@
 //           { cache: "no-store" }
 //         );
 
-//         console.log("---------", response?.data?.data);
 //         // setCarts(response);
 //         setTotalPages(response.data.totalPages);
 //       } catch (error) {
@@ -53,8 +52,6 @@
 //   if (carts.length === 0) {
 //     return <div>No cart found or failed to load cart.</div>;
 //   }
-
-//   // console.log(carts);
 
 //   return (
 //     <div className="font-sans lg:max-h-[580px] overflow-x-auto overflow-y-auto">
@@ -140,7 +137,6 @@
 //   );
 // }
 
-
 "use client";
 import axios from "axios";
 import { useSession } from "next-auth/react";
@@ -163,8 +159,6 @@ export default function PaymentHistory() {
           `/api/payments-pagination/${session?.user?.email}?page=${page}&limit=${limit}`,
           { cache: "no-store" }
         );
-
-        console.log("---------", response?.data?.data);
         setCarts(response?.data?.data);
         setTotalPages(response?.data?.totalPages);
       } catch (error) {
@@ -196,8 +190,6 @@ export default function PaymentHistory() {
     return <div>No cart found or failed to load cart.</div>;
   }
 
-  // console.log(carts);
-
   return (
     <div className="font-sans lg:max-h-[580px] overflow-x-auto overflow-y-auto">
       <table className="min-w-full divide-y divide-gray-200">
@@ -214,9 +206,6 @@ export default function PaymentHistory() {
             </th>
             <th className="px-4 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
               Price
-            </th>
-            <th className="px-4 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
-              status
             </th>
             <th className="px-4 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
               date
@@ -243,7 +232,6 @@ export default function PaymentHistory() {
                   <td className="px-4 py-4 text-sm text-gray-800">
                     {cart?.status}
                   </td>
-
                   <td className="px-4 py-4 text-sm text-gray-800">
                     {new Date(cart?.date).toLocaleDateString("en-GB")}
                   </td>

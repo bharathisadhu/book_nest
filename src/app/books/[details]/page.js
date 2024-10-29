@@ -30,7 +30,6 @@ export default function BookDetails({ params }) {
         const bookId = params.details;
         const foundBook = response?.data?.find((book) => book._id === bookId);
         setBookDetails(foundBook);
-        console.log(foundBook);
       } catch (error) {
         console.error("Error fetching book details:", error.message);
       }
@@ -83,18 +82,21 @@ export default function BookDetails({ params }) {
     }
 
     try {
-      const response = await axios.post(`/api/wishlists/${session?.user?.email}`, {
-        name,
-        BookId: bookDetails._id, // Updated this from bookId to _id
-        description: bookDetails.description || "",
-        image,
-        author: bookDetails.author || "",
-        price,
-        rating: ratings,
-        category,
-        cardCount,
-        email: session?.user?.email, // Ensure this is not undefined
-      });
+      const response = await axios.post(
+        `/api/wishlists/${session?.user?.email}`,
+        {
+          name,
+          BookId: bookDetails._id, // Updated this from bookId to _id
+          description: bookDetails.description || "",
+          image,
+          author: bookDetails.author || "",
+          price,
+          rating: ratings,
+          category,
+          cardCount,
+          email: session?.user?.email, // Ensure this is not undefined
+        }
+      );
 
       if (response.status === 201) {
         setIsBookmarked(true);
@@ -108,7 +110,8 @@ export default function BookDetails({ params }) {
       }
     } catch (error) {
       console.error("Error adding to wishlists:", error);
-      const message = error.response?.data?.message || "Failed to add to wishlists!";
+      const message =
+        error.response?.data?.message || "Failed to add to wishlists!";
 
       if (error.response?.status === 409) {
         Swal.fire({
@@ -179,8 +182,6 @@ export default function BookDetails({ params }) {
       }
     }
   };
-
-  console.log(bookDetails);
 
   return (
     <>

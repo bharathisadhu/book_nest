@@ -40,7 +40,7 @@ export default function PopularBooks() {
     cardCount,
   } = popularBooks;
 
-  const addToBookmark = async ({book}) => {
+  const addToBookmark = async ({ book }) => {
     if (bookmarkedBooks) {
       Swal.fire({
         icon: "info",
@@ -49,21 +49,23 @@ export default function PopularBooks() {
       });
       return;
     }
-    console.log(book);
 
     try {
-      const response = await axios.post(`/api/wishlists/${session?.user?.email}`, {
-        name,
-        BookId: book?._id, // Updated this from bookId to _id
-        description: book?.description || "",
-        image,
-        author: book?.author || "",
-        price,
-        rating: ratings,
-        category,
-        cardCount,
-        email: session?.user?.email, // Ensure this is not undefined
-      });
+      const response = await axios.post(
+        `/api/wishlists/${session?.user?.email}`,
+        {
+          name,
+          BookId: book?._id, // Updated this from bookId to _id
+          description: book?.description || "",
+          image,
+          author: book?.author || "",
+          price,
+          rating: ratings,
+          category,
+          cardCount,
+          email: session?.user?.email, // Ensure this is not undefined
+        }
+      );
 
       if (response.status === 201) {
         setBookmarkedBooks(true);
@@ -77,7 +79,8 @@ export default function PopularBooks() {
       }
     } catch (error) {
       console.error("Error adding to wishlists:", error);
-      const message = error.response?.data?.message || "Failed to add to wishlists!";
+      const message =
+        error.response?.data?.message || "Failed to add to wishlists!";
 
       if (error.response?.status === 409) {
         Swal.fire({
@@ -152,9 +155,6 @@ export default function PopularBooks() {
   if (loading) {
     return <Loader></Loader>; // Display a loading message
   }
-
-  console.log(cartBooks);
-  console.log(popularBooks);
 
   return (
     <div className="my-4 md:my-8 lg:mt-28 lg:mb-20 container mx-auto">
