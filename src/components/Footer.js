@@ -10,9 +10,10 @@ import logo from "../../public/BookNest.png"; // Ensure the image is in the publ
 
 const Footer = () => {
   return (
-    <div className="">
-      <footer className="footer bg-[#282828] text-base-content py-10 lg:px-24">
-        <aside className="text-white flex flex-col justify-center md:justify-start items-center md:items-start mx-auto">
+    <div className="mt-10">
+      <footer className=" bg-[#282828]  ">
+        <div className="footer text-base-content py-10 container mx-auto">
+        <aside className="text-white flex flex-col justify-center md:justify-start items-center md:items-start mx-auto md:mx-0">
           <p>
             <span className="text-3xl font-semibold text-orange-600 flex items-center md:items-start">
               <Image
@@ -20,7 +21,7 @@ const Footer = () => {
                 alt="BookNest Logo"
                 width={200}
                 height={50}
-                className="w-[200px]"
+                className="w-[200px] md:-ml-10"
               />
             </span>
             <br />
@@ -36,7 +37,7 @@ const Footer = () => {
         </aside>
 
         {/* need help and services div */}
-        <div className="flex justify-between md:justify-normal md:gap-6 lg:gap-40 px-2 w-full">
+        <div className="flex justify-between md:gap-6 px-2 w-full lg:w-[500px]">
           <nav className="flex flex-col space-y-3">
             <h6 className="footer-title text-white">Need Help</h6>
             <h2 className="md:text-2xl text-orange-600 font-semibold">
@@ -44,7 +45,7 @@ const Footer = () => {
             </h2>
             <a className="text-white">Monday – Friday: 9:00-20:00</a>
             <a className="text-white">Saturday: 11:00 – 15:00</a>
-            <h2 className="md:text-xl text-white">contact@example.com</h2>
+            <h2 className="md:text-xl text-white">booknest21@gmail.com</h2>
           </nav>
           {/* services nav */}
           <nav className="flex flex-col space-y-2 items-end md:items-start">
@@ -70,7 +71,7 @@ const Footer = () => {
           </nav>
         </div>
         {/* company and legal div */}
-        <div className="flex justify-between md:justify-normal md:gap-6 lg:gap-40 px-2 w-full">
+        <div className="flex justify-between md:gap-6 lg:gap-40 px-2 w-full lg:pl-28">
           {/* company section */}
           <nav className="flex flex-col space-y-3">
             <h6 className="footer-title text-white">Company</h6>
@@ -116,12 +117,14 @@ const Footer = () => {
             </Link>
           </nav>
         </div>
+        </div>
       </footer>
 
       <hr />
 
-      <footer className="footer bg-[#282828] text-neutral-content items-center p-4">
-        <aside className="grid-flow-col items-center">
+      <footer className=" bg-[#282828]  ">
+       <div className="container mx-auto text-neutral-content items-center p-4 footer">
+       <aside className="grid-flow-col items-center">
           <p>
             Copyright © {new Date().getFullYear()}{" "}
             <span className="text-orange-600">BookNest</span> - All rights
@@ -139,6 +142,7 @@ const Footer = () => {
             <FaFacebook />
           </a>
         </nav>
+       </div>
       </footer>
     </div>
   );

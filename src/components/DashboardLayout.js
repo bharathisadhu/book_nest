@@ -258,24 +258,28 @@ import { IoBookSharp } from "react-icons/io5";
 import { usePathname } from "next/navigation";
 import logo from "../../public/BookNest.png";
 import axios from "axios";
-import Loading from "../app/loading";
+import Loading from "../app/loading"; // Import your Loading component
+import { FaHome } from "react-icons/fa";
+import DashboardNavbar from "./DashboardNavbar";
+import PrivateRoute from "@/services/PrivateRoute";
 
 const DashboardLayout = ({ children }) => {
   const pathname = usePathname();
-  const { data: session } = useSession();
+  const { data: session, status } = useSession(); // Also get the session status
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isAdmin, setIsAdmin] = useState(null);
   const [loading, setLoading] = useState(true);
   const baseURL = process.env.NEXT_PUBLIC_API_URL;
 
   const fetchAdminStatus = useCallback(async () => {
-    setLoading(true);
     if (session) {
+      setLoading(true);
       try {
         const response = await axios.get(
           `${baseURL}/api/user/${session?.user?.email}`
         );
         setIsAdmin(response?.data?.role === "admin");
+        setLoading(false); // Set loading to false after fetching
       } catch (error) {
         console.error("Error fetching admin status:", error);
         setIsAdmin(null);
@@ -322,6 +326,11 @@ const DashboardLayout = ({ children }) => {
         icon: <AiOutlineLineChart className="text-xl" />,
         href: "/dashboard/sales",
       },
+      {
+        name: "Back to Home",
+        icon: <FaHome className="text-xl" />,
+        href: "/",
+      },
     ],
     []
   );
@@ -331,27 +340,27 @@ const DashboardLayout = ({ children }) => {
       {
         name: "Dashboard",
         icon: <AiOutlineDashboard className="text-xl" />,
-        href: "/dashboard/userDashboard",
-      },
-      {
-        name: "Profile",
-        icon: <AiOutlineUser className="text-xl" />,
         href: "/dashboard/userProfile",
       },
+      // {
+      //   name: "Profile",
+      //   icon: <AiOutlineUser className="text-xl" />,
+      //   href: "/dashboard/userProfile",
+      // },
       {
-        name: "Analytics",
-        icon: <IoBookSharp className="text-xl" />,
-        href: "/dashboard/analytics",
-      },
-      {
-        name: "Cart",
+        name: "Payment History",
         icon: <AiOutlineFileText className="text-xl" />,
-        href: "/dashboard/cart",
+        href: "/dashboard/paymentHistory",
       }, // Corrected URL
       {
         name: "Wishlist",
         icon: <AiOutlineLineChart className="text-xl" />,
         href: "/dashboard/wishlists",
+      },
+      {
+        name: "Back to Home",
+        icon: <FaHome className="text-xl" />,
+        href: "/",
       },
     ],
     []
@@ -362,11 +371,18 @@ const DashboardLayout = ({ children }) => {
     [isAdmin, adminMenuItems, nonAdminMenuItems]
   );
 
-  if (loading) {
-    return <p><Loading /></p>;
+  // If the session is undefined (loading) or checking admin status is ongoing, show the loading spinner
+  if (status === "loading" || loading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <Loading /> {/* Full-page loading spinner */}
+      </div>
+    );
   }
+
   return (
-    <main className="flex">
+    <PrivateRoute>
+      <main className="flex">
       <button
         className="lg:hidden p-2 text-white bg-gradient-to-r from-[#F65D4E99] to-[#F65D4E] fixed z-50 w-full flex items-center justify-between"
         onClick={toggleSidebar}
@@ -387,24 +403,37 @@ const DashboardLayout = ({ children }) => {
         className={`text-black bg-white w-full lg:w-80 lg:min-h-screen py-6 font-[sans-serif] overflow-auto fixed z-10 transition-transform duration-300 transform shadow-xl ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
         } lg:relative lg:translate-x-0`}
+        // style={{ height: "100vh", position: "sticky", top: 0 }} // Make sidebar sticky
       >
-        <div className="flex flex-col items-center px-4">
+        {/* for mobile and tablet */}
+        <div className="flex flex-col items-center px-4 mt-14 lg:hidden">
           <Image
             height={200}
             width={200}
-            src={session?.user.image || "https://i.ibb.co/XWyS1WL/d.jpg"}
+            src={session?.user?.image || "https://i.ibb.co/XWyS1WL/d.jpg"}
             className="w-12 h-12 rounded-full border-2 border-white"
             alt="Profile"
           />
           <div className="mt-2 text-center">
-            <p className="text-sm mt-2">{session?.user.name || "User Name"}</p>
+            <p className="text-sm mt-2">{session?.user?.name || "User Name"}</p>
             <p className="text-xs mt-0.5">
-              {session?.user.email || "User Email"}
+              {session?.user?.email || "User Email"}
             </p>
           </div>
         </div>
 
-        <ul className="mt-4">
+        {/* for desktop */}
+        <div className="lg:flex flex-col items-center px-4 mt-14 hidden">
+          <Image
+            height={1000}
+            width={1000}
+            src={logo}
+            className="w-[200px]"
+            alt="logo"
+          />
+        </div>
+
+        <ul className="">
           {menuItems.map((item) => (
             <li key={item.name}>
               <Link
@@ -437,13 +466,13 @@ const DashboardLayout = ({ children }) => {
       </nav>
 
       <main
-        className={`flex-grow lg:p-6 transition-all duration-300 overflow-hidden ${
-          isSidebarOpen ? "modal-toggle" : ""
-        } lg:ml-16 mt-20 lg:mt-0`}
+        className={`flex-grow transition-all duration-300 overflow-y-auto lg:overflow-hidden`} // Make main content scrollable
       >
-        {children}
+        <DashboardNavbar />
+        <div className="lg:ml-16 lg:mr-10 mt-20 lg:mt-28">{children}</div>
       </main>
     </main>
+    </PrivateRoute>
   );
 };
 

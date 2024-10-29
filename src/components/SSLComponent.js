@@ -20,7 +20,6 @@ export default function SSLComponent() {
   const PaymentOption = async () => {
     let res = await fetch("/api/payments", { method: "POST" });
     let JSON = await res.json();
-    console.log(JSON["data"]["desc"]);
     setMethod(JSON["data"]["desc"]);
     setShowModal(true); // Show the modal after fetching the data
   };

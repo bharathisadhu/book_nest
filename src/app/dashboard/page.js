@@ -11,26 +11,38 @@ import Head from "next/head";
 import UsedDevice from '@/components/mainDashBord/UsedDevice';
 import dynamic from "next/dynamic";
 
-const BarCharts = dynamic(() => import("@/components/mainDashBord/BarCharts"), {
-  ssr: false,
-});
+const BarCharts = dynamic(
+  () => import("@/components/mainDashBoard/BarCharts"),
+  {
+    ssr: false,
+  }
+);
 const ProfitChart = dynamic(
-  () => import("@/components/mainDashBord/ProfitChart"),
+  () => import("@/components/mainDashBoard/ProfitChart"),
   { ssr: false }
 );
-const UserCount = dynamic(() => import("@/components/mainDashBord/UserCount"), {
-  ssr: false,
-});
+const UserCount = dynamic(
+  () => import("@/components/mainDashBoard/UserCount"),
+  {
+    ssr: false,
+  }
+);
 const BookCount = dynamic(
-  () => import("@/components/mainDashBord/BooKCountPrice"),
+  () => import("@/components/mainDashBoard/BooKCountPrice"),
   { ssr: false }
 );
-const SaleCount = dynamic(() => import("@/components/mainDashBord/SaleCount"), {
-  ssr: false,
-});
-const BlogCount = dynamic(() => import("@/components/mainDashBord/BlogCount"), {
-  ssr: false,
-});
+const SaleCount = dynamic(
+  () => import("@/components/mainDashBoard/SaleCount"),
+  {
+    ssr: false,
+  }
+);
+const BlogCount = dynamic(
+  () => import("@/components/mainDashBoard/BlogCount"),
+  {
+    ssr: false,
+  }
+);
 
 
 const Users = () => {
@@ -40,6 +52,7 @@ const Users = () => {
         <title>BookNest | Dashboard</title>
       </Head>
       <DashboardLayout>
+<<<<<<< HEAD
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5">
           <UserCount className=" col-span-1" />
           <BookCount className=" col-span-1" />
@@ -57,6 +70,8 @@ const Users = () => {
           <BarCharts totalPrice={100000} /> {/* Pass totalPrice as needed */}
           <ProfitChart />
         </div>
+=======
+>>>>>>> a0c170358c13c7501651142b1e4a5a8d9658ec1e
       </DashboardLayout>
     </>
   );

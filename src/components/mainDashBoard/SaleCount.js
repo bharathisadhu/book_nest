@@ -39,29 +39,6 @@ const SaleCount = () => {
 export default SaleCount;
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 //.............................Main Code...............................
 
 // "use client";
@@ -72,6 +49,7 @@ export default SaleCount;
 //   const [totalPrice, setTotalPrice] = useState(0);
 
 //   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+
 
 //   // Fetch comments from the backend
 //   useEffect(() => {
@@ -84,6 +62,16 @@ export default SaleCount;
 //     fetchBook();
 //   }, [baseUrl]);
 
+  // Fetch comments from the backend
+  // useEffect(() => {
+  //   const fetchBook = async () => {
+  //     const response = await fetch(`${baseUrl}/api/payments-price`);
+  //     const data = await response.json();
+
+  //     setTotalPrice(data.totalAmount);
+  //   };
+  //   fetchBook();
+  // }, [baseUrl]);
 //   return (
 //     <>
 //       <div className="card bg-base-100 h-32 shadow-xl border-2 flex flex-col items-center justify-center px-4">

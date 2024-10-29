@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import connectDB from "@/lib/connectDB";
-import Payment from "../../../../models/Payment";
+import {Payment} from "../../../../models/Payment";
 // import Payment from "../../../../models/Payment";
 
 // POST: Create or update payment

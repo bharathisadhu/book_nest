@@ -1,12 +1,39 @@
+import dynamic from "next/dynamic";
 import DashboardLayout from "@/components/DashboardLayout";
-import UserCount from "@/components/mainDashBord/UserCount";
-import BookCount from "@/components/mainDashBord/BooKCountPrice";
 import Head from "next/head";
-import SaleCount from "@/components/mainDashBord/SaleCount";
-import BlogCount from "@/components/mainDashBord/BlogCount";
-import BarCharts from "@/components/mainDashBord/BarCharts";
-import ProfitChart from "@/components/mainDashBord/ProfitChart";
-import UsedDevice from "@/components/mainDashBord/UsedDevice";
+
+const UserCount = dynamic(
+  () => import("@/components/mainDashBoard/UserCount"),
+  {
+    ssr: false,
+  }
+);
+const BookCount = dynamic(
+  () => import("@/components/mainDashBoard/BooKCountPrice"),
+  { ssr: false }
+);
+const SaleCount = dynamic(
+  () => import("@/components/mainDashBoard/SaleCount"),
+  {
+    ssr: false,
+  }
+);
+const BlogCount = dynamic(
+  () => import("@/components/mainDashBoard/BlogCount"),
+  {
+    ssr: false,
+  }
+);
+const BarCharts = dynamic(
+  () => import("@/components/mainDashBoard/BarCharts"),
+  {
+    ssr: false,
+  }
+);
+const ProfitChart = dynamic(
+  () => import("@/components/mainDashBoard/ProfitChart"),
+  { ssr: false }
+);
 
 const AdminDashboard = () => {
   return (
@@ -24,8 +51,6 @@ const AdminDashboard = () => {
         <div className="mt-4 grid grid-cols-12 gap-4 md:mt-6 md:gap-6 2xl:mt-9 2xl:gap-7.5">
           <BarCharts />
           <ProfitChart />
-          <UsedDevice />
-          <BarCharts />
         </div>
       </DashboardLayout>
     </div>

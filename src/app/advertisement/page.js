@@ -9,7 +9,7 @@ export default function Advertise() {
   return (
     <>
       <Navbar />
-      <div className="bg-gray-100">
+      <div className="bg-gray-100 mt-[75px] lg:mt-[120px]">
         {/* Hero Section */}
         <Banner title="Advertise with Us" linkName="Home" />
         <div className="relative h-screen flex items-center justify-center bg-branding bg-cover bg-center">

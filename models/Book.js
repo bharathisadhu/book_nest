@@ -79,6 +79,8 @@ const BookSchema = new mongoose.Schema({
   ratings: { type: Number },
   author: { type: String },
   category: { type: String },
+  quantity: { type: Number },
+  publishType: { type: String },
   cardCount: { type: Number },
 });
 
@@ -100,6 +102,7 @@ const WishlistSchema = new Schema({
   rating: { type: Number },
   category: { type: String },
   email: { type: String },
+  bookId: {},
 });
 
 const CartsSchema = new mongoose.Schema({
@@ -112,7 +115,6 @@ const CartsSchema = new mongoose.Schema({
   price: { type: Number },
   rating: { type: Number },
   category: { type: String },
-  cardCount: { type: Number },
   cardCount: { type: Number },
 });
 

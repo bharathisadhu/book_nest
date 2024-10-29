@@ -113,3 +113,32 @@
   background: #f65d4e; /* Thumb color */
   cursor: pointer;
 }
+
+/* Animate truck movement */
+@keyframes drive {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Success message fading in */
+.success-visible {
+  opacity: 1 !important;
+}
+
+.truck-drive {
+  animation: drive 1s forwards;
+}
+
+button:disabled .default {
+  display: none;
+}
+
+/* Disable background scrolling when the modal is open */
+body.modalOpen {
+  overflow: hidden;
+}
+

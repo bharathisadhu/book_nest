@@ -2,7 +2,10 @@ import connectToDatabase from "@/lib/mongodb";
 import { NextResponse } from "next/server";
 import { Blog } from "../../../../../models/Book";
 
+import connectDB from "@/lib/connectDB";
+import { ObjectId } from "mongodb";
 
+let db;
 
 
 
@@ -28,4 +31,45 @@ export async function GET(request, { params }) {
 
 
 }
+
+
+
+export async function PUT(request, { params }) {
+  const { id } = params;
+  db = await connectDB();
+  const updatedBlog = await request.json();
+
+  // Remove the _id field from updatedBook if it exists
+  const { _id, ...blogData } = updatedBlog;
+
+  // Update the book in the database
+  const result = await db
+    .collection("blogs")
+    .updateOne({ _id: new ObjectId(id) }, { $set: blogData });
+
+  if (result.matchedCount === 0) {
+    return NextResponse.json({ message: "Book not found" }, { status: 404 });
+  }
+
+  return NextResponse.json({ message: "Book updated successfully" });
+}
+
+export async function DELETE(request, { params }) {
+  const { id } = params;
+  db = await connectDB();
+
+  // Delete the book from the database
+  const result = await db
+    .collection("blogs")
+    .deleteOne({ _id: new ObjectId(id) }); // Convert id to ObjectId
+
+console.log("didarul-----------",result);
+  if (result.deletedCount === 0) {
+    return NextResponse.json({ message: "blogs not found" }, { status: 404 });
+  }
+
+  return NextResponse.json({ message: "blogs deleted successfully" });
+}
+
+
 

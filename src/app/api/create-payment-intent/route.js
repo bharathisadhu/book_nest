@@ -16,7 +16,7 @@ export async function POST(req) {
     // Log request data for debugging
     // Calculate the total amount
     const totalAmount = books.reduce((total, book) => {
-      return total + book.price * book.cardCount;
+      return total + book.price * book.quantity;
     }, 0);
     // Convert the totalAmount to cents for Stripe
     const amountInCents = Math.round(totalAmount * 100);
@@ -34,9 +34,6 @@ export async function POST(req) {
       currency: "usd",
       payment_method_types: ["card"],
     });
-    // Save payment with "pending" status
-    //   const result = await db.collection("payments").insertOne(paymentIntent);
-    // console.log("from payments:", result);
 
     return NextResponse.json({
       clientSecret: paymentIntent.client_secret,

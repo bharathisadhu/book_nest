@@ -5,62 +5,84 @@ import { useEffect, useState } from "react";
 import { FaDollarSign, FaHeart, FaShoppingCart, FaStar } from "react-icons/fa";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { useSession } from "next-auth/react";
+import Loader from "@/app/loading";
 
 export default function PopularBooks() {
   const [popularBooks, setPopularBooks] = useState([]);
-  const [bookmarkedBooks, setBookmarkedBooks] = useState({});
-  const [cartBooks, setCartBooks] = useState({});
+  const [bookmarkedBooks, setBookmarkedBooks] = useState(false);
+  const [cartBooks, setCartBooks] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const { data: session } = useSession();
 
   const baseURL = process.env.NEXT_PUBLIC_API_URL;
 
   useEffect(() => {
+    setLoading(true);
     fetch(`${baseURL}/api/books`)
       .then((response) => response.json())
       .then((data) => {
         setPopularBooks(data);
+        setLoading(false); // Set loading to false once data is fetched
       });
   }, [baseURL]);
 
-  const addToBookmark = async (book) => {
-    if (bookmarkedBooks[book._id]) {
+  const {
+    _id,
+    name,
+    description,
+    image,
+    author,
+    price,
+    ratings,
+    category,
+    publishType,
+    cardCount,
+  } = popularBooks;
+
+  const addToBookmark = async ({book}) => {
+    if (bookmarkedBooks) {
       Swal.fire({
         icon: "info",
-        title: "Already Bookmarked",
-        text: `${book.name} is already in your bookmarks!`,
+        title: "Already in Cart",
+        text: `${name} is already in your cart!`,
       });
       return;
     }
+    console.log(book);
 
     try {
-      const response = await axios.post(`/api/wishlist/${book._id}`, {
-        name: book.name,
-        description: book.description || "",
-        image: book.image,
-        author: book.author || "",
-        price: book.price,
-        rating: book.ratings,
-        category: book.category,
+      const response = await axios.post(`/api/wishlists/${session?.user?.email}`, {
+        name,
+        BookId: book?._id, // Updated this from bookId to _id
+        description: book?.description || "",
+        image,
+        author: book?.author || "",
+        price,
+        rating: ratings,
+        category,
+        cardCount,
+        email: session?.user?.email, // Ensure this is not undefined
       });
 
       if (response.status === 201) {
-        setBookmarkedBooks((prev) => ({ ...prev, [book._id]: true }));
+        setBookmarkedBooks(true);
         Swal.fire({
           position: "top-end",
           icon: "success",
-          title: `${book.name} added to bookmarks!`,
+          title: `${name} added to wishlists!`,
           showConfirmButton: false,
           timer: 1500,
         });
       }
     } catch (error) {
-      console.error("Error adding to bookmark:", error);
-      const message =
-        error.response?.data?.message || "Failed to add to bookmarks!";
+      console.error("Error adding to wishlists:", error);
+      const message = error.response?.data?.message || "Failed to add to wishlists!";
 
       if (error.response?.status === 409) {
         Swal.fire({
           icon: "info",
-          title: "Already Bookmarked",
+          title: "Already in wishlists",
           text: message,
         });
       } else {
@@ -73,34 +95,36 @@ export default function PopularBooks() {
     }
   };
 
-  const addToCart = async (book) => {
-    if (cartBooks[book._id]) {
+  const addToCart = async () => {
+    if (cartBooks) {
       Swal.fire({
         icon: "info",
         title: "Already in Cart",
-        text: `${book.name} is already in your cart!`,
+        text: `${name} is already in your cart!`,
       });
       return;
     }
 
     try {
-      // const response = await axios.post("/api/carts", {
-      //   name: book.name,
-      //   description: book.description || "",
-      //   image: book.image,
-      //   author: book.author || "",
-      //   price: book.price,
-      //   rating: book.ratings,
-      //   category: book.category,
-      //   cardCount: 1, // Default cardCount value, you can update it as needed
-      // });
+      const response = await axios.post(`/api/carts/${session?.user?.email}`, {
+        name: popularBooks.name,
+        BookId: popularBooks._id, // Updated this from bookId to _id
+        description: popularBooks.description || "",
+        image: popularBooks.image,
+        author: popularBooks.author || "",
+        price: popularBooks.price,
+        rating: popularBooks.ratings,
+        category: popularBooks.category,
+        cardCount: popularBooks.cardCount,
+        email: session?.user?.email, // Ensure this is not undefined
+      });
 
       if (response.status === 201) {
-        setCartBooks((prev) => ({ ...prev, [book._id]: true }));
+        setCartBooks(true);
         Swal.fire({
           position: "top-end",
           icon: "success",
-          title: `${book.name} added to cart!`,
+          title: `${popularBooks.name} added to cart!`,
           showConfirmButton: false,
           timer: 1500,
         });
@@ -125,6 +149,13 @@ export default function PopularBooks() {
     }
   };
 
+  if (loading) {
+    return <Loader></Loader>; // Display a loading message
+  }
+
+  console.log(cartBooks);
+  console.log(popularBooks);
+
   return (
     <div className="my-4 md:my-8 lg:mt-28 lg:mb-20 container mx-auto">
       {/* Header */}
@@ -148,19 +179,17 @@ export default function PopularBooks() {
               <div className="transition h-fit duration-500 w-full font-sans overflow-hidden mx-auto mt-4 px-4 pt-4">
                 {/* Full Height Image */}
                 <div className="relative group">
-                  <Link href={`/books/${book._id}`}>
-                    <Image
-                      src={book.image}
-                      alt={book.name}
-                      width={500}
-                      height={500}
-                      className="w-56 h-80 object-cover rounded-xl mb-3 transition-transform hover:scale-105"
-                    />
-                  </Link>
+                  <Image
+                    src={book.image}
+                    alt={book.name}
+                    width={500}
+                    height={500}
+                    className="w-56 h-80 object-cover rounded-xl mb-3 transition-transform hover:scale-105"
+                  />
                   {/* Bookmark and Cart Icons */}
-                  <div>
+                  {/* <div>
                     <button
-                      onClick={() => addToBookmark(book)}
+                      onClick={() => addToBookmark(book._id)}
                       className={`cursor-pointer absolute bottom-16 right-2 p-2 rounded-full bg-white shadow-md transition-transform duration-500 opacity-0 group-hover:opacity-100 hover:duration-500 ${
                         bookmarkedBooks[book._id] ? "text-[#F65D4E]" : ""
                       }`}
@@ -168,14 +197,14 @@ export default function PopularBooks() {
                       <FaHeart className="text-xl" />
                     </button>
                     <button
-                      onClick={() => addToCart(book)}
+                      onClick={() => addToCart()}
                       className={`cursor-pointer absolute bottom-5 right-2 p-2 rounded-full bg-white shadow-md transition-transform duration-500 opacity-0 group-hover:opacity-100 hover:duration-500 ${
                         cartBooks[book._id] ? "text-[#F65D4E]" : ""
                       }`}
                     >
                       <FaShoppingCart className="text-xl" />
                     </button>
-                  </div>
+                  </div> */}
                 </div>
 
                 {/* Book Details */}
@@ -183,13 +212,14 @@ export default function PopularBooks() {
                   <p className="text-sm text-gray-600 mb-1 font-medium">
                     {book.category}
                   </p>
-                  <h2
-                    title={book.name}
-                    className="text-lg md:text-xl text-gray-800 font-bold line-clamp-2 hover:text-[#F65D4E]"
-                  >
-                    {book.name.slice(0, 15)}...
-                  </h2>
-
+                  <Link href={`/books/${book._id}`}>
+                    <h2
+                      title={book.name}
+                      className="text-lg md:text-xl text-gray-800 font-bold line-clamp-2 hover:text-[#F65D4E]"
+                    >
+                      {book.name.slice(0, 15)}...
+                    </h2>
+                  </Link>
                   <div className="flex items-center mt-2">
                     <p className="text-gray-800 font-semibold flex items-center">
                       Ratings: {book.ratings}

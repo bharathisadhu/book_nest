@@ -23,7 +23,6 @@
 //     formState: { errors },
 //   } = useForm();
 
-
 //   useEffect(() => {
 //     // Redirect if already logged in
 //     if (status === "authenticated") {
@@ -197,8 +196,6 @@
 //   );
 // }
 
-
-
 "use client";
 import { useEffect, useState } from "react"; // Import useEffect and useState
 import { useRouter } from "next/navigation";
@@ -215,7 +212,12 @@ import Head from "next/head";
 
 export default function Login() {
   const router = useRouter();
-  const { register, handleSubmit, reset, formState: { errors } } = useForm();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm();
   // const [redirect, setRedirect] = useState(""); // State to store redirect URL
 
   // useEffect(() => {
@@ -266,7 +268,7 @@ export default function Login() {
       <Navbar />
       <main>
         {/* Login section */}
-        <div className="flex items-center justify-center p-6 container mx-auto">
+        <div className="mt-[75px] lg:mt-[120px] flex items-center justify-center p-6 container mx-auto">
           <div className="flex flex-col lg:flex-row h-full w-full overflow-hidden rounded-xl">
             {/* Register design side */}
             <div className="relative w-full h-[96] items-center justify-center bg-[#F65D4E] md:flex ">
@@ -291,9 +293,16 @@ export default function Login() {
             </div>
             {/* Input side */}
             <div className="flex w-full flex-col justify-center shadow-2xl shadow-orange-50 space-y-6 my-4">
-              <p className="-mb-4 text-center text-xl font-bold">START FOR FREE</p>
-              <h2 className="text-center text-2xl md:text-3xl font-bold">Sign In to BookNest</h2>
-              <form onSubmit={handleSubmit(onSubmit)} className="w-[90%] mx-auto space-y-2">
+              <p className="-mb-4 text-center text-xl font-bold">
+                START FOR FREE
+              </p>
+              <h2 className="text-center text-2xl md:text-3xl font-bold">
+                Sign In to BookNest
+              </h2>
+              <form
+                onSubmit={handleSubmit(onSubmit)}
+                className="w-[90%] mx-auto space-y-2"
+              >
                 <input
                   {...register("email", { required: true })}
                   className="w-full rounded-lg border px-6 py-2 focus:outline-none focus:ring-2 focus:ring-[#F65D4E]/50"
@@ -301,7 +310,9 @@ export default function Login() {
                   placeholder="Email"
                   name="email"
                 />
-                {errors.email && <span className="text-red-600">Email is required</span>}
+                {errors.email && (
+                  <span className="text-red-600">Email is required</span>
+                )}
                 <input
                   {...register("password", { required: true })}
                   className="w-full rounded-lg border px-6 py-2 focus:outline-none focus:ring-2 focus:ring-[#F65D4E]/50"
@@ -309,10 +320,15 @@ export default function Login() {
                   placeholder="Password"
                   name="password"
                 />
-                {errors.password && <span className="text-red-600">Password is required</span>}
+                {errors.password && (
+                  <span className="text-red-600">Password is required</span>
+                )}
                 <p className="text-[14px] font-medium text-center">
                   Do not have an account?{" "}
-                  <Link href="/register" className="text-[#F65D4E] text-[16px] font-bold">
+                  <Link
+                    href="/register"
+                    className="text-[#F65D4E] text-[16px] font-bold"
+                  >
                     Register Now
                   </Link>
                 </p>
@@ -328,8 +344,9 @@ export default function Login() {
                 <div className="mx-4 text-gray-400">OR</div>
                 <hr className="flex-1" />
               </div>
-              {/* Sign in with Google */}
-              <div className="flex items-center justify-center gap-10">
+              {/* social login container */}
+              <div className="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-10">
+                {/* Sign in with Google */}
                 <div
                   onClick={() => handleSocialLogin("google")}
                   className="flex h-[50px] gap-2 items-center overflow-hidden rounded-full shadow-md duration-300 hover:scale-95 hover:shadow hover:cursor-pointer"
@@ -338,7 +355,9 @@ export default function Login() {
                     Sign With
                   </div>
                   <span className="right-0 top-0 h-0 w-0 -rotate-90 border-b-[50px] border-r-[50px] border-b-transparent border-r-[#F65D4E]"></span>
-                  <span className="pr-4 text-4xl font-bold text-[#F65D4E]">G+</span>
+                  <span className="pr-4 text-4xl font-bold text-[#F65D4E]">
+                    G+
+                  </span>
                 </div>
 
                 {/* Sign in with GitHub */}

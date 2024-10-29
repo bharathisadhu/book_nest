@@ -1,17 +1,25 @@
 "use client";
 
+import Loader from "@/app/loading";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
 const Blogs = () => {
   const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true)
   const baseURL = process.env.NEXT_PUBLIC_API_URL;
   useEffect(() => {
+    setLoading(true)
     fetch(`${baseURL}/api/blogs`)
       .then((response) => response.json())
       .then((data) => setPosts(data));
+      setLoading(false)
   }, [baseURL]);
+
+  if(loading){
+    return <Loader></Loader>
+  }
 
   return (
     <div className="bg-gray-50 w-full p-4 my-10 md:my-12 lg:my-28 container mx-auto">

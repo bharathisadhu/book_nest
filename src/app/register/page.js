@@ -59,7 +59,7 @@ export default function Register() {
       </Head>
       <Navbar />
       <main>
-        <div className="flex items-center justify-center p-6 container mx-auto">
+        <div className="mt-[75px] lg:mt-[120px] flex items-center justify-center p-6 container mx-auto">
           <div className="flex flex-col lg:flex-row h-full w-full overflow-hidden rounded-xl shadow-md  border">
             {/* Register design side */}
             <div className="relative w-full h-[96] items-center justify-center bg-[#F65D4E] md:flex ">

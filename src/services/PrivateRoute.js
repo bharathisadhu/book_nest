@@ -1,33 +1,24 @@
-import { useEffect } from "react";
 import { useSession } from "next-auth/react";
+import { useEffect } from "react";
 import { useRouter } from "next/navigation";
+import Loading from "../app/loading";
 
-const PrivateRoute = ({ children }) => {
+export default function PrivateRoute({ children }) {
   const { data: session, status } = useSession();
-  // const router = useRouter();
+  const router = useRouter();
 
-  // useEffect(() => {
-  //   // Wait for session loading to finish
-  //   if (status === "loading") return;
-
-  //   // If not authenticated, redirect to login page
-  //   if (!session) {
-  //     // Check if router.query is defined before accessing redirect
-  //     const redirect = router?.query?.redirect ? router?.query?.redirect : '/'; // Use '/' as a default if redirect is not available
-  //     console.log("Redirecting to login. Current redirect:", redirect);
-
-  //     // Redirect to login with the current path as a query parameter
-  //     router.push(`/login?redirect=${encodeURIComponent(redirect)}`);
-  //   }
-  // }, [session, status, router]);
-
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      router.push("/login"); // Redirect to login page
+    }
+  }, [status, router]); // Make sure this effect is always called
   // Handle loading state
   if (status === "loading") {
-    return <div>Loading...</div>; // Show loading state
+    return <Loading />; // Show loading state
   }
 
-  // Render children if session exists
-  return session ? <>{children}</> : null;
-};
+  // If not authenticated, redirect to the login page
 
-export default PrivateRoute;
+  // Render children only if session exists
+  return session ? <>{children}</> : null; // Ensure consistent rendering
+}

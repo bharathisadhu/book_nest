@@ -1,6 +1,5 @@
 [
   {
-    "_id": "66f2b86492d389553d55b00c",
     "name": "The Great Gatsby",
     "description": "F. Scott Fitzgerald's 'The Great Gatsby' is a poignant exploration of the American Dream during the Jazz Age. Centered around Jay Gatsby, a mysterious millionaire who hosts lavish parties to win back his lost love, Daisy Buchanan, the novel delves into themes of love, ambition, and social class. Narrated by Nick Carraway, Gatsby’s neighbor, the story reveals the moral decay hidden beneath wealth and glamour. A timeless classic, it questions the nature of dreams and the costs of pursuing them.",
     "image": "https://upload.wikimedia.org/wikipedia/commons/7/7a/The_Great_Gatsby_Cover_1925_Retouched.jpg",
@@ -8,12 +7,11 @@
     "ratings": 4.5,
     "author": "F. Scott Fitzgerald",
     "category": "Classic",
-    "cardCount": 200,
+    "quantity": 200,
     "publishType": "released",
     "cardCount": 1
   },
   {
-    "_id": "66f2b86492d389553d55b00d",
     "name": "To Kill a Mockingbird",
     "description": "Harper Lee's 'To Kill a Mockingbird' is a powerful tale of morality and justice set in the racially charged American South. Narrated by young Scout Finch, the story follows her father, Atticus, as he defends Tom Robinson, a Black man unjustly accused of raping a white woman. Through Scout’s eyes, we witness the loss of innocence and the harsh realities of prejudice. This novel is a profound commentary on human dignity, empathy, and the importance of standing up for what is right.",
     "image": "https://i.ibb.co.com/mTqQMwJ/To-Kill-a-Mockingbird.jpg",
@@ -21,12 +19,11 @@
     "ratings": 4.8,
     "author": "Harper Lee",
     "category": "Classic",
-    "cardCount": 200,
+    "quantity": 200,
     "publishType": "released",
     "cardCount": 1
   },
   {
-    "_id": "66f2b86492d389553d55b00e",
     "name": "1984",
     "description": "George Orwell's '1984' presents a chilling dystopian future where totalitarianism reigns and individuality is crushed. Set in Airstrip One, a province of Oceania, the story follows Winston Smith, who secretly despises the Party and its leader, Big Brother. As he navigates a world of constant surveillance and oppressive control, Winston seeks truth and rebellion. This thought-provoking novel explores themes of censorship, identity, and the consequences of unchecked power.",
     "image": "https://i.ibb.co.com/R3V6F0L/1984.jpg",
@@ -34,12 +31,11 @@
     "ratings": 4.7,
     "author": "George Orwell",
     "category": "Dystopian",
-    "cardCount": 200,
+    "quantity": 200,
     "publishType": "released",
     "cardCount": 1
   },
   {
-    "_id": "66f2b86492d389553d55b00f",
     "name": "Pride and Prejudice",
     "description": "Jane Austen's 'Pride and Prejudice' is a beloved romantic novel that critiques social class and relationships in early 19th-century England. The story follows Elizabeth Bennet as she navigates love, pride, and prejudice, particularly in her tumultuous relationship with the wealthy and aloof Mr. Darcy. With sharp wit and engaging characters, Austen explores themes of marriage, morality, and self-discovery, making this novel both entertaining and insightful.",
     "image": "https://i.ibb.co.com/Fs1dJxR/Pride-and-Prejudice.webp",
@@ -47,12 +43,11 @@
     "ratings": 4.6,
     "author": "Jane Austen",
     "category": "Classic",
-    "cardCount": 200,
+    "quantity": 200,
     "publishType": "released",
     "cardCount": 1
   },
   {
-    "_id": "66f2b86492d389553d55b010",
     "name": "The Catcher in the Rye",
     "description": "J.D. Salinger's 'The Catcher in the Rye' follows the story of Holden Caulfield, a disenchanted teenager who has just been expelled from prep school. As he wanders through New York City, he grapples with feelings of alienation and the phoniness of adult society. Through his cynical lens, Holden expresses a deep desire to protect the innocence of youth. This coming-of-age novel resonates with themes of identity, loss, and the challenges of growing up.",
     "image": "https://i.ibb.co.com/S336LKJ/The-Catcher-in-the-Rye.webp",
@@ -60,12 +55,11 @@
     "ratings": 4,
     "author": "J.D. Salinger",
     "category": "Classic",
-    "cardCount": 200,
+    "quantity": 200,
     "publishType": "released",
     "cardCount": 1
   },
   {
-    "_id": "66f2b86492d389553d55b011",
     "name": "The Hobbit",
     "description": "J.R.R. Tolkien's 'The Hobbit' is a fantastical adventure that introduces Bilbo Baggins, a reluctant hobbit who is swept into a quest to reclaim a treasure guarded by the dragon Smaug. Accompanied by a group of dwarves and the wizard Gandalf, Bilbo embarks on a journey filled with danger, bravery, and self-discovery. This enchanting tale explores themes of heroism, friendship, and the value of home, making it a cherished classic in fantasy literature.",
     "image": "https://i.ibb.co.com/m50qcMk/The-Hobbit.jpg",
@@ -73,12 +67,11 @@
     "ratings": 4.8,
     "author": "J.R.R. Tolkien",
     "category": "Fantasy",
-    "cardCount": 200,
+    "quantity": 200,
     "publishType": "released",
     "cardCount": 1
   },
   {
-    "_id": "66f2b86492d389553d55b012",
     "name": "Fahrenheit 451",
     "description": "Ray Bradbury's 'Fahrenheit 451' depicts a dystopian future where books are banned, and 'firemen' burn any that are found. The story follows Guy Montag, a fireman who becomes disillusioned with his society's anti-intellectualism and seeks knowledge through literature. This thought-provoking novel explores themes of censorship, the power of knowledge, and the importance of individual thought in the face of conformity.",
     "image": "https://i.ibb.co.com/KKmtprd/Fahrenheit-451.jpg",
@@ -86,12 +79,11 @@
     "ratings": 4.3,
     "author": "Ray Bradbury",
     "category": "Dystopian",
-    "cardCount": 200,
+    "quantity": 200,
     "publishType": "released",
     "cardCount": 1
   },
   {
-    "_id": "66f2b86492d389553d55b013",
     "name": "The Alchemist",
     "description": "Paulo Coelho's 'The Alchemist' is a philosophical novel that follows Santiago, a shepherd boy who dreams of discovering a hidden treasure in Egypt. Guided by a series of mystical encounters, he learns about the importance of following one’s dreams and listening to one’s heart. This enchanting tale emphasizes themes of destiny, personal legend, and the interconnectedness of life, inspiring readers to pursue their own paths.",
     "image": "https://i.ibb.co.com/MN0kYFZ/The-Alchemist.jpg",
@@ -99,12 +91,11 @@
     "ratings": 4.7,
     "author": "Paulo Coelho",
     "category": "Adventure",
-    "cardCount": 200,
+    "quantity": 200,
     "publishType": "released",
     "cardCount": 1
   },
   {
-    "_id": "66f2b86492d389553d55b014",
     "name": "The Picture of Dorian Gray",
     "description": "Oscar Wilde's 'The Picture of Dorian Gray' tells the story of a young man who remains eternally youthful while a portrait of him bears the marks of his moral corruption. Influenced by the hedonistic philosophies of Lord Henry Wotton, Dorian pursues a life of pleasure, leading to devastating consequences. This novel explores themes of vanity, morality, and the duality of human nature, making it a timeless cautionary tale.",
     "image": "https://i.ibb.co.com/p1KNskg/The-Picture-of-Dorian-Gray.jpg",
@@ -112,12 +103,11 @@
     "ratings": 4.1,
     "author": "Oscar Wilde",
     "category": "Classic",
-    "cardCount": 200,
+    "quantity": 200,
     "publishType": "released",
     "cardCount": 1
   },
   {
-    "_id": "66f2b86492d389553d55b015",
     "name": "Brave New World",
     "description": "Aldous Huxley's 'Brave New World' envisions a future where society is engineered for stability through technological control and the suppression of individuality. The story follows Bernard Marx, who struggles with the conformist values of his world. As he seeks deeper meaning in life, Huxley critiques the loss of humanity in a consumer-driven society. This thought-provoking novel raises important questions about freedom, identity, and the cost of progress.",
     "image": "https://i.ibb.co.com/QXSN7Bv/Brave-New-World.webp",
@@ -125,12 +115,11 @@
     "ratings": 4.4,
     "author": "Aldous Huxley",
     "category": "Dystopian",
-    "cardCount": 200,
+    "quantity": 200,
     "publishType": "released",
     "cardCount": 1
   },
   {
-    "_id": "66f2b86492d389553d55b016",
     "name": "Harry Potter and the Sorcerer's Stone",
     "description": "J.K. Rowling's 'Harry Potter and the Sorcerer's Stone' introduces readers to Harry, an orphaned boy who discovers he is a wizard. As he attends Hogwarts School of Witchcraft and Wizardry, he uncovers the truth about his parents and faces the dark wizard Voldemort. This beloved novel explores themes of friendship, bravery, and the battle between good and evil, captivating readers of all ages.",
     "image": "https://i.ibb.co.com/fpKYWSy/Harry-Potter-and-the-Sorcerer-s-Stone.jpg",
@@ -138,12 +127,11 @@
     "ratings": 4.9,
     "author": "J.K. Rowling",
     "category": "Fantasy",
-    "cardCount": 200,
+    "quantity": 200,
     "publishType": "released",
     "cardCount": 1
   },
   {
-    "_id": "66f2b86492d389553d55b017",
     "name": "The Fault in Our Stars",
     "description": "John Green's 'The Fault in Our Stars' is a poignant love story between two teenagers, Hazel and Gus, who meet in a cancer support group. As they navigate their illnesses, they discover the beauty of life, love, and the impact of their existence. This heartwarming novel explores themes of mortality, hope, and the meaning of a life well-lived, resonating deeply with readers.",
     "image": "https://i.ibb.co.com/mSwX1nR/The-Fault-in-Our-Stars.jpg",
@@ -151,12 +139,11 @@
     "ratings": 4.5,
     "author": "John Green",
     "category": "Young Adult",
-    "cardCount": 200,
+    "quantity": 200,
     "publishType": "released",
     "cardCount": 1
   },
   {
-    "_id": "66f2b86492d389553d55b018",
     "name": "The Chronicles of Narnia",
     "description": "C.S. Lewis's 'The Chronicles of Narnia' series begins with 'The Lion, the Witch and the Wardrobe,' where four siblings discover the magical land of Narnia. In this enchanting world, they encounter Aslan, a noble lion, and battle the White Witch. These tales are rich with themes of good versus evil, sacrifice, and redemption, making them beloved classics for readers of all ages.",
     "image": "https://i.ibb.co.com/qW7MzQS/The-Chronicles-of-Narnia.jpg",
@@ -164,12 +151,11 @@
     "ratings": 4.6,
     "author": "C.S. Lewis",
     "category": "Fantasy",
-    "cardCount": 200,
+    "quantity": 200,
     "publishType": "released",
     "cardCount": 1
   },
   {
-    "_id": "66f2b86492d389553d55b019",
     "name": "The Kite Runner",
     "description": "Khaled Hosseini's 'The Kite Runner' is a powerful story of friendship and redemption set against the backdrop of a changing Afghanistan. The narrative follows Amir and Hassan, childhood friends from different social classes, as their lives take divergent paths. As Amir grapples with guilt over past betrayals, he seeks forgiveness and a chance to make amends. This emotionally charged novel explores themes of loyalty, love, and the complexities of friendship.",
     "image": "https://i.ibb.co.com/Dg7v5zC/The-Kite-Runner.jpg",
@@ -177,12 +163,11 @@
     "ratings": 4.7,
     "author": "Khaled Hosseini",
     "category": "Contemporary",
-    "cardCount": 200,
+    "quantity": 200,
     "publishType": "released",
     "cardCount": 1
   },
   {
-    "_id": "66f2b86492d389553d55b01a",
     "name": "The Da Vinci Code",
     "description": "Dan Brown's 'The Da Vinci Code' is a thrilling mystery that follows symbologist Robert Langdon as he unravels a murder in the Louvre. With cryptic clues tied to famous artworks and secret societies, Langdon teams up with cryptologist Sophie Neveu to uncover a shocking historical secret. This fast-paced novel intertwines art, religion, and history, keeping readers on the edge of their seats.",
     "image": "https://i.ibb.co.com/N18XVTV/The-Da-Vinci-Code.jpg",
@@ -190,12 +175,11 @@
     "ratings": 4.3,
     "author": "Dan Brown",
     "category": "Mystery",
-    "cardCount": 200,
+    "quantity": 200,
     "publishType": "released",
     "cardCount": 1
   },
   {
-    "_id": "66f2b86492d389553d55b01b",
     "name": "The Hunger Games",
     "description": "Suzanne Collins's 'The Hunger Games' is a gripping dystopian novel set in a future where society is divided into districts. Each year, one boy and one girl from each district are chosen to compete in a brutal televised competition. The story follows Katniss Everdeen as she volunteers to save her sister and fights for survival. This thrilling tale explores themes of sacrifice, rebellion, and the effects of war.",
     "image": "https://i.ibb.co.com/t8YY8CW/The-Hunger-Games.jpg",
@@ -203,12 +187,11 @@
     "ratings": 4.5,
     "author": "Suzanne Collins",
     "category": "Dystopian",
-    "cardCount": 200,
+    "quantity": 200,
     "publishType": "released",
     "cardCount": 1
   },
   {
-    "_id": "66f2b86492d389553d55b01c",
     "name": "The Help",
     "description": "Kathryn Stockett's 'The Help' takes place in the racially segregated South during the 1960s. The story follows three women—a Black maid, a white socialite, and a budding journalist—who come together to share their experiences. As they work on a book exposing the injustices faced by African American maids, they challenge societal norms. This powerful novel highlights themes of courage, friendship, and the fight against racism.",
     "image": "https://i.ibb.co.com/PTTJyYs/The-Help.jpg",
@@ -216,12 +199,11 @@
     "ratings": 4.6,
     "author": "Kathryn Stockett",
     "category": "Historical",
-    "cardCount": 200,
+    "quantity": 200,
     "publishType": "released",
     "cardCount": 1
   },
   {
-    "_id": "66f2b86492d389553d55b01d",
     "name": "The Road",
     "description": "Cormac McCarthy's 'The Road' is a haunting post-apocalyptic tale that follows a father and son as they navigate a bleak, desolate landscape. Their journey is filled with dangers from other survivors and the harsh environment, yet their bond and determination to survive drive them forward. This deeply moving novel explores themes of love, hope, and the struggle for survival in the face of despair.",
     "image": "https://i.ibb.co.com/n3hxL1W/The-Road.webp",
@@ -229,12 +211,11 @@
     "ratings": 4.1,
     "author": "Cormac McCarthy",
     "category": "Dystopian",
-    "cardCount": 200,
+    "quantity": 200,
     "publishType": "released",
     "cardCount": 1
   },
   {
-    "_id": "66f2b86492d389553d55b01e",
     "name": "Little Women",
     "description": "Louisa May Alcott's 'Little Women' follows the lives of the four March sisters—Meg, Jo, Beth, and Amy—as they navigate the challenges of growing up during the Civil War era. Each sister has distinct dreams and struggles, and their relationships with each other and their mother provide the heart of the story. This classic novel explores themes of family, love, and the pursuit of individuality.",
     "image": "https://i.ibb.co.com/fGm60hv/Little-Women.jpg",
@@ -242,12 +223,11 @@
     "ratings": 4.4,
     "author": "Louisa May Alcott",
     "category": "Classic",
-    "cardCount": 200,
+    "quantity": 200,
     "publishType": "released",
     "cardCount": 1
   },
   {
-    "_id": "66f2b86492d389553d55b01f",
     "name": "The Time Traveler's Wife",
     "description": "Audrey Niffenegger's 'The Time Traveler's Wife' is a unique love story that spans time and space. It follows Henry, who suffers from a genetic disorder that causes him to involuntarily time travel, and Clare, the woman he loves. Their relationship faces extraordinary challenges as they navigate love, loss, and the unpredictability of time. This poignant novel explores themes of fate, devotion, and the complexities of love.",
     "image": "https://i.ibb.co.com/fQh8qzR/The-Time-Traveler-s-Wife.jpg",
@@ -255,12 +235,11 @@
     "ratings": 4.5,
     "author": "Audrey Niffenegger",
     "category": "Romance",
-    "cardCount": 200,
+    "quantity": 200,
     "publishType": "released",
     "cardCount": 1
   },
   {
-    "_id": "66f2b86492d389553d55b020",
     "name": "Where the Crawdads Sing",
     "description": "Delia Owens's 'Where the Crawdads Sing' intertwines a coming-of-age story with a murder mystery. Set in the marshes of North Carolina, it follows Kya Clark, the 'Marsh Girl,' who grows up isolated from society. When a local man is found dead, Kya becomes the prime suspect. This beautifully written novel explores themes of loneliness, resilience, and the connection to nature.",
     "image": "https://i.ibb.co.com/V3GnGmj/Where-the-Crawdads-Sing.jpg",
@@ -268,12 +247,11 @@
     "ratings": 4.8,
     "author": "Delia Owens",
     "category": "Mystery",
-    "cardCount": 200,
+    "quantity": 200,
     "publishType": "released",
     "cardCount": 1
   },
   {
-    "_id": "66f2b86492d389553d55b021",
     "name": "The Secret Garden",
     "description": "Frances Hodgson Burnett's 'The Secret Garden' tells the enchanting story of Mary Lennox, a lonely girl who discovers a hidden, neglected garden at her uncle's estate. As she nurtures the garden back to life, she also transforms her own character and those around her, including her cousin Colin. This classic novel celebrates themes of healing, friendship, and the restorative power of nature.",
     "image": "https://i.ibb.co.com/Hn2Pr12/The-Secret-Garden.jpg",
@@ -281,12 +259,11 @@
     "ratings": 4.3,
     "author": "Frances Hodgson Burnett",
     "category": "Classic",
-    "cardCount": 200,
+    "quantity": 200,
     "publishType": "released",
     "cardCount": 1
   },
   {
-    "_id": "66f2b86492d389553d55b022",
     "name": "Life of Pi",
     "description": "Yann Martel's 'Life of Pi' is a mesmerizing tale of survival and spirituality. It follows Pi Patel, a young boy who survives a shipwreck and is stranded on a lifeboat with a Bengal tiger named Richard Parker. As Pi navigates the challenges of their journey, he explores themes of faith, resilience, and the meaning of life. This captivating story blurs the lines between reality and imagination.",
     "image": "https://i.ibb.co.com/j65NBKH/Life-of-Pi.jpg",
@@ -294,12 +271,11 @@
     "ratings": 4.5,
     "author": "Yann Martel",
     "category": "Adventure",
-    "cardCount": 200,
+    "quantity": 200,
     "publishType": "released",
     "cardCount": 1
   },
   {
-    "_id": "66f2b86492d389553d55b023",
     "name": "The Night Circus",
     "description": "Erin Morgenstern's 'The Night Circus' is a whimsical tale set in a magical competition between two young illusionists, Celia and Marco. Their rivalry unfolds within a mysterious circus that only opens at night. As they create breathtaking illusions, they realize their fates are intertwined in unexpected ways. This enchanting novel explores themes of love, destiny, and the beauty of art.",
     "image": "https://i.ibb.co.com/wSHLfHt/The-Night-Circus.jpg",
@@ -307,12 +283,11 @@
     "ratings": 4.6,
     "author": "Erin Morgenstern",
     "category": "Fantasy",
-    "cardCount": 200,
+    "quantity": 200,
     "publishType": "released",
     "cardCount": 1
   },
   {
-    "_id": "66f2b86492d389553d55b024",
     "name": "A Game of Thrones",
     "description": "George R.R. Martin's 'A Game of Thrones' is the first installment in the epic fantasy series 'A Song of Ice and Fire.' Set in the Seven Kingdoms of Westeros, the story weaves together multiple characters and families vying for power. Intrigue, betrayal, and battles for the Iron Throne dominate this richly detailed world, where honor and ambition often collide. This complex narrative explores themes of loyalty, honor, and the consequences of power.",
     "image": "https://i.ibb.co.com/Zm11rWv/A-Game-of-Thrones.jpg",
@@ -320,12 +295,11 @@
     "ratings": 4.7,
     "author": "George R.R. Martin",
     "category": "Fantasy",
-    "cardCount": 200,
+    "quantity": 200,
     "publishType": "released",
     "cardCount": 1
   },
   {
-    "_id": "66f2b86492d389553d55b025",
     "name": "The Silent Patient",
     "description": "Alex Michaelides's 'The Silent Patient' is a psychological thriller that centers on Alicia Berenson, a famous painter who inexplicably shoots her husband and then stops speaking. As therapist Theo Faber becomes obsessed with uncovering her motive, he delves into her past and the secrets that lie within. This gripping novel explores themes of trauma, obsession, and the search for truth.",
     "image": "https://i.ibb.co.com/wLPrYLQ/The-Silent-Patient.jpg",
@@ -333,12 +307,11 @@
     "ratings": 4.5,
     "author": "Alex Michaelides",
     "category": "Thriller",
-    "cardCount": 200,
+    "quantity": 200,
     "publishType": "released",
     "cardCount": 1
   },
   {
-    "_id": "66f2b86492d389553d55b026",
     "name": "Educated",
     "description": "Tara Westover's memoir, 'Educated,' chronicles her journey from a strict, survivalist upbringing in rural Idaho to earning a PhD from Cambridge University. Despite having no formal education until the age of 17, Westover's determination and thirst for knowledge drive her to overcome incredible obstacles. This inspiring memoir explores themes of education, family loyalty, and the transformative power of knowledge.",
     "image": "https://i.ibb.co.com/wspzqkB/Educated.jpg",
@@ -346,12 +319,11 @@
     "ratings": 4.7,
     "author": "Tara Westover",
     "category": "Memoir",
-    "cardCount": 200,
+    "quantity": 200,
     "publishType": "released",
     "cardCount": 1
   },
   {
-    "_id": "66f2b86492d389553d55b027",
     "name": "The Immortalists",
     "description": "Chloe Benjamin's 'The Immortalists' follows the lives of four siblings who, as children, visit a fortune teller who predicts their death dates. As they grow up, the siblings grapple with their fates, making choices influenced by this knowledge. This thought-provoking novel examines themes of fate, family bonds, and the impact of knowing one’s mortality.",
     "image": "https://i.ibb.co.com/zRLY18x/The-Immortalists.png",
@@ -359,12 +331,11 @@
     "ratings": 4.4,
     "author": "Chloe Benjamin",
     "category": "Fiction",
-    "cardCount": 200,
+    "quantity": 200,
     "publishType": "released",
     "cardCount": 1
   },
   {
-    "_id": "66f2b86492d389553d55b028",
     "name": "Becoming",
     "description": "Michelle Obama's memoir, 'Becoming,' is a deeply personal account of her life, from her childhood on the South Side of Chicago to her role as First Lady of the United States. Through candid storytelling, she reflects on her experiences, values, and the challenges she faced. This inspiring memoir encourages readers to pursue their own paths and embrace their identities.",
     "image": "https://i.ibb.co.com/jyK6z4h/Becoming.jpg",
@@ -372,12 +343,11 @@
     "ratings": 4.6,
     "author": "Michelle Obama",
     "category": "Memoir",
-    "cardCount": 200,
+    "quantity": 200,
     "publishType": "released",
     "cardCount": 1
   },
   {
-    "_id": "66f2b86492d389553d55b029",
     "name": "The Giver",
     "description": "Lois Lowry's 'The Giver' is a thought-provoking dystopian novel that follows Jonas, a boy living in a seemingly utopian society devoid of pain and suffering. As he is selected to inherit the community's memories, he discovers the darker truths of his world. This powerful story explores themes of individuality, freedom, and the importance of emotion in the human experience.",
     "image": "https://i.ibb.co.com/Y8WMKYP/The-Giver.jpg",
@@ -385,12 +355,11 @@
     "ratings": 4.5,
     "author": "Lois Lowry",
     "category": "Dystopian",
-    "cardCount": 200,
+    "quantity": 200,
     "publishType": "released",
     "cardCount": 1
   },
   {
-    "_id": "66f2b86492d389553d55b02a",
     "name": "The Outsiders",
     "description": "S.E. Hinton's 'The Outsiders' is a coming-of-age novel that tells the story of Ponyboy Curtis, a young Greaser, who struggles with social class divisions in 1960s America. As tensions rise between the Greasers and the Socs, Ponyboy navigates friendship, loyalty, and the challenges of growing up. This poignant novel highlights the importance of empathy and understanding across social divides.",
     "image": "https://i.ibb.co.com/jLrDjtj/The-Outsiders.jpg",
@@ -398,12 +367,11 @@
     "ratings": 4.6,
     "author": "S.E. Hinton",
     "category": "Young Adult",
-    "cardCount": 200,
+    "quantity": 200,
     "publishType": "released",
     "cardCount": 1
   },
   {
-    "_id": "66f2b86492d389553d55b02b",
     "name": "The Art of War",
     "description": "Sun Tzu's 'The Art of War' is an ancient Chinese military treatise that emphasizes strategy, tactics, and the philosophy of warfare. Its principles extend beyond the battlefield, influencing business and leadership. This timeless work explores themes of adaptability, planning, and the importance of understanding oneself and one’s opponent, making it a valuable resource for various disciplines.",
     "image": "https://i.ibb.co.com/m67Xjp6/The-Art-of-War.jpg",
@@ -411,12 +379,11 @@
     "ratings": 4.3,
     "author": "Sun Tzu",
     "category": "Non-Fiction",
-    "cardCount": 200,
+    "quantity": 200,
     "publishType": "released",
     "cardCount": 1
   },
   {
-    "_id": "66f2b86492d389553d55b02c",
     "name": "The Bell Jar",
     "description": "Sylvia Plath's 'The Bell Jar' is a semi-autobiographical novel that explores the life of Esther Greenwood, a young woman struggling with mental illness in 1950s America. As she navigates societal expectations and her own aspirations, Esther experiences a profound sense of isolation. This poignant novel delves into themes of identity, depression, and the search for self in a conformist world.",
     "image": "https://i.ibb.co.com/hgn426x/The-Bell-Jar.webp",
@@ -424,12 +391,11 @@
     "ratings": 4.5,
     "author": "Sylvia Plath",
     "category": "Classic",
-    "cardCount": 200,
+    "quantity": 200,
     "publishType": "released",
     "cardCount": 1
   },
   {
-    "_id": "66f2b86492d389553d55b02d",
     "name": "The Girl on the Train",
     "description": "Paula Hawkins's 'The Girl on the Train' is a psychological thriller centered on Rachel, an alcoholic who becomes entangled in a missing person investigation. As she observes the lives of others from the train, her obsession leads to unexpected consequences. This gripping novel explores themes of memory, deception, and the complexities of human relationships.",
     "image": "https://i.ibb.co.com/gWpnG9L/The-Girl-on-the-Train.jpg",
@@ -437,12 +403,11 @@
     "ratings": 4.4,
     "author": "Paula Hawkins",
     "category": "Thriller",
-    "cardCount": 200,
+    "quantity": 200,
     "publishType": "released",
     "cardCount": 1
   },
   {
-    "_id": "66f2b86492d389553d55b02e",
     "name": "The Martian",
     "description": "Andy Weir's 'The Martian' is a thrilling tale of survival as astronaut Mark Watney becomes stranded on Mars. Using his ingenuity and resourcefulness, he must find ways to stay alive while awaiting rescue. This gripping story is infused with humor and science, exploring themes of determination, isolation, and the resilience of the human spirit.",
     "image": "https://i.ibb.co.com/02tNnbC/The-Martian.jpg",
@@ -450,12 +415,11 @@
     "ratings": 4.8,
     "author": "Andy Weir",
     "category": "Science Fiction",
-    "cardCount": 200,
+    "quantity": 200,
     "publishType": "released",
     "cardCount": 1
   },
   {
-    "_id": "66f2b86492d389553d55b02f",
     "name": "Circe",
     "description": "Madeline Miller's 'Circe' is a captivating reimagining of the life of the famous witch from Greek mythology. Exiled on an island, Circe discovers her own powers and confronts gods and mortals alike. This enchanting novel explores themes of female empowerment, transformation, and the struggle for identity.",
     "image": "https://i.ibb.co.com/L6pr6X5/Circe.jpg",
@@ -463,12 +427,11 @@
     "ratings": 4.6,
     "author": "Madeline Miller",
     "category": "Fantasy",
-    "cardCount": 200,
+    "quantity": 200,
     "publishType": "released",
     "cardCount": 1
   },
   {
-    "_id": "66f2b86492d389553d55b030",
     "name": "The Glass Castle",
     "description": "Jeannette Walls's 'The Glass Castle' is a memoir that recounts her unconventional upbringing in a dysfunctional family. Through resilience and determination, she overcomes her challenging childhood. This poignant story explores themes of family, hardship, and the pursuit of a better life.",
     "image": "https://i.ibb.co.com/nMytrFv/The-Glass-Castle.jpg",
@@ -476,12 +439,11 @@
     "ratings": 4.5,
     "author": "Jeannette Walls",
     "category": "Memoir",
-    "cardCount": 200,
+    "quantity": 200,
     "publishType": "released",
     "cardCount": 1
   },
   {
-    "_id": "66f2b86492d389553d55b031",
     "name": "Big Little Lies",
     "description": "Liane Moriarty's 'Big Little Lies' is a contemporary novel that explores the complexities of friendship and motherhood. As three women navigate their lives in a seemingly perfect community, their secrets unravel, leading to unexpected consequences. This compelling narrative delves into themes of domestic violence, loyalty, and the impact of lies.",
     "image": "https://i.ibb.co.com/d0HK74Y/Big-Little-Lies.jpg",
@@ -489,12 +451,11 @@
     "ratings": 4.4,
     "author": "Liane Moriarty",
     "category": "Contemporary",
-    "cardCount": 200,
+    "quantity": 200,
     "publishType": "released",
     "cardCount": 1
   },
   {
-    "_id": "66f2b86492d389553d55b034",
     "name": "The Woman in the Window",
     "description": "A.J. Finn's 'The Woman in the Window' is a psychological thriller that follows Anna Fox, an agoraphobic woman who believes she has witnessed a crime in her neighbor's house. As her reality blurs, the story unfolds into a tense exploration of perception and truth. This gripping novel examines themes of isolation and the complexities of the mind.",
     "image": "https://i.ibb.co.com/PzXVGNW/The-Woman-in-the-Window.jpg",
@@ -502,12 +463,11 @@
     "ratings": 4.3,
     "author": "A.J. Finn",
     "category": "Thriller",
-    "cardCount": 200,
+    "quantity": 200,
     "publishType": "released",
     "cardCount": 1
   },
   {
-    "_id": "66f2b86492d389553d55b035",
     "name": "An Ember in the Ashes",
     "description": "Sabaa Tahir's 'An Ember in the Ashes' is a fantasy novel set in a brutal world inspired by the Roman Empire. It follows Laia, a young woman who becomes a spy for the resistance, and Elias, a soldier torn between duty and freedom. This gripping tale explores themes of sacrifice, loyalty, and the fight against oppression.",
     "image": "https://i.ibb.co.com/19MvT8g/An-Ember-in-the-Ashes.jpg",
@@ -515,7 +475,7 @@
     "ratings": 4.5,
     "author": "Sabaa Tahir",
     "category": "Fantasy",
-    "cardCount": 200,
+    "quantity": 200,
     "publishType": "released",
     "cardCount": 1
   }

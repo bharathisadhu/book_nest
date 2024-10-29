@@ -26,7 +26,7 @@ export async function POST(req) {
 
   try {
     const body = await req.json(); // Parse the request body
-    const blog = await Blog.create(body); // Create a new book
+    const blog = await Blog.create(body); // Create a new Blog
     return new Response(JSON.stringify({ success: true, data: blog }), {
       status: 201,
     });

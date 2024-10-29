@@ -6,6 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import ContactForm from "@/components/ContactForm";
 import Head from "next/head";
+import Banner from "@/components/share/banner";
 
 const ContactPage = () => {
   return (
@@ -14,14 +15,7 @@ const ContactPage = () => {
         <title>BookNest | Contact</title>
       </Head>
       <Navbar />
-      <div className="flex flex-col lg:flex-row items-center justify-center lg:justify-between p-2 bg-[#F0F0F0] py-10">
-        <h2 className="lg:py-10 lg:ml-10 font-extrabold text-5xl">CONTACT</h2>
-        <h3 className="lg:py-10 lg:mr-10 mt-3 flex justify-center items-center gap-2">
-          <Link href="/">HOME</Link>
-          <GoArrowRight />
-          <span className="text-orange-600">CONTACT</span>
-        </h3>
-      </div>
+      <Banner title="Contact Us" linkName="Home" />
       {/* Main section */}
       <div className="flex flex-col lg:flex-row p-2 lg:gap-3 mt-10 md:mt-16 lg:mt-20 mb-10 container mx-auto">
         {/* Left - Map Section */}
