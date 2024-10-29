@@ -156,19 +156,20 @@ export default function Component() {
 
             <h6 className="py-8 text-sm font-poppins">
               <p className="mb-2 font-bold font-poppins">About me</p>
-              {user?.bio.slice(0, 350) ||
-                "Totally optional short description about yourself, what you do and so on."}
+              {user?.bio
+                ? user?.bio.slice(0, 350)
+                : "Totally optional short description about yourself, what you do and so on."}
               ...
             </h6>
           </div>
         </div>
-        <div className="w-full lg:w-2/5 h-[537px] bg-white shadow-2xl hidden lg:block">
+        <div className="w-full lg:w-2/5 h-[537px] hidden lg:block">
           <Image
             src={user?.image}
-            width={500}
-            height={500}
+            width={1000}
+            height={1000}
             alt="Profile"
-            className="rounded-none lg:rounded-lg h-full w-full   "
+            className=" h-full w-full rounded-md object-cover shadow-2xl bg-white"
           />
         </div>
       </div>
