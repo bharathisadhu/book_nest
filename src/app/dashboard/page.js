@@ -52,7 +52,7 @@ const Users = () => {
         <title>BookNest | Dashboard</title>
       </Head>
       <DashboardLayout>
-<<<<<<< HEAD
+
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5">
           <UserCount className=" col-span-1" />
           <BookCount className=" col-span-1" />
@@ -70,8 +70,7 @@ const Users = () => {
           <BarCharts totalPrice={100000} /> {/* Pass totalPrice as needed */}
           <ProfitChart />
         </div>
-=======
->>>>>>> a0c170358c13c7501651142b1e4a5a8d9658ec1e
+
       </DashboardLayout>
     </>
   );
