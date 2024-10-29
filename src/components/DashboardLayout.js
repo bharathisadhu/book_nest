@@ -384,7 +384,7 @@ const DashboardLayout = ({ children }) => {
     <PrivateRoute>
       <main className="flex">
       <button
-        className="lg:hidden p-2 z-60 text-white bg-gradient-to-r from-[#F65D4E99] to-[#F65D4E] fixed z-50 w-full flex items-center justify-between"
+        className="lg:hidden p-2 text-white bg-gradient-to-r from-[#F65D4E99] to-[#F65D4E] fixed z-50 w-full flex items-center justify-between"
         onClick={toggleSidebar}
       >
         <Link href="/" className="normal-case text-3xl">
@@ -400,7 +400,7 @@ const DashboardLayout = ({ children }) => {
       </button>
 
       <nav
-        className={`text-black bg-white w-full lg:w-80 lg:min-h-screen py-6 font-[sans-serif] overflow-auto fixed z-10 transition-transform duration-300 transform shadow-xl ${
+        className={`text-black z-50 bg-white w-full lg:w-80 lg:min-h-screen py-6 font-[sans-serif] overflow-auto fixed z-10 transition-transform duration-300 transform shadow-xl ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
         } lg:relative lg:translate-x-0`}
         // style={{ height: "100vh", position: "sticky", top: 0 }} // Make sidebar sticky
