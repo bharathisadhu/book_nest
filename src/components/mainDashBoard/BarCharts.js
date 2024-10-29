@@ -6,7 +6,7 @@ import DefaultSelectOption from "./DefaultSelectOption";
 const BarCharts = () => {
   const [totalSalesData, setTotalSalesData] = useState(Array(12).fill(0));
   const [totalDueAmount, setTotalDueAmount] = useState(0);
-  const [timePeriod, setTimePeriod] = useState("Monthly"); // State for time period
+  const [timePeriod, setTimePeriod] = useState("Monthly");
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
   useEffect(() => {
@@ -16,7 +16,7 @@ const BarCharts = () => {
         const data = await response.json();
 
         const monthlySales = Array(12).fill(0);
-        const yearlySales = Array(5).fill(0); // Assuming you want data for the last 5 years
+        const yearlySales = Array(5).fill(0);
         let dueAmount = 0;
 
         data.forEach((payment) => {
@@ -31,7 +31,7 @@ const BarCharts = () => {
               monthlySales[month] += payment.totalAmount;
             } else if (timePeriod === "Yearly") {
               const currentYear = new Date().getFullYear();
-              const yearIndex = currentYear - year; // Calculate the index for the last 5 years
+              const yearIndex = currentYear - year;
               if (yearIndex >= 0 && yearIndex < yearlySales.length) {
                 yearlySales[yearIndex] += payment.totalAmount;
               }
@@ -51,7 +51,7 @@ const BarCharts = () => {
     };
 
     fetchPayments();
-  }, [baseUrl, timePeriod]); // Add timePeriod to the dependency array
+  }, [baseUrl, timePeriod]);
 
   const handlePeriodChange = (selectedPeriod) => {
     setTimePeriod(selectedPeriod);
@@ -60,11 +60,11 @@ const BarCharts = () => {
   const series = [
     {
       name: "Received Amount",
-      data: totalSalesData,
+      data: totalSalesData.map((value) => Math.round(value)), // Rounded to eliminate decimal points
     },
     {
       name: "Due Amount",
-      data: Array(totalSalesData.length).fill(totalDueAmount),
+      data: Array(totalSalesData.length).fill(Math.round(totalDueAmount)), // Rounded to eliminate decimal points
     },
   ];
 
@@ -109,7 +109,7 @@ const BarCharts = () => {
               "Nov",
               "Dec",
             ]
-          : ["Year 1", "Year 2", "Year 3", "Year 4", "Year 5"], // Adjust as needed for yearly
+          : ["Year 1", "Year 2", "Year 3", "Year 4", "Year 5"],
     },
     yaxis: {
       title: {
@@ -119,6 +119,7 @@ const BarCharts = () => {
       },
     },
   };
+
   return (
     <div className="col-span-12 rounded-[10px] bg-white px-7.5 pb-6 pt-7.5 shadow-1 dark:bg-gray-dark dark:shadow-card xl:col-span-7 p-5">
       <div className="mb-3.5 flex flex-col gap-2.5 sm:flex-row sm:items-center sm:justify-between">
@@ -151,20 +152,39 @@ const BarCharts = () => {
           <p className="font-medium">Received Amount</p>
           <h4 className="mt-1 text-xl font-bold text-dark text-black">
             $
-            {totalSalesData
-              .reduce((acc, val) => acc + val, 0)
-              .toLocaleString() || "0.00"}
+            {Math.round(
+              totalSalesData.reduce((acc, val) => acc + val, 0)
+            ).toLocaleString()}
           </h4>
         </div>
-        {/* <div className="xsm:w-1/2">
+        <div className="xsm:w-1/2">
           <p className="font-medium">Due Amount</p>
           <h4 className="mt-1 text-xl font-bold text-dark dark:text-white text-black">
-            ${totalDueAmount.toLocaleString() || "0.00"}
+            ${Math.round(totalDueAmount).toLocaleString()}
           </h4>
-        </div> */}
+        </div>
       </div>
     </div>
   );
 };
 
 export default BarCharts;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
