@@ -8,7 +8,7 @@ import Head from "next/head";
 // import BookCount from '@/components/mainDashBord/BooKCountPrice';
 // import SaleCount from '@/components/mainDashBord/SaleCount';
 // import BlogCount from '@/components/mainDashBord/BlogCount';
-import UsedDevice from '@/components/mainDashBord/UsedDevice';
+// import UsedDevice from '@/components/mainDashBord/UsedDevice';
 import dynamic from "next/dynamic";
 
 const BarCharts = dynamic(
@@ -39,6 +39,12 @@ const SaleCount = dynamic(
 );
 const BlogCount = dynamic(
   () => import("@/components/mainDashBoard/BlogCount"),
+  {
+    ssr: false,
+  }
+);
+const UsedDevice = dynamic(
+  () => import("@/components/mainDashBord/UsedDevice"),
   {
     ssr: false,
   }
