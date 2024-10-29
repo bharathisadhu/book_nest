@@ -126,7 +126,7 @@ const BarCharts = () => {
         <h4 className="text-body-2xlg font-bold text-dark dark:text-white">
           Payments Overview
         </h4>
-        <div className="flex items-center gap-2.5">
+        {/* <div className="flex items-center gap-2.5">
           <p className="font-medium uppercase text-dark dark:text-dark-6">
             Short by:
           </p>
@@ -134,7 +134,7 @@ const BarCharts = () => {
             options={["Monthly", "Yearly"]}
             onChange={handlePeriodChange}
           />
-        </div>
+        </div> */}
       </div>
       <div>
         <div className="-ml-4 -mr-5">

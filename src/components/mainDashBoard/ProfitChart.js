@@ -97,9 +97,9 @@ const ProfitChart = () => {
             Profit this week
           </h4>
         </div>
-        <div>
+        {/* <div>
           <DefaultSelectOption options={["This Week", "Last Week"]} />
-        </div>
+        </div> */}
       </div>
 
       <div>
