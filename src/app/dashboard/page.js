@@ -43,12 +43,6 @@ const BlogCount = dynamic(
     ssr: false,
   }
 );
-const UsedDevice = dynamic(
-  () => import("@/components/mainDashBord/UsedDevice"),
-  {
-    ssr: false,
-  }
-);
 
 
 const Users = () => {
@@ -69,7 +63,7 @@ const Users = () => {
         <div className="mt-4 grid grid-cols-12 gap-4 md:mt-6 md:gap-6 2xl:mt-9 2xl:gap-7.5">
           <BarCharts />
           <ProfitChart />
-          <UsedDevice />
+          {/* <UsedDevice /> */}
           <BarCharts />
           </div>
         <div className="mt-4 grid grid-cols-12 gap-4 md:mt-6 md:gap-6 2xl:mt-9 2xl:gap-7.5 text-black">
