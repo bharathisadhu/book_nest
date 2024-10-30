@@ -1,51 +1,119 @@
 "use client";
 
-import { useState, useEffect, use } from "react";
+import { useState, useEffect, useRef } from "react";
+import { useSession } from "next-auth/react";
+import { HiPencilAlt } from "react-icons/hi";
+import axios from "axios";
+import Swal from "sweetalert2";
 import Image from "next/image";
 import Link from "next/link";
-import { Moon, Sun } from "lucide-react";
-import { useSession } from "next-auth/react";
+import { MdOutlineMarkEmailRead } from "react-icons/md";
 
 export default function Component() {
-  const [isDarkMode, setIsDarkMode] = useState(false);
   const { data: session } = useSession();
   const [user, setUsers] = useState(null);
+  const [isOpen, setIsOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [uploadedImage, setUploadedImage] = useState(null);
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    occupation: "",
+    location: "",
+    bio: "",
+    image: "",
+  });
 
   useEffect(() => {
-    fetch(`/api/user/${session?.user?.email}`)
-      .then((res) => res.json())
-      .then((data) => setUsers(data));
+    if (session?.user?.email) {
+      fetch(`/api/user/${session?.user?.email}`)
+        .then((res) => res.json())
+        .then((data) => {
+          setUsers(data);
+          setFormData({
+            name: data.name || "",
+            email: data.email || "",
+            occupation: data.occupation || "",
+            location: data.location || "",
+            bio: data.bio || "",
+            image: data.image || "",
+          });
+        });
+    }
   }, [session?.user?.email]);
 
-  const toggleTheme = () => {
-    setIsDarkMode(!isDarkMode);
+  const handleInputChange = async (e) => {
+    const { name, value, files } = e.target;
+    // Check if the input is a file upload (i.e., for the photo)
+    if (name === "image" && files && files[0]) {
+      const file = files[0];
+      const formData = new FormData();
+      formData.append("image", file);
+
+      try {
+        setLoading(true);
+        const imgbbResponse = await axios.post(
+          `https://api.imgbb.com/1/upload?key=${process.env.NEXT_PUBLIC_IMAGE_UPLOAD_KEY}`,
+          formData
+        );
+        // Get the image URL from the response
+        const uploadedImageUrl = imgbbResponse.data.data.url;
+        setFormData((prev) => ({ ...prev, [name]: uploadedImageUrl })); // Update the image URL in formData
+        setUploadedImage(uploadedImageUrl);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error uploading image:", error);
+        setLoading(false);
+      }
+    } else {
+      // Handle regular input change
+      setFormData((prev) => ({ ...prev, [name]: value }));
+    }
   };
 
-  const socialLinks = [
-    {
-      name: "Facebook",
-      icon: "M22.676 0H1.324C.593 0 0 .593 0 1.324v21.352C0 23.408.593 24 1.324 24h11.494v-9.294H9.689v-3.621h3.129V8.41c0-3.099 1.894-4.785 4.659-4.785 1.325 0 2.464.097 2.796.141v3.24h-1.921c-1.5 0-1.792.721-1.792 1.771v2.311h3.584l-.465 3.63H16.56V24h6.115c.733 0 1.325-.592 1.325-1.324V1.324C24 .593 23.408 0 22.676 0",
-    },
-    {
-      name: "Twitter",
-      icon: "M23.954 4.569c-.885.389-1.83.654-2.825.775 1.014-.611 1.794-1.574 2.163-2.723-.951.555-2.005.959-3.127 1.184-.896-.959-2.173-1.559-3.591-1.559-2.717 0-4.92 2.203-4.92 4.917 0 .39.045.765.127 1.124C7.691 8.094 4.066 6.13 1.64 3.161c-.427.722-.666 1.561-.666 2.475 0 1.71.87 3.213 2.188 4.096-.807-.026-1.566-.248-2.228-.616v.061c0 2.385 1.693 4.374 3.946 4.827-.413.111-.849.171-1.296.171-.314 0-.615-.03-.916-.086.631 1.953 2.445 3.377 4.604 3.417-1.68 1.319-3.809 2.105-6.102 2.105-.39 0-.779-.023-1.17-.067 2.189 1.394 4.768 2.209 7.557 2.209 9.054 0 13.999-7.496 13.999-13.986 0-.209 0-.42-.015-.63.961-.689 1.8-1.56 2.46-2.548l-.047-.02z",
-    },
-    {
-      name: "GitHub",
-      icon: "M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12",
-    },
-  ];
+  const handleSubmit = async () => {
+    try {
+      const response = await axios.patch(
+        `/api/user/${session?.user?.email}`,
+        formData
+      ); // Directly pass formData
+
+      if (response.status === 200) {
+        // Check for 200 on successful update
+        setUsers(response?.data);
+        console.log(response?.data);
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: `${formData.name} added to user!`, // Use formData.name here
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }
+    } catch (error) {
+      console.error("Error updating user:", error);
+    }
+
+    console.log("Form submitted:", formData);
+    setIsOpen(false);
+  };
+
+  if (!user) return null;
 
   return (
-    <div
-      className={` lg:h-[80vh] font-sans flex flex-col justify-center items-center antialiased leading-normal tracking-wider`}
-    >
+    <div className="lg:h-[80vh] font-sans flex flex-col justify-center items-center antialiased leading-normal tracking-wider">
       <div className="absolute inset-0 bg-userProfileBG opacity-20"></div>
-      <div className="max-w-4xl flex items-center flex-wrap mx-auto my-32 lg:my-0 justify-center z-30">
+      <div className="max-w-4xl flex items-center flex-wrap mx-auto my-32 lg:my-0 justify-center z-30 ">
         <div
           id="profile"
-          className={`w-full lg:w-3/5 rounded-lg lg:rounded-l-lg lg:rounded-r-none bg-white shadow-2xl opacity-100 mx-6 lg:mx-0 z-30`}
+          className="w-full lg:w-3/5 rounded-lg lg:rounded-l-lg lg:rounded-r-none bg-white shadow-2xl opacity-100 mx-6 lg:mx-0 z-30 relative"
         >
+          <div
+            onClick={() => setIsOpen(true)}
+            className="absolute right-2 top-12 cursor-pointer"
+          >
+            <HiPencilAlt size={32} />
+          </div>
           <div className="px-12 lg:p-12 text-center lg:text-left z-30">
             <div className="z-50">
               <Image
@@ -57,69 +125,181 @@ export default function Component() {
               />
             </div>
 
-            <h1 className="text-3xl font-bold pt-8 lg:pt-0">{user?.name}</h1>
-            <div className="mx-auto lg:mx-0 w-4/5 pt-3 border-b-2 border-green-500 opacity-25"></div>
-            <p className="pt-4 text-base font-bold flex items-center justify-center lg:justify-start">
+            <h1 className="text-3xl font-bold pt-8 lg:pt-0 font-poppins">
+              {user?.name}
+            </h1>
+            <div className="mx-auto lg:mx-0 w-4/5 pt-3 border-b-2 border-[#F65D4E] opacity-25"></div>
+            <p className="pt-4 text-base font-bold flex items-center justify-center lg:justify-start font-poppins">
               <svg
-                className="h-4 fill-current text-green-700 pr-4"
+                className="h-4 fill-current text-[#F65D4E] pr-4"
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 20 20"
               >
                 <path d="M9 12H1v6a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-6h-8v2H9v-2zm0-1H0V5c0-1.1.9-2 2-2h4V2a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v1h4a2 2 0 0 1 2 2v6h-9V9H9v2zm3-8V2H8v1h4z" />
               </svg>{" "}
-              What you do
+              {user?.occupation || "What you do"}
             </p>
-            <p className="pt-2 text-gray-600 text-xs lg:text-sm flex items-center justify-center  lg:justify-start">
+            <p className="pt-2 text-gray-600 text-xs lg:text-sm flex items-center justify-center lg:justify-start font-semibold font-poppins">
+              <MdOutlineMarkEmailRead className="text-lg mr-4 text-[#F65D4E]" />
+              {user.email || "Your Email"}
+            </p>
+            <p className="pt-2 text-gray-600 text-xs lg:text-sm flex items-center justify-center lg:justify-start font-semibold font-poppins">
               <svg
-                className="h-4 fill-current text-green-700 pr-4"
+                className="h-4 fill-current text-[#F65D4E] pr-4"
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 20 20"
               >
                 <path d="M10 20a10 10 0 1 1 0-20 10 10 0 0 1 0 20zm7.75-8a8.01 8.01 0 0 0 0-4h-3.82a28.81 28.81 0 0 1 0 4h3.82zm-.82 2h-3.22a14.44 14.44 0 0 1-.95 3.51A8.03 8.03 0 0 0 16.93 14zm-8.85-2h3.84a24.61 24.61 0 0 0 0-4H8.08a24.61 24.61 0 0 0 0 4zm.25 2c.41 2.4 1.13 4 1.67 4s1.26-1.6 1.67-4H8.33zm-6.08-2h3.82a28.81 28.81 0 0 1 0-4H2.25a8.01 8.01 0 0 0 0 4zm.82 2a8.03 8.03 0 0 0 4.17 3.51c-.42-.96-.74-2.16-.95-3.51H3.07zm13.86-8a8.03 8.03 0 0 0-4.17-3.51c.42.96.74 2.16.95 3.51h3.22zm-8.6 0h3.34c-.41-2.4-1.13-4-1.67-4S8.74 3.6 8.33 6zM3.07 6h3.22c.2-1.35.53-2.55.95-3.51A8.03 8.03 0 0 0 3.07 6z" />
               </svg>{" "}
-              Your Location - 25.0000° N, 71.0000° W
+              {user.location || "Your Location - 25.0000° N, 71.0000° W"}
             </p>
-            <p className="pt-8 text-sm">
-              Totally optional short description about yourself, what you do and
-              so on.Totally optional short description about yourself, what you
-              do and so on.Totally optional short description about yourself,
-              what you do and so on.Totally optional short description about
-              yourself, what you do and so on.Totally optional short description
-              about yourself, what you do and so on.
-            </p>
-            <div className="mt-8 pb-16 lg:pb-0 w-4/5 lg:w-full mx-auto flex flex-wrap items-center justify-center lg:justify-start gap-10">
-              {socialLinks.map((link) => (
-                <Link
-                  key={link.name}
-                  href="#"
-                  className="link"
-                  aria-label={link.name}
-                >
-                  <svg
-                    className="h-6 fill-current text-gray-600 hover:text-green-700"
-                    role="img"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <title>{link.name}</title>
-                    <path d={link.icon} />
-                  </svg>
-                </Link>
-              ))}
-            </div>
+
+            <h6 className="py-8 text-sm font-poppins">
+              <p className="mb-2 font-bold font-poppins">About me</p>
+              {user?.bio
+                ? user?.bio.slice(0, 350)
+                : "Totally optional short description about yourself, what you do and so on."}
+              ...
+            </h6>
           </div>
         </div>
-
-        <div className="w-full lg:w-2/5">
+        <div className="w-full lg:w-2/5 h-[537px] hidden lg:block">
           <Image
             src={user?.image}
-            width={500}
-            height={500}
+            width={1000}
+            height={1000}
             alt="Profile"
-            className="rounded-none lg:rounded-lg shadow-2xl hidden lg:block"
+            className=" h-full w-full rounded-md object-cover shadow-2xl bg-white"
           />
         </div>
       </div>
+      {/* editing profile modal */}
+      {isOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-8 rounded-lg w-full max-w-md">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-2xl font-bold">Edit profile</h2>
+              <button
+                onClick={() => setIsOpen(false)}
+                className="text-gray-500 hover:text-gray-700"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </button>
+            </div>
+            <form
+              onSubmit={handleSubmit}
+              className="space-y-4 font-poppins font-medium"
+            >
+              <div className="space-y-2">
+                <label htmlFor="name" className="text-sm font-medium">
+                  Name
+                </label>
+                <input
+                  id="name"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleInputChange}
+                  className="w-full p-2 border rounded"
+                />
+              </div>
+              {/* photo upload input field  */}
+              <div>
+                <label
+                  htmlFor="type2-2"
+                  className="flex w-full max-w-[380px] md:w-[380px]"
+                >
+                  <div className="w-fit whitespace-nowrap bg-[#F65D4E] px-3 py-2 text-white">
+                    Choose File
+                  </div>
+                  <div className="flex w-full max-w-[380px] items-center border-b-[2px] border-[#F65D4E] px-2 font-medium text-gray-400">
+                    {uploadedImage
+                      ? uploadedImage.split("/").pop()
+                      : "No File Chosen"}
+                  </div>
+                </label>
+                <input
+                  onChange={handleInputChange}
+                  className="hidden"
+                  type="file"
+                  name="image"
+                  id="type2-2"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label htmlFor="email" className="text-sm font-medium">
+                  Email
+                </label>
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  className="w-full p-2 border rounded"
+                />
+              </div>
+              <div className="space-y-2">
+                <label htmlFor="occupation" className="text-sm font-medium">
+                  Occupation
+                </label>
+                <input
+                  id="occupation"
+                  name="occupation"
+                  value={formData.occupation}
+                  onChange={handleInputChange}
+                  className="w-full p-2 border rounded"
+                />
+              </div>
+              <div className="space-y-2">
+                <label htmlFor="location" className="text-sm font-medium">
+                  Location
+                </label>
+                <input
+                  id="location"
+                  name="location"
+                  value={formData.location}
+                  onChange={handleInputChange}
+                  className="w-full p-2 border rounded"
+                />
+              </div>
+              <div className="space-y-2">
+                <label htmlFor="bio" className="text-sm font-medium">
+                  Bio
+                </label>
+
+                <textarea
+                  id="bio"
+                  name="bio"
+                  value={formData.bio}
+                  onChange={handleInputChange}
+                  rows={3}
+                  className="w-full p-2 border rounded"
+                />
+              </div>
+              <button
+                type="submit"
+                className="w-full bg-[#F65D4E] text-white py-2 px-4 rounded hover:bg-red-500 transition duration-200 font-poppins font-semibold"
+              >
+                Save changes
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

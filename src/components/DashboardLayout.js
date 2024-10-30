@@ -26,6 +26,7 @@ const DashboardLayout = ({ children }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isAdmin, setIsAdmin] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [userProfile, setUserProfile] = useState(null);
   const baseURL = process.env.NEXT_PUBLIC_API_URL;
 
   const fetchAdminStatus = useCallback(async () => {
@@ -35,6 +36,7 @@ const DashboardLayout = ({ children }) => {
         const response = await axios.get(
           `${baseURL}/api/user/${session?.user?.email}`
         );
+        setUserProfile(response?.data);
         setIsAdmin(response?.data?.role === "admin");
       } catch (error) {
         console.error("Error fetching admin status:", error);
@@ -153,7 +155,7 @@ const DashboardLayout = ({ children }) => {
         </button>
 
         <nav
-          className={`text-black bg-white w-full lg:w-80 lg:min-h-screen py-6 font-[sans-serif] overflow-auto fixed z-10 transition-transform duration-300 transform shadow-xl ${
+          className={`text-black z-50 bg-white w-full lg:w-80 lg:min-h-screen py-6 font-[sans-serif] overflow-auto fixed transition-transform duration-300 transform shadow-xl ${
             isSidebarOpen ? "translate-x-0" : "-translate-x-full"
           } lg:relative lg:translate-x-0`}
           // style={{ height: "100vh", position: "sticky", top: 0 }} // Make sidebar sticky
@@ -163,16 +165,14 @@ const DashboardLayout = ({ children }) => {
             <Image
               height={200}
               width={200}
-              src={session?.user?.image || "https://i.ibb.co/XWyS1WL/d.jpg"}
-              className="w-12 h-12 rounded-full border-2 border-white"
+              src={userProfile?.image || "https://i.ibb.co/XWyS1WL/d.jpg"}
+              className="w-20 h-20 md:w-24 md:h-24 rounded-full border-2 border-white object-cover"
               alt="Profile"
             />
             <div className="mt-2 text-center">
-              <p className="text-sm mt-2">
-                {session?.user?.name || "User Name"}
-              </p>
+              <p className="text-sm mt-2">{userProfile?.name || "User Name"}</p>
               <p className="text-xs mt-0.5">
-                {session?.user?.email || "User Email"}
+                {userProfile?.email || "User Email"}
               </p>
             </div>
           </div>

@@ -1,7 +1,9 @@
-import connectDB from "@/lib/connectDB";
+// api/payments/[email]/route.js
+import { NextResponse } from "next/server";
 import { Payment } from "../../../../../models/Payment";
-import { NextResponse } from "next/server"; // Import NextResponse for response handling
+import connectDB from "@/lib/connectDB";
 
+// Handle GET requests
 export async function GET(request, { params }) {
   const { email } = params;
 
@@ -13,33 +15,36 @@ export async function GET(request, { params }) {
     const limit = parseInt(searchParams.get("limit") || "10", 10);
     const skip = (page - 1) * limit;
 
-    // Fetch payments with pagination
     const payments = await Payment.find({ email: email })
       .skip(skip)
       .limit(limit);
 
     const totalPayment = await Payment.countDocuments({ email: email });
 
-    if (totalPayment === 0) {
+    if (!payments) {
       return NextResponse.json(
-        { message: "No payments found" },
+        { message: " individualPayment not found" },
         { status: 404 }
       );
     }
 
-    return NextResponse.json(
-      {
+    return new Response(
+      JSON.stringify({
         success: true,
         data: payments,
         email: email,
-        page,
         total: totalPayment,
+        page,
         totalPages: Math.ceil(totalPayment / limit),
-      },
-      { status: 200 }
+      }),
+      {
+        status: 200,
+      }
     );
+
+    // return NextResponse.json(individualWishList, { status: 200 });
   } catch (error) {
-    console.error("Error fetching payments:", error);
+    console.error("Error fetching wishlist:", error);
     return NextResponse.json({ message: "Server error" }, { status: 500 });
   }
 }
