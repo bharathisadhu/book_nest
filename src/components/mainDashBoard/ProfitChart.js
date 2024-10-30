@@ -1,7 +1,7 @@
 "use client"
 import React from "react";
 import ReactApexChart from "react-apexcharts";
-import DefaultSelectOption from "./DefaultSelectOption";
+// import DefaultSelectOption from "./DefaultSelectOption";
 
 const ProfitChart = () => {
   const series = [
@@ -14,7 +14,6 @@ const ProfitChart = () => {
       data: [13, 23, 20, 8, 13, 27, 15],
     },
   ];
-
   const options = {
     colors: ["#5750F1", "#0ABEF9"],
     chart: {
@@ -88,7 +87,6 @@ const ProfitChart = () => {
       opacity: 1,
     },
   };
-
   return (
     <div className="col-span-12 rounded-[10px] bg-white px-7.5 pt-7.5 shadow-1 dark:bg-gray-dark dark:shadow-card xl:col-span-5 p-5">
       <div className="mb-4 justify-between gap-4 sm:flex">
@@ -101,7 +99,6 @@ const ProfitChart = () => {
           <DefaultSelectOption options={["This Week", "Last Week"]} />
         </div> */}
       </div>
-
       <div>
         <div id="chartTwo" className="-ml-3.5">
           <ReactApexChart
@@ -115,5 +112,4 @@ const ProfitChart = () => {
     </div>
   );
 };
-
 export default ProfitChart;
