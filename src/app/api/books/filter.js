@@ -39,8 +39,6 @@ export default async function handler(req, res) {
     }
   }
 
-  console.log("Query:", query);
-
   // Determine the sorting criteria
   let sortCriteria = {};
   if (sort === "LowToHigh") {

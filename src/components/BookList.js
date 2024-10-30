@@ -203,8 +203,6 @@ export default function BooksList() {
     setIsModalOpen(true);
   };
 
-
-
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setSelectedBook(null);
@@ -292,7 +290,8 @@ export default function BooksList() {
         image: imageUrl,
         price: parseFloat(price),
         ratings: parseFloat(ratings),
-        cardCount: parseInt(cardCount, 10),
+        quantity,
+        cardCount: parseInt(cardCount, 1),
         publishType,
       };
 
