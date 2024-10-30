@@ -1,29 +1,25 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import ReactApexChart from "react-apexcharts";
-import DefaultSelectOption from "./DefaultSelectOption";
+// import DefaultSelectOption from "./DefaultSelectOption";
 
 const BarCharts = () => {
   const [totalSalesData, setTotalSalesData] = useState(Array(12).fill(0));
   const [totalDueAmount, setTotalDueAmount] = useState(0);
   const [timePeriod, setTimePeriod] = useState("Monthly");
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
-
   useEffect(() => {
     const fetchPayments = async () => {
       try {
         const response = await fetch(`${baseUrl}/api/payments`);
         const data = await response.json();
-
         const monthlySales = Array(12).fill(0);
         const yearlySales = Array(5).fill(0);
         let dueAmount = 0;
-
         data.forEach((payment) => {
           const date = new Date(payment.date);
           const month = date.getMonth();
           const year = date.getFullYear();
-
           if (payment.transactionId === "Cash on Delivery") {
             dueAmount += payment.totalAmount;
           } else {
@@ -38,7 +34,6 @@ const BarCharts = () => {
             }
           }
         });
-
         if (timePeriod === "Monthly") {
           setTotalSalesData(monthlySales);
         } else {
@@ -49,14 +44,11 @@ const BarCharts = () => {
         console.error("Error fetching payment data:", error);
       }
     };
-
     fetchPayments();
   }, [baseUrl, timePeriod]);
-
   const handlePeriodChange = (selectedPeriod) => {
     setTimePeriod(selectedPeriod);
   };
-
   const series = [
     {
       name: "Received Amount",
@@ -67,7 +59,6 @@ const BarCharts = () => {
       data: Array(totalSalesData.length).fill(Math.round(totalDueAmount)), // Rounded to eliminate decimal points
     },
   ];
-
   const options = {
     legend: {
       show: true,
@@ -119,22 +110,21 @@ const BarCharts = () => {
       },
     },
   };
-
   return (
     <div className="col-span-12 rounded-[10px] bg-white px-7.5 pb-6 pt-7.5 shadow-1 dark:bg-gray-dark dark:shadow-card xl:col-span-7 p-5">
       <div className="mb-3.5 flex flex-col gap-2.5 sm:flex-row sm:items-center sm:justify-between">
         <h4 className="text-body-2xlg font-bold text-dark dark:text-white">
           Payments Overview
         </h4>
-        {/* <div className="flex items-center gap-2.5">
-          <p className="font-medium uppercase text-dark dark:text-dark-6">
+        <div className="flex items-center gap-2.5">
+          {/* <p className="font-medium uppercase text-dark dark:text-dark-6">
             Short by:
-          </p>
-          <DefaultSelectOption
+          </p> */}
+          {/* <DefaultSelectOption
             options={["Monthly", "Yearly"]}
             onChange={handlePeriodChange}
-          />
-        </div> */}
+          /> */}
+        </div>
       </div>
       <div>
         <div className="-ml-4 -mr-5">
@@ -146,7 +136,6 @@ const BarCharts = () => {
           />
         </div>
       </div>
-
       <div className="flex flex-col gap-2 text-center xsm:flex-row xsm:gap-0 text-black">
         <div className="border-stroke dark:border-dark-3 xsm:w-1/2 xsm:border-r">
           <p className="font-medium">Received Amount</p>
@@ -167,24 +156,4 @@ const BarCharts = () => {
     </div>
   );
 };
-
 export default BarCharts;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
