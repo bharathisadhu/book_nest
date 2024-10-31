@@ -5,7 +5,6 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { GoChevronDown } from "react-icons/go";
 import Head from "next/head";
 import { HiX } from "react-icons/hi";
-import { debounce } from "lodash"; // Import lodash for debouncing
 
 // Dynamically import components
 const Navbar = dynamic(() => import("@/components/Navbar"));

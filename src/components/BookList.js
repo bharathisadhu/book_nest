@@ -290,8 +290,8 @@ export default function BooksList() {
         image: imageUrl,
         price: parseFloat(price),
         ratings: parseFloat(ratings),
-        quantity,
-        cardCount: parseInt(cardCount, 1),
+        quantity: parseInt(quantity),
+        cardCount,
         publishType,
       };
 
@@ -327,7 +327,7 @@ export default function BooksList() {
   }
 
   return (
-    <div className="font-sans ">
+    <div className="font-poppins ">
       <div className="mb-4">
         <button
           onClick={() => setIsAddBookModalOpen(true)} // Open Add Book modal
@@ -527,7 +527,7 @@ export default function BooksList() {
               <div className="flex gap-4">
                 <div>
                   <div>
-                    <label className="text-gray-800 text-sm mb-2 block">
+                    <label className="text-gray-800 font-semibold text-sm mb-2 block">
                       Name of the product
                     </label>
                     <input
@@ -536,12 +536,12 @@ export default function BooksList() {
                       placeholder="Enter product name"
                       value={title}
                       onChange={handleAddBookInputChange}
-                      className="px-4 py-3 bg-gray-100 w-full text-gray-800 text-sm border-none focus:outline-blue-600 focus:bg-transparent rounded-lg"
+                      className="px-4 py-3 bg-gray-100 w-full text-gray-800 text-sm border-none focus:outline-red-400 focus:bg-transparent rounded-lg"
                       required
                     />
                   </div>
                   <div>
-                    <label className="text-gray-800 text-sm mb-2 block">
+                    <label className="text-gray-800 text-sm mb-2 block font-semibold mt-2">
                       Descriptions
                     </label>
                     <textarea
@@ -549,13 +549,13 @@ export default function BooksList() {
                       placeholder="Write about the product"
                       value={description}
                       onChange={handleAddBookInputChange}
-                      className="px-4 py-3 bg-gray-100 w-full text-gray-800 text-sm border-none focus:outline-blue-600 focus:bg-transparent rounded-lg"
+                      className="px-4 py-3 bg-gray-100 w-full text-gray-800 text-sm border-none focus:outline-red-400 focus:bg-transparent rounded-lg"
                       rows="3"
                       required
                     ></textarea>
                   </div>
 
-                  <div className="flex gap-2">
+                  <div className="flex gap-2 font-semibold">
                     <div>
                       <label className="text-gray-800 text-sm mb-2 block">
                         Quantity
@@ -566,13 +566,13 @@ export default function BooksList() {
                         placeholder="Enter quantity"
                         value={quantity}
                         onChange={handleAddBookInputChange}
-                        className="px-4 py-3 bg-gray-100 w-full text-gray-800 text-sm border-none focus:outline-blue-600 focus:bg-transparent rounded-lg"
+                        className="px-4 py-3 bg-gray-100 w-full text-gray-800 text-sm border-none focus:outline-red-400 focus:bg-transparent rounded-lg"
                         required
                       />
                     </div>
 
-                    <div>
-                      <label className="text-gray-800 text-sm mb-2 block">
+                    <div className=" font-semibold">
+                      <label className="text-gray-800 text-sm mb-2 block  font-semibold">
                         Selling price
                       </label>
                       <input
@@ -581,7 +581,7 @@ export default function BooksList() {
                         placeholder="Enter price"
                         value={price}
                         onChange={handleAddBookInputChange}
-                        className="px-4 py-3 bg-gray-100 w-full text-gray-800 text-sm border-none focus:outline-blue-600 focus:bg-transparent rounded-lg"
+                        className="px-4 py-3 bg-gray-100 w-full text-gray-800 text-sm border-none focus:outline-red-400 focus:bg-transparent rounded-lg"
                         required
                         step="0.01"
                       />
@@ -589,7 +589,7 @@ export default function BooksList() {
                   </div>
 
                   <div>
-                    <label className="text-gray-800 text-sm mb-2 block">
+                    <label className="text-gray-800 text-sm mb-2 block font-semibold mt-2">
                       Category
                     </label>
                     <input
@@ -598,27 +598,26 @@ export default function BooksList() {
                       placeholder="Enter product category"
                       value={category}
                       onChange={handleAddBookInputChange}
-                      className="px-4 py-3 bg-gray-100 w-full text-gray-800 text-sm border-none focus:outline-blue-600 focus:bg-transparent rounded-lg"
+                      className="px-4 py-3 bg-gray-100 w-full text-gray-800 text-sm border-none focus:outline-red-400 focus:bg-transparent rounded-lg"
                       required
                     />
                   </div>
                   <div>
-                    <label className="text-gray-800 text-sm mb-2 block">
+                    <label className="text-gray-800 text-sm mb-2 block font-semibold mt-2">
                       Ratings
                     </label>
                     <input
-                      type="text"
+                      type="number"
                       name="ratings"
                       placeholder="Enter product Rating"
                       value={ratings}
                       onChange={handleAddBookInputChange}
-                      className="px-4 py-3 bg-gray-100 w-full text-gray-800 text-sm border-none focus:outline-blue-600 focus:bg-transparent rounded-lg"
+                      className="px-4 py-3 bg-gray-100 w-full text-gray-800 text-sm border-none focus:outline-red-400 focus:bg-transparent rounded-lg"
                       required
                     />
                   </div>
                 </div>
-
-                <div className=" flex-wrap">
+                <div className=" flex-wrap font-semibold">
                   <div>
                     <label className="text-gray-800 text-sm mb-2 block">
                       Author
@@ -629,11 +628,11 @@ export default function BooksList() {
                       placeholder="Enter Author name"
                       value={author}
                       onChange={handleAddBookInputChange}
-                      className="px-4 py-3 bg-gray-100 w-full text-gray-800 text-sm border-none focus:outline-blue-600 focus:bg-transparent rounded-lg"
+                      className="px-4 py-3 bg-gray-100 w-full text-gray-800 text-sm border-none focus:outline-red-400 focus:bg-transparent rounded-lg"
                       required
                     />
                   </div>
-                  <label className="block text-sm">Upload Image</label>
+                  <label className="block text-sm font-semibold mt-2">Upload Image</label>
                   <input
                     type="file"
                     accept="image/*"
@@ -658,13 +657,13 @@ export default function BooksList() {
                 <button
                   type="button"
                   onClick={() => setIsAddBookModalOpen(false)} // Close modal
-                  className="px-6 py-3 rounded-lg text-gray-800 text-sm border-none outline-none tracking-wide bg-gray-200 hover:bg-gray-300"
+                  className="px-6 py-3 rounded-lg text-gray-800 text-sm border-none outline-none tracking-wide bg-gray-200 hover:bg-gray-300 font-semibold"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-6 py-3 rounded-lg text-white text-sm border-none outline-none tracking-wide bg-blue-600 hover:bg-blue-700"
+                  className="px-6 py-3 rounded-lg text-white text-sm border-none outline-none tracking-wide bg-[#F65D4E] hover:bg-red-500 font-semibold"
                   disabled={isLoadingAdd}
                 >
                   {isLoadingAdd ? "Adding..." : "Submit"}

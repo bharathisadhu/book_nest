@@ -127,7 +127,7 @@ const PaymentSchema = new mongoose.Schema({
   bookId: {},
   bookName: { type: String },
   status: { type: String, default: "pending" },
-  cardCount: { type: Number },
+  cardCount: { type: Number},
 });
 
 // Check if the model already exists to avoid overwriting it

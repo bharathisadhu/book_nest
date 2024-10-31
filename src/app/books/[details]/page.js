@@ -28,7 +28,7 @@ export default function BookDetails({ params }) {
         const response = await axios.get(`/api/books`);
         setListOfBooks(response?.data);
         const bookId = params.details;
-        const foundBook = response?.data?.find((book) => book._id === bookId);
+        const foundBook = response?.data?.find((book) => book?._id === bookId);
         setBookDetails(foundBook);
       } catch (error) {
         console.error("Error fetching book details:", error.message);
