@@ -1,6 +1,3 @@
-
-
-
 import { NextResponse } from "next/server";
 
 export async function POST() {
@@ -20,12 +17,18 @@ export async function POST() {
       "success_url",
       `${process.env.NEXT_PUBLIC_API_URL}/api/success?id=${tran_id}`
     );
-    formData.append("fail_url", `${process.env.NEXT_PUBLIC_API_URL}/api/fail?id=${tran_id}`);
+    formData.append(
+      "fail_url",
+      `${process.env.NEXT_PUBLIC_API_URL}/api/fail?id=${tran_id}`
+    );
     formData.append(
       "cancel_url",
       `${process.env.NEXT_PUBLIC_API_URL}/api/cancel?id=${tran_id}`
     );
-    formData.append("ipn_url", `${process.env.NEXT_PUBLIC_API_URL}/api/ipn?id=${tran_id}`);
+    formData.append(
+      "ipn_url",
+      `${process.env.NEXT_PUBLIC_API_URL}/api/ipn?id=${tran_id}`
+    );
     //
     formData.append("cus_name", "Siratul Islam");
     formData.append("cus_email", "islamsiratul@gmail.com");
@@ -64,10 +67,7 @@ export async function POST() {
   }
 }
 
-
-
 // import { NextResponse } from "next/server";
-
 
 // export async function POST(req) {
 //   try {
@@ -130,16 +130,13 @@ export async function POST() {
 //   }
 // }
 
-
-
-
 // import { NextResponse } from "next/server";
 
 // export async function POST() {
 //   try {
 //     // Get the session
 //     const session = await getSession({ req });
-    
+
 //     if (!session) {
 //       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 //     }

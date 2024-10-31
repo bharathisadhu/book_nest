@@ -1,14 +1,18 @@
 "use client";
 import React, { useEffect, useState } from "react";
+import dynamic from "next/dynamic"; // Import dynamic from next/dynamic
 import { useRouter, useSearchParams } from "next/navigation";
-import BooksCard from "@/components/BooksCard";
 import { GoChevronDown } from "react-icons/go";
-import Loader from "../loading";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import Head from "next/head";
-import Banner from "@/components/share/banner";
-import { HiX } from "react-icons/hi"; // Import HiX for closing the drawer
+import { HiX } from "react-icons/hi";
+import { debounce } from "lodash"; // Import lodash for debouncing
+
+// Dynamically import components
+const Navbar = dynamic(() => import("@/components/Navbar"));
+const Banner = dynamic(() => import("@/components/share/banner"));
+const Loader = dynamic(() => import("../loading"));
+const BooksCard = dynamic(() => import("@/components/BooksCard"));
+const Footer = dynamic(() => import("@/components/Footer"));
 
 const BooksPage = () => {
   const [books, setBooks] = useState([]);
@@ -23,111 +27,203 @@ const BooksPage = () => {
   const [seeMoreAuthors, setSeeMoreAuthors] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false); // State for the mobile filter drawer
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const itemsPerPage = 12;
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
+  const router = useRouter();
   const searchParams = useSearchParams();
   const sort = searchParams.get("sort");
+  const categoriesParam = searchParams.get("category");
+  const authorsParam = searchParams.get("author");
+  const searchTermParam = searchParams.get("search");
 
-  // Fetch books based on the selected filters
   useEffect(() => {
-    const fetchData = async () => {
+    // Set initial state from URL parameters
+    if (categoriesParam) {
+      setSelectedCategories(categoriesParam.split(","));
+    }
+    if (authorsParam) {
+      setSelectedAuthors(authorsParam.split(","));
+    }
+    if (searchTermParam) {
+      setSearchTerm(searchTermParam);
+    }
+  }, [categoriesParam, authorsParam, searchTermParam]);
+
+  // Effect to fetch books when filters change
+  useEffect(() => {
+    // Debounced function to fetch books
+    const fetchBooks = async () => {
       try {
         setIsLoading(true);
+        const categories = selectedCategories.join(",");
+        const authors = selectedAuthors.join(",");
+        const minPrice = priceRange[0];
+        const maxPrice = priceRange[1];
+
         const response = await fetch(
           `/api/books?page=${currentPage}&limit=${itemsPerPage}&sort=${
             sort || ""
-          }`
+          }&category=${categories}&author=${authors}&minPrice=${minPrice}&maxPrice=${maxPrice}&search=${searchTerm}`
         );
 
-        const data = await response.json();
-        if (Array.isArray(data)) {
-          setBooks(data);
-          setFilteredBooks(data);
-
-          const uniqueCategories = [
-            ...new Set(data.map((book) => book.category)),
-          ];
-          const uniqueAuthors = [...new Set(data.map((book) => book.author))];
-
-          setCategories(uniqueCategories);
-          setAuthors(uniqueAuthors);
-        } else {
-          setBooks([]);
-          setFilteredBooks([]);
+        if (!response.ok) {
+          throw new Error(`Failed to fetch books. Status: ${response.status}`);
         }
+
+        const data = await response.json();
+        setBooks(data || []);
+        setFilteredBooks(data || []);
+        setCategories([...new Set(data.map((book) => book.category) || [])]);
+        setAuthors([...new Set(data.map((book) => book.author) || [])]);
       } catch (error) {
-        console.error("Failed to fetch books:", error);
+        console.error("Error fetching books:", error);
       } finally {
         setIsLoading(false);
       }
     };
 
-    fetchData();
-  }, [baseUrl, currentPage, sort]);
+    fetchBooks();
+  }, [
+    currentPage,
+    sort,
+    selectedCategories,
+    selectedAuthors,
+    priceRange,
+    searchTerm,
+  ]);
 
+  // Update filteredBooks based on search term and selected filters
   useEffect(() => {
-    const filtered = books.filter((book) => {
-      const inCategory = selectedCategories.length
-        ? selectedCategories.includes(book.category)
-        : true;
-      const inAuthor = selectedAuthors.length
-        ? selectedAuthors.includes(book.author)
-        : true;
-      const inPriceRange =
-        book.price >= priceRange[0] && book.price <= priceRange[1];
-      const matchesSearchTerm = book.name
-        .toLowerCase()
-        .includes(searchTerm.toLowerCase());
+    const applyFilters = () => {
+      let updatedBooks = books;
 
-      return inCategory && inAuthor && inPriceRange && matchesSearchTerm;
-    });
+      // Filter by search term
+      if (searchTerm) {
+        updatedBooks = updatedBooks.filter(
+          (book) =>
+            book.title &&
+            book.title.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+      }
 
-    setFilteredBooks(filtered);
-  }, [books, selectedCategories, selectedAuthors, priceRange, searchTerm]);
+      // Filter by selected categories
+      if (selectedCategories.length > 0) {
+        updatedBooks = updatedBooks.filter((book) =>
+          selectedCategories.includes(book.category)
+        );
+      }
 
-  // Category filter handler
+      // Filter by selected authors
+      if (selectedAuthors.length > 0) {
+        updatedBooks = updatedBooks.filter((book) =>
+          selectedAuthors.includes(book.author)
+        );
+      }
+
+      // Filter by price range
+      updatedBooks = updatedBooks.filter(
+        (book) => book.price >= priceRange[0] && book.price <= priceRange[1]
+      );
+
+      // Sort books if a sort option is selected
+      if (sort === "LowToHigh") {
+        updatedBooks.sort((a, b) => a.price - b.price);
+      } else if (sort === "HighToLow") {
+        updatedBooks.sort((a, b) => b.price - a.price);
+      } else if (sort === "topRatings") {
+        updatedBooks.sort((a, b) => b.rating - a.rating);
+      } else if (sort === "lowRatings") {
+        updatedBooks.sort((a, b) => a.rating - b.rating);
+      }
+
+      setFilteredBooks(updatedBooks);
+    };
+
+    applyFilters();
+  }, [
+    books,
+    searchTerm,
+    selectedCategories,
+    selectedAuthors,
+    priceRange,
+    sort,
+  ]);
+
   const handleCategoryChange = (category) => {
     setSelectedCategories((prev) =>
       prev.includes(category)
         ? prev.filter((c) => c !== category)
         : [...prev, category]
     );
+    updateURLParams("category", category);
   };
 
-  // Author filter handler
   const handleAuthorChange = (author) => {
     setSelectedAuthors((prev) =>
       prev.includes(author)
         ? prev.filter((a) => a !== author)
         : [...prev, author]
     );
+    updateURLParams("author", author);
+  };
+
+  const updateURLParams = (param, value) => {
+    const newSearchParams = new URLSearchParams(searchParams.toString());
+
+    if (param === "category") {
+      const currentCategories =
+        newSearchParams.get("category")?.split(",") || [];
+      if (currentCategories.includes(value)) {
+        currentCategories.splice(currentCategories.indexOf(value), 1);
+        if (currentCategories.length > 0) {
+          newSearchParams.set("category", currentCategories.join(","));
+        } else {
+          newSearchParams.delete("category"); // Remove the category param if none are selected
+        }
+      } else {
+        currentCategories.push(value);
+        newSearchParams.set("category", currentCategories.join(","));
+      }
+    } else if (param === "author") {
+      const currentAuthors = newSearchParams.get("author")?.split(",") || [];
+      if (currentAuthors.includes(value)) {
+        currentAuthors.splice(currentAuthors.indexOf(value), 1);
+        if (currentAuthors.length > 0) {
+          newSearchParams.set("author", currentAuthors.join(","));
+        } else {
+          newSearchParams.delete("author"); // Remove the author param if none are selected
+        }
+      } else {
+        currentAuthors.push(value);
+        newSearchParams.set("author", currentAuthors.join(","));
+      }
+    } else if (param === "search") {
+      if (value) {
+        newSearchParams.set("search", value);
+      } else {
+        newSearchParams.delete("search"); // Remove the search param if empty
+      }
+    }
+
+    router.push(`/books?${newSearchParams.toString()}`);
+  };
+
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+    updateURLParams("search", e.target.value);
+  };
+
+  const sorting = (sortOption) => {
+    const newSearchParams = new URLSearchParams(searchParams.toString());
+    newSearchParams.set("sort", sortOption);
+    router.push(`/books?${newSearchParams.toString()}`);
   };
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
 
-  const sorting = (sortOption) => {
-    const sortedBooks = [...filteredBooks];
-    if (sortOption === "LowToHigh") {
-      sortedBooks.sort((a, b) => a.price - b.price);
-    } else if (sortOption === "HighToLow") {
-      sortedBooks.sort((a, b) => b.price - a.price);
-    } else if (sortOption === "topRatings") {
-      sortedBooks.sort((a, b) => b.ratings - a.ratings);
-    } else if (sortOption === "lowRatings") {
-      sortedBooks.sort((a, b) => a.ratings - b.ratings);
-    }
-    setFilteredBooks(sortedBooks);
-  };
-
-  const totalPages = Math.ceil(filteredBooks.length / itemsPerPage);
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-
-  // Toggle drawer function
   const toggleDrawer = () => {
     setIsDrawerOpen((prev) => !prev);
   };
@@ -194,7 +290,7 @@ const BooksPage = () => {
                     type="text"
                     placeholder="Search for a book..."
                     value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
+                    onChange={handleSearchChange}
                     className="w-full p-2 border border-gray-300 rounded"
                   />
                 </div>
@@ -254,7 +350,7 @@ const BooksPage = () => {
                     min="0"
                     max="20"
                     value={priceRange[1]}
-                    onChange={(e) => setPriceRange([0, e.target.value])}
+                    onChange={(e) => setPriceRange([0, Number(e.target.value)])}
                     className="w-full range-slider"
                   />
                   <p className="mb-10">
@@ -266,7 +362,10 @@ const BooksPage = () => {
               {/* Books Grid */}
               <div className="col-span-4 lg:col-span-3 grid grid-cols-2 lg:grid-cols-6 md:grid-cols-3 justify-center divide-y divide-x p-2 gap-4">
                 {filteredBooks
-                  .slice(indexOfFirstItem, indexOfLastItem)
+                  .slice(
+                    (currentPage - 1) * itemsPerPage,
+                    currentPage * itemsPerPage
+                  )
                   .map((book) => (
                     <BooksCard key={book._id} book={book} />
                   ))}
@@ -276,27 +375,24 @@ const BooksPage = () => {
             {/* Mobile Filter Drawer */}
             {isDrawerOpen && (
               <div className="fixed inset-0 bg-gray-800 bg-opacity-50 z-40">
-                <div className="mt-16 left-0 top-0 w-3/4 h-full bg-white shadow-lg z-50 p-5 overflow-y-auto">
-                  <div className="flex justify-between items-center mb-5">
-                    <h2 className="text-lg font-bold">Filter Options</h2>
-                    <button
-                      className="text-2xl text-gray-600"
-                      onClick={toggleDrawer} // Close the drawer
-                    >
-                      <HiX />
-                    </button>
-                  </div>
-                  {/* Mobile Filter Options */}
+                <div className="mt-20 p-8 bg-white w-80 fixed top-0 bottom-0 left-0 z-50 overflow-y-auto">
+                  <button
+                    className="absolute top-4 right-4 text-black"
+                    onClick={toggleDrawer}
+                  >
+                    <HiX size={24} />
+                  </button>
                   <div className="mb-6">
                     <input
                       type="text"
                       placeholder="Search for a book..."
                       value={searchTerm}
-                      onChange={(e) => setSearchTerm(e.target.value)}
+                      onChange={handleSearchChange}
                       className="w-full p-2 border border-gray-300 rounded"
                     />
                   </div>
-                  {/* Category Checkboxes */}
+
+                  {/* Categories */}
                   <div className="mb-6">
                     <h4 className="font-bold mb-2">Categories</h4>
                     {categories
@@ -321,7 +417,8 @@ const BooksPage = () => {
                       </button>
                     )}
                   </div>
-                  {/* Author Checkboxes */}
+
+                  {/* Authors */}
                   <div className="mb-6">
                     <h4 className="font-bold mb-2">Authors</h4>
                     {authors
@@ -346,15 +443,18 @@ const BooksPage = () => {
                       </button>
                     )}
                   </div>
-                  {/* Price Range Slider */}
-                  <div>
+
+                  {/* Price Range */}
+                  <div className="mb-6">
                     <h4 className="font-bold mb-2">Price Range</h4>
                     <input
                       type="range"
                       min="0"
                       max="20"
                       value={priceRange[1]}
-                      onChange={(e) => setPriceRange([0, e.target.value])}
+                      onChange={(e) =>
+                        setPriceRange([0, Number(e.target.value)])
+                      }
                       className="w-full range-slider"
                     />
                     <p className="mb-10">
@@ -366,20 +466,25 @@ const BooksPage = () => {
             )}
 
             {/* Pagination */}
-            <div className="flex justify-center lg:ml-96 mt-8">
-              {Array.from({ length: totalPages }, (_, index) => (
-                <button
-                  key={index}
-                  onClick={() => handlePageChange(index + 1)}
-                  className={`px-4 py-2 mx-1 border ${
-                    currentPage === index + 1
-                      ? "bg-[#F65D4E] text-white"
-                      : "bg-white text-black"
-                  }`}
-                >
-                  {index + 1}
-                </button>
-              ))}
+            <div className="flex justify-center mt-8 mb-10">
+              <div className="flex space-x-2">
+                {Array.from(
+                  { length: Math.ceil(filteredBooks.length / itemsPerPage) },
+                  (_, index) => (
+                    <button
+                      key={index}
+                      onClick={() => handlePageChange(index + 1)}
+                      className={`px-4 py-2 rounded-md ${
+                        currentPage === index + 1
+                          ? "bg-[#F65D4E] text-white"
+                          : "bg-gray-200"
+                      }`}
+                    >
+                      {index + 1}
+                    </button>
+                  )
+                )}
+              </div>
             </div>
           </>
         )}

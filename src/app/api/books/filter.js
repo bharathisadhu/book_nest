@@ -1,77 +1,53 @@
-import connectDB from "../../../utils/connectDB";
+import connectDB from "@/utils/connectDB";
 
-export default async function handler(req, res) {
-  const client = await connectDB();
-  const db = client.db();
-
-  const {
-    category,
-    author,
-    minPrice,
-    maxPrice,
-    page = 1,
-    limit = 10,
-    sort,
-  } = req.query;
-
-  const query = {};
-
-  // Handle multiple categories
-  if (category) {
-    const categoriesArray = category.split(",");
-    query.category = { $in: categoriesArray };
-  }
-
-  // Handle multiple authors
-  if (author) {
-    const authorsArray = author.split(",");
-    query.author = { $in: authorsArray };
-  }
-
-  // Handle price range filtering
-  if (minPrice || maxPrice) {
-    query.price = {};
-    if (minPrice) {
-      query.price.$gte = Number(minPrice); // Greater than or equal to minPrice
-    }
-    if (maxPrice) {
-      query.price.$lte = Number(maxPrice); // Less than or equal to maxPrice
-    }
-  }
-
-  // Determine the sorting criteria
-  let sortCriteria = {};
-  if (sort === "LowToHigh") {
-    sortCriteria.price = 1; // Ascending
-  } else if (sort === "HighToLow") {
-    sortCriteria.price = -1; // Descending
-  } else if (sort === "topRatings") {
-    sortCriteria.ratings = -1; // Descending
-  } else if (sort === "lowRatings") {
-    sortCriteria.ratings = 1; // Ascending
-  }
-
+export default async function GET(req, res) {
   try {
-    // Fetching books with filtering, sorting, and pagination
-    const books = await db
-      .collection("books") // Replace with your actual collection name
-      .find(query)
-      .sort(sortCriteria)
-      .skip((page - 1) * limit)
-      .limit(Number(limit))
+    const db = await connectDB();
+    const {
+      page = 1,
+      limit = 12,
+      sort = "",
+      category,
+      author,
+      minPrice,
+      maxPrice,
+      search, // Add search term to the destructured query
+    } = req.query;
+
+    const filter = {};
+
+    // Category filter
+    if (category) filter.category = { $in: category.split(",") };
+    // Author filter
+    if (author) filter.author = { $in: author.split(",") };
+    // Price range filter
+    if (minPrice && maxPrice)
+      filter.price = { $gte: parseFloat(minPrice), $lte: parseFloat(maxPrice) };
+    // Search filter
+    if (search) {
+      filter.title = { $regex: new RegExp(search, "i") }; // Case-insensitive search
+    }
+
+    let sortOptions = {};
+    if (sort === "LowToHigh") sortOptions.price = 1;
+    if (sort === "HighToLow") sortOptions.price = -1;
+    if (sort === "topRatings") sortOptions.ratings = -1;
+    if (sort === "lowRatings") sortOptions.ratings = 1;
+
+    const skip = (page - 1) * parseInt(limit);
+    const booksCollection = db.collection("books");
+
+    const books = await booksCollection
+      .find(filter)
+      .sort(sortOptions)
+      .skip(skip)
+      .limit(parseInt(limit))
       .toArray();
 
-    const totalBooks = await db.collection("books").countDocuments(query);
+    const totalBooks = await booksCollection.countDocuments(filter);
 
-    res.status(200).json({
-      books,
-      totalPages: Math.ceil(totalBooks / limit),
-      currentPage: Number(page),
-    });
+    res.status(200).json({ books, totalPages: Math.ceil(totalBooks / limit) });
   } catch (error) {
-    console.error("Error fetching books:", error);
     res.status(500).json({ error: "Failed to fetch books" });
-  } finally {
-    // await client.close(); // Close the MongoDB connection
   }
 }
