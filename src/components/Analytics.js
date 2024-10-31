@@ -14,7 +14,7 @@ const Analytics = () => {
     fetch("/api/payments")
       .then((res) => res.json())
       .then((data) => {
-        setSoldBooks(data);
+        setSoldBooks(data?.data);
         setLoading(false);
       });
   }, []);
@@ -36,12 +36,10 @@ const Analytics = () => {
       }
     });
   }
-  let totalBooksSold = 0;
-  {
-    soldBooks.forEach((order) => {
-      totalBooksSold += order.books.length;
-    });
-  }
+
+  const totalBooksSold = Array.isArray(soldBooks)
+    ? soldBooks.reduce((total, order) => total + order?.books?.length, 0)
+    : 0;
 
   if (loading) {
     return <Loader></Loader>;
