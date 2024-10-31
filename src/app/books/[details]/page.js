@@ -28,7 +28,7 @@ export default function BookDetails({ params }) {
         const response = await axios.get(`/api/books`);
         setListOfBooks(response?.data);
         const bookId = params.details;
-        const foundBook = response?.data?.find((book) => book._id === bookId);
+        const foundBook = response?.data?.find((book) => book?._id === bookId);
         setBookDetails(foundBook);
       } catch (error) {
         console.error("Error fetching book details:", error.message);
@@ -38,26 +38,26 @@ export default function BookDetails({ params }) {
     fetchBooks();
   }, [baseUrl, params.details]);
 
-  // useEffect(() => {
-  //   const fetchTotalQuantity = async () => {
-  //     if (!bookDetails) return;
-  //     const response = await fetch(
-  //       `${baseUrl}/api/payments-total-quantity?bookId=${bookDetails._id}`
-  //     );
-  //     const data = await response.json();
-  //     const status = bookDetails.quantity - data > 0 ? "Stock In" : "Stock Out";
-  //     setStock(status);
-  //   };
-  //   fetchTotalQuantity();
-  // }, [baseUrl, bookDetails]);
+  useEffect(() => {
+    const fetchTotalQuantity = async () => {
+      if (!bookDetails) return;
+      const response = await fetch(
+        `${baseUrl}/api/payments-total-quantity?bookId=${bookDetails._id}`
+      );
+      const data = await response.json();
+      const status = bookDetails.quantity - data > 0 ? "Stock In" : "Stock Out";
+      setStock(status);
+    };
+    fetchTotalQuantity();
+  }, [baseUrl, bookDetails]);
 
-  // if (!bookDetails) {
-  //   return (
-  //     <p className="text-3xl">
-  //       <Loading />
-  //     </p>
-  //   );
-  // }
+  if (!bookDetails) {
+    return (
+      <div className="text-3xl">
+        <Loading />
+      </div>
+    );
+  }
 
   const {
     name = "",

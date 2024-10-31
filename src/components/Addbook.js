@@ -9,7 +9,7 @@ const AddBook = ({ setIsModalOpen, setBooks }) => {
   const [description, setDescription] = useState("");
   const [image, setImage] = useState(null);
   const [price, setPrice] = useState("");
-  const [cardCount, setCardCount] = useState("");
+  const [cardCount, setCardCount] = useState(1);
   const [category, setCategory] = useState("");
   const [ratings, setRatings] = useState("");
   const [publishType, setPublishType] = useState("upcoming");
@@ -46,7 +46,7 @@ const AddBook = ({ setIsModalOpen, setBooks }) => {
         image: imageUrl,
         price: parseFloat(price),
         ratings: parseFloat(ratings),
-        cardCount: parseInt(cardCount, 10),
+        cardCount: parseInt(cardCount),
         publishType,
       };
 
