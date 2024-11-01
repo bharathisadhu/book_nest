@@ -248,13 +248,15 @@ export default function BlogList() {
       const imageUrl = imgbbResponse.data.data.url;
 
       const blogData = {
-        name: title,
+        title,
         author,
         shortDescription,
         content,
         category,
         image: imageUrl,
       };
+
+      console.log(blogData);
 
       const response = await axios.post("/api/blogs", blogData);
 
@@ -265,7 +267,7 @@ export default function BlogList() {
       Swal.fire({
         icon: "success",
         title: "Blog Added!",
-        text: `${blogData.name} has been added successfully!`,
+        text: `${blogData?.title} has been added successfully!`,
         showConfirmButton: true,
         confirmButtonText: "OK",
       });
@@ -294,6 +296,8 @@ export default function BlogList() {
   if (blogs.length === 0) {
     return <div>No blogs found or failed to load blogs.</div>;
   }
+
+  console.log(blogs);
 
   return (
     <div className="font-sans ">

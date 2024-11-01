@@ -86,6 +86,7 @@ const BookSchema = new mongoose.Schema({
 
 const BlogSchema = new mongoose.Schema({
   title: { type: String },
+  image: { type: String },
   author: { type: String },
   date: { type: String },
   category: { type: String },
