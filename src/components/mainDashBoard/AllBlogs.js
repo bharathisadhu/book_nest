@@ -254,9 +254,8 @@ export default function BlogList() {
         content,
         category,
         image: imageUrl,
+        date: new Date().toISOString().split("T")[0],
       };
-
-      console.log(blogData);
 
       const response = await axios.post("/api/blogs", blogData);
 
@@ -296,8 +295,6 @@ export default function BlogList() {
   if (blogs.length === 0) {
     return <div>No blogs found or failed to load blogs.</div>;
   }
-
-  console.log(blogs);
 
   return (
     <div className="font-sans ">
@@ -342,6 +339,7 @@ export default function BlogList() {
                   alt={blog?.title}
                   width={40}
                   height={60}
+                  className="w-10 h-10 object-cover"
                 />
               </td>
               <td className="px-4 py-4 text-sm text-gray-800">{blog?.title}</td>
@@ -495,11 +493,11 @@ export default function BlogList() {
               </button>
             </div>
 
-            <form onSubmit={handleAddBookSubmit} className="space-y-4 mt-8">
+            <form onSubmit={handleAddBookSubmit} className="space-y-4 mt-8 font-poppins">
               <div className="flex gap-4">
                 <div>
                   <div>
-                    <label className="text-gray-800 text-sm mb-2 block">
+                    <label className="text-gray-800 text-sm mb-2 block mt-2 font-semibold">
                       Name of the Title
                     </label>
                     <input
@@ -508,12 +506,12 @@ export default function BlogList() {
                       placeholder="Enter title name"
                       value={title}
                       onChange={handleAddBookInputChange}
-                      className="px-4 py-3 bg-gray-100 w-full text-gray-800 text-sm border-none focus:outline-blue-600 focus:bg-transparent rounded-lg"
+                      className="px-4 py-3 bg-gray-100 w-full text-gray-800 text-sm border-none focus:outline-red-400 focus:bg-transparent rounded-lg"
                       required
                     />
                   </div>
                   <div>
-                    <label className="text-gray-800 text-sm mb-2 block">
+                    <label className="text-gray-800 text-sm mb-2 block mt-2 font-semibold">
                       Category
                     </label>
                     <input
@@ -522,13 +520,12 @@ export default function BlogList() {
                       placeholder="Enter product category"
                       value={category}
                       onChange={handleAddBookInputChange}
-                      className="px-4 py-3 bg-gray-100 w-full text-gray-800 text-sm border-none focus:outline-blue-600 focus:bg-transparent rounded-lg"
+                      className="px-4 py-3 bg-gray-100 w-full text-gray-800 text-sm border-none focus:outline-red-400 focus:bg-transparent rounded-lg"
                       required
                     />
                   </div>
-
                   <div>
-                    <label className="text-gray-800 text-sm mb-2 block">
+                    <label className="text-gray-800 text-sm mb-2 block mt-2 font-semibold">
                       Short Description
                     </label>
                     <textarea
@@ -536,14 +533,14 @@ export default function BlogList() {
                       placeholder="Write about short Description"
                       value={shortDescription}
                       onChange={handleAddBookInputChange}
-                      className="px-4 py-3 bg-gray-100 w-full text-gray-800 text-sm border-none focus:outline-blue-600 focus:bg-transparent rounded-lg"
+                      className="px-4 py-3 bg-gray-100 w-full text-gray-800 text-sm border-none focus:outline-red-400 focus:bg-transparent rounded-lg"
                       rows="3"
                       required
                     ></textarea>
                   </div>
 
                   <div>
-                    <label className="text-gray-800 text-sm mb-2 block">
+                    <label className="text-gray-800 text-sm mb-2 block font-semibold">
                       Content
                     </label>
                     <textarea
@@ -551,7 +548,7 @@ export default function BlogList() {
                       placeholder="Write about short Description"
                       value={content}
                       onChange={handleAddBookInputChange}
-                      className="px-4 py-3 bg-gray-100 w-full text-gray-800 text-sm border-none focus:outline-blue-600 focus:bg-transparent rounded-lg"
+                      className="px-4 py-3 bg-gray-100 w-full text-gray-800 text-sm border-none focus:outline-red-400 focus:bg-transparent rounded-lg"
                       rows="3"
                       required
                     ></textarea>
@@ -560,7 +557,7 @@ export default function BlogList() {
 
                 <div className=" flex-wrap">
                   <div>
-                    <label className="text-gray-800 text-sm mb-2 block">
+                    <label className="text-gray-800 text-sm mb-2 block font-semibold mt-2">
                       Author
                     </label>
                     <input
@@ -569,16 +566,16 @@ export default function BlogList() {
                       placeholder="Enter Author name"
                       value={author}
                       onChange={handleAddBookInputChange}
-                      className="px-4 py-3 bg-gray-100 w-full text-gray-800 text-sm border-none focus:outline-blue-600 focus:bg-transparent rounded-lg"
+                      className="px-4 py-3 bg-gray-100 w-full text-gray-800 text-sm border-none focus:outline-red-400 focus:bg-transparent rounded-lg"
                       required
                     />
                   </div>
-                  <label className="block text-sm">Upload Image</label>
+                  <label className="block text-sm font-semibold mt-2">Upload Image</label>
                   <input
                     type="file"
                     accept="image/*"
                     onChange={handleImageChange}
-                    className="border p-2 w-48"
+                    className="border p-2 w-48 rounded-md"
                   />
                   {imageUrl && (
                     <div className="mt-2">
@@ -598,13 +595,13 @@ export default function BlogList() {
                 <button
                   type="button"
                   onClick={() => setIsAddBookModalOpen(false)} // Close modal
-                  className="px-6 py-3 rounded-lg text-gray-800 text-sm border-none outline-none tracking-wide bg-gray-200 hover:bg-gray-300"
+                  className="px-6 py-3 rounded-lg text-gray-800 text-sm border-none outline-none tracking-wide bg-gray-200 hover:bg-gray-300 font-semibold"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-6 py-3 rounded-lg text-white text-sm border-none outline-none tracking-wide bg-blue-600 hover:bg-blue-700"
+                  className="px-6 py-3 rounded-lg text-white text-sm border-none outline-none tracking-wide bg-[#F65D4E] hover:bg-red-400 font-semibold"
                   disabled={isLoadingAdd}
                 >
                   {isLoadingAdd ? "Adding..." : "Submit"}
