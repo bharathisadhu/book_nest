@@ -5,8 +5,6 @@ export async function GET(req) {
   await connectToDatabase();
 
   try {
-   
-    
     const blogs = await Blog.find({});
     return new Response(JSON.stringify(blogs), {
       status: 200,
@@ -27,7 +25,7 @@ export async function POST(req) {
   try {
     const body = await req.json(); // Parse the request body
     const blog = await Blog.create(body); // Create a new Blog
-    return new Response(JSON.stringify({ success: true, data: blog }), {
+    return new Response(JSON.stringify({ success: true, blog }), {
       status: 201,
     });
   } catch (error) {
@@ -39,6 +37,3 @@ export async function POST(req) {
     );
   }
 }
-
-
-

@@ -23,15 +23,15 @@ const BlogCount = () => {
   }, [baseUrl]);
 
   return (
-    <div className="blog-card p-4 border rounded shadow-md bg-white dark:bg-gray-800">
+    <div className="blog-card p-4 border rounded shadow-md bg-white text-black font-poppins">
       <div className="flex items-center mb-3">
-        <FaBlog className="text-5xl text-blue-500 mr-2" />
-        <h4 className="text-heading-6 font-bold text-dark dark:text-white">
+        <FaBlog className="text-3xl text-yellow-400 mr-3" />
+        <h4 className="text-heading-6 font-bold text-dark text-2xl">
           Total Blogs: {blogs.length}
         </h4>
       </div>
       <div className="mt-2">
-        <p className="text-body-sm font-medium text-dark dark:text-gray-300">
+        <p className="text-body-sm font-medium text-dark">
           {blogs.length > 0 ? "Click below to view the blogs!" : "No blogs available."}
         </p>
       </div>

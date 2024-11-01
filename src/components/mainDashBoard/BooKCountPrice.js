@@ -23,10 +23,10 @@ const BookCount = () => {
   }, [baseUrl]);
 
   return (
-    <div className="book-card p-4 border rounded shadow-md bg-white dark:bg-gray-800">
-      <div className="flex items-center mb-3">
-        <MdPriceCheck className="text-5xl text-blue-500 mr-2" />
-        <h4 className="text-heading-6 font-bold text-dark dark:text-white">
+    <div className="book-card p-4 border rounded shadow-md bg-white text-black font-poppins">
+      <div className="flex items-center mb-3 gap-2">
+        <MdPriceCheck className="text-5xl text-red-400" />
+        <h4 className="text-heading-6 font-bold text-dark text-2xl">
           Total Books: {totalQuantity}
         </h4>
       </div>

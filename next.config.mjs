@@ -62,6 +62,7 @@ const nextConfig = {
       "t4.ftcdn.net",
       "tenor.com",
       "source.unsplash.com",
+      "discoverscifi.com",
       "*",
     ],
   },

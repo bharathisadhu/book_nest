@@ -12,7 +12,8 @@ const BarCharts = () => {
     const fetchPayments = async () => {
       try {
         const response = await fetch(`${baseUrl}/api/payments`);
-        const data = await response.json();
+        const result = await response.json();
+        const data = result?.data;
         const monthlySales = Array(12).fill(0);
         const yearlySales = Array(5).fill(0);
         let dueAmount = 0;
@@ -148,7 +149,7 @@ const BarCharts = () => {
         </div>
         <div className="xsm:w-1/2">
           <p className="font-medium">Due Amount</p>
-          <h4 className="mt-1 text-xl font-bold text-dark dark:text-white text-black">
+          <h4 className="mt-1 text-xl font-bold text-dark text-black">
             ${Math.round(totalDueAmount).toLocaleString()}
           </h4>
         </div>
