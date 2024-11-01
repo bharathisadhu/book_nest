@@ -12,9 +12,12 @@ const SaleCount = () => {
       try {
         const response = await fetch(`${baseUrl}/api/payments`);
         const data = await response.json();
-
+        const result = data?.data;
         // Calculate the total amount from the payment data
-        const total = data.reduce((acc, payment) => acc + payment.totalAmount, 0);
+        const total = result.reduce(
+          (acc, payment) => acc + payment.totalAmount,
+          0
+        );
         setTotalPrice(total); // Set the calculated total price
       } catch (error) {
         console.error("Error fetching payment data:", error);
@@ -25,10 +28,10 @@ const SaleCount = () => {
   }, [baseUrl]);
 
   return (
-    <div className="sale-card p-4 border rounded shadow-md bg-white dark:bg-gray-800">
-      <div className="flex items-center mb-3">
-        <FaMoneyBillWave className="text-5xl text-green-500 mr-2" />
-        <h4 className="text-heading-6 font-bold text-dark dark:text-white">
+    <div className="sale-card p-4 border rounded shadow-md bg-white text-black font-poppins">
+      <div className="flex items-center mb-3 gap-2">
+        <FaMoneyBillWave className="text-4xl text-green-500 mr-2" />
+        <h4 className="text-heading-6 font-bold text-dark text-2xl">
           Total Sales: ${totalPrice > 0 ? totalPrice.toFixed(2) : "0.00"}
         </h4>
       </div>
@@ -37,7 +40,6 @@ const SaleCount = () => {
 };
 
 export default SaleCount;
-
 
 //.............................Main Code...............................
 
@@ -50,7 +52,6 @@ export default SaleCount;
 
 //   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
-
 //   // Fetch comments from the backend
 //   useEffect(() => {
 //     const fetchBook = async () => {
@@ -62,16 +63,16 @@ export default SaleCount;
 //     fetchBook();
 //   }, [baseUrl]);
 
-  // Fetch comments from the backend
-  // useEffect(() => {
-  //   const fetchBook = async () => {
-  //     const response = await fetch(`${baseUrl}/api/payments-price`);
-  //     const data = await response.json();
+// Fetch comments from the backend
+// useEffect(() => {
+//   const fetchBook = async () => {
+//     const response = await fetch(`${baseUrl}/api/payments-price`);
+//     const data = await response.json();
 
-  //     setTotalPrice(data.totalAmount);
-  //   };
-  //   fetchBook();
-  // }, [baseUrl]);
+//     setTotalPrice(data.totalAmount);
+//   };
+//   fetchBook();
+// }, [baseUrl]);
 //   return (
 //     <>
 //       <div className="card bg-base-100 h-32 shadow-xl border-2 flex flex-col items-center justify-center px-4">

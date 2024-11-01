@@ -15,7 +15,7 @@ const UserCount = () => {
         const data = await response.json();
         
         // Set the user count
-        setUserCount(data.length); // Assuming `data` is an array of users
+        setUserCount(data?.length); // Assuming `data` is an array of users
       } catch (error) {
         console.error("Error fetching user count:", error);
       }
@@ -30,15 +30,14 @@ const UserCount = () => {
   };
 
   return (
-    <div className="user-card p-4 border rounded shadow-md bg-white dark:bg-gray-800">
-      <div className="flex items-center mb-3">
-        <FaUserFriends className="text-5xl text-blue-500 mr-2" />
-        <h4 className="text-heading-6 font-bold text-dark dark:text-white">
+    <div className="user-card p-4 border rounded shadow-md bg-white text-black font-poppins">
+      <div className="flex items-center mb-3 gap-2">
+        <FaUserFriends className="text-4xl text-blue-500 mr-2" />
+        <h4 className="text-heading-6 font-bold text-dark text-3xl">
           {item.value}
         </h4>
       </div>
       <span className="text-body-sm font-medium">{item.title}</span>
-
       <span
         className={`flex items-center gap-1.5 text-body-sm font-medium ${
           item.growthRate > 0 ? "text-green" : "text-red"

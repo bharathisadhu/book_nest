@@ -611,7 +611,6 @@ export default function BlogList() {
           </div>
         </div>
       )}
-
       <div className="flex justify-between items-center mt-4">
         <button
           className="btn rounded-3xl bg-[#F65D4E] text-white px-8"
