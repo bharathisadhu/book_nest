@@ -62,17 +62,17 @@ export default function BooksList() {
     fetchData();
   }, [page]);
 
-  const handlePreviousPage = () => {
-    if (page > 1) {
-      setPage(page - 1);
-    }
-  };
+  // const handlePreviousPage = () => {
+  //   if (page > 1) {
+  //     setPage(page - 1);
+  //   }
+  // };
 
-  const handleNextPage = () => {
-    if (page < totalPages) {
-      setPage(page + 1);
-    }
-  };
+  // const handleNextPage = () => {
+  //   if (page < totalPages) {
+  //     setPage(page + 1);
+  //   }
+  // };
 
   const removeBook = async (id) => {
     const bookToDelete = books.find((book) => book._id === id);
@@ -224,12 +224,28 @@ export default function BooksList() {
       setImageUrl(URL.createObjectURL(file)); // Create a temporary URL for preview
     }
   };
+
   if (isLoading && books.length === 0) {
     return <Loading />; // Use your existing loading component
   }
 
+  const renderPagination = () => {
+    const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
+    return pages.map((pageNumber) => (
+      <button
+        key={pageNumber}
+        onClick={() => setPage(pageNumber)}
+        className={`px-3 py-1 rounded ${
+          pageNumber === page ? "bg-[#F65D4E] text-white" : "bg-gray-200"
+        }`}
+      >
+        {pageNumber}
+      </button>
+    ));
+  };
+
   if (books.length === 0) {
-    return <div>No books found or failed to load books.</div>;
+    return <div>No Books Available Now</div>;
   }
 
   const handleAddBookInputChange = (e) => {
@@ -632,7 +648,9 @@ export default function BooksList() {
                       required
                     />
                   </div>
-                  <label className="block text-sm font-semibold mt-2">Upload Image</label>
+                  <label className="block text-sm font-semibold mt-2">
+                    Upload Image
+                  </label>
                   <input
                     type="file"
                     accept="image/*"
@@ -673,24 +691,8 @@ export default function BooksList() {
           </div>
         </div>
       )}
-      <div className="flex justify-between items-center mt-4">
-        <button
-          className="btn rounded-3xl bg-[#F65D4E] text-white px-8"
-          onClick={handlePreviousPage}
-          disabled={page === 1}
-        >
-          Previous
-        </button>
-        <span className="text-lg">
-          Page {page} of {totalPages}
-        </span>
-        <button
-          className="btn rounded-3xl bg-[#F65D4E] text-white px-8"
-          onClick={handleNextPage}
-          disabled={page === totalPages}
-        >
-          Next
-        </button>
+      <div className="flex justify-center space-x-2 mt-4">
+        {renderPagination()}
       </div>
     </div>
   );

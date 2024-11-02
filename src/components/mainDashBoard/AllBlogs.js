@@ -280,16 +280,31 @@ export default function BlogList() {
     }
   };
 
-  const handlePreviousPage = () => {
-    if (page > 1) {
-      setPage(page - 1);
-    }
-  };
+  // const handlePreviousPage = () => {
+  //   if (page > 1) {
+  //     setPage(page - 1);
+  //   }
+  // };
 
-  const handleNextPage = () => {
-    if (page < totalPages) {
-      setPage(page + 1);
-    }
+  // const handleNextPage = () => {
+  //   if (page < totalPages) {
+  //     setPage(page + 1);
+  //   }
+  // };
+
+  const renderPagination = () => {
+    const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
+    return pages.map((pageNumber) => (
+      <button
+        key={pageNumber}
+        onClick={() => setPage(pageNumber)}
+        className={`px-3 py-1 rounded ${
+          pageNumber === page ? "bg-[#F65D4E] text-white" : "bg-gray-200"
+        }`}
+      >
+        {pageNumber}
+      </button>
+    ));
   };
 
   if (blogs.length === 0) {
@@ -493,7 +508,10 @@ export default function BlogList() {
               </button>
             </div>
 
-            <form onSubmit={handleAddBookSubmit} className="space-y-4 mt-8 font-poppins">
+            <form
+              onSubmit={handleAddBookSubmit}
+              className="space-y-4 mt-8 font-poppins"
+            >
               <div className="flex gap-4">
                 <div>
                   <div>
@@ -570,7 +588,9 @@ export default function BlogList() {
                       required
                     />
                   </div>
-                  <label className="block text-sm font-semibold mt-2">Upload Image</label>
+                  <label className="block text-sm font-semibold mt-2">
+                    Upload Image
+                  </label>
                   <input
                     type="file"
                     accept="image/*"
@@ -611,24 +631,8 @@ export default function BlogList() {
           </div>
         </div>
       )}
-      <div className="flex justify-between items-center mt-4">
-        <button
-          className="btn rounded-3xl bg-[#F65D4E] text-white px-8"
-          onClick={handlePreviousPage}
-          disabled={page === 1}
-        >
-          Previous
-        </button>
-        <span className="text-lg">
-          Page {page} of {totalPages}
-        </span>
-        <button
-          className="btn rounded-3xl bg-[#F65D4E] text-white px-8"
-          onClick={handleNextPage}
-          disabled={page === totalPages}
-        >
-          Next
-        </button>
+      <div className="flex justify-center space-x-2 mt-4">
+        {renderPagination()}
       </div>
     </div>
   );
