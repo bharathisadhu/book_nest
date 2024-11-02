@@ -7,7 +7,7 @@ import { useCallback, useEffect, useState } from "react";
 import { MdAccountCircle } from "react-icons/md";
 
 export default function DashboardNavbar() {
-  const [isProfileOpen, setIsProfileOpen] = useState(false);  // Default to closed
+  const [isProfileOpen, setIsProfileOpen] = useState(false); // Default to closed
   const { data: session } = useSession();
   const [userProfile, setUserProfile] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -17,10 +17,10 @@ export default function DashboardNavbar() {
       try {
         const response = await axios.get(`/api/user/${session?.user?.email}`);
         setUserProfile(response?.data);
-        setLoading(false);  // Fix this to false after fetching
+        setLoading(false); // Fix this to false after fetching
       } catch (error) {
         console.error("Error fetching user data:", error);
-        setLoading(false);  // Handle error case
+        setLoading(false); // Handle error case
       }
     } else {
       setLoading(false);
@@ -44,24 +44,7 @@ export default function DashboardNavbar() {
               height={32}
             />
           </Link>
-
-          <form className="hidden sm:block" onSubmit={(e) => e.preventDefault()}>
-            <div className="relative">
-              <input
-                type="text"
-                placeholder="Type to search..."
-                className="w-full bg-transparent pl-9 pr-4 font-medium focus:outline-none xl:w-125"
-              />
-              <button
-                type="submit"
-                className="absolute left-0 top-1/2 -translate-y-1/2"
-              >
-                {/* Search Icon */}
-              </button>
-            </div>
-          </form>
         </div>
-
         {/* User Profile and Notifications */}
         <div className="flex items-center gap-4">
           <Link
