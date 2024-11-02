@@ -52,18 +52,18 @@ const ContactPage = () => {
               alt="Card Image 1"
               className="w-full h-48 object-cover border rounded-lg"
             />
-            <h2 className="text-xl font-semibold mt-10">New York</h2>
+            <h2 className="text-xl font-semibold mt-10">Dhaka, Bangladesh</h2>
             <p className="text-gray-600 my-10">
-              3164 N Delaware Rd Milan, Indiana(IN), 47031
+            Titumir College gate, Mohakhali
               <br />
-              Hotline: +(84) 2500 888 33
+              <span className="font-poppins font-bold">Hotline:</span> +(880) 1552404583
               <br />
-              support@example.com
+             <span className="font-poppins font-bold">Email:</span> booknest21@gmail.com
             </p>
 
             <h2 className="text-xl font-semibold mt-4">Working Hours</h2>
             <p className="text-gray-600 my-10">
-              Open: 8:00AM – Close: 18:00PM
+              Open: 10:00AM – Close: 09:00PM
               <br />
               Saturday – Sunday: Close
             </p>
@@ -78,18 +78,18 @@ const ContactPage = () => {
               className="w-full h-48 object-cover border rounded-lg"
             />
 
-            <h2 className="text-xl font-semibold mt-10">Las Vegas</h2>
+            <h2 className="text-xl font-semibold mt-10">Chattogram, Bangladesh</h2>
             <p className="text-gray-600 my-10">
-              3164 N Delaware Rd Milan, Indiana(IN), 47031
+             Beside Chittagong College, Chawkbazar, Chattogram
               <br />
-              Hotline: +(84) 2500 888 33
+              Hotline: +(880) 1741153348
               <br />
-              support@example.com
+              <span className="font-poppins font-bold">Email:</span> booknest21@gmail.com
             </p>
 
             <h2 className="text-xl font-semibold mt-4">Working Hours</h2>
             <p className="text-gray-600 my-10">
-              Open: 8:00AM – Close: 18:00PM
+            Open: 10:00AM – Close: 09:00PM
               <br />
               Saturday – Sunday: Close
             </p>
@@ -103,17 +103,17 @@ const ContactPage = () => {
               alt="Card Image 3"
               className="w-full h-48 object-cover rounded-t-lg"
             />
-            <h2 className="text-xl font-semibold mt-10">Los Angeles</h2>
+            <h2 className="text-xl font-semibold mt-10">Barishal, Bangladesh</h2>
             <p className="text-gray-600 my-10">
-              3164 N Delaware Rd Milan, Indiana(IN), 47031
+            Beside Barishal College, Barishal
               <br />
-              Hotline: +(84) 2500 888 33
+              Hotline: +(880) 1330927666
               <br />
-              support@example.com
+              <span className="font-poppins font-bold">Email:</span> booknest21@gmail.com
             </p>
             <h2 className="text-xl font-semibold mt-4">Working Hours</h2>
             <p className="text-gray-600 my-10">
-              Open: 8:00AM – Close: 18:00PM
+            Open: 10:00AM – Close: 09:00PM
               <br />
               Saturday – Sunday: Close
             </p>
