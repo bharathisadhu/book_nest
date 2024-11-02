@@ -1,4 +1,5 @@
 import connectDB from "@/utils/connectDB";
+import { ObjectId } from "mongodb";
 
 export default async function GET(req, res) {
   try {
@@ -11,7 +12,7 @@ export default async function GET(req, res) {
       author,
       minPrice,
       maxPrice,
-      search, // Add search term to the destructured query
+      search,
     } = req.query;
 
     const filter = {};
@@ -29,10 +30,10 @@ export default async function GET(req, res) {
     }
 
     let sortOptions = {};
-    if (sort === "LowToHigh") sortOptions.price = 1;
-    if (sort === "HighToLow") sortOptions.price = -1;
-    if (sort === "topRatings") sortOptions.ratings = -1;
-    if (sort === "lowRatings") sortOptions.ratings = 1;
+    if (sort === "price_asc") sortOptions.price = 1;
+    if (sort === "price_desc") sortOptions.price = -1;
+    if (sort === "rating_desc") sortOptions.ratings = -1;
+    if (sort === "rating_asc") sortOptions.ratings = 1;
 
     const skip = (page - 1) * parseInt(limit);
     const booksCollection = db.collection("books");
@@ -46,8 +47,17 @@ export default async function GET(req, res) {
 
     const totalBooks = await booksCollection.countDocuments(filter);
 
-    res.status(200).json({ books, totalPages: Math.ceil(totalBooks / limit) });
+    res.status(200).json({
+      success: true,
+      data: {
+        books,
+        pagination: {
+          currentPage: page,
+          totalPages: Math.ceil(totalBooks / limit),
+        },
+      },
+    });
   } catch (error) {
-    res.status(500).json({ error: "Failed to fetch books" });
+    res.status(500).json({ success: false, message: "Failed to fetch books" });
   }
 }

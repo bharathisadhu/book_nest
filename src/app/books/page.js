@@ -51,7 +51,6 @@ const BooksPage = () => {
 
   // Effect to fetch books when filters change
   useEffect(() => {
-    // Debounced function to fetch books
     const fetchBooks = async () => {
       try {
         setIsLoading(true);
@@ -71,7 +70,7 @@ const BooksPage = () => {
         }
 
         const data = await response.json();
-        setBooks(data || []);
+        setBooks(data || []); // Ensure you're setting the books correctly
         setFilteredBooks(data || []);
         setCategories([...new Set(data.map((book) => book.category) || [])]);
         setAuthors([...new Set(data.map((book) => book.author) || [])]);
@@ -101,8 +100,8 @@ const BooksPage = () => {
       if (searchTerm) {
         updatedBooks = updatedBooks.filter(
           (book) =>
-            book.title &&
-            book.title.toLowerCase().includes(searchTerm.toLowerCase())
+            book.name &&
+            book.name.toLowerCase().includes(searchTerm.toLowerCase())
         );
       }
 
@@ -131,9 +130,9 @@ const BooksPage = () => {
       } else if (sort === "HighToLow") {
         updatedBooks.sort((a, b) => b.price - a.price);
       } else if (sort === "topRatings") {
-        updatedBooks.sort((a, b) => b.rating - a.rating);
+        updatedBooks.sort((a, b) => b.rating - a.rating); // Ensure rating exists
       } else if (sort === "lowRatings") {
-        updatedBooks.sort((a, b) => a.rating - b.rating);
+        updatedBooks.sort((a, b) => a.rating - b.rating); // Ensure rating exists
       }
 
       setFilteredBooks(updatedBooks);

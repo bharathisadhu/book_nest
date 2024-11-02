@@ -32,8 +32,8 @@ const Category = () => {
       });
   }, [baseUrl]);
 
-  const handleCategoryClick = (categoryName) => {
-    router.push(`/books?category=${encodeURIComponent(categoryName)}`);
+  const handleCategoryClick = (category) => {
+    router.push(`/books?category=${encodeURIComponent(category)}`);
   };
 
   if (loading) {
