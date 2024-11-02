@@ -41,7 +41,6 @@ export default function SalesList() {
       const response = await axios.put(`/api/payment/${id}`, {
         status: newStatus,
       });
-      console.log("Status updated:", response.data);
       fetchPayments(); // Optionally refresh the payment list
     } catch (error) {
       console.error("Failed to update status:", error);
@@ -55,7 +54,7 @@ export default function SalesList() {
         key={pageNumber}
         onClick={() => setPage(pageNumber)}
         className={`px-3 py-1 rounded ${
-          pageNumber === page ? "bg-blue-500 text-white" : "bg-gray-200"
+          pageNumber === page ? "bg-[#F65D4E] text-white font-poppins font-semibold" : "bg-gray-200 font-poppins font-semibold"
         }`}
       >
         {pageNumber}
@@ -66,7 +65,7 @@ export default function SalesList() {
   return loading ? (
     <Loader />
   ) : (
-    <div className="font-sans lg:max-h-screen border">
+    <div className="font-sans lg:max-h-screen">
       <table className="divide-y divide-gray-200 border w-full">
         <thead className="bg-gray-100 whitespace-nowrap">
           <tr>
@@ -87,7 +86,7 @@ export default function SalesList() {
                 {new Date(pay.date).toLocaleDateString("en-GB")}
               </td>
               <td className="px-4 py-4">{pay.transactionId}</td>
-              <td className="px-4 py-4 text-right">
+              <td className="px-4 py-4 text-start">
                 ${Number(pay.totalAmount).toFixed(2)}
               </td>
               <td className="px-4 py-4">

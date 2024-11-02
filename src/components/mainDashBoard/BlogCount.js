@@ -1,5 +1,6 @@
 
 "use client";
+import Link from "next/link";
 import { useState, useEffect } from "react";
 import { FaBlog } from "react-icons/fa";
 
@@ -23,7 +24,9 @@ const BlogCount = () => {
   }, [baseUrl]);
 
   return (
+    
     <div className="blog-card p-4 border rounded shadow-md bg-white text-black font-poppins">
+      <Link href={'/blogs'}>
       <div className="flex items-center mb-3">
         <FaBlog className="text-3xl text-yellow-400 mr-3" />
         <h4 className="text-heading-6 font-bold text-dark text-2xl">
@@ -35,7 +38,9 @@ const BlogCount = () => {
           {blogs.length > 0 ? "Click below to view the blogs!" : "No blogs available."}
         </p>
       </div>
+      </Link>
     </div>
+    
   );
 };
 
