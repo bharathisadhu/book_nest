@@ -156,7 +156,7 @@ const DashboardLayout = ({ children }) => {
 
         {/* Sidebar */}
         <nav
-          className={`text-black bg-white w-full lg:w-80 h-screen lg:h-screen fixed top-0 lg:top-0 z-40 py-6 font-[sans-serif] transition-transform duration-300 transform shadow-xl ${
+          className={`text-black bg-white w-full lg:w-80 h-screen lg:h-screen fixed top-0 lg:fixed lg:top-0 z-40 py-6 font-[sans-serif] transition-transform duration-300 transform shadow-xl ${
             isSidebarOpen ? "translate-x-0" : "-translate-x-full"
           } lg:translate-x-0`}
         >

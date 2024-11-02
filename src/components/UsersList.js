@@ -5,8 +5,7 @@ import { HiPencilAlt } from "react-icons/hi";
 import Swal from "sweetalert2";
 import Loading from "../app/loading";
 import Image from "next/image";
-import axios from 'axios';
-
+import axios from "axios";
 
 export default function UsersList() {
   const [users, setUsers] = useState([]); // State to hold users
@@ -14,48 +13,56 @@ export default function UsersList() {
   const [totalPages, setTotalPages] = useState(1);
   const limit = 10;
 
-
   const [isLoading, setIsLoading] = useState(true); // Loading state
   const [isUpdating, setIsUpdating] = useState(false); // Updating state
   const [selectedUser, setSelectedUser] = useState(null); // Selected user for update
   const [isModalOpen, setIsModalOpen] = useState(false); // Modal visibility
   const [selectedImage, setSelectedImage] = useState(null); // Store the image file
 
-
-useEffect(() => {
-    
-        const fetchData = async () => {
-           
-            try {
-
-                const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/users-pagination?page=${page}&limit=${limit}`,{ cache: "no-store" });
-                setUsers(response.data.data);
-                setTotalPages(response.data.totalPages);
-            } catch (error) {
-                console.error('Failed to fetch users:', error);
-            }
-            setIsLoading(false); 
-        };
-
-        
-        fetchData();
-    }, [page,limit]); 
-
-
-   const handlePreviousPage = () => {
-        if (page > 1) {
-            setPage(page - 1); 
-        }
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/users-pagination?page=${page}&limit=${limit}`,
+          { cache: "no-store" }
+        );
+        setUsers(response.data.data);
+        setTotalPages(response.data.totalPages);
+      } catch (error) {
+        console.error("Failed to fetch users:", error);
+      }
+      setIsLoading(false);
     };
 
-    const handleNextPage = () => {
-        if (page < totalPages) {
-            setPage(page + 1); 
-        }
-    };
+    fetchData();
+  }, [page, limit]);
 
+  // const handlePreviousPage = () => {
+  //   if (page > 1) {
+  //     setPage(page - 1);
+  //   }
+  // };
 
+  // const handleNextPage = () => {
+  //   if (page < totalPages) {
+  //     setPage(page + 1);
+  //   }
+  // };
 
+  const renderPagination = () => {
+    const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
+    return pages.map((pageNumber) => (
+      <button
+        key={pageNumber}
+        onClick={() => setPage(pageNumber)}
+        className={`px-3 py-1 rounded ${
+          pageNumber === page ? "bg-[#F65D4E] text-white" : "bg-gray-200"
+        }`}
+      >
+        {pageNumber}
+      </button>
+    ));
+  };
 
   const handleEditClick = (user) => {
     setSelectedUser(user);
@@ -224,26 +231,9 @@ useEffect(() => {
             ))}
           </tbody>
         </table>
-        <div className="flex justify-between items-center mt-4">
-                <button 
-                     className="btn rounded-3xl bg-[#F65D4E] text-white px-8"
-                    onClick={handlePreviousPage} 
-                    disabled={page === 1}
-                >
-                    Previous
-                </button>
-                <span className="text-lg">
-                    Page {page} of {totalPages}
-                </span>
-                <button 
-                     className="btn rounded-3xl bg-[#F65D4E] text-white px-8"
-                    onClick={handleNextPage} 
-                    disabled={page === totalPages}
-                >
-                    Next
-                </button>
-            </div>
-
+        <div className="flex justify-center space-x-2 mt-4">
+          {renderPagination()}
+        </div>
       </div>
 
       {/* Update Modal */}
