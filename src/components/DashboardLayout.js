@@ -52,7 +52,6 @@ const DashboardLayout = ({ children }) => {
   useEffect(() => {
     fetchAdminStatus();
 
-    // Use the Page Visibility API to conditionally load data when tab becomes visible
     const handleVisibilityChange = () => {
       if (document.visibilityState === "visible" && !isAdmin) {
         fetchAdminStatus();
@@ -137,9 +136,10 @@ const DashboardLayout = ({ children }) => {
 
   return (
     <PrivateRoute>
-      <main className="flex">
+      <main className="flex h-screen">
+        {/* Mobile Sidebar Toggle Button */}
         <button
-          className="lg:hidden p-2 text-white bg-gradient-to-r from-[#F65D4E99] to-[#F65D4E] fixed z-50 w-full flex items-center justify-between"
+          className="lg:hidden p-2 text-white bg-gradient-to-r from-[#F65D4E99] to-[#F65D4E] fixed top-0 left-0 z-50 w-full flex items-center justify-between"
           onClick={toggleSidebar}
         >
           <Link href="/" className="normal-case text-3xl">
@@ -154,14 +154,13 @@ const DashboardLayout = ({ children }) => {
           <HiMenuAlt3 className="text-3xl" />
         </button>
 
+        {/* Sidebar */}
         <nav
-          className={`text-black z-50 bg-white w-full lg:w-80 lg:min-h-screen py-6 font-[sans-serif] overflow-auto fixed transition-transform duration-300 transform shadow-xl ${
+          className={`text-black bg-white w-full lg:w-80 h-screen lg:h-screen fixed top-0 lg:top-0 z-40 py-6 font-[sans-serif] transition-transform duration-300 transform shadow-xl ${
             isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-          } lg:relative lg:translate-x-0`}
-          // style={{ height: "100vh", position: "sticky", top: 0 }} // Make sidebar sticky
+          } lg:translate-x-0`}
         >
-          {/* for mobile and tablet */}
-          <div className="flex flex-col items-center px-4 mt-14 lg:hidden">
+          <div className="flex flex-col items-center px-4 mt-16 lg:mt-14">
             <Image
               height={200}
               width={200}
@@ -177,18 +176,7 @@ const DashboardLayout = ({ children }) => {
             </div>
           </div>
 
-          {/* for desktop */}
-          <div className="lg:flex flex-col items-center px-4 mt-14 hidden">
-            <Image
-              height={1000}
-              width={1000}
-              src={logo}
-              className="w-[200px]"
-              alt="logo"
-            />
-          </div>
-
-          <ul className="">
+          <ul>
             {menuItems.map((item) => (
               <li key={item.name}>
                 <Link
@@ -220,10 +208,15 @@ const DashboardLayout = ({ children }) => {
           )}
         </nav>
 
-        <main className="flex-grow transition-all duration-300 overflow-y-auto lg:overflow-hidden">
+        {/* Main Content */}
+        <div
+          className={`flex-grow h-full lg:ml-80 pt-20 lg:pt-0 ${
+            isSidebarOpen && "overflow-hidden"
+          }`}
+        >
           <DashboardNavbar />
-          <div className="lg:ml-16 lg:mr-10 mt-20 lg:mt-28">{children}</div>
-        </main>
+          <div className="p-4 lg:mt-24">{children}</div>
+        </div>
       </main>
     </PrivateRoute>
   );

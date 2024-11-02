@@ -51,8 +51,8 @@ export default function BooksList() {
           `${process.env.NEXT_PUBLIC_API_URL}/api/books-pagination?page=${page}&limit=${limit}`,
           { cache: "no-store" }
         );
-        setBooks(response.data.data);
-        setTotalPages(response.data.totalPages);
+        setBooks(response?.data?.data);
+        setTotalPages(response?.data?.totalPages);
       } catch (error) {
         console.error("Failed to fetch books:", error);
       }

@@ -65,7 +65,7 @@ export default function SalesList() {
   return loading ? (
     <Loader />
   ) : (
-    <div className="font-sans lg:max-h-screen border">
+    <div className="font-sans lg:max-h-screen">
       <table className="divide-y divide-gray-200 border w-full">
         <thead className="bg-gray-100 whitespace-nowrap">
           <tr>
