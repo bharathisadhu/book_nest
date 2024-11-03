@@ -394,7 +394,7 @@ export default function PaymentHistory() {
                       Email
                     </th>
                     <th className="px-4 py-4 text-left text-xs font-semibold text-gray-500 uppercase">
-                      Payment Status
+                      Transaction Id
                     </th>
                     <th className="px-4 py-4 text-left text-xs font-semibold text-gray-500 uppercase">
                       Delivery Status
@@ -420,10 +420,10 @@ export default function PaymentHistory() {
                         {cart.email}
                       </td>
                       <td className="px-4 py-4 text-sm text-gray-800">
-                        {cart.status}
+                        {cart.transactionId}
                       </td>
                       <td className="px-4 py-4 text-sm text-gray-800">
-                        {cart.deliveryStatus}
+                        {cart.status}
                       </td>
                       <td className="px-4 py-4 text-sm text-gray-800">
                         ${cart.totalAmount.toFixed(2)}
@@ -446,7 +446,7 @@ export default function PaymentHistory() {
             </div>
 
             {/* Pagination */}
-            <div className="flex justify-end mt-4 gap-2">
+            <div className="flex justify-center my-4 gap-2">
               {Array.from({ length: totalPages }, (_, index) => (
                 <button
                   key={index}
