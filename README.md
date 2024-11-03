@@ -1,31 +1,34 @@
 # BookNest E-commerce Website
 
-Welcome to **BookNest**, an e-commerce website for book lovers. This project is designed using modern web development technologies, offering a seamless shopping experience. It includes features such as a responsive design, product searching, user authentication, and a functional cart system.
+
+Website Live Link: [BookNest](https://booknest-self.vercel.app/)
+
+
+Welcome to **BookNest**, an e-commerce website designed specifically for book lovers. This project leverages modern web development technologies to deliver a seamless shopping experience, featuring user-friendly design and essential functionalities for managing a book store.
 
 ## Features
 
-- 📚 **Browse Books**: Explore a wide variety of books with sorting and filtering options.
-- 🛒 **Shopping Cart**: Add books to the cart and proceed to checkout.
-- 🔍 **Search**: Quickly find books using the search functionality.
-- 💖 **Wishlist**: Save books to your wishlist.
-- 🔐 **User Authentication**: Sign up, log in, and manage your account.
-- 📱 **Responsive Design**: Optimized for both desktop and mobile devices.
+- 📚 **Browse Books**: Explore a diverse collection of books with robust sorting and filtering options.
+- 🛒 **Shopping Cart**: Easily add books to your cart and proceed to checkout.
+- 🔍 **Search**: Quickly locate books using the integrated search functionality.
+- 💖 **Wishlist**: Save your favorite books for later.
+- 🔐 **User Authentication**: Users can sign up, log in, and manage their accounts securely.
+- 📱 **Responsive Design**: The website is optimized for both desktop and mobile devices.
 - 🛍️ **Admin Panel**: Manage books, users, and orders (Coming Soon).
 
 ## Technologies Used
 
-- **Frontend**: React.js, Tailwind CSS, React Router
-- **Backend**: Node.js, Express.js
+- **Frontend**: Next.js, Tailwind CSS, React Icons
+- **Backend**: Node.js, Mongoose
 - **Database**: MongoDB
-- **Authentication**: Firebase Authentication
-- **Icons**: React Icons
-- **Others**: React Router DOM, Context API
+- **Authentication**: NextAuth.js
+- **Others**: React Hook Form, Axios, SocketIO
 
 ## Setup Instructions
 
 ### Prerequisites
 
-Make sure you have the following installed on your local machine:
+Ensure you have the following installed on your local machine:
 
 - **Node.js**: [Download and Install Node.js](https://nodejs.org/)
 - **Git**: [Download and Install Git](https://git-scm.com/)
@@ -36,110 +39,112 @@ Make sure you have the following installed on your local machine:
 1. **Clone the repository**:
 
 ```bash
-   git clone https://github.com/your-username/booknest-ecommerce.git
-   cd booknest-ecommerce
+git clone https://github.com/your-username/booknest-ecommerce.git
+cd booknest-ecommerce
 ```
-
-2. **Install dependencies for both frontend and backend**:
-
+Install dependencies for both frontend and backend:
 Frontend:
 
 ```bash
-    cd frontend
-    npm install
+cd frontend
+npm install
 ```
-
 Backend:
 
 ```bash
-    cd backend
-    npm install
-```
-
-3.**Create environment variables**:
-
-**For frontend: Create a .env file in the frontend directory and add the following**:
-
-```bash
-    REACT_APP_FIREBASE_API_KEY=your-firebase-api-key
-    REACT_APP_FIREBASE_AUTH_DOMAIN=your-auth-domain
-    REACT_APP_FIREBASE_PROJECT_ID=your-project-id
-    REACT_APP_FIREBASE_STORAGE_BUCKET=your-storage-bucket
-    REACT_APP_FIREBASE_MESSAGING_SENDER_ID=your-sender-id
-    REACT_APP_FIREBASE_APP_ID=your-app-id
-```
-
-**For backend: Create a .env file in the backend directory and add the following**:
-
-```bash
-    MONGO_URI=your-mongodb-connection-string
-    JWT_SECRET=your-secret-key
-```
-
-4.**Run the project**:
-
-**Frontend**:
-
-```bash
-
-cd frontend
-npm start
-```
-
-**Backend**:
-
-```bash
-
 cd backend
-npm start
+npm install
+```
+Create environment variables:
+For frontend: Create a .env.local file in the frontend directory and add the following:
+
+```bash
+NEXT_PUBLIC_MONGODB_URI
+DB_USER
+DB_PASS
+NEXT_PUBLIC_AUTH_SECRET
+GOOGLE_CLIENT_ID
+GOOGLE_CLIENT_SECRET
+GITHUB_CLIENT_ID
+GITHUB_CLIENT_SECRET
+AUTH_SECRET
+JWT_SIGNING_PRIVATE_KEY
+MONGODB_URI
+STRIPE_SECRET_KEY
+NEXT_PUBLIC_STRIPE_PUBLIC_KEY
+NEXT_PUBLIC_API_URL
+
+STRIPE_PRO_PLAN_ID
+STRIPE_FREE_PLAN_ID
+
+NEXT_PUBLIC_IMAGE_UPLOAD_KEY
 ```
 
-5.**Open your browser and go to http://localhost:3000**.
+For backend: Create a .env file in the backend directory and add the following:
 
-**Website live link: https://booknest-self.vercel.app
+```bash
+MONGO_URI=your-mongodb-connection-string
+JWT_SECRET=your-secret-key
+NEXTAUTH_URL=http://localhost:3000
+```
+Run the project:
+Frontend:
+
+```bash
+cd frontend
+npm run dev
+```
+Backend:
+
+```bash
+cd backend
+npm run dev
+Open your browser and go to http://localhost:3000.
+```
+
 
 Folder Structure
-
 ```bash
-    booknest-ecommerce/
-    ├── backend/           # Backend server code
-    │   ├── controllers/   # API controllers
-    │   ├── models/        # Mongoose models
-    │   ├── routes/        # API routes
-    │   └── app.js         # Express app setup
-    ├── frontend/          # Frontend React app
-    │   ├── src/           # React source files
-    │   │   ├── components/ # UI components
-    │   │   ├── pages/      # Page components
-    │   │   ├── context/    # Context API for state management
-    │   │   └── App.js      # Main React App component
-    └── README.md          # Project documentation
-```
 
-**How to Contribute**
+booknest-ecommerce/
+├── backend/           # Backend server code
+│   ├── controllers/   # API controllers
+│   ├── models/        # Mongoose models
+│   ├── routes/        # API routes
+│   └── app.js         # Express app setup
+├── frontend/          # Frontend Next.js app
+│   ├── src/           # Next.js source files
+│   │   ├── components/ # UI components
+│   │   ├── pages/      # Page components
+│   │   ├── context/    # Context API for state management
+│   │   └── App.js      # Main React App component
+└── README.md          # Project documentation
+```
+How to Contribute
 Contributions are welcome! If you'd like to contribute to this project, please follow these steps:
 
-1. Fork the repository.
-
-2. Create a branch for your feature or bug fix:
-
+Fork the repository.
+Create a branch for your feature or bug fix:
 ```bash
 git checkout -b feature-name
 ```
-
-3. Commit your changes:
-
+Commit your changes:
 ```bash
 git commit -m "Add new feature"
 ```
-
-4. Push to the branch:
-
+Push to the branch:
 ```bash
 git push origin feature-name
 ```
-
-5. Create a pull request and describe your changes.
-
-**Contact**
+Create a pull request and describe your changes.
+Contact
 For any questions or suggestions, feel free to contact me.
+
+```markdown
+### Notes:
+- Replace `your-username` in the clone URL with your actual GitHub username.
+- Update the Firebase and MongoDB connection strings in the environment variables section as needed.
+- Adjust any sections according to your project's specific features or details.
+
+This README provides a clear and organized overview of your project, making it easy for others to understand and contact
+```
