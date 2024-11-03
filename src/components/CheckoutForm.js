@@ -179,7 +179,7 @@ const CheckoutForm = ({ cartBook, setCartBook }) => {
         });
       } finally {
         setTimeout(() => {
-          router.push("/");
+          router.push("/dashboad/paymentHistory");
         }, 500);
       }
     } else {

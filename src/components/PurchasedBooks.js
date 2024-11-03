@@ -2,11 +2,13 @@
 import { useSession } from "next-auth/react"; // For authentication session
 import { useEffect, useState } from "react";
 import { jsPDF } from "jspdf"; // Import jsPDF for PDF generation
+import Loading from "../app/loading";
 
 export default function PurchasedBooks({ email }) {
   const [purchasedBooks, setPurchasedBooks] = useState([]); // State to store purchased books
-  const [paymentStatus, setPaymentStatus] = useState({}); // State to store payment status
+  const [paymentStatus, setPaymentStatus] = useState([]); // State to store payment status
   const { data: session } = useSession(); // Get user session
+  const [loading, setLoading] = useState(true);
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false); // Modal state
   const [selectedBook, setSelectedBook] = useState(null); // Selected book for review
   const [review, setReview] = useState(""); // Review text
@@ -19,6 +21,7 @@ export default function PurchasedBooks({ email }) {
         const response = await fetch(
           `/api/purchaseBooks/${session?.user.email}`
         );
+        setLoading(false);
         const data = await response.json();
         setPurchasedBooks(data);
 
@@ -27,7 +30,8 @@ export default function PurchasedBooks({ email }) {
           `/api/payments/${session?.user.email}`
         );
         const paymentData = await paymentResponse.json();
-        setPaymentStatus(paymentData.data[0]);
+        console.log("paymentData", paymentData.data);
+        setPaymentStatus(paymentData.data);
       } catch (error) {
         console.error("Error fetching purchased books:", error);
       }
@@ -89,10 +93,34 @@ export default function PurchasedBooks({ email }) {
     }
   };
 
+  // Combine purchasedBooks with payment status from allPurchasedBooks
+  const allPurchasedBooks = paymentStatus.flatMap((transaction) =>
+    transaction.books.map((book) => ({
+      ...book,
+      status: transaction.status,
+    }))
+  );
+
+  const combinedBooks = purchasedBooks.map((book) => {
+    const paymentInfo = allPurchasedBooks.find((b) => b._id === b._id);
+    return {
+      ...book,
+      status: paymentInfo ? paymentInfo.status : "unknown", // Default to 'unknown' if not found
+    };
+  });
+
+  if (status === "loading" || loading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <Loading />
+      </div>
+    );
+  }
+
   return (
     <div>
-      {purchasedBooks.length === 0 ? (
-        <p>No purchased books found. Make a purchase first</p>
+      {combinedBooks.length === 0 ? (
+        <p>No purchased books found. Make a purchase first.</p>
       ) : (
         <table className="w-full border-collapse">
           <thead>
@@ -100,17 +128,15 @@ export default function PurchasedBooks({ email }) {
               <th className="py-2 px-4 text-left">#</th>
               <th className="py-2 px-4 text-left">Book Name</th>
               <th className="py-2 px-4 text-left">Book Author</th>
-              <th className="py-2 px-4 text-left">Book Category</th>
+              <th className="py-2 px-4 text-left">Category</th>
               <th className="py-2 px-4 text-left">Price</th>
               <th className="py-2 px-4 text-left">Status</th>
               <th className="py-2 px-4 text-left">Actions</th>
             </tr>
           </thead>
           <tbody>
-            {purchasedBooks.map((book, index) => {
-              const currentPaymentStatus = paymentStatus.status; // Get current payment status
-              const isDisabled = currentPaymentStatus === "pending"; // Disable actions if payment is pending
-
+            {combinedBooks.map((book, index) => {
+              const isDisabled = book.status === "pending"; // Disable actions if payment is pending
               return (
                 <tr key={book._id} className="border-b">
                   <td className="px-4 py-2">{index + 1}</td>
@@ -118,7 +144,7 @@ export default function PurchasedBooks({ email }) {
                   <td className="py-2 px-4">{book.author}</td>
                   <td className="py-2 px-4">{book.category}</td>
                   <td className="py-2 px-4">${book.price.toFixed(2)}</td>
-                  <td className="py-2 px-4">{currentPaymentStatus}</td>
+                  <td className="py-2 px-4">{book.status}</td>
                   <td className="py-2 px-4">
                     <button
                       className={`bg-[#F65D4E] hover:bg-[#e07c73] text-white font-bold py-2 px-4 rounded mr-2 ${
