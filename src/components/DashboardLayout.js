@@ -2,12 +2,14 @@
 import { useSession, signOut } from "next-auth/react";
 import { FiLogIn } from "react-icons/fi";
 import Image from "next/image";
+import { CgProfile } from "react-icons/cg";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   AiOutlineDashboard,
   AiOutlineUser,
   AiOutlineFileText,
   AiOutlineLineChart,
+  AiOutlineProfile,
 } from "react-icons/ai";
 import { HiMenuAlt3 } from "react-icons/hi";
 import Link from "next/link";
@@ -102,9 +104,14 @@ const DashboardLayout = ({ children }) => {
   const nonAdminMenuItems = useMemo(
     () => [
       {
-        name: "Dashboard",
-        icon: <AiOutlineDashboard className="text-xl" />,
+        name: "Profile",
+        icon: <CgProfile className="text-xl" />,
         href: "/dashboard/userProfile",
+      },
+      {
+        name: "Purchase Books",
+        icon: <CgProfile className="text-xl" />,
+        href: "/dashboard/purchasedBooks",
       },
       {
         name: "Payment History",
@@ -139,7 +146,7 @@ const DashboardLayout = ({ children }) => {
       <main className="flex h-screen">
         {/* Mobile Sidebar Toggle Button */}
         <button
-          className="lg:hidden p-2 text-white bg-gradient-to-r from-[#F65D4E99] to-[#F65D4E] fixed top-0 left-0 z-50 w-full flex items-center justify-between"
+          className="lg:hidden p-2 text-white bg-gradient-to-r from-[#F65D4E99] to-[#F65D4E] fixed z-50 w-full flex items-center justify-between"
           onClick={toggleSidebar}
         >
           <Link href="/" className="normal-case text-3xl">
@@ -156,24 +163,38 @@ const DashboardLayout = ({ children }) => {
 
         {/* Sidebar */}
         <nav
-          className={`text-black bg-white w-full lg:w-80 h-screen lg:h-screen fixed top-0 lg:fixed lg:top-0 z-40 py-6 font-[sans-serif] transition-transform duration-300 transform shadow-xl ${
+          className={`text-black bg-white w-full lg:w-80 h-screen lg:h-screen fixed top-0 lg:fixed lg:top-0 z-40 py-6 font-[sans-serif] transition-transform duration-300 transform shadow-xl  ${
             isSidebarOpen ? "translate-x-0" : "-translate-x-full"
           } lg:translate-x-0`}
         >
-          <div className="flex flex-col items-center px-4 mt-16 lg:mt-14">
+          {/* for mobile and tablet */}
+          <div className="flex flex-col items-center px-4 mt-14 lg:hidden">
             <Image
               height={200}
               width={200}
-              src={userProfile?.image || "https://i.ibb.co/XWyS1WL/d.jpg"}
-              className="w-20 h-20 md:w-24 md:h-24 rounded-full border-2 border-white object-cover"
+              src={session?.user?.image || "https://i.ibb.co/XWyS1WL/d.jpg"}
+              className="w-12 h-12 rounded-full border-2 border-white"
               alt="Profile"
             />
             <div className="mt-2 text-center">
-              <p className="text-sm mt-2">{userProfile?.name || "User Name"}</p>
+              <p className="text-sm mt-2">
+                {session?.user?.name || "User Name"}
+              </p>
               <p className="text-xs mt-0.5">
-                {userProfile?.email || "User Email"}
+                {session?.user?.email || "User Email"}
               </p>
             </div>
+          </div>
+
+          {/* for desktop */}
+          <div className="lg:flex flex-col items-center px-4 mt-14 hidden">
+            <Image
+              height={1000}
+              width={1000}
+              src={logo}
+              className="w-[200px]"
+              alt="logo"
+            />
           </div>
 
           <ul>

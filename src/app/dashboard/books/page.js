@@ -8,9 +8,8 @@ const books = () => {
     <main>
       <DashboardLayout>
         <h1 className="text-2xl font-bold text-center mb-2 text-[#F65D4E]">
-          Books List{" "}
+          Books List
         </h1>
-        {/* Add more specific content here */}
         {/* <AddBook /> */}
         <BooksList />
       </DashboardLayout>
