@@ -34,6 +34,7 @@ export default function SalesList() {
 
   useEffect(() => {
     fetchPayments();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session?.user?.email, page]);
 
   const handleStatusChange = async (id, newStatus) => {
@@ -54,7 +55,9 @@ export default function SalesList() {
         key={pageNumber}
         onClick={() => setPage(pageNumber)}
         className={`px-3 py-1 rounded ${
-          pageNumber === page ? "bg-[#F65D4E] text-white font-poppins font-semibold" : "bg-gray-200 font-poppins font-semibold"
+          pageNumber === page
+            ? "bg-[#F65D4E] text-white font-poppins font-semibold"
+            : "bg-gray-200 font-poppins font-semibold"
         }`}
       >
         {pageNumber}
