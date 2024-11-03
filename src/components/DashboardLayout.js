@@ -10,6 +10,7 @@ import {
   AiOutlineFileText,
   AiOutlineLineChart,
   AiOutlineProfile,
+  AiOutlineBook,
 } from "react-icons/ai";
 import { HiMenuAlt3 } from "react-icons/hi";
 import Link from "next/link";
@@ -110,7 +111,7 @@ const DashboardLayout = ({ children }) => {
       },
       {
         name: "Purchase Books",
-        icon: <CgProfile className="text-xl" />,
+        icon: <AiOutlineBook className="text-xl" />,
         href: "/dashboard/purchasedBooks",
       },
       {
