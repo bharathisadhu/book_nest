@@ -111,7 +111,7 @@ const DashboardLayout = ({ children }) => {
       },
       {
         name: "Purchase Books",
-        icon: <AiOutlineBook className="text-xl" />,
+        icon: <IoBookSharp className="text-xl" />,
         href: "/dashboard/purchasedBooks",
       },
       {
