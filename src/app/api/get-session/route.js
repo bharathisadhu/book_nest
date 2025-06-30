@@ -1,7 +1,7 @@
 // pages/api/get-session.js
 import Stripe from "stripe";
 import connectDB from "@/lib/mongodb"; // Adjust the path based on your project structure
-
+ 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 export default async function handler(req, res) {
