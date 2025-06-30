@@ -1,6 +1,6 @@
 import connectToDatabase from "@/lib/mongodb";
 import { Blog } from "../../../../models/Book";
-
+ 
 export async function GET(req) {
   await connectToDatabase();
 
