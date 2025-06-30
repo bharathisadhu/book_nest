@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import connectDB from "@/lib/connectDB";
-
+ 
 let db;
 
 export async function GET(request, { params }) {
