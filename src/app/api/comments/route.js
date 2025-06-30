@@ -8,7 +8,7 @@ export async function POST(request) {
   await connectToDatabase();
   const newItem =await Comment.create({ email, username, blogId, text, parentId });
   return NextResponse.json({ message: "Comment Created",Comment:newItem }, { status: 201 });
-}
+} 
 
 
 
