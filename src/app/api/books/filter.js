@@ -2,7 +2,7 @@ import connectDB from "@/utils/connectDB";
 import { ObjectId } from "mongodb";
 
 export default async function GET(req, res) {
-  try {
+  try { 
     const db = await connectDB();
     const {
       page = 1,
