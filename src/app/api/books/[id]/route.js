@@ -6,7 +6,7 @@ let db;
 
 export async function GET(request, { params }) {
   const { id } = params;
-
+ 
   db = await connectDB();
 
   const book = await db.collection("books").findOne({ _id: new ObjectId(id) }); // Convert id to ObjectId
