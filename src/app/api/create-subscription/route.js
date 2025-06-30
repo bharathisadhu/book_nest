@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import Stripe from "stripe";
 import connectDB from "@/lib/mongodb"; // Adjust the path based on your project structure
 import Users from "../../../../models/Users"; // Ensure the path to your Users model is correct
-
+ 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 export async function POST(request) {
