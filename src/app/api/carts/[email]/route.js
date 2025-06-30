@@ -4,7 +4,7 @@ import { ObjectId } from "mongodb";
 import { Cart } from "../../../../../models/Book";
 import connectToDatabase from "@/lib/mongodb";
 
-let db;
+let db; 
 
 // Handle POST requests
 export async function POST(request) {
