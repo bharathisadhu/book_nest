@@ -7,7 +7,7 @@ import {Payment} from "../../../../models/Payment";
 export async function POST(req) {
   try {
     await connectDB();
-
+ 
     const { email, price, transactionId, bookId, bookName } = await req.json();
 
     // Update the payment status to "completed" in the database
