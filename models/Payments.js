@@ -1,5 +1,5 @@
 import mongoose, { Schema } from "mongoose";
-
+ 
 const paymentSchema = new mongoose.Schema({
   name: { type: String },
   email: { type: String },
